@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.codenvy.ide</groupId>
+        <artifactId>codenvy-ext-datasource-parent</artifactId>
+        <version>3.0.0-M4-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>codenvy-ext-datasource-core</artifactId>
+    <name>codenvy-ext-datasource-core</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <generated.sources.directory>${project.build.directory}/generated-sources/gen</generated.sources.directory>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>repo.codenvy.private</id>
+            <url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>repo.codenvy.private</id>
+            <url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</url>
+        </snapshotRepository>
+        <site>
+            <id>repo.codenvy.private</id>
+            <url>https://maven.codenvycorp.com/content/groups/codenvy-public-group/</url>
+        </site>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.ide</groupId>
+            <artifactId>codenvy-ide-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+        <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <!-- Create the distribution zip and attach it to maven -->
+                    <execution>
+                        <id>${project.artifactId}</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <updateOnly>false</updateOnly>
+                            <descriptors>
+                                <descriptor>${project.basedir}/src/main/assembly/datasource-archive.xml</descriptor>
+                            </descriptors>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${generated.sources.directory}</directory>
+            </resource>
+        </resources>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <outputDirectory>target/classes</outputDirectory>
+    </build>
+</project>

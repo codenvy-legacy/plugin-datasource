@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CODENVY CONFIDENTIAL __________________ [2013] Codenvy, S.A. All Rights Reserved. NOTICE: All information contained herein is, and remains the property of Codenvy S.A. and its suppliers, if any. The 
+    intellectual and technical concepts contained herein are proprietary to Codenvy S.A. and its suppliers and may be covered by U.S. and Foreign Patents, patents in process, and are protected by trade secret 
+    or copyright law. Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained from Codenvy S.A.. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.codenvy.ide</groupId>
+        <artifactId>codenvy-ide-parent</artifactId>
+        <version>3.0.0-M4-SNAPSHOT</version>
+    </parent>
+    <artifactId>codenvy-ext-datasource-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>Codenvy Extension :: Datasource parent</name>
+
+    <properties>
+        <generated.sources.directory>${project.build.directory}/generated-sources/gen</generated.sources.directory>
+        <codenvy.version>3.0.0-M4-SNAPSHOT</codenvy.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <scope>provided</scope>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-api</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-git</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-security</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <modules>
+        <module>codenvy-ext-datasource-core</module>
+    </modules>
+</project>
