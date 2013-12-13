@@ -1,0 +1,73 @@
+/*
+ * CODENVY CONFIDENTIAL
+ * __________________
+ *
+ * [2013] - [2014] Codenvy, S.A.
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Codenvy S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Codenvy S.A.
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Codenvy S.A..
+ */
+package com.codenvy.ide.ext.datasource.client;
+
+import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
+import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
+import static com.codenvy.ide.rest.MimeType.APPLICATION_JSON;
+
+import com.codenvy.ide.annotations.NotNull;
+import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.rest.AsyncRequest;
+import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.util.Utils;
+import com.codenvy.ide.websocket.MessageBus;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.web.bindery.event.shared.EventBus;
+
+@Singleton
+public class DatasourceClientServiceImpl implements DatasourceClientService {
+
+    protected Loader     loader;
+    protected String     wsName;
+    protected String     restServiceContext;
+    protected MessageBus wsMessageBus;
+    protected EventBus   eventBus;
+    protected DtoFactory dtoFactory;
+
+    /**
+     * @param restContext rest context
+     * @param loader loader to show on server request
+     */
+    @Inject
+    protected DatasourceClientServiceImpl(
+                                          @Named("restContext") String restContext, Loader loader,
+                                          MessageBus wsMessageBus, EventBus eventBus, DtoFactory dtoFactory) {
+        this.loader = loader;
+        this.wsName = '/' + Utils.getWorkspaceName();
+        this.restServiceContext = restContext + wsName;
+        this.wsMessageBus = wsMessageBus;
+        this.eventBus = eventBus;
+        this.dtoFactory = dtoFactory;
+    }
+
+    @Override
+    public void fetchDatabase(
+                              @NotNull AsyncRequestCallback<String> asyncRequestCallback)
+                                                                                         throws RequestException {
+        String url = restServiceContext + "/datasource/database";
+        AsyncRequest.build(RequestBuilder.POST, url, true).header(CONTENTTYPE, APPLICATION_JSON)
+                    .header(ACCEPT, APPLICATION_JSON).send(asyncRequestCallback);
+    }
+
+}

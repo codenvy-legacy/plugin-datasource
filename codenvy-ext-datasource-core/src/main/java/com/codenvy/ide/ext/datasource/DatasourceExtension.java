@@ -17,10 +17,18 @@
  */
 package com.codenvy.ide.ext.datasource;
 
-import static com.codenvy.ide.api.ui.workspace.PartStackType.EDITING;
+import static com.codenvy.ide.api.ui.action.Anchor.BEFORE;
+import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_MAIN_MENU;
+import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_WINDOW;
 
 import com.codenvy.ide.api.extension.Extension;
+import com.codenvy.ide.api.ui.action.ActionManager;
+import com.codenvy.ide.api.ui.action.Constraints;
+import com.codenvy.ide.api.ui.action.DefaultActionGroup;
+import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.ext.datasource.action.NewDSConnectionAction;
+import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.part.DatasourcePresenter;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -28,11 +36,32 @@ import com.google.inject.Singleton;
 @Singleton
 @Extension(title = "Datasource Extension", version = "1.0.0")
 public class DatasourceExtension {
-	public static boolean SHOW_ITEM = true;
+    public static boolean SHOW_ITEM          = true;
 
-	@Inject
-	public DatasourceExtension(WorkspaceAgent workspaceAgent,
-			DatasourcePresenter howToPresenter) {
-		workspaceAgent.openPart(howToPresenter, EDITING);
-	}
+    public static String  DS_GROUP_MAIN_MENU = "DatasourceMainMenu";
+
+    @Inject
+    public DatasourceExtension(WorkspaceAgent workspaceAgent,
+                               DatasourcePresenter howToPresenter,
+                               DatasourceExplorerPartPresenter dsExplorer,
+                               ActionManager actionManager,
+                               NewDSConnectionAction newDSConnectionAction) {
+        workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
+        workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
+
+        DefaultActionGroup mainMenu = (DefaultActionGroup)actionManager
+                                                                       .getAction(GROUP_MAIN_MENU);
+
+        DefaultActionGroup defaultDatasourceMainGroup = new DefaultActionGroup(
+                                                                               "Datasource", true, actionManager);
+        actionManager.registerAction(DS_GROUP_MAIN_MENU,
+                                     defaultDatasourceMainGroup);
+        Constraints beforeWindow = new Constraints(BEFORE, GROUP_WINDOW);
+        mainMenu.add(defaultDatasourceMainGroup, beforeWindow);
+
+        actionManager.registerAction("NewDSConnection", newDSConnectionAction);
+        defaultDatasourceMainGroup.add(newDSConnectionAction);
+
+    }
+
 }

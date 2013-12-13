@@ -18,6 +18,10 @@
 package com.codenvy.ide.ext.datasource.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerView;
+import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerViewImpl;
 import com.codenvy.ide.ext.datasource.part.DatasourceView;
 import com.codenvy.ide.ext.datasource.part.DatasourceViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -30,5 +34,9 @@ public class DatasourceGinModule extends AbstractGinModule {
     protected void configure() {
         bind(DatasourceView.class).to(DatasourceViewImpl.class).in(
                                                                    Singleton.class);
+        bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
+                                          .in(Singleton.class);
+        bind(DatasourceClientService.class).to(
+                                               DatasourceClientServiceImpl.class).in(Singleton.class);
     }
 }

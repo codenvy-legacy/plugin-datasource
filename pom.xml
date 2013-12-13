@@ -15,9 +15,9 @@
     <name>Codenvy Extension :: Datasource parent</name>
 
     <properties>
-        <generated.sources.directory>${project.build.directory}/generated-sources/gen</generated.sources.directory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <codenvy.version>3.0.0-M5-SNAPSHOT</codenvy.version>
+        <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
 
     <dependencyManagement>
@@ -40,6 +40,11 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-core</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-git</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
@@ -53,6 +58,16 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.schemacrawler</groupId>
+                <artifactId>schemacrawler</artifactId>
+                <version>10.08.01</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>9.3-1100-jdbc41</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
