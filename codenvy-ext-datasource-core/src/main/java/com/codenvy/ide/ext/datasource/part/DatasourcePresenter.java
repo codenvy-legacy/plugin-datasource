@@ -1,10 +1,10 @@
 /*
  * CODENVY CONFIDENTIAL
  * __________________
- * 
- * [2012] - [2013] Codenvy, S.A. 
+ *
+ * [2013] - [2014] Codenvy, S.A.
  * All Rights Reserved.
- * 
+ *
  * NOTICE:  All information contained herein is, and remains
  * the property of Codenvy S.A. and its suppliers,
  * if any.  The intellectual and technical concepts contained
@@ -25,36 +25,36 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class DatasourcePresenter extends AbstractPartPresenter implements
-		DatasourceView.ActionDelegate {
-	private DatasourceView view;
+                                                              DatasourceView.ActionDelegate {
+    private DatasourceView view;
 
-	@Inject
-	public DatasourcePresenter(DatasourceView view) {
-		this.view = view;
-		this.view.setDelegate(this);
-	}
+    @Inject
+    public DatasourcePresenter(DatasourceView view) {
+        this.view = view;
+        this.view.setDelegate(this);
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public String getTitle() {
-		return "Codenvy Datasource";
-	}
+    /** {@inheritDoc} */
+    @Override
+    public String getTitle() {
+        return "Codenvy Datasource";
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public ImageResource getTitleImage() {
-		return null;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public ImageResource getTitleImage() {
+        return null;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public String getTitleToolTip() {
-		return null;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public String getTitleToolTip() {
+        return null;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void go(AcceptsOneWidget container) {
-		container.setWidget(view);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void go(AcceptsOneWidget container) {
+        container.setWidget(view);
+    }
 }

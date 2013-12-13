@@ -1,10 +1,10 @@
 /*
  * CODENVY CONFIDENTIAL
  * __________________
- * 
- * [2012] - [2013] Codenvy, S.A. 
+ *
+ * [2013] - [2014] Codenvy, S.A.
  * All Rights Reserved.
- * 
+ *
  * NOTICE:  All information contained herein is, and remains
  * the property of Codenvy S.A. and its suppliers,
  * if any.  The intellectual and technical concepts contained
@@ -25,10 +25,10 @@ import com.google.inject.Singleton;
 
 @ExtensionGinModule
 public class DatasourceGinModule extends AbstractGinModule {
-	/** {@inheritDoc} */
-	@Override
-	protected void configure() {
-		bind(DatasourceView.class).to(DatasourceViewImpl.class).in(
-				Singleton.class);
-	}
+    /** {@inheritDoc} */
+    @Override
+    protected void configure() {
+        bind(DatasourceView.class).to(DatasourceViewImpl.class).in(
+                                                                   Singleton.class);
+    }
 }

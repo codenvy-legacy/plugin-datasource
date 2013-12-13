@@ -1,10 +1,10 @@
 /*
  * CODENVY CONFIDENTIAL
  * __________________
- * 
- * [2012] - [2013] Codenvy, S.A. 
+ *
+ * [2013] - [2014] Codenvy, S.A.
  * All Rights Reserved.
- * 
+ *
  * NOTICE:  All information contained herein is, and remains
  * the property of Codenvy S.A. and its suppliers,
  * if any.  The intellectual and technical concepts contained
@@ -20,8 +20,8 @@ package com.codenvy.ide.ext.datasource.part;
 import com.codenvy.ide.api.mvp.View;
 
 public interface DatasourceView extends View<DatasourceView.ActionDelegate> {
-	/** Required for delegating functions in view. */
-	public interface ActionDelegate {
+    /** Required for delegating functions in view. */
+    public interface ActionDelegate {
 
-	}
+    }
 }

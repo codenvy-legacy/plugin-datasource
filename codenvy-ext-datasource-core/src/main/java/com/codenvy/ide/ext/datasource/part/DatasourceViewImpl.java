@@ -1,10 +1,10 @@
 /*
  * CODENVY CONFIDENTIAL
  * __________________
- * 
- * [2012] - [2013] Codenvy, S.A. 
+ *
+ * [2013] - [2014] Codenvy, S.A.
  * All Rights Reserved.
- * 
+ *
  * NOTICE:  All information contained herein is, and remains
  * the property of Codenvy S.A. and its suppliers,
  * if any.  The intellectual and technical concepts contained
@@ -26,21 +26,21 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class DatasourceViewImpl extends Composite implements DatasourceView {
-	interface TutorialHowToViewImplUiBinder extends
-			UiBinder<Widget, DatasourceViewImpl> {
-	}
+    interface TutorialHowToViewImplUiBinder extends
+                                           UiBinder<Widget, DatasourceViewImpl> {
+    }
 
-	private static TutorialHowToViewImplUiBinder ourUiBinder = GWT
-			.create(TutorialHowToViewImplUiBinder.class);
+    private static TutorialHowToViewImplUiBinder ourUiBinder = GWT
+                                                                  .create(TutorialHowToViewImplUiBinder.class);
 
-	@Inject
-	public DatasourceViewImpl() {
-		initWidget(ourUiBinder.createAndBindUi(this));
-	}
+    @Inject
+    public DatasourceViewImpl() {
+        initWidget(ourUiBinder.createAndBindUi(this));
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public void setDelegate(ActionDelegate delegate) {
-		// do nothing
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void setDelegate(ActionDelegate delegate) {
+        // do nothing
+    }
 }
