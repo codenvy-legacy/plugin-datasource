@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.codenvy.ide</groupId>
         <artifactId>codenvy-ide-parent</artifactId>
-        <version>3.0.0-M4-SNAPSHOT</version>
+        <version>3.0.0-M5-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
     <packaging>pom</packaging>
@@ -16,7 +16,7 @@
 
     <properties>
         <generated.sources.directory>${project.build.directory}/generated-sources/gen</generated.sources.directory>
-        <codenvy.version>3.0.0-M4-SNAPSHOT</codenvy.version>
+        <codenvy.version>3.0.0-M5-SNAPSHOT</codenvy.version>
     </properties>
 
     <dependencyManagement>
