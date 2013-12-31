@@ -22,7 +22,7 @@
                xmlns="http://www.exoplaform.org/xml/ns/kernel_1_0.xsd">
 
     <component>
-        <type>com.codenvy.ide.ext.datasource.server.rest.DatasourceApplication</type>
+        <type>com.codenvy.ide.ext.datasource.server.DatasourceApplication</type>
     </component>
     
 </configuration>
