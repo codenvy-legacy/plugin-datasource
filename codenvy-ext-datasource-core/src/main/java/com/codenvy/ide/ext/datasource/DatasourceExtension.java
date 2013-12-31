@@ -25,12 +25,20 @@ import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.action.Constraints;
 import com.codenvy.ide.api.ui.action.DefaultActionGroup;
+import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.action.NewDSConnectionAction;
+import com.codenvy.ide.ext.datasource.action.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.connector.AbstractConnectorPage;
+import com.codenvy.ide.ext.datasource.connector.ConnectorAgent;
+import com.codenvy.ide.ext.datasource.connector.pg.PgConnectorPage;
 import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.part.DatasourcePresenter;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 @Singleton
@@ -45,23 +53,31 @@ public class DatasourceExtension {
                                DatasourcePresenter howToPresenter,
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
-                               NewDSConnectionAction newDSConnectionAction) {
+                               NewDSConnectionAction newDSConnectionAction,
+                               Provider<com.codenvy.ide.ext.datasource.action.wizard.NewDatasourcePresenter> newDatasourcePageProvider,
+                               @NewDatasourceWizard DefaultWizard wizard,
+                               ConnectorAgent connectorAgent,
+                               Resources resources, Provider<PgConnectorPage> pgConnectorPageProvider) {
         workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
         DefaultActionGroup mainMenu = (DefaultActionGroup)actionManager
                                                                        .getAction(GROUP_MAIN_MENU);
-
         DefaultActionGroup defaultDatasourceMainGroup = new DefaultActionGroup(
                                                                                "Datasource", true, actionManager);
         actionManager.registerAction(DS_GROUP_MAIN_MENU,
                                      defaultDatasourceMainGroup);
         Constraints beforeWindow = new Constraints(BEFORE, GROUP_WINDOW);
         mainMenu.add(defaultDatasourceMainGroup, beforeWindow);
-
         actionManager.registerAction("NewDSConnection", newDSConnectionAction);
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
+        wizard.addPage(newDatasourcePageProvider);
+        
+        // add a new postgres connector
+        Array<Provider< ? extends AbstractConnectorPage>> wizardPages = Collections.createArray();
+        wizardPages.add(pgConnectorPageProvider);
+        connectorAgent.register("postgres", "PostgreSQL", resources.getPostgreSqlLogo(), wizardPages);
     }
 
 }

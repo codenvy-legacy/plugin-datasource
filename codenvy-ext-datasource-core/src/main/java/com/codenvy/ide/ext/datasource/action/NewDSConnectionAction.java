@@ -18,61 +18,40 @@
 package com.codenvy.ide.ext.datasource.action;
 
 import static com.codenvy.ide.api.notification.Notification.Type.ERROR;
-import static com.codenvy.ide.api.notification.Notification.Type.INFO;
 
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.action.Action;
 import com.codenvy.ide.api.ui.action.ActionEvent;
-import com.codenvy.ide.dto.DtoFactory;
-import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.codenvy.ide.rest.StringUnmarshaller;
-import com.google.gwt.http.client.RequestException;
+import com.codenvy.ide.api.ui.wizard.DefaultWizard;
+import com.codenvy.ide.api.ui.wizard.WizardDialog;
+import com.codenvy.ide.api.ui.wizard.WizardDialogFactory;
 import com.google.inject.Inject;
 
 public class NewDSConnectionAction extends Action {
 
-    protected DatasourceClientService service;
-    protected NotificationManager     notificationManager;
-    protected DtoFactory              dtoFactory;
+    protected NotificationManager   notificationManager;
+    protected WizardDialogFactory   wizardDialogFactory;
+    protected DefaultWizard wizard;
 
     @Inject
-    public NewDSConnectionAction(DatasourceClientService service,
-                                 NotificationManager notificationManager, DtoFactory dtoFactory) {
+    public NewDSConnectionAction(NotificationManager notificationManager,
+                                 WizardDialogFactory wizardDialogFactory,
+                                 @NewDatasourceWizard DefaultWizard wizard) {
         super("New Datasource Connection");
-        this.service = service;
         this.notificationManager = notificationManager;
-        this.dtoFactory = dtoFactory;
+        this.wizardDialogFactory = wizardDialogFactory;
+        this.wizard = wizard;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            service.fetchDatabase(new AsyncRequestCallback<String>(
-                                                                   new StringUnmarshaller()) {
-                @Override
-                protected void onSuccess(String result) {
-                    DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                        DatabaseDTO.class);
-                    notificationManager.showNotification(new Notification(
-                                                                          "Success ", INFO));
-                    notificationManager.showNotification(new Notification(
-                                                                          database.getName(), INFO));
-                }
-
-                @Override
-                protected void onFailure(Throwable exception) {
-                    notificationManager.showNotification(new Notification(
-                                                                          "Failed : " + exception.getMessage(), ERROR));
-                }
-
-            });
-
-        } catch (RequestException e1) {
+            WizardDialog wizardDialog = wizardDialogFactory.create(wizard);
+            wizardDialog.show();
+        } catch (Exception e1) {
             String errorMassage = e1.getMessage() != null ? e1.getMessage()
-                : "Failing getting database DTO";
+                : "An error occured while creating the datasource connection";
             Notification notification = new Notification(errorMassage, ERROR);
             notificationManager.showNotification(notification);
         }

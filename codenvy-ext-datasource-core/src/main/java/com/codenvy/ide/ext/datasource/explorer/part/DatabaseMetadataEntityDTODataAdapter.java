@@ -34,7 +34,13 @@ public class DatabaseMetadataEntityDTODataAdapter implements
 
     @Override
     public int compare(DatabaseMetadataEntityDTO a, DatabaseMetadataEntityDTO b) {
-        return 0;
+        if(a == null){
+            return 0;
+        }
+        if(b == null){
+            return 1;
+        }
+        return a.getName().compareTo(b.getName());
     }
 
     @Override

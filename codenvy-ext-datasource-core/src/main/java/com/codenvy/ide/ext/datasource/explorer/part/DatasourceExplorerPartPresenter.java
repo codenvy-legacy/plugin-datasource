@@ -17,13 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.explorer.part;
 
-import static com.codenvy.ide.api.notification.Notification.Type.ERROR;
-import static com.codenvy.ide.api.notification.Notification.Type.INFO;
-
 import com.codenvy.ide.annotations.NotNull;
-import com.codenvy.ide.api.event.ProjectActionEvent;
-import com.codenvy.ide.api.event.ProjectActionHandler;
-import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.resources.FileEvent;
@@ -32,14 +26,10 @@ import com.codenvy.ide.api.resources.ResourceProvider;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.resources.model.File;
 import com.codenvy.ide.resources.model.Project;
 import com.codenvy.ide.resources.model.Resource;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -90,83 +80,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         container.setWidget(view);
     }
 
-    /**
-     * Sets content.
-     * 
-     * @param resource
-     */
-    public void setContent() {
-        try {
-            service.fetchDatabase(new AsyncRequestCallback<String>(
-                                                                   new StringUnmarshaller()) {
-                @Override
-                protected void onSuccess(String result) {
-                    DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                        DatabaseDTO.class);
-                    notificationManager.showNotification(new Notification(
-                                                                          "Success getting database information", INFO));
-                    view.setItems(database);
-
-                }
-
-                @Override
-                protected void onFailure(Throwable exception) {
-                    notificationManager.showNotification(new Notification(
-                                                                          "Failed : " + exception.getMessage(), ERROR));
-                }
-
-            });
-
-        } catch (RequestException e1) {
-            String errorMassage = e1.getMessage() != null ? e1.getMessage()
-                : "Failing getting database DTO";
-            Notification notification = new Notification(errorMassage, ERROR);
-            notificationManager.showNotification(notification);
-        }
-    }
-
     /** Adds behavior to view components */
     protected void bind() {
         view.setDelegate(this);
-        eventBus.addHandler(ProjectActionEvent.TYPE,
-                            new ProjectActionHandler() {
-                                @Override
-                                public void onProjectOpened(ProjectActionEvent event) {
-                                    setContent();
-                                }
-
-                                @Override
-                                public void onProjectDescriptionChanged(
-                                                                        ProjectActionEvent event) {
-                                }
-
-                                @Override
-                                public void onProjectClosed(ProjectActionEvent event) {
-                                }
-                            });
-
-        // eventBus.addHandler(ResourceChangedEvent.TYPE, new
-        // ResourceChangedHandler() {
-        // @Override
-        // public void onResourceRenamed(ResourceChangedEvent event) {
-        // // TODO handle it
-        // }
-        //
-        // @Override
-        // public void onResourceMoved(ResourceChangedEvent event) {
-        // // TODO handle it
-        // }
-        //
-        // @Override
-        // public void onResourceDeleted(ResourceChangedEvent event) {
-        // setContent(event.getResource().getProject().getParent());
-        // }
-        //
-        // @Override
-        // public void onResourceCreated(ResourceChangedEvent event) {
-        // setContent(event.getResource().getProject().getParent());
-        // }
-        // });
     }
 
     /** {@inheritDoc} */
@@ -184,9 +100,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     /** {@inheritDoc} */
     @Override
     public String getTitleToolTip() {
-        return "This View helps you to do basic operation with your projects. Following features are currently available:"
-               + "\n\t- view project's tree"
-               + "\n\t- select and open project's file";
+        return "";
     }
 
     @Override

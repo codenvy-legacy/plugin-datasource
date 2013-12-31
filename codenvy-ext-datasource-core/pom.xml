@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>codenvy-ext-datasource-core</artifactId>
-    <name>codenvy-ext-datasource-core</name>
+    <name>Codenvy Extension :: Datasource Core</name>
 
     <dependencies>
         <dependency>

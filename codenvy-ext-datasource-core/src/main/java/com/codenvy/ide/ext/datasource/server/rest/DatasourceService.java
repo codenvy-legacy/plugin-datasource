@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -43,6 +45,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
@@ -51,17 +54,20 @@ import com.codenvy.ide.ext.datasource.shared.TableDTO;
 public class DatasourceService {
     private static final Log LOG = ExoLogger.getLogger(DatasourceService.class);
 
+
     @Path("database")
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public String getDatabase() throws Exception {
+    public String getDatabase(final DatabaseConfigurationDTO databaseConfig) throws Exception {
 
         Database database = null;
         final DataSource dataSource = new DatabaseConnectionOptions(
                                                                     "org.postgresql.Driver",
-                                                                    "jdbc:postgresql://localhost:5432/nuxeo");
-        final Connection connection = dataSource.getConnection("postgres",
-                                                               "nuxeospirit");
+                                                                    "jdbc:postgresql://" + databaseConfig.getHostname() +
+                                                                        ":" + Integer.toString(databaseConfig.getPort()) +
+                                                                        "/" + databaseConfig.getDatabaseName());
+        final Connection connection = dataSource.getConnection(databaseConfig.getUsername(),
+                                                               databaseConfig.getPassword());
         try {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
             options.setSchemaInfoLevel(SchemaInfoLevel.standard());

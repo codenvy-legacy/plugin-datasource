@@ -23,6 +23,7 @@ import static com.codenvy.ide.rest.MimeType.APPLICATION_JSON;
 
 import com.codenvy.ide.annotations.NotNull;
 import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.ui.loader.Loader;
@@ -50,8 +51,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
      * @param loader loader to show on server request
      */
     @Inject
-    protected DatasourceClientServiceImpl(
-                                          @Named("restContext") String restContext, Loader loader,
+    protected DatasourceClientServiceImpl(@Named("restContext") String restContext, Loader loader,
                                           MessageBus wsMessageBus, EventBus eventBus, DtoFactory dtoFactory) {
         this.loader = loader;
         this.wsName = '/' + Utils.getWorkspaceName();
@@ -62,11 +62,21 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     }
 
     @Override
-    public void fetchDatabase(
-                              @NotNull AsyncRequestCallback<String> asyncRequestCallback)
-                                                                                         throws RequestException {
+    public void fetchDatabaseInfo(@NotNull String databaseName,
+                              @NotNull String hostname,
+                              @NotNull int port,
+                              @NotNull String username,
+                              @NotNull String password,
+                              @NotNull AsyncRequestCallback<String> asyncRequestCallback
+        ) throws RequestException {
+        DatabaseConfigurationDTO dto = dtoFactory.createDto(DatabaseConfigurationDTO.class)
+                                                 .withDatabaseName(databaseName)
+                                                 .withHostname(hostname)
+                                                 .withPort(port)
+                                                 .withUsername(username)
+                                                 .withPassword(password);
         String url = restServiceContext + "/datasource/database";
-        AsyncRequest.build(RequestBuilder.POST, url, true).header(CONTENTTYPE, APPLICATION_JSON)
+        AsyncRequest.build(RequestBuilder.POST, url, true).data(dtoFactory.toJson(dto)).header(CONTENTTYPE, APPLICATION_JSON)
                     .header(ACCEPT, APPLICATION_JSON).send(asyncRequestCallback);
     }
 

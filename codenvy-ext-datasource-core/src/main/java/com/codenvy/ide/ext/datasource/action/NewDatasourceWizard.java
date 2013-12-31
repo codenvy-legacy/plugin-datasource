@@ -15,19 +15,17 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.action;
 
-import com.codenvy.ide.annotations.NotNull;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.google.gwt.http.client.RequestException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface DatasourceClientService {
+import com.google.inject.BindingAnnotation;
 
-    void fetchDatabaseInfo(@NotNull String databaseName,
-                       @NotNull String hostname,
-                       @NotNull int port,
-                       @NotNull String username,
-                       @NotNull String password,
-                       @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.TYPE})
+@BindingAnnotation
+public @interface NewDatasourceWizard {
 }

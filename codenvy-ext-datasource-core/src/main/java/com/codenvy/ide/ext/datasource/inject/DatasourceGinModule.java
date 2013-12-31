@@ -18,8 +18,18 @@
 package com.codenvy.ide.ext.datasource.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.codenvy.ide.api.ui.wizard.DefaultWizard;
+import com.codenvy.ide.ext.datasource.action.NewDSConnectionWizard;
+import com.codenvy.ide.ext.datasource.action.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.action.NewDatasourceWizardProvider;
+import com.codenvy.ide.ext.datasource.action.wizard.NewDatasourceView;
+import com.codenvy.ide.ext.datasource.action.wizard.NewDatasourceViewImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.connector.ConnectorAgent;
+import com.codenvy.ide.ext.datasource.connector.ConnectorAgentImpl;
+import com.codenvy.ide.ext.datasource.connector.pg.PgConnectorView;
+import com.codenvy.ide.ext.datasource.connector.pg.PgConnectorViewImpl;
 import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.explorer.part.DatasourceExplorerViewImpl;
 import com.codenvy.ide.ext.datasource.part.DatasourceView;
@@ -32,11 +42,18 @@ public class DatasourceGinModule extends AbstractGinModule {
     /** {@inheritDoc} */
     @Override
     protected void configure() {
-        bind(DatasourceView.class).to(DatasourceViewImpl.class).in(
-                                                                   Singleton.class);
+        bind(DatasourceView.class).to(DatasourceViewImpl.class)
+                                  .in(Singleton.class);
         bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
                                           .in(Singleton.class);
-        bind(DatasourceClientService.class).to(
-                                               DatasourceClientServiceImpl.class).in(Singleton.class);
+        bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)
+                                           .in(Singleton.class);
+        bind(DefaultWizard.class).annotatedWith(NewDatasourceWizard.class)
+                                 .toProvider(NewDatasourceWizardProvider.class)
+                                 .in(Singleton.class);
+        bind(ConnectorAgent.class).to(ConnectorAgentImpl.class).in(Singleton.class);
+        bind(NewDatasourceView.class).to(NewDatasourceViewImpl.class);
+        bind(PgConnectorView.class).to(PgConnectorViewImpl.class);
+
     }
 }

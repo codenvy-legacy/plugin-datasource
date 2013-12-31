@@ -15,19 +15,24 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.connector;
 
 import com.codenvy.ide.annotations.NotNull;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.google.gwt.http.client.RequestException;
+import com.codenvy.ide.annotations.Nullable;
+import com.codenvy.ide.collections.Array;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Provider;
 
-public interface DatasourceClientService {
+/**
+ * Provides DB registered connectors
+ */
+public interface ConnectorAgent {
 
-    void fetchDatabaseInfo(@NotNull String databaseName,
-                       @NotNull String hostname,
-                       @NotNull int port,
-                       @NotNull String username,
-                       @NotNull String password,
-                       @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
+    void register(@NotNull String id,
+                  @NotNull String title,
+                  @Nullable ImageResource image,
+                  @NotNull Array<Provider< ? extends AbstractConnectorPage>> wizardPages);
+
+    Array<DatasourceConnector> getConnectors();
 
 }

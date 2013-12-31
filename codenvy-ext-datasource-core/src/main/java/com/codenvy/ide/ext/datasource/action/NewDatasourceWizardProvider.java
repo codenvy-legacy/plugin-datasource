@@ -15,19 +15,24 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.action;
 
-import com.codenvy.ide.annotations.NotNull;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.google.gwt.http.client.RequestException;
+import com.codenvy.ide.api.ui.wizard.DefaultWizard;
+import com.codenvy.ide.api.ui.wizard.DefaultWizardFactory;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-public interface DatasourceClientService {
+public class NewDatasourceWizardProvider implements Provider<DefaultWizard> {
+    private DefaultWizardFactory wizardFactory;
 
-    void fetchDatabaseInfo(@NotNull String databaseName,
-                       @NotNull String hostname,
-                       @NotNull int port,
-                       @NotNull String username,
-                       @NotNull String password,
-                       @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
+    @Inject
+    public NewDatasourceWizardProvider(DefaultWizardFactory wizardFactory) {
+        this.wizardFactory = wizardFactory;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public DefaultWizard get() {
+        return wizardFactory.create("New Datasource Wizard");
+    }
 }
