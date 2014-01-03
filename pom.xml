@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.codenvy.ide</groupId>
         <artifactId>codenvy-ide-parent</artifactId>
-        <version>3.0.0-M5-SNAPSHOT</version>
+        <version>3.0.0-M7-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
     <packaging>pom</packaging>
@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <codenvy.version>3.0.0-M5-SNAPSHOT</codenvy.version>
+        <codenvy.version>3.0.0-M7-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
 

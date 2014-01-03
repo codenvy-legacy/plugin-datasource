@@ -17,8 +17,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
-import com.codenvy.ide.annotations.NotNull;
-import com.codenvy.ide.annotations.Nullable;
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+
 import com.google.gwt.resources.client.ImageResource;
 
 

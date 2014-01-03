@@ -19,9 +19,10 @@ package com.codenvy.ide.ext.datasource.client;
 
 import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
 import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
-import static com.codenvy.ide.rest.MimeType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import com.codenvy.ide.annotations.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.rest.AsyncRequest;
@@ -63,11 +64,11 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
 
     @Override
     public void fetchDatabaseInfo(@NotNull String databaseName,
-                              @NotNull String hostname,
-                              @NotNull int port,
-                              @NotNull String username,
-                              @NotNull String password,
-                              @NotNull AsyncRequestCallback<String> asyncRequestCallback
+                                  @NotNull String hostname,
+                                  @NotNull int port,
+                                  @NotNull String username,
+                                  @NotNull String password,
+                                  @NotNull AsyncRequestCallback<String> asyncRequestCallback
         ) throws RequestException {
         DatabaseConfigurationDTO dto = dtoFactory.createDto(DatabaseConfigurationDTO.class)
                                                  .withDatabaseName(databaseName)

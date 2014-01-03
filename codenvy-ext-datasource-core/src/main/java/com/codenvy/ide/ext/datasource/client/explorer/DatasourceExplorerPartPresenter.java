@@ -17,7 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import com.codenvy.ide.annotations.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.resources.FileEvent;

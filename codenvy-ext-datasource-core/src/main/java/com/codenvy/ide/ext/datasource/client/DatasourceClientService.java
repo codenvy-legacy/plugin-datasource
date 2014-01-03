@@ -17,17 +17,18 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import com.codenvy.ide.annotations.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
 public interface DatasourceClientService {
 
     void fetchDatabaseInfo(@NotNull String databaseName,
-                       @NotNull String hostname,
-                       @NotNull int port,
-                       @NotNull String username,
-                       @NotNull String password,
-                       @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
+                           @NotNull String hostname,
+                           @NotNull int port,
+                           @NotNull String username,
+                           @NotNull String password,
+                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
 }

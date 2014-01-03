@@ -22,15 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schema.Column;
@@ -52,7 +51,7 @@ import com.codenvy.ide.ext.datasource.shared.TableDTO;
 
 @Path("{ws-name}/datasource")
 public class DatasourceService {
-    private static final Log LOG = ExoLogger.getLogger(DatasourceService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DatasourceService.class);
 
 
     @Path("database")

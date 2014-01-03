@@ -17,7 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import com.codenvy.ide.annotations.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
