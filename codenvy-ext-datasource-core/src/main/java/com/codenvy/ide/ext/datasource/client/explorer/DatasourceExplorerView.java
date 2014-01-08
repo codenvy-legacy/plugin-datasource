@@ -22,12 +22,9 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
-import com.codenvy.ide.resources.model.Resource;
 
 /**
  * Interface of datasource tree view.
- * 
- * @author <a href="mailto:aplotnikov@exoplatform.com">Andrey Plotnikov</a>
  */
 public interface DatasourceExplorerView extends
                                        View<DatasourceExplorerView.ActionDelegate> {
@@ -45,21 +42,20 @@ public interface DatasourceExplorerView extends
      */
     void setTitle(@NotNull String title);
 
-    /** Needs for delegate some function into ProjectTree view. */
     public interface ActionDelegate extends BaseActionDelegate {
         /**
          * Performs any actions in response to node selection.
          * 
          * @param resource node
          */
-        void onResourceSelected(@NotNull Resource resource);
+        void onDatabaseMetadataEntitySelected(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity);
 
         /**
          * Performs any actions in response to some node action.
          * 
          * @param resource node
          */
-        void onResourceAction(@NotNull Resource resource);
+        void onDatabaseMetadataEntityAction(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity);
 
         /**
          * Performs any actions appropriate in response to the user having clicked right button on mouse.

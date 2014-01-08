@@ -103,8 +103,11 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     @Override
     public void setDelegate(ActionDelegate delegate) {
         this.delegate = delegate;
-
     }
 
+    @Override
+    public String getDatasourceName() {
+        return datasourceName.getText();
+    }
 
 }

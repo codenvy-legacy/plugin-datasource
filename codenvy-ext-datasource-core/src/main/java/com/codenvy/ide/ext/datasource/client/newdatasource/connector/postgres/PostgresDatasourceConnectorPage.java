@@ -17,38 +17,51 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres;
 
+import java.util.Map;
+
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
+import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
-public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements PostgresDatasourceConnectorView.ActionDelegate {
-    protected PostgresDatasourceConnectorView         view;
-    protected DatasourceClientService service;
-    protected DtoFactory              dtoFactory;
-    protected NotificationManager     notificationManager;
-    protected DatasourceExplorerView  datasourceExplorerView;
+public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
+                                                                                       PostgresDatasourceConnectorView.ActionDelegate {
+    protected PostgresDatasourceConnectorView view;
+    protected DatasourceClientService         service;
+    protected DtoFactory                      dtoFactory;
+    protected NotificationManager             notificationManager;
+    protected DatasourceExplorerView          datasourceExplorerView;
+    protected PreferencesManager              preferencesManager;
+    protected NewDatasourceWizardPageView     dsView;
 
     @Inject
-    public PostgresDatasourceConnectorPage(PostgresDatasourceConnectorView view,
-                           DatasourceClientService service,
-                           DtoFactory dtoFactory,
-                           NotificationManager notificationManager, DatasourceExplorerView datasourceExplorerView) {
+    public PostgresDatasourceConnectorPage(NewDatasourceWizardPageView dsView, PostgresDatasourceConnectorView view,
+                                           DatasourceClientService service,
+                                           DtoFactory dtoFactory,
+                                           NotificationManager notificationManager,
+                                           DatasourceExplorerView datasourceExplorerView,
+                                           PreferencesManager preferencesManager) {
         super("PostgreSQL", null, "postgres");
+        this.dsView = dsView;
         this.view = view;
         this.service = service;
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
         this.datasourceExplorerView = datasourceExplorerView;
+        this.preferencesManager = preferencesManager;
     }
 
 
@@ -61,6 +74,25 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
     public void commit(final CommitCallback callback) {
 
         try {
+            // maybe this logic should be implemented in a service.
+            String datasourcesJson = preferencesManager.getValue("datasources");
+            DatasourceConfigPreferences datasourcesPreferences;
+            if (datasourcesJson == null) {
+                datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
+            } else {
+                datasourcesPreferences =
+                                         dtoFactory.createDtoFromJson(datasourcesJson,
+                                                                      DatasourceConfigPreferences.class);
+            }
+            Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
+            datasourcesMap.put(dsView.getDatasourceName(),
+                               dtoFactory.createDto(DatabaseConfigurationDTO.class)
+                                         .withDatabaseName(view.getDatabaseName())
+                                         .withHostname(view.getHostname()).withPort(view.getPort()).withUsername(view.getUsername())
+                                         .withPassword(view.getPassword()));
+            preferencesManager.setPreference("datasources", dtoFactory.toJson(datasourcesPreferences));
+
+
             service.fetchDatabaseInfo(view.getDatabaseName(), view.getHostname(), view.getPort(), view.getUsername(), view.getPassword(),
                                       new AsyncRequestCallback<String>(new StringUnmarshaller()) {
                                           @Override

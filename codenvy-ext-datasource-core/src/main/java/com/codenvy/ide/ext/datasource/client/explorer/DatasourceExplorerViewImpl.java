@@ -21,8 +21,12 @@ import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
+import com.codenvy.ide.ui.tree.TreeNodeElement;
+import com.codenvy.ide.util.input.SignalEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import elemental.html.DragEvent;
 
 @Singleton
 public class DatasourceExplorerViewImpl extends
@@ -30,11 +34,6 @@ public class DatasourceExplorerViewImpl extends
                                                                                       DatasourceExplorerView {
     protected Tree<DatabaseMetadataEntityDTO> tree;
 
-    /**
-     * Create view.
-     * 
-     * @param resources
-     */
     @Inject
     public DatasourceExplorerViewImpl(Resources resources) {
         super(resources);
@@ -56,51 +55,46 @@ public class DatasourceExplorerViewImpl extends
     @Override
     public void setDelegate(final ActionDelegate delegate) {
         this.delegate = delegate;
-        // tree.setTreeEventHandler(new Tree.Listener<Resource>() {
-        //
-        // @Override
-        // public void onNodeAction(TreeNodeElement<Resource> node) {
-        // delegate.onResourceAction(node.getData());
-        // }
-        //
-        // @Override
-        // public void onNodeClosed(TreeNodeElement<Resource> node) {
-        // }
-        //
-        // @Override
-        // public void onNodeContextMenu(int mouseX, int mouseY,
-        // TreeNodeElement<Resource> node) {
-        // delegate.onContextMenu(mouseX, mouseY);
-        // }
-        //
-        // @Override
-        // public void onNodeDragStart(TreeNodeElement<Resource> node, DragEvent
-        // event) {
-        // }
-        //
-        // @Override
-        // public void onNodeDragDrop(TreeNodeElement<Resource> node, DragEvent
-        // event) {
-        // }
-        //
-        // @Override
-        // public void onNodeExpanded(TreeNodeElement<Resource> node) {
-        // }
-        //
-        // @Override
-        // public void onNodeSelected(TreeNodeElement<Resource> node,
-        // SignalEvent event) {
-        // delegate.onResourceSelected(node.getData());
-        // }
-        //
-        // @Override
-        // public void onRootContextMenu(int mouseX, int mouseY) {
-        // delegate.onContextMenu(mouseX, mouseY);
-        // }
-        //
-        // @Override
-        // public void onRootDragDrop(DragEvent event) {
-        // }
-        // });
+        tree.setTreeEventHandler(new Tree.Listener<DatabaseMetadataEntityDTO>() {
+            @Override
+            public void onNodeAction(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+                delegate.onDatabaseMetadataEntityAction(node.getData());
+            }
+
+            @Override
+            public void onNodeClosed(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+            }
+
+            @Override
+            public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+                delegate.onContextMenu(mouseX, mouseY);
+            }
+
+            @Override
+            public void onNodeDragStart(TreeNodeElement<DatabaseMetadataEntityDTO> node, DragEvent event) {
+            }
+
+            @Override
+            public void onNodeDragDrop(TreeNodeElement<DatabaseMetadataEntityDTO> node, DragEvent event) {
+            }
+
+            @Override
+            public void onNodeExpanded(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+            }
+
+            @Override
+            public void onNodeSelected(TreeNodeElement<DatabaseMetadataEntityDTO> node, SignalEvent event) {
+                delegate.onDatabaseMetadataEntitySelected(node.getData());
+            }
+
+            @Override
+            public void onRootContextMenu(int mouseX, int mouseY) {
+                delegate.onContextMenu(mouseX, mouseY);
+            }
+
+            @Override
+            public void onRootDragDrop(DragEvent event) {
+            }
+        });
     }
 }

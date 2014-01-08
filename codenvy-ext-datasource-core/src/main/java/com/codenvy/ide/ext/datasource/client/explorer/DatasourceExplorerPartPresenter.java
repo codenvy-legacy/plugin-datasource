@@ -21,18 +21,13 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
-import com.codenvy.ide.api.resources.FileEvent;
-import com.codenvy.ide.api.resources.FileEvent.FileOperation;
-import com.codenvy.ide.api.resources.ResourceProvider;
+import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.resources.model.File;
-import com.codenvy.ide.resources.model.Project;
-import com.codenvy.ide.resources.model.Resource;
-import com.codenvy.ide.util.loging.Log;
+import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -48,10 +43,10 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                                                   DatasourceExplorerView.ActionDelegate, DatasourceExplorerPart {
     protected DatasourceExplorerView  view;
     protected EventBus                eventBus;
-    private ResourceProvider          resourceProvider;
     protected DatasourceClientService service;
     protected DtoFactory              dtoFactory;
     protected NotificationManager     notificationManager;
+    protected PreferencesManager      preferencesManager;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -64,13 +59,17 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
      */
     @Inject
     public DatasourceExplorerPartPresenter(DatasourceExplorerView view,
-                                           EventBus eventBus, DatasourceClientService service,
-                                           DtoFactory dtoFactory, NotificationManager notificationManager) {
+                                           EventBus eventBus,
+                                           DatasourceClientService service,
+                                           DtoFactory dtoFactory,
+                                           NotificationManager notificationManager,
+                                           PreferencesManager preferencesManager) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
+        this.preferencesManager = preferencesManager;
         this.view.setTitle("DataSource Explorer");
         bind();
     }
@@ -105,34 +104,13 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     }
 
     @Override
-    public void onResourceSelected(@NotNull Resource resource) {
-        setSelection(new Selection<Resource>(resource));
+    public void onDatabaseMetadataEntitySelected(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
+        setSelection(new Selection<DatabaseMetadataEntityDTO>(dbMetadataEntity));
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void onResourceAction(@NotNull Resource resource) {
-        // open file
-        if (resource.isFile()) {
-            eventBus.fireEvent(new FileEvent((File)resource,
-                                             FileOperation.OPEN));
-        }
-        // open project
-        if (resource.getResourceType().equals(Project.TYPE)
-            && resourceProvider.getActiveProject() == null) {
-            resourceProvider.getProject(resource.getName(),
-                                        new AsyncCallback<Project>() {
-                                            @Override
-                                            public void onSuccess(Project result) {
-                                            }
-
-                                            @Override
-                                            public void onFailure(Throwable caught) {
-                                                Log.error(DatasourceExplorerPartPresenter.class,
-                                                          "Can not get project", caught);
-                                            }
-                                        });
-        }
+    public void onDatabaseMetadataEntityAction(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
+        Window.alert("datasources preferences: " + preferencesManager.getValue("datasources"));
     }
 
     /** {@inheritDoc} */
