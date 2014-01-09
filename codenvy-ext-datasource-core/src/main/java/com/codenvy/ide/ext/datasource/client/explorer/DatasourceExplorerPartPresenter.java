@@ -17,15 +17,25 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import java.util.Map;
+
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
+import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
+import com.codenvy.ide.resources.marshal.StringUnmarshaller;
+import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -117,5 +127,47 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     @Override
     public void onContextMenu(int mouseX, int mouseY) {
         // contextMenuPresenter.show(mouseX, mouseY);
+    }
+
+    @Override
+    public void onClickExploreButton(String datasourceId) {
+        try {
+            // fetch datasource from datasourceId
+            // TODO do it from a service
+            String datasourcesJson = preferencesManager.getValue("datasources");
+
+            if (datasourcesJson == null) {
+                return;
+            }
+            DatasourceConfigPreferences datasourcesPreferences =
+                                                                 dtoFactory.createDtoFromJson(datasourcesJson,
+                                                                                              DatasourceConfigPreferences.class);
+
+            Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
+            DatabaseConfigurationDTO datasourceObject = datasourcesMap.get(datasourceId);
+            final Notification fetchDatabaseNotification = new Notification("Fetching database metadatas ...", Notification.Status.PROGRESS);
+            notificationManager.showNotification(fetchDatabaseNotification);
+            service.fetchDatabaseInfo(datasourceObject.getDatabaseName(), datasourceObject.getHostname(), datasourceObject.getPort(),
+                                      datasourceObject.getUsername(), datasourceObject.getPassword(),
+                                      new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                                          @Override
+                                          protected void onSuccess(String result) {
+                                              DatabaseDTO database = dtoFactory.createDtoFromJson(result,
+                                                                                                  DatabaseDTO.class);
+                                              fetchDatabaseNotification.setMessage("Succesfully fetched database metadatas");
+                                              fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+                                              view.setItems(database);
+                                          }
+
+                                          @Override
+                                          protected void onFailure(Throwable exception) {
+                                              // TODO do somthing
+                                          }
+                                      }
+
+                   );
+        } catch (RequestException e) {
+            // TODO do somthing
+        }
     }
 }

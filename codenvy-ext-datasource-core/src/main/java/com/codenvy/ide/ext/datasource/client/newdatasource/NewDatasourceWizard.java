@@ -27,8 +27,11 @@ import com.google.inject.Singleton;
 @Singleton
 public class NewDatasourceWizard extends DefaultWizard {
     public static final WizardContext.Key<NewDatasourceConnector> DATASOURCE_CONNECTOR =
-                                                                                      new WizardContext.Key<NewDatasourceConnector>(
-                                                                                                                                 "DatasourceConnector");
+                                                                                         new WizardContext.Key<NewDatasourceConnector>(
+                                                                                                                                       "DatasourceConnector");
+    public static final WizardContext.Key<String>                 DATASOURCE_NAME      =
+                                                                                         new WizardContext.Key<String>(
+                                                                                                                       "DatasourceName");
 
     @Inject
     public NewDatasourceWizard(NotificationManager notificationManager) {

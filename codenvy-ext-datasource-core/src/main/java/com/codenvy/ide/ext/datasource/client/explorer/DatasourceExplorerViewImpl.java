@@ -17,12 +17,26 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
+import com.codenvy.ide.api.preferences.PreferencesManager;
+import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -33,15 +47,60 @@ public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
                                                                                       DatasourceExplorerView {
     protected Tree<DatabaseMetadataEntityDTO> tree;
+    protected DockLayoutPanel                 dsContainer;
+    protected ListBox                         datasourceListBox;
+    protected PreferencesManager              preferencesManager;
+    protected DtoFactory                      dtoFactory;
+    protected Button                          exploreButton;
+    protected DockLayoutPanel                 topDsContainer;
+
 
     @Inject
-    public DatasourceExplorerViewImpl(Resources resources) {
+    public DatasourceExplorerViewImpl(Resources resources, PreferencesManager preferenceManager, DtoFactory dtoFactory) {
         super(resources);
-
+        this.preferencesManager = preferenceManager;
+        this.dtoFactory = dtoFactory;
+        dsContainer = new DockLayoutPanel(Style.Unit.PX);
+        topDsContainer = new DockLayoutPanel(Style.Unit.PX);
         tree = Tree.create(resources,
                            new DatabaseMetadataEntityDTODataAdapter(),
                            new DatabaseMetadataEntityDTORenderer(resources));
-        container.add(tree.asWidget());
+        datasourceListBox = new ListBox();
+        exploreButton = new Button("Explore");
+        exploreButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+            }
+        });
+        dsContainer.addNorth(topDsContainer, 25);
+        topDsContainer.addWest(datasourceListBox, 120);
+        topDsContainer.add(exploreButton);
+        dsContainer.addSouth(new Label("Property Panel"), 200);
+        dsContainer.add(tree.asWidget());
+        container.add(dsContainer);
+    }
+
+    @Override
+    public void refreshDatasourceList() {
+        // TODO do it from a service
+        String datasourcesJson = preferencesManager.getValue("datasources");
+
+        if (datasourcesJson == null) {
+            return;
+        }
+        DatasourceConfigPreferences datasourcesPreferences =
+                                                             dtoFactory.createDtoFromJson(datasourcesJson,
+                                                                                          DatasourceConfigPreferences.class);
+
+        Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
+        Set<String> datasourcesIds = datasourcesMap.keySet();
+
+        int i = 0;
+        datasourceListBox.clear();
+        for (String dsIds : datasourcesIds) {
+            datasourceListBox.insertItem(dsIds, i++);
+        }
     }
 
     /** {@inheritDoc} */

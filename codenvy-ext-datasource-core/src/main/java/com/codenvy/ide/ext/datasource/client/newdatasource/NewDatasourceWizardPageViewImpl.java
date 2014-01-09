@@ -22,9 +22,11 @@ import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLTable;
@@ -58,7 +60,12 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
     @Inject
     public NewDatasourceWizardPageViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
-        initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));        
+    }
+
+    @UiHandler("datasourceName")
+    public void onDatasourceNameModified(KeyDownEvent event){
+        delegate.onDatasourceNameModified(datasourceName.getText());
     }
 
     @Override
@@ -97,7 +104,6 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
             connectorButtons.add(btn);
         }
-
     }
 
     @Override

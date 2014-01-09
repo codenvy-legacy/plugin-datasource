@@ -26,6 +26,7 @@ import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
@@ -73,49 +74,25 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
     @Override
     public void commit(final CommitCallback callback) {
 
-        try {
-            // maybe this logic should be implemented in a service.
-            String datasourcesJson = preferencesManager.getValue("datasources");
-            DatasourceConfigPreferences datasourcesPreferences;
-            if (datasourcesJson == null) {
-                datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
-            } else {
-                datasourcesPreferences =
-                                         dtoFactory.createDtoFromJson(datasourcesJson,
-                                                                      DatasourceConfigPreferences.class);
-            }
-            Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
-            datasourcesMap.put(dsView.getDatasourceName(),
-                               dtoFactory.createDto(DatabaseConfigurationDTO.class)
-                                         .withDatabaseName(view.getDatabaseName())
-                                         .withHostname(view.getHostname()).withPort(view.getPort()).withUsername(view.getUsername())
-                                         .withPassword(view.getPassword()));
-            preferencesManager.setPreference("datasources", dtoFactory.toJson(datasourcesPreferences));
-
-
-            service.fetchDatabaseInfo(view.getDatabaseName(), view.getHostname(), view.getPort(), view.getUsername(), view.getPassword(),
-                                      new AsyncRequestCallback<String>(new StringUnmarshaller()) {
-                                          @Override
-                                          protected void onSuccess(String result) {
-                                              DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                                                  DatabaseDTO.class);
-                                              notificationManager.showNotification(new Notification(
-                                                                                                    "Success getting database information",
-                                                                                                    Type.INFO));
-                                              datasourceExplorerView.setItems(database);
-                                              callback.onSuccess();
-                                          }
-
-                                          @Override
-                                          protected void onFailure(Throwable exception) {
-                                              callback.onFailure(exception);
-                                          }
-                                      }
-
-                   );
-        } catch (RequestException e) {
-            callback.onFailure(e);
+        // maybe this logic should be implemented in a service.
+        String datasourcesJson = preferencesManager.getValue("datasources");
+        DatasourceConfigPreferences datasourcesPreferences;
+        if (datasourcesJson == null) {
+            datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
+        } else {
+            datasourcesPreferences =
+                                     dtoFactory.createDtoFromJson(datasourcesJson,
+                                                                  DatasourceConfigPreferences.class);
         }
+        Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
+        datasourcesMap.put(wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME),
+                           dtoFactory.createDto(DatabaseConfigurationDTO.class)
+                                     .withDatabaseName(view.getDatabaseName())
+                                     .withHostname(view.getHostname()).withPort(view.getPort()).withUsername(view.getUsername())
+                                     .withPassword(view.getPassword()));
+        preferencesManager.setPreference("datasources", dtoFactory.toJson(datasourcesPreferences));
+
+        datasourceExplorerView.refreshDatasourceList();
     }
 
 }

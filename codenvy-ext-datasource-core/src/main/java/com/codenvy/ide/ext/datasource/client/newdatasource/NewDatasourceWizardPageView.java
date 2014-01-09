@@ -33,6 +33,8 @@ public interface NewDatasourceWizardPageView extends View<NewDatasourceWizardPag
     public interface ActionDelegate {
 
         void onConnectorSelected(int id);
+
+        void onDatasourceNameModified(String datasourceName);
     }
 
     void setConnectors(Array<NewDatasourceConnector> connectors);

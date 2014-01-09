@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
 public class NewDatasourceWizardPagePresenter extends AbstractWizardPage implements NewDatasourceWizardPageView.ActionDelegate {
-    protected NewDatasourceWizardPageView          view;
-    protected NewDatasourceConnectorAgent             connectorAgent;
+    protected NewDatasourceWizardPageView   view;
+    protected NewDatasourceConnectorAgent   connectorAgent;
     protected Array<NewDatasourceConnector> dbConnectors;
 
     @Inject
@@ -69,5 +69,11 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
         wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
         delegate.updateControls();
     }
+
+    @Override
+    public void onDatasourceNameModified(String datasourceName) {
+        wizardContext.putData(NewDatasourceWizard.DATASOURCE_NAME, view.getDatasourceName());
+    }
+
 
 }

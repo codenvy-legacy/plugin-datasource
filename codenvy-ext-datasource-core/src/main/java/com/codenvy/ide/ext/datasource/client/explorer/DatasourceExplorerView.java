@@ -22,12 +22,15 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 /**
  * Interface of datasource tree view.
  */
 public interface DatasourceExplorerView extends
                                        View<DatasourceExplorerView.ActionDelegate> {
+
+    void refreshDatasourceList();
     /**
      * Sets items into tree.
      * 
@@ -64,5 +67,7 @@ public interface DatasourceExplorerView extends
          * @param mouseY the mouse y-position within the browser window's client area.
          */
         void onContextMenu(int mouseX, int mouseY);
+
+        void onClickExploreButton(String datasourceId);
     }
 }
