@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import schemacrawler.crawl.SchemaCrawler;
@@ -39,6 +40,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 import com.codenvy.dto.server.DtoFactory;
 
 public class TestDTO {
+    @Ignore
     @Test
     public void test() throws Exception {
 

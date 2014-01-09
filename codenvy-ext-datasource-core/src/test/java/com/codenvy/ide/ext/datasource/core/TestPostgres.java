@@ -26,6 +26,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import schemacrawler.crawl.SchemaCrawler;
@@ -41,6 +42,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 
 public class TestPostgres {
 
+    @Ignore
     @Test
     public void testPostgres() throws Exception {
         // having a jdbc driver connected to a local jdbc driver, explore the
