@@ -53,7 +53,7 @@
                     <g:Label text="Password" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>
-                    <g:TextBox ui:field="passwordField" width="97%" height="16px" />
+                    <g:PasswordTextBox ui:field="passwordField" width="97%" height="16px" />
                 </g:center>
             </g:DockLayoutPanel>
         </g:north>
