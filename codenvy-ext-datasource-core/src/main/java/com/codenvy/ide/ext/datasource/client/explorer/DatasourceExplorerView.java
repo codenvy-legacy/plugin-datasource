@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 /**
  * Interface of datasource tree view.

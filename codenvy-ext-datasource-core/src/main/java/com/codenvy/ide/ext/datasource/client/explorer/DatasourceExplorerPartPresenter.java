@@ -22,8 +22,8 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.notification.Notification;
-import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.notification.Notification.Type;
+import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
@@ -145,7 +145,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
             Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
             DatabaseConfigurationDTO datasourceObject = datasourcesMap.get(datasourceId);
-            final Notification fetchDatabaseNotification = new Notification("Fetching database metadatas ...", Notification.Status.PROGRESS);
+            final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...", Notification.Status.PROGRESS);
             notificationManager.showNotification(fetchDatabaseNotification);
             service.fetchDatabaseInfo(datasourceObject.getDatabaseName(), datasourceObject.getHostname(), datasourceObject.getPort(),
                                       datasourceObject.getUsername(), datasourceObject.getPassword(),
@@ -154,14 +154,16 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           protected void onSuccess(String result) {
                                               DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                                                   DatabaseDTO.class);
-                                              fetchDatabaseNotification.setMessage("Succesfully fetched database metadatas");
+                                              fetchDatabaseNotification.setMessage("Succesfully fetched database metadata");
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               view.setItems(database);
                                           }
 
                                           @Override
                                           protected void onFailure(Throwable exception) {
-                                              // TODO do somthing
+                                              fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+                                              notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+                                                                                                    Type.ERROR));
                                           }
                                       }
 
