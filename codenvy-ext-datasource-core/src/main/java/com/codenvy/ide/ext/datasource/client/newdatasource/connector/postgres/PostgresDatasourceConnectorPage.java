@@ -19,8 +19,6 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres;
 
 import java.util.Map;
 
-import com.codenvy.ide.api.notification.Notification;
-import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
@@ -30,11 +28,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
-import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
-import com.codenvy.ide.resources.marshal.StringUnmarshaller;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
