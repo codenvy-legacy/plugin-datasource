@@ -64,7 +64,7 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     }
 
     @UiHandler("datasourceName")
-    public void onDatasourceNameModified(KeyDownEvent event){
+    public void onDatasourceNameModified(KeyDownEvent event) {
         delegate.onDatasourceNameModified(datasourceName.getText());
     }
 
