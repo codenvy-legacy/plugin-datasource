@@ -32,6 +32,7 @@ import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPagePresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
@@ -53,7 +54,7 @@ public class DatasourceExtension {
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
                                NewDatasourceAction newDSConnectionAction,
-                               Provider<com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
+                               Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
                                Resources resources, Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider) {
@@ -72,7 +73,7 @@ public class DatasourceExtension {
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
         wizard.addPage(newDatasourcePageProvider);
-        
+
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages = Collections.createArray();
         wizardPages.add(pgConnectorPageProvider);
