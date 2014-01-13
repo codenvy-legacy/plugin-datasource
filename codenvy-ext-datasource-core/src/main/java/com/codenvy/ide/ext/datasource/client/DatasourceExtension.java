@@ -41,6 +41,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+/**
+ * Extension definition for the datasource plugin.
+ */
 @Singleton
 @Extension(title = "Datasource Extension", version = "1.0.0")
 public class DatasourceExtension {
