@@ -64,9 +64,9 @@ public class DatasourceService {
                                                                     "jdbc:postgresql://" + databaseConfig.getHostname() +
                                                                         ":" + Integer.toString(databaseConfig.getPort()) +
                                                                         "/" + databaseConfig.getDatabaseName());
-        final Connection connection = dataSource.getConnection(databaseConfig.getUsername(),
-                                                               databaseConfig.getPassword());
-        try {
+
+        try (final Connection connection = dataSource.getConnection(databaseConfig.getUsername(),
+                                                                    databaseConfig.getPassword());) {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
             options.setSchemaInfoLevel(SchemaInfoLevel.standard());
             options.setRoutineInclusionRule(new ExcludeAll());
@@ -76,8 +76,6 @@ public class DatasourceService {
 
             final SchemaCrawler schemaCrawler = new SchemaCrawler(connection);
             database = schemaCrawler.crawl(options);
-        } finally {
-            connection.close();
         }
 
         DatabaseDTO databaseDTO = DtoFactory.getInstance()
