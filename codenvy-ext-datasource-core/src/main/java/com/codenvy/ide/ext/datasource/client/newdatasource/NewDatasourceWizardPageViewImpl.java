@@ -60,7 +60,7 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
     @Inject
     public NewDatasourceWizardPageViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
-        initWidget(uiBinder.createAndBindUi(this));        
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @UiHandler("datasourceName")
