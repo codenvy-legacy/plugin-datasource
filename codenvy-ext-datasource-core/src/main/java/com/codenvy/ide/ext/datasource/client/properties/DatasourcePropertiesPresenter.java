@@ -28,7 +28,7 @@ import com.google.inject.Inject;
  * 
  * @author "Mickaël Leduque"
  */
-public class DatasourcePropertiesPresenter extends AbstractPartPresenter {
+public class DatasourcePropertiesPresenter extends AbstractPartPresenter implements DatasourcePropertiesView.ActionDelegate {
 
     /** The view component. */
     private DatasourcePropertiesView view;
@@ -37,6 +37,7 @@ public class DatasourcePropertiesPresenter extends AbstractPartPresenter {
     public DatasourcePropertiesPresenter(final DatasourcePropertiesView view) {
         super();
         this.view = view;
+        this.view.setDelegate(this);
     }
 
     @Override
