@@ -24,7 +24,7 @@ import com.codenvy.ide.api.mvp.View;
  * 
  * @author Mickaël LEDUQUE
  */
-public interface DatasourcePropertiesView extends View<DatasourcePropertiesView.ActionDelegate> {
+public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.ActionDelegate> {
 
     /**
      * Interface for the action delegate on datasource properties display view.

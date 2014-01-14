@@ -32,7 +32,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
-import com.codenvy.ide.ext.datasource.client.properties.DatasourcePropertiesPresenter;
+import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -64,7 +64,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     protected NotificationManager               notificationManager;
     protected DatasourceManager                 datasourceManager;
     protected PreferencesManager                preferencesManager;
-    private final DatasourcePropertiesPresenter propertiesPresenter;
+    private final DataEntityPropertiesPresenter propertiesPresenter;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -83,7 +83,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            NotificationManager notificationManager,
                                            final DatasourceManager datasourceManager,
                                            final PreferencesManager preferencesManager,
-                                           final DatasourcePropertiesPresenter propertiesPresenter) {
+                                           final DataEntityPropertiesPresenter propertiesPresenter) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;

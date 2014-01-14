@@ -29,7 +29,7 @@ import com.google.inject.Inject;
  * 
  * @author Mickaël LEDUQUE
  */
-public class DatasourcePropertiesViewImpl extends Composite implements DatasourcePropertiesView {
+public class DataEntityPropertiesViewImpl extends Composite implements DataEntityPropertiesView {
 
     /** The action delegate for the view. */
     private ActionDelegate delegate;
@@ -38,7 +38,7 @@ public class DatasourcePropertiesViewImpl extends Composite implements Datasourc
     Label dataSourceName;
 
     @Inject
-    public DatasourcePropertiesViewImpl(final DatasourcePropertiesViewUiBinder uiBinder) {
+    public DataEntityPropertiesViewImpl(final DatasourcePropertiesViewUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -52,7 +52,7 @@ public class DatasourcePropertiesViewImpl extends Composite implements Datasourc
      * 
      * @author "Mickaël Leduque"
      */
-    interface DatasourcePropertiesViewUiBinder extends UiBinder<Widget, DatasourcePropertiesViewImpl> {
+    interface DatasourcePropertiesViewUiBinder extends UiBinder<Widget, DataEntityPropertiesViewImpl> {
     }
 
     @Override
