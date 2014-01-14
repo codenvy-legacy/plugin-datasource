@@ -38,7 +38,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     Label dataSourceName;
 
     @Inject
-    public DataEntityPropertiesViewImpl(final DatasourcePropertiesViewUiBinder uiBinder) {
+    public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -52,7 +52,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
      * 
      * @author "Mickaël Leduque"
      */
-    interface DatasourcePropertiesViewUiBinder extends UiBinder<Widget, DataEntityPropertiesViewImpl> {
+    interface DataEntityPropertiesViewUiBinder extends UiBinder<Widget, DataEntityPropertiesViewImpl> {
     }
 
     @Override
