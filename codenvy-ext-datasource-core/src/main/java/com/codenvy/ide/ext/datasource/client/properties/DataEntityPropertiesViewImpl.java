@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 /**
- * Implementation of the view for datasource properties display.
+ * Implementation of the view for data item properties display.
  * 
  * @author Mickaël LEDUQUE
  */

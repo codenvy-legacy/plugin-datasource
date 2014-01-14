@@ -20,14 +20,14 @@ package com.codenvy.ide.ext.datasource.client.properties;
 import com.codenvy.ide.api.mvp.View;
 
 /**
- * Interface for the datasource properties display view.
+ * Interface for the database item properties display view.
  * 
  * @author Mickaël LEDUQUE
  */
 public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.ActionDelegate> {
 
     /**
-     * Interface for the action delegate on datasource properties display view.
+     * Interface for the action delegate on data item properties display view.
      * 
      * @author Mickaël LEDUQUE
      */

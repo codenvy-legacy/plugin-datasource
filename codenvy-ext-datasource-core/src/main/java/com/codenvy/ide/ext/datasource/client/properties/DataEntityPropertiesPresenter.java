@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
 /**
- * The presenter part for the datasource properties display.
+ * The presenter part for the database item properties display.
  * 
  * @author "Mickaël Leduque"
  */
