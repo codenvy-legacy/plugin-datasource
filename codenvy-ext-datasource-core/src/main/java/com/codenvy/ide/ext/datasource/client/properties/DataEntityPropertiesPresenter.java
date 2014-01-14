@@ -18,7 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
-import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
@@ -60,7 +60,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         return null;
     }
 
-    public void onInspectedEntityChanged(final DatabaseDTO databaseDto) {
-        this.view.setObjectName(databaseDto.getName());
+    public void onInspectedEntityChanged(final DatabaseMetadataEntityDTO newSelection) {
+        this.view.setObjectName(newSelection.getName());
     }
 }
