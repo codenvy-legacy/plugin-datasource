@@ -34,5 +34,5 @@ public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.
     interface ActionDelegate {
     }
 
-    void setDatasourceName(String name);
+    void setObjectName(String name);
 }

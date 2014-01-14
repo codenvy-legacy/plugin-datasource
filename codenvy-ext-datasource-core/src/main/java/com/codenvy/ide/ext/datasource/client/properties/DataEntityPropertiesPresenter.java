@@ -60,7 +60,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         return null;
     }
 
-    public void onDataSourceSelectionChanged(final DatabaseDTO databaseDto) {
-        this.view.setDatasourceName(databaseDto.getName());
+    public void onInspectedEntityChanged(final DatabaseDTO databaseDto) {
+        this.view.setObjectName(databaseDto.getName());
     }
 }

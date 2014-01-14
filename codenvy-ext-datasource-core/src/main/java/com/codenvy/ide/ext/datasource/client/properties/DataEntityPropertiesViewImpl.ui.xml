@@ -20,7 +20,7 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <g:HTMLPanel>
         <h1>Properties</h1>
-        <div><span>Name:</span><g:Label ui:field="dataSourceName" /></div>
+        <div><span>Object name:</span><g:Label ui:field="objectName" /></div>
     </g:HTMLPanel>
 
 </ui:UiBinder>

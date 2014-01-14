@@ -35,7 +35,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     private ActionDelegate delegate;
 
     @UiField
-    Label dataSourceName;
+    Label objectName;
 
     @Inject
     public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder) {
@@ -56,9 +56,9 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     }
 
     @Override
-    public void setDatasourceName(String name) {
+    public void setObjectName(String name) {
         // the name parameter comes from user input, but Label#setText(String) doesn't use it as HTML
         // so it's safe
-        dataSourceName.setText(name);
+        objectName.setText(name);
     }
 }
