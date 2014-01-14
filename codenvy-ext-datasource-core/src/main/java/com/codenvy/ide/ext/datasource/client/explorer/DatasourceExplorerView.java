@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 /**
  * Interface of datasource tree view.
@@ -51,6 +52,13 @@ public interface DatasourceExplorerView extends
      * @param datasourceIds the ids (keys) of the datasources
      */
     void setDatasourceList(Collection<String> datasourceIds);
+
+    /**
+     * Returns the component used for datasource properties display.
+     * 
+     * @return the properties display component
+     */
+    AcceptsOneWidget getPropertiesDisplayContainer();
 
     /**
      * The action delegate for this view.

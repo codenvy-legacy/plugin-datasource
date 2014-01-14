@@ -30,10 +30,11 @@ import com.codenvy.ide.util.input.SignalEvent;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -51,9 +52,12 @@ public class DatasourceExplorerViewImpl extends
     protected Button                          exploreButton;
     protected DockLayoutPanel                 topDsContainer;
 
+    private SimplePanel propertiesContainer;
 
     @Inject
-    public DatasourceExplorerViewImpl(Resources resources, PreferencesManager preferenceManager, DtoFactory dtoFactory) {
+    public DatasourceExplorerViewImpl(final Resources resources,
+                                      final PreferencesManager preferenceManager,
+                                      final DtoFactory dtoFactory) {
         super(resources);
         this.preferencesManager = preferenceManager;
         this.dtoFactory = dtoFactory;
@@ -73,7 +77,10 @@ public class DatasourceExplorerViewImpl extends
         dsContainer.addNorth(topDsContainer, 25);
         topDsContainer.addWest(datasourceListBox, 120);
         topDsContainer.add(exploreButton);
-        dsContainer.addSouth(new Label("Property Panel"), 200);
+
+        this.propertiesContainer = new SimplePanel();
+        dsContainer.addSouth(this.propertiesContainer, 200);
+
         dsContainer.add(tree.asWidget());
         container.add(dsContainer);
     }
@@ -93,6 +100,11 @@ public class DatasourceExplorerViewImpl extends
     public void setItems(DatabaseMetadataEntityDTO database) {
         tree.getModel().setRoot(database);
         tree.renderTree(1);
+    }
+
+    @Override
+    public AcceptsOneWidget getPropertiesDisplayContainer() {
+        return this.propertiesContainer;
     }
 
     /** {@inheritDoc} */
