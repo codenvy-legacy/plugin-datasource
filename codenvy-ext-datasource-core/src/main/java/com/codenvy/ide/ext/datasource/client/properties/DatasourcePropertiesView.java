@@ -18,7 +18,6 @@
 package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.codenvy.ide.api.mvp.View;
-import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 
 /**
  * Interface for the datasource properties display view.
@@ -32,7 +31,7 @@ public interface DatasourcePropertiesView extends View<DatasourcePropertiesView.
      * 
      * @author Mickaël LEDUQUE
      */
-    interface ActionDelegate extends BaseActionDelegate {
+    interface ActionDelegate {
     }
 
     void setDatasourceName(String name);
