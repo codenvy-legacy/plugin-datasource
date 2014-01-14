@@ -25,12 +25,14 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
+import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
+import com.codenvy.ide.ext.datasource.client.properties.DatasourcePropertiesPresenter;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -55,12 +57,14 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                                                   DatasourceExplorerView.ActionDelegate,
                                                                   DatasourceExplorerPart,
                                                                   DatasourceCreatedHandler {
-    protected DatasourceExplorerView  view;
-    protected EventBus                eventBus;
-    protected DatasourceClientService service;
-    protected DtoFactory              dtoFactory;
-    protected NotificationManager     notificationManager;
-    protected DatasourceManager       datasourceManager;
+    protected DatasourceExplorerView            view;
+    protected EventBus                          eventBus;
+    protected DatasourceClientService           service;
+    protected DtoFactory                        dtoFactory;
+    protected NotificationManager               notificationManager;
+    protected DatasourceManager                 datasourceManager;
+    protected PreferencesManager                preferencesManager;
+    private final DatasourcePropertiesPresenter propertiesPresenter;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -77,13 +81,18 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            DatasourceClientService service,
                                            DtoFactory dtoFactory,
                                            NotificationManager notificationManager,
-                                           final DatasourceManager datasourceManager) {
+                                           final DatasourceManager datasourceManager,
+                                           final PreferencesManager preferencesManager,
+                                           final DatasourcePropertiesPresenter propertiesPresenter) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
+        this.preferencesManager = preferencesManager;
+        this.propertiesPresenter = propertiesPresenter;
+
         this.view.setTitle("DataSource Explorer");
         bind();
 
@@ -98,6 +107,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
         // fill the datasources list (deferred until insertion)
         setupDatasourceList();
+        propertiesPresenter.go(view.getPropertiesDisplayContainer());
     }
 
     /** Adds behavior to view components */
