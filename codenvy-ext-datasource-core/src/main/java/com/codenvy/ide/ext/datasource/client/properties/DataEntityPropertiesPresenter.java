@@ -31,7 +31,7 @@ import com.google.inject.Inject;
 public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate {
 
     /** The view component. */
-    private DataEntityPropertiesView view;
+    private final DataEntityPropertiesView view;
 
     @Inject
     public DataEntityPropertiesPresenter(final DataEntityPropertiesView view) {
