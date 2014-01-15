@@ -19,8 +19,9 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <g:HTMLPanel>
-        <h1>Properties</h1>
-        <div><span>Object name:</span><g:Label ui:field="objectName" /></div>
+        <g:SimplePanel ui:field="mainContainer" visible="false">
+            <div><span>Object name:</span><g:Label ui:field="objectName" /></div>
+        </g:SimplePanel>
     </g:HTMLPanel>
 
 </ui:UiBinder>

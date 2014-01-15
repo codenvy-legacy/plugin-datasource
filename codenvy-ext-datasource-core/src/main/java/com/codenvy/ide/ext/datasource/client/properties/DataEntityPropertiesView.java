@@ -35,4 +35,6 @@ public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.
     }
 
     void setObjectName(String name);
+
+    void setShown(boolean shown);
 }
