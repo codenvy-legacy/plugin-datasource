@@ -33,6 +33,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -137,6 +138,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     public void onDatabaseMetadataEntitySelected(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
         Log.info(DatasourceExplorerPartPresenter.class, "Database entity selected : " + dbMetadataEntity);
         setSelection(new Selection<DatabaseMetadataEntityDTO>(dbMetadataEntity));
+        eventBus.fireEvent(new DatabaseEntitySelectionEvent(dbMetadataEntity));
     }
 
     @Override
