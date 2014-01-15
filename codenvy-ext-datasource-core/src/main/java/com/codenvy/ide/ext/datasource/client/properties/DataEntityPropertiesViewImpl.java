@@ -68,7 +68,6 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     @Override
     public void setShown(boolean shown) {
-        // TODO Auto-generated method stub
-
+        this.mainContainer.setVisible(shown);
     }
 }
