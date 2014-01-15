@@ -18,26 +18,32 @@
 package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionHandler;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * The presenter part for the database item properties display.
  * 
  * @author "Mickaël Leduque"
  */
-public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate {
+public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate,
+                                                                        DatabaseEntitySelectionHandler {
 
     /** The view component. */
     private final DataEntityPropertiesView view;
 
     @Inject
-    public DataEntityPropertiesPresenter(final DataEntityPropertiesView view) {
+    public DataEntityPropertiesPresenter(final DataEntityPropertiesView view,
+                                         final EventBus eventBus) {
         super();
         this.view = view;
         this.view.setDelegate(this);
+        eventBus.addHandler(DatabaseEntitySelectionEvent.getType(), this);
     }
 
     @Override
@@ -60,7 +66,14 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         return null;
     }
 
-    public void onInspectedEntityChanged(final DatabaseMetadataEntityDTO newSelection) {
-        this.view.setObjectName(newSelection.getName());
+    @Override
+    public void onDatabaseEntitySelection(final DatabaseEntitySelectionEvent event) {
+        DatabaseMetadataEntityDTO newSelection = event.getSelection();
+        if (newSelection == null) {
+            this.view.setShown(false);
+        } else {
+            this.view.setShown(true);
+            this.view.setObjectName(newSelection.getName());
+        }
     }
 }
