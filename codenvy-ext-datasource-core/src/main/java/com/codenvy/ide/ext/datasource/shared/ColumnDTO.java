@@ -24,9 +24,38 @@ public interface ColumnDTO extends DatabaseMetadataEntityDTO {
 
     ColumnDTO withName(String name);
 
+
     ColumnDTO withColumnDataType(String datatypeName);
 
     String getColumnDataType();
 
     void setColumnDataType(String columnDataTypeName);
+
+
+    ColumnDTO withDefaultValue(String defaultValue);
+
+    void setDefaultValue(String defaultValue);
+
+    String getDefalulValue();
+
+
+    ColumnDTO withDataSize(int size);
+
+    void setDataSize(int size);
+
+    int getDataSize();
+
+
+    ColumnDTO withDecimalDigits(int digits);
+
+    void setDecimalDigits(int digits);
+
+    int getDecimalDigits();
+
+
+    ColumnDTO withNullable(boolean nullable);
+
+    void setNullable(boolean nullable);
+
+    boolean getNullable();
 }
