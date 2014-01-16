@@ -17,19 +17,19 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
-import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.tree.FileTreeNodeRenderer.Css;
+import com.codenvy.ide.tree.FileTreeNodeRenderer.Resources;
 import com.codenvy.ide.ui.tree.NodeRenderer;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.dom.Elements;
-import com.codenvy.ide.tree.FileTreeNodeRenderer.Resources;
+
 import elemental.html.DivElement;
 import elemental.html.Element;
 import elemental.html.SpanElement;
 
-public class DatabaseMetadataEntityDTORenderer implements
-                                              NodeRenderer<DatabaseMetadataEntityDTO> {
+public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTreeNode> {
 
     public DatabaseMetadataEntityDTORenderer(Resources resources) {
         this.res = resources;
@@ -71,14 +71,14 @@ public class DatabaseMetadataEntityDTORenderer implements
     }
 
     @Override
-    public SpanElement renderNodeContents(DatabaseMetadataEntityDTO data) {
-        return renderNodeContents(css, data.getName(),
+    public SpanElement renderNodeContents(EntityTreeNode data) {
+        return renderNodeContents(css, data.getData().getName(),
                                   (data instanceof ColumnDTO), true);
     }
 
     @Override
     public void updateNodeContents(
-                                   TreeNodeElement<DatabaseMetadataEntityDTO> treeNode) {
+                                   TreeNodeElement<EntityTreeNode> treeNode) {
     }
 
 }

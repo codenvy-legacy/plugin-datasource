@@ -23,6 +23,7 @@ import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
@@ -44,15 +45,15 @@ import elemental.html.DragEvent;
 public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
                                                                                       DatasourceExplorerView {
-    protected Tree<DatabaseMetadataEntityDTO> tree;
-    protected DockLayoutPanel                 dsContainer;
-    protected ListBox                         datasourceListBox;
-    protected PreferencesManager              preferencesManager;
-    protected DtoFactory                      dtoFactory;
-    protected Button                          exploreButton;
-    protected DockLayoutPanel                 topDsContainer;
+    protected Tree<EntityTreeNode> tree;
+    protected DockLayoutPanel      dsContainer;
+    protected ListBox              datasourceListBox;
+    protected PreferencesManager   preferencesManager;
+    protected DtoFactory           dtoFactory;
+    protected Button               exploreButton;
+    protected DockLayoutPanel      topDsContainer;
 
-    private SimplePanel propertiesContainer;
+    private SimplePanel            propertiesContainer;
 
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
@@ -98,7 +99,7 @@ public class DatasourceExplorerViewImpl extends
     /** {@inheritDoc} */
     @Override
     public void setItems(DatabaseMetadataEntityDTO database) {
-        tree.getModel().setRoot(database);
+        tree.getModel().setRoot(new EntityTreeNode(null, database));
         tree.renderTree(1);
     }
 
@@ -111,36 +112,36 @@ public class DatasourceExplorerViewImpl extends
     @Override
     public void setDelegate(final ActionDelegate delegate) {
         this.delegate = delegate;
-        tree.setTreeEventHandler(new Tree.Listener<DatabaseMetadataEntityDTO>() {
+        tree.setTreeEventHandler(new Tree.Listener<EntityTreeNode>() {
             @Override
-            public void onNodeAction(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
-                delegate.onDatabaseMetadataEntityAction(node.getData());
+            public void onNodeAction(TreeNodeElement<EntityTreeNode> node) {
+                delegate.onDatabaseMetadataEntityAction(node.getData().getData());
             }
 
             @Override
-            public void onNodeClosed(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+            public void onNodeClosed(TreeNodeElement<EntityTreeNode> node) {
             }
 
             @Override
-            public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+            public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<EntityTreeNode> node) {
                 delegate.onContextMenu(mouseX, mouseY);
             }
 
             @Override
-            public void onNodeDragStart(TreeNodeElement<DatabaseMetadataEntityDTO> node, DragEvent event) {
+            public void onNodeDragStart(TreeNodeElement<EntityTreeNode> node, DragEvent event) {
             }
 
             @Override
-            public void onNodeDragDrop(TreeNodeElement<DatabaseMetadataEntityDTO> node, DragEvent event) {
+            public void onNodeDragDrop(TreeNodeElement<EntityTreeNode> node, DragEvent event) {
             }
 
             @Override
-            public void onNodeExpanded(TreeNodeElement<DatabaseMetadataEntityDTO> node) {
+            public void onNodeExpanded(TreeNodeElement<EntityTreeNode> node) {
             }
 
             @Override
-            public void onNodeSelected(TreeNodeElement<DatabaseMetadataEntityDTO> node, SignalEvent event) {
-                delegate.onDatabaseMetadataEntitySelected(node.getData());
+            public void onNodeSelected(TreeNodeElement<EntityTreeNode> node, SignalEvent event) {
+                delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
             }
 
             @Override
