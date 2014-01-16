@@ -21,13 +21,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>codenvy-ide-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
+        <artifactId>codenvy-ext-datasource-parent</artifactId>
         <version>3.0.0-M7-SNAPSHOT</version>
     </parent>
-    <artifactId>codenvy-packaging-standalone-tomcat</artifactId>
+    <artifactId>codenvy-ext-datasource-packaging-standalone-tomcat</artifactId>
     <packaging>pom</packaging>
-    <name>Codenvy :: Assemblies Tomcat</name>
+    <name>Codenvy Datasource plugin:: Assemblies Tomcat</name>
     <dependencies>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -47,13 +47,13 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-api-war</artifactId>
+            <artifactId>codenvy-ext-datasource-api-war</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-application-war</artifactId>
+            <artifactId>codenvy-ext-datasource-application-war</artifactId>
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
@@ -474,9 +474,9 @@
                                 <chmod dir="${project.build.directory}/tomcat-ide/bin" includes="**/*.sh" perm="+x" />
                                 <!-- Copy resources to re-build Codenvy IDE with 3rd-party extensions. -->
                                 <copy overwrite="true" todir="${project.build.directory}/tomcat-ide/sdk-resources">
-                                    <fileset dir="${project.build.directory}/../../codenvy-application-war" includes="src/**, pom.xml" />
+                                    <fileset dir="${project.build.directory}/../../codenvy-ext-datasource-application-war" includes="src/**, pom.xml" />
                                 </copy>
-                                <unwar dest="${project.build.directory}/packager-conf/war/ide" src="${project.build.directory}/packager-conf/war/codenvy-application-war-${project.version}.war" />
+                                <unwar dest="${project.build.directory}/packager-conf/war/ide" src="${project.build.directory}/packager-conf/war/codenvy-ext-datasource-application-war-${project.version}.war" />
                                 <move todir="${project.build.directory}/packager-conf/war/ide/_app">
                                     <fileset dir="${project.build.directory}/packager-conf/war/ide/_app/" />
                                 </move>
@@ -487,7 +487,7 @@
                                     <fileset dir="${project.build.directory}/packager-conf/war/ide" />
                                 </war>
                                 <copy file="${project.build.directory}/packager-conf/war/exo-ide-git-server-${org.exoplatform.ide.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/git.war" />
-                                <copy file="${project.build.directory}/packager-conf/war/codenvy-api-war-${project.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/api.war" />
+                                <copy file="${project.build.directory}/packager-conf/war/codenvy-ext-datasource-api-war-${project.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/api.war" />
                                 <copy file="${project.build.directory}/packager-conf/war/codenvy-ide-site-war-${project.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/site.war" />
                                 <copy file="${project.build.directory}/packager-conf/war/exo-ide-codeassistant-storage-${org.exoplatform.ide.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/codeassistant-storage.war" />
                                 <copy file="${project.build.directory}/packager-conf/war/codenvy-organization-packaging-api-war-${com.codenvy.organization.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/userdb.war" />

@@ -83,6 +83,9 @@
     </build>
     <modules>
         <module>codenvy-ext-datasource-core</module>
+        <module>codenvy-ext-datasource-api-war</module>
+        <module>codenvy-ext-datasource-application-war</module>
+        <module>codenvy-ext-datasource-packaging-standalone-tomcat</module>
     </modules>
 
     <distributionManagement>
