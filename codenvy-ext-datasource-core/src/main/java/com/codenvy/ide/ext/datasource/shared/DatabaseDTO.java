@@ -28,6 +28,16 @@ public interface DatabaseDTO extends DatabaseMetadataEntityDTO {
 
     DatabaseDTO withSchemas(Map<String, SchemaDTO> schemas);
 
+    DatabaseDTO withJdbcDriverName(String driverName);
+
+    DatabaseDTO withJdbcDriverVersion(String driverVersion);
+
+    DatabaseDTO withDatabaseProductName(String productName);
+
+    DatabaseDTO withDatabaseProductVersion(String productVersion);
+
+    DatabaseDTO withUserName(String userName);
+
     Map<String, SchemaDTO> getSchemas();
 
     void setSchemas(Map<String, SchemaDTO> schemas);
