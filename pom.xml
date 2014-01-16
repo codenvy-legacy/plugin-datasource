@@ -8,15 +8,15 @@
     <parent>
         <groupId>com.codenvy.ide</groupId>
         <artifactId>codenvy-ide-parent</artifactId>
-        <version>3.0.0-M7-SNAPSHOT</version>
+        <version>3.0.0-M8-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
 
     <properties>
-        <codenvy.version>3.0.0-M7-SNAPSHOT</codenvy.version>
-        <codenvy.datasource.version>3.0.0-M7-SNAPSHOT</codenvy.datasource.version>
+        <codenvy.version>3.0.0-M8-SNAPSHOT</codenvy.version>
+        <codenvy.datasource.version>3.0.0-M8-SNAPSHOT</codenvy.datasource.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
