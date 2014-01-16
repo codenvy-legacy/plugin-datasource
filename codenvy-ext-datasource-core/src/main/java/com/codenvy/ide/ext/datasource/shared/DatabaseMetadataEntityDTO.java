@@ -22,8 +22,31 @@ import com.codenvy.dto.shared.DTO;
 @DTO
 public interface DatabaseMetadataEntityDTO {
 
+    /**
+     * Returns the (human readable) name of the object.
+     * 
+     * @return the name of the object.
+     */
     String getName();
 
+    /**
+     * Affects the (human readable) name of the object.
+     * 
+     * @param name the new value
+     */
     void setName(String name);
 
+    /**
+     * Returns an identifier for the object relative to the database.
+     * 
+     * @return the identifier
+     */
+    String getLookupKey();
+
+    /**
+     * Affect the identifier for the object in the database.
+     * 
+     * @param lookupName the new value
+     */
+    void setLookupKey(String lookupName);
 }
