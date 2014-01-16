@@ -93,15 +93,18 @@ public class DatasourceService {
 
         DatabaseDTO databaseDTO = DtoFactory.getInstance()
                                             .createDto(DatabaseDTO.class).withName(database.getName());
+        databaseDTO.setLookupKey(database.getLookupKey());
         Map<String, SchemaDTO> schemaToInject = new HashMap<String, SchemaDTO>();
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
             SchemaDTO schemaDTO = DtoFactory.getInstance()
                                             .createDto(SchemaDTO.class).withName(schema.getName());
+            schemaDTO.setLookupKey(schema.getLookupKey());
             Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
             for (final Table table : database.getTables(schema)) {
                 TableDTO tableDTO = DtoFactory.getInstance()
                                               .createDto(TableDTO.class).withName(table.getName());
+                tableDTO.setLookupKey(tableDTO.getLookupKey());
                 if (table instanceof View) {
                     tableDTO = tableDTO.withIsView(true);
                 }
@@ -112,8 +115,8 @@ public class DatasourceService {
                                                     .getInstance()
                                                     .createDto(ColumnDTO.class)
                                                     .withName(column.getName())
-                                                    .withColumnDataType(
-                                                                        column.getColumnDataType().getName());
+                                                    .withColumnDataType(column.getColumnDataType().getName());
+                    columnDTO.setLookupKey(column.getLookupKey());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
