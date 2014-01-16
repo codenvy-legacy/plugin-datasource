@@ -17,6 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.shared;
 
+import java.util.List;
 import java.util.Map;
 
 import com.codenvy.dto.shared.DTO;
@@ -30,6 +31,10 @@ public interface TableDTO extends DatabaseMetadataEntityDTO {
 
     TableDTO withColumns(Map<String, ColumnDTO> columns);
 
+    TableDTO withType(String tableType);
+
+    TableDTO withPrimaryKey(List<String> primaryKey);
+
     boolean getIsView();
 
     void setIsView(boolean b);
@@ -37,4 +42,12 @@ public interface TableDTO extends DatabaseMetadataEntityDTO {
     Map<String, ColumnDTO> getColumns();
 
     void setColumns(Map<String, ColumnDTO> columns);
+
+    void setType(String tabletype);
+
+    String getType();
+
+    void setPrimaryKey(List<String> primaryKey);
+
+    List<String> getPrimaryKey();
 }

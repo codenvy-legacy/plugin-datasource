@@ -24,19 +24,44 @@ import com.codenvy.dto.shared.DTO;
 @DTO
 public interface DatabaseDTO extends DatabaseMetadataEntityDTO {
 
+    /* Database name. */
     DatabaseDTO withName(String name);
 
-    DatabaseDTO withSchemas(Map<String, SchemaDTO> schemas);
-
+    /* JDBC driver. */
     DatabaseDTO withJdbcDriverName(String driverName);
+
+    void setJdbcDriverName(String driverName);
+
+    String getJdbcDriverName();
 
     DatabaseDTO withJdbcDriverVersion(String driverVersion);
 
+    void setJdbcDriverVersion(String driverVersion);
+
+    String getJdbcDriverVersion();
+
+    /* Database product. */
     DatabaseDTO withDatabaseProductName(String productName);
+
+    void setDatabaseProductName(String productName);
+
+    String getDatabaseProductName();
 
     DatabaseDTO withDatabaseProductVersion(String productVersion);
 
+    void setDatabaseProductVersion(String productVersion);
+
+    String getDatabaseProductVersion();
+
+    /* Datasource user name. */
     DatabaseDTO withUserName(String userName);
+
+    void setUserName(String userName);
+
+    String getUserName();
+
+    /* Schemas. */
+    DatabaseDTO withSchemas(Map<String, SchemaDTO> schemas);
 
     Map<String, SchemaDTO> getSchemas();
 
