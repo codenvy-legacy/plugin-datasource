@@ -21,9 +21,11 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.POST;
@@ -37,6 +39,8 @@ import org.slf4j.LoggerFactory;
 import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Database;
+import schemacrawler.schema.IndexColumn;
+import schemacrawler.schema.PrimaryKey;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
@@ -93,7 +97,12 @@ public class DatasourceService {
 
         DatabaseDTO databaseDTO = DtoFactory.getInstance().createDto(DatabaseDTO.class)
                                             .withName(database.getName())
-                                            .withLookupKey(database.getLookupKey());
+                                            .withLookupKey(database.getLookupKey())
+                                            .withDatabaseProductName(database.getDatabaseInfo().getProductName())
+                                            .withDatabaseProductVersion(database.getDatabaseInfo().getProductVersion())
+                                            .withUserName(database.getDatabaseInfo().getUserName())
+                                            .withJdbcDriverName(database.getJdbcDriverInfo().getDriverName())
+                                            .withJdbcDriverVersion(database.getJdbcDriverInfo().getDriverVersion());
         Map<String, SchemaDTO> schemaToInject = new HashMap<String, SchemaDTO>();
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
@@ -104,10 +113,22 @@ public class DatasourceService {
             for (final Table table : database.getTables(schema)) {
                 TableDTO tableDTO = DtoFactory.getInstance().createDto(TableDTO.class)
                                               .withName(table.getName())
-                                              .withLookupKey(table.getLookupKey());
+                                              .withLookupKey(table.getLookupKey())
+                                              .withType(table.getTableType().name());
                 if (table instanceof View) {
                     tableDTO = tableDTO.withIsView(true);
                 }
+
+                PrimaryKey primaryKey = table.getPrimaryKey();
+                if (primaryKey != null) {
+                    List<IndexColumn> primaryKeyColumns = primaryKey.getColumns();
+                    List<String> pkColumnNames = new ArrayList<>();
+                    for (final IndexColumn indexColumn : primaryKeyColumns) {
+                        pkColumnNames.add(indexColumn.getName());
+                    }
+                    tableDTO.setPrimaryKey(pkColumnNames);
+                }
+
 
                 Map<String, ColumnDTO> columns = new HashMap<String, ColumnDTO>();
                 for (Column column : table.getColumns()) {
@@ -116,7 +137,11 @@ public class DatasourceService {
                                                     .createDto(ColumnDTO.class)
                                                     .withName(column.getName())
                                                     .withLookupKey(column.getLookupKey())
-                                                    .withColumnDataType(column.getColumnDataType().getName());
+                                                    .withColumnDataType(column.getColumnDataType().getName())
+                                                    .withDefaultValue(column.getDefaultValue())
+                                                    .withNullable(column.isNullable())
+                                                    .withDataSize(column.getSize())
+                                                    .withDecimalDigits(column.getDecimalDigits());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
