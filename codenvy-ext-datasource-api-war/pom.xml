@@ -31,14 +31,11 @@
         <dependency>
             <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-ext-datasource-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-api-war</artifactId>
-            <version>${project.version}</version>
             <type>war</type>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>

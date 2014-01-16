@@ -15,23 +15,25 @@
     <name>Codenvy Extension :: Datasource parent</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <codenvy.version>3.0.0-M7-SNAPSHOT</codenvy.version>
+        <codenvy.datasource.version>3.0.0-M7-SNAPSHOT</codenvy.datasource.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-user</artifactId>
-                <scope>provided</scope>
-                <version>${gwt.version}</version>
+                <groupId>com.codenvy.commons</groupId>
+                <artifactId>codenvy-commons-servlet</artifactId>
+                <version>${com.codenvy.commons.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.gwt.inject</groupId>
-                <artifactId>gin</artifactId>
-                <version>2.1.1</version>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-api-war</artifactId>
+                <version>${codenvy.version}</version>
+                <type>war</type>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
@@ -45,13 +47,109 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-builder</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-datasource-core</artifactId>
+                <version>${codenvy.datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-debugger-java</artifactId>
+                <version>${codenvy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>tools</artifactId>
+                        <groupId>sun.jdt</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-extensions</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-git</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-github</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-java</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-runner</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-tutorials</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-web</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-client</artifactId>
+                <version>${codenvy.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-core</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ide-security</artifactId>
                 <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.platform-api</groupId>
+                <artifactId>codenvy-api-vfs</artifactId>
+                <version>${com.codenvy.platform-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <version>${gin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <scope>provided</scope>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-servlet</artifactId>
+                <version>${gwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.gwt-test-utils</groupId>
+                <artifactId>gwt-test-utils</artifactId>
+                <version>${gwt-test-utils.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -63,6 +161,12 @@
                 <groupId>net.sourceforge.schemacrawler</groupId>
                 <artifactId>schemacrawler</artifactId>
                 <version>10.08.01</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
