@@ -27,6 +27,8 @@ public interface TableDTO extends DatabaseMetadataEntityDTO {
 
     TableDTO withName(String name);
 
+    TableDTO withLookupKey(String lookupKey);
+
     TableDTO withIsView(boolean b);
 
     TableDTO withColumns(Map<String, ColumnDTO> columns);

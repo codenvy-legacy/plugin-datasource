@@ -46,7 +46,11 @@ public interface DatabaseMetadataEntityDTO {
     /**
      * Affect the identifier for the object in the database.
      * 
-     * @param lookupName the new value
+     * @param lookupKey the new value
      */
-    void setLookupKey(String lookupName);
+    void setLookupKey(String lookupKey);
+
+    DatabaseMetadataEntityDTO withName(String name);
+
+    DatabaseMetadataEntityDTO withLookupKey(String lookupKey);
 }

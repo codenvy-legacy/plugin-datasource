@@ -27,6 +27,8 @@ public interface DatabaseDTO extends DatabaseMetadataEntityDTO {
     /* Database name. */
     DatabaseDTO withName(String name);
 
+    DatabaseDTO withLookupKey(String lookupKey);
+
     /* JDBC driver. */
     DatabaseDTO withJdbcDriverName(String driverName);
 

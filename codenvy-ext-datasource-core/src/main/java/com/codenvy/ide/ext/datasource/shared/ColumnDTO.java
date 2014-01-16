@@ -24,6 +24,8 @@ public interface ColumnDTO extends DatabaseMetadataEntityDTO {
 
     ColumnDTO withName(String name);
 
+    ColumnDTO withLookupKey(String lookupKey);
+
 
     ColumnDTO withColumnDataType(String datatypeName);
 
