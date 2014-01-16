@@ -36,7 +36,7 @@ public interface ColumnDTO extends DatabaseMetadataEntityDTO {
 
     void setDefaultValue(String defaultValue);
 
-    String getDefalulValue();
+    String getDefaultValue();
 
 
     ColumnDTO withDataSize(int size);
