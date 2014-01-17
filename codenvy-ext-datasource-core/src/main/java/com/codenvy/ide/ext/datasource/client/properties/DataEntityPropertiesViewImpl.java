@@ -19,10 +19,13 @@ package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.inject.Inject;
 
 /**
@@ -39,11 +42,37 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     Label                  objectName;
 
     @UiField
+    Label                  objectType;
+
+    @UiField
     Panel                  mainContainer;
+
+    @UiField(provided = true)
+    CellTable<Property>    propertiesDisplay;
 
     @Inject
     public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder) {
+        this.propertiesDisplay = new CellTable<Property>();
+        propertiesDisplay.addColumn(new TextColumn<Property>() {
+
+            @Override
+            public String getValue(final Property property) {
+                return property.getName();
+            }
+        });
+        propertiesDisplay.addColumn(new TextColumn<Property>() {
+
+            @Override
+            public String getValue(final Property property) {
+                return property.getValue(); // goes through a SafeHtmlRenderer
+            }
+        });
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    @Override
+    public void bindDataProvider(final AbstractDataProvider<Property> dataProvider) {
+        dataProvider.addDataDisplay(this.propertiesDisplay);
     }
 
     @Override
@@ -60,14 +89,19 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     }
 
     @Override
-    public void setObjectName(String name) {
+    public void setObjectName(final String name) {
         // the name parameter comes from user input, but Label#setText(String) doesn't use it as HTML
         // so it's safe
         objectName.setText(name);
     }
 
     @Override
-    public void setShown(boolean shown) {
+    public void setObjectType(final String type) {
+        objectType.setText(type);
+    }
+
+    @Override
+    public void setShown(final boolean shown) {
         this.mainContainer.setVisible(shown);
     }
 }

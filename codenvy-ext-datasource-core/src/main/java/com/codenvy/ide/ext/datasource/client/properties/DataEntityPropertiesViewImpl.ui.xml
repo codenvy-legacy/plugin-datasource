@@ -17,10 +17,17 @@
   -->
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
     <g:HTMLPanel>
-        <g:HTMLPanel ui:field="mainContainer" visible="false">
-            <span>Object name:</span><g:Label ui:field="objectName" />
+        <g:HTMLPanel ui:field="mainContainer">
+	        <div>
+	            <span>Object type:</span><g:InlineLabel ui:field="objectType" />
+	        </div>
+            <div>
+                <span>Object name:</span><g:InlineLabel ui:field="objectName" />
+            </div>
+            <c:CellTable ui:field="propertiesDisplay" />
         </g:HTMLPanel>
     </g:HTMLPanel>
 

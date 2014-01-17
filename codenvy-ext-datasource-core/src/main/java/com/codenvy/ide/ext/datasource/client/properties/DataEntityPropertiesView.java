@@ -18,6 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.codenvy.ide.api.mvp.View;
+import com.google.gwt.view.client.AbstractDataProvider;
 
 /**
  * Interface for the database item properties display view.
@@ -37,4 +38,9 @@ public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.
     void setObjectName(String name);
 
     void setShown(boolean shown);
+
+    void setObjectType(String type);
+
+    void bindDataProvider(AbstractDataProvider<Property> dataProvider);
+
 }
