@@ -85,7 +85,10 @@ public class DatasourceService {
 
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
-            options.setSchemaInfoLevel(SchemaInfoLevel.standard());
+            SchemaInfoLevel customized = SchemaInfoLevel.standard();
+            customized.setRetrieveAdditionalTableAttributes(true);
+            customized.setRetrieveAdditionalColumnAttributes(true);
+            options.setSchemaInfoLevel(customized);
             options.setRoutineInclusionRule(new ExcludeAll());
             // options.setSchemaInclusionRule(new
             // RegularExpressionInclusionRule(
