@@ -23,6 +23,8 @@ import java.util.List;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionHandler;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedHandler;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -41,14 +43,17 @@ import com.google.web.bindery.event.shared.EventBus;
  * @author "Mickaël Leduque"
  */
 public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate,
-                                                                        DatabaseEntitySelectionHandler {
+                                                                        DatabaseEntitySelectionHandler,
+                                                                        DatabaseInfoReceivedHandler {
 
     /** The view component. */
     private final DataEntityPropertiesView      view;
 
-    private final ListDataProvider<Property>    dataProvider = new ListDataProvider<Property>(new PropertyKeyProvider());
+    private final ListDataProvider<Property>    dataProvider        = new ListDataProvider<Property>(new PropertyKeyProvider());
 
     private final DataEntityPropertiesConstants constants;
+
+    private DatabaseDTO                         currentDatabaseInfo = null;
 
     @Inject
     public DataEntityPropertiesPresenter(final DataEntityPropertiesView view,
@@ -173,5 +178,10 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         result.add(new Property(constants.nullableLabel(), Boolean.toString(columnDTO.getNullable())));
         result.add(new Property(constants.defaultValueLabel(), columnDTO.getDefaultValue()));
         return result;
+    }
+
+    @Override
+    public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
+        this.currentDatabaseInfo = event.getSelection();
     }
 }
