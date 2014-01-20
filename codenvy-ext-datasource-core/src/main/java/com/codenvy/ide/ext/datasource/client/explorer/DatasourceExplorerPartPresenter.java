@@ -34,6 +34,7 @@ import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -170,6 +171,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                               fetchDatabaseNotification.setMessage("Succesfully fetched database metadata");
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               view.setItems(database);
+                                              eventBus.fireEvent(new DatabaseInfoReceivedEvent(database));
                                           }
 
                                           @Override
@@ -177,6 +179,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               notificationManager.showNotification(new Notification("Failed fetching database metadatas",
                                                                                                     Type.ERROR));
+
+                                              // clean up current database
+                                              eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
                                           }
                                       }
 
