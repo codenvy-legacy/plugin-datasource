@@ -90,11 +90,15 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     @Override
     public void onDatabaseEntitySelection(final DatabaseEntitySelectionEvent event) {
         DatabaseMetadataEntityDTO newSelection = event.getSelection();
-        if (newSelection == null) {
+        if (newSelection == null && this.currentDatabaseInfo == null) {
             Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
             this.view.setShown(false);
             setPropertyList(null);
         } else {
+            // show the database when no item is selected
+            if (newSelection == null) {
+                newSelection = this.currentDatabaseInfo;
+            }
             this.view.setShown(true);
             this.view.setObjectName(newSelection.getName());
             if (newSelection instanceof DatabaseDTO) {
