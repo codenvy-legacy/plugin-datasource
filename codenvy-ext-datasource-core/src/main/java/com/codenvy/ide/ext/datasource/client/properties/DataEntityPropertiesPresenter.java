@@ -182,6 +182,6 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
 
     @Override
     public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
-        this.currentDatabaseInfo = event.getSelection();
+        this.currentDatabaseInfo = event.getReceivedInfo();
     }
 }

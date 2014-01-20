@@ -34,7 +34,7 @@ public class DatabaseInfoReceivedEvent extends GwtEvent<DatabaseInfoReceivedHand
      * 
      * @return the received item
      */
-    public DatabaseDTO getSelection() {
+    public DatabaseDTO getReceivedInfo() {
         return receivedInfo;
     }
 
