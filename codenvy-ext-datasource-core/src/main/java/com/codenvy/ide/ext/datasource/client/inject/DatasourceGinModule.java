@@ -37,6 +37,8 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasou
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorViewImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlRequestLauncherView;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlRequestLauncherViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
@@ -46,7 +48,7 @@ public class DatasourceGinModule extends AbstractGinModule {
     @Override
     protected void configure() {
         bind(DatasourceWelcomeView.class).to(DatasourceWelcomeViewImpl.class)
-                                  .in(Singleton.class);
+                                         .in(Singleton.class);
         bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
                                           .in(Singleton.class);
         bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)
@@ -60,6 +62,9 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
 
+        bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
+
         bind(DataEntityPropertiesView.class).to(DataEntityPropertiesViewImpl.class);
+
     }
 }
