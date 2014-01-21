@@ -22,7 +22,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
@@ -37,12 +36,6 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     /** The action delegate for the view. */
     private ActionDelegate delegate;
-
-    @UiField
-    Label                  objectName;
-
-    @UiField
-    Label                  objectType;
 
     @UiField
     Panel                  mainContainer;
@@ -86,18 +79,6 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
      * @author "Mickaël Leduque"
      */
     interface DataEntityPropertiesViewUiBinder extends UiBinder<Widget, DataEntityPropertiesViewImpl> {
-    }
-
-    @Override
-    public void setObjectName(final String name) {
-        // the name parameter comes from user input, but Label#setText(String) doesn't use it as HTML
-        // so it's safe
-        objectName.setText(name);
-    }
-
-    @Override
-    public void setObjectType(final String type) {
-        objectType.setText(type);
     }
 
     @Override

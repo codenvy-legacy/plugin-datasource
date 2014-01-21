@@ -91,37 +91,42 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     public void onDatabaseEntitySelection(final DatabaseEntitySelectionEvent event) {
         DatabaseMetadataEntityDTO newSelection = event.getSelection();
         if (newSelection == null && this.currentDatabaseInfo == null) {
-            Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
-            this.view.setShown(false);
-            setPropertyList(null);
+            updateDisplay(null);
         } else {
             // show the database when no item is selected
             if (newSelection == null) {
-                newSelection = this.currentDatabaseInfo;
+                updateDisplay(this.currentDatabaseInfo);
+            } else {
+                updateDisplay(newSelection);
             }
             this.view.setShown(true);
-            this.view.setObjectName(newSelection.getName());
-            if (newSelection instanceof DatabaseDTO) {
-                Log.info(DataEntityPropertiesPresenter.class, "Show properties for database entity.");
-                this.view.setObjectType("database");
-                setPropertyList(getPropertiesForDatabase((DatabaseDTO)newSelection));
-            } else if (newSelection instanceof SchemaDTO) {
-                Log.info(DataEntityPropertiesPresenter.class, "Show properties for schema entity.");
-                this.view.setObjectType("schema");
-                setPropertyList(getPropertiesForSchema((SchemaDTO)newSelection));
-            } else if (newSelection instanceof TableDTO) {
-                Log.info(DataEntityPropertiesPresenter.class, "Show properties for table entity.");
-                this.view.setObjectType("table");
-                setPropertyList(getPropertiesForTable((TableDTO)newSelection));
-            } else if (newSelection instanceof ColumnDTO) {
-                Log.info(DataEntityPropertiesPresenter.class, "Show properties for column entity.");
-                this.view.setObjectType("column");
-                setPropertyList(getPropertiesForColumn((ColumnDTO)newSelection));
-            } else {
-                Log.info(DataEntityPropertiesPresenter.class, "Unknown selection, hiding properties display.");
-                this.view.setShown(false);
-                setPropertyList(null);
-            }
+        }
+    }
+
+    private void updateDisplay(final DatabaseMetadataEntityDTO newSelection) {
+        if (newSelection == null) {
+            Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
+            this.view.setShown(false);
+            setPropertyList(null);
+            return;
+        }
+
+        if (newSelection instanceof DatabaseDTO) {
+            Log.info(DataEntityPropertiesPresenter.class, "Show properties for database entity.");
+            setPropertyList(getPropertiesForDatabase((DatabaseDTO)newSelection));
+        } else if (newSelection instanceof SchemaDTO) {
+            Log.info(DataEntityPropertiesPresenter.class, "Show properties for schema entity.");
+            setPropertyList(getPropertiesForSchema((SchemaDTO)newSelection));
+        } else if (newSelection instanceof TableDTO) {
+            Log.info(DataEntityPropertiesPresenter.class, "Show properties for table entity.");
+            setPropertyList(getPropertiesForTable((TableDTO)newSelection));
+        } else if (newSelection instanceof ColumnDTO) {
+            Log.info(DataEntityPropertiesPresenter.class, "Show properties for column entity.");
+            setPropertyList(getPropertiesForColumn((ColumnDTO)newSelection));
+        } else {
+            Log.info(DataEntityPropertiesPresenter.class, "Unknown selection, hiding properties display.");
+            this.view.setShown(false);
+            setPropertyList(null);
         }
     }
 
@@ -132,20 +137,30 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         }
     }
 
-    private List<Property> getPropertiesForDatabase(DatabaseDTO databaseDTO) {
+    private List<Property> getCommonProperties(final DatabaseMetadataEntityDTO entityDTO) {
         List<Property> result = new ArrayList<Property>();
+        result.add(new Property(constants.objectNameLabel(), entityDTO.getName()));
+        return result;
+    }
+
+    private List<Property> getPropertiesForDatabase(final DatabaseDTO databaseDTO) {
+        List<Property> result = getCommonProperties(databaseDTO);
+        result.add(new Property(constants.objectTypeLabel(), constants.objectTypeDatabase()));
         result.add(new Property(constants.productNameLabel(), databaseDTO.getDatabaseProductName()));
         result.add(new Property(constants.productVersionLabel(), databaseDTO.getDatabaseProductVersion()));
         result.add(new Property(constants.usernameLabel(), databaseDTO.getUserName()));
         return result;
     }
 
-    private List<Property> getPropertiesForSchema(SchemaDTO schemaDTO) {
-        return new ArrayList<Property>();
+    private List<Property> getPropertiesForSchema(final SchemaDTO schemaDTO) {
+        List<Property> result = getCommonProperties(schemaDTO);
+        result.add(new Property(constants.objectTypeLabel(), constants.objectTypeSchema()));
+        return result;
     }
 
-    private List<Property> getPropertiesForTable(TableDTO tableDTO) {
-        List<Property> result = new ArrayList<Property>();
+    private List<Property> getPropertiesForTable(final TableDTO tableDTO) {
+        List<Property> result = getCommonProperties(tableDTO);
+        result.add(new Property(constants.objectTypeLabel(), constants.objectTypeTable()));
         result.add(new Property(constants.tableTypeLabel(), tableDTO.getType()));
         String primaryKeyDisplay = constants.noValue();
         List<String> primaryKey = tableDTO.getPrimaryKey();
@@ -175,7 +190,8 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     }
 
     private List<Property> getPropertiesForColumn(ColumnDTO columnDTO) {
-        List<Property> result = new ArrayList<Property>();
+        List<Property> result = getCommonProperties(columnDTO);
+        result.add(new Property(constants.objectTypeLabel(), constants.objectTypeColumn()));
         result.add(new Property(constants.dataTypeLabel(), columnDTO.getColumnDataType()));
         result.add(new Property(constants.columnSizeLabel(), Integer.toString(columnDTO.getDataSize())));
         result.add(new Property(constants.decimalDigitsLabel(), Integer.toString(columnDTO.getDecimalDigits())));
@@ -187,5 +203,6 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     @Override
     public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
         this.currentDatabaseInfo = event.getReceivedInfo();
+        updateDisplay(this.currentDatabaseInfo);
     }
 }

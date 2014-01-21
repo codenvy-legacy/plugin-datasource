@@ -35,11 +35,7 @@ public interface DataEntityPropertiesView extends View<DataEntityPropertiesView.
     interface ActionDelegate {
     }
 
-    void setObjectName(String name);
-
     void setShown(boolean shown);
-
-    void setObjectType(String type);
 
     void bindDataProvider(AbstractDataProvider<Property> dataProvider);
 
