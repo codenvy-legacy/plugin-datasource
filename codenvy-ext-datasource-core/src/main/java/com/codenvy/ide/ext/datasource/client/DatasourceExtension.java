@@ -64,6 +64,7 @@ public class DatasourceExtension {
         workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
+        // create de "Datasource" menu in menubar and insert it
         DefaultActionGroup mainMenu = (DefaultActionGroup)actionManager
                                                                        .getAction(GROUP_MAIN_MENU);
         DefaultActionGroup defaultDatasourceMainGroup = new DefaultActionGroup(
@@ -72,6 +73,8 @@ public class DatasourceExtension {
                                      defaultDatasourceMainGroup);
         Constraints beforeWindow = new Constraints(BEFORE, GROUP_WINDOW);
         mainMenu.add(defaultDatasourceMainGroup, beforeWindow);
+
+        // add submenu "New datasource" to Datasource menu
         actionManager.registerAction("NewDSConnection", newDSConnectionAction);
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
