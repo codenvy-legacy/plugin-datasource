@@ -35,6 +35,7 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
@@ -169,7 +170,10 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
                    );
         } catch (RequestException e) {
-            // TODO do somthing
+            Log.error(DatasourceExplorerPartPresenter.class,
+                      "Exception on database info fetch : " + e.getMessage());
+            notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+                                                                  Type.ERROR));
         }
     }
 }
