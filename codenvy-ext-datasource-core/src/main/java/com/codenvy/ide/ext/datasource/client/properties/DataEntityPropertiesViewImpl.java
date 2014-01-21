@@ -83,17 +83,17 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
         this.delegate = delegate;
     }
 
+    @Override
+    public void setShown(final boolean shown) {
+        this.mainContainer.setVisible(shown);
+    }
+
     /**
      * The UiBinder interface for this widget.
      * 
      * @author "Mickaël Leduque"
      */
     interface DataEntityPropertiesViewUiBinder extends UiBinder<Widget, DataEntityPropertiesViewImpl> {
-    }
-
-    @Override
-    public void setShown(final boolean shown) {
-        this.mainContainer.setVisible(shown);
     }
 
     interface PropertiesStyle extends CssResource {
