@@ -38,6 +38,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNew
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorAction;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -58,6 +59,7 @@ public class DatasourceExtension {
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
                                NewDatasourceAction newDSConnectionAction,
+                               SqlEditorAction sqlEditorAction,
                                Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
@@ -81,6 +83,10 @@ public class DatasourceExtension {
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
         wizard.addPage(newDatasourcePageProvider);
+
+        // add submenu "SQL editor" to datasource menu
+        actionManager.registerAction("SqlEditor", sqlEditorAction);
+        defaultDatasourceMainGroup.add(sqlEditorAction);
 
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
