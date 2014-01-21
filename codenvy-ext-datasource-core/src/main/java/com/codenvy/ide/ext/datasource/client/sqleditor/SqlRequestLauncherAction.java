@@ -2,6 +2,8 @@ package com.codenvy.ide.ext.datasource.client.sqleditor;
 
 import com.codenvy.ide.api.ui.action.Action;
 import com.codenvy.ide.api.ui.action.ActionEvent;
+import com.codenvy.ide.api.ui.workspace.PartStackType;
+import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.google.inject.Inject;
 
 /**
@@ -10,14 +12,25 @@ import com.google.inject.Inject;
  * @author "Mickaël Leduque"
  */
 public class SqlRequestLauncherAction extends Action {
+
+    /** The workspace agent. */
+    private final WorkspaceAgent                     workspaceAgent;
+
+    /** The factory to create new SQL editors. */
+    private final SqlRequestLauncherPresenterFactory sqlEditorFactory;
+
     @Inject
-    public SqlRequestLauncherAction(final SqlRequestLauncherConstants constants) {
+    public SqlRequestLauncherAction(final SqlRequestLauncherConstants constants,
+                                    final WorkspaceAgent workspaceAgent,
+                                    final SqlRequestLauncherPresenterFactory sqlEditorFactory) {
         super(constants.menuEntryOpenSqlEditor());
+        this.workspaceAgent = workspaceAgent;
+        this.sqlEditorFactory = sqlEditorFactory;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-
+        this.workspaceAgent.openPart(this.sqlEditorFactory.createSqlEditor(), PartStackType.EDITING);
     }
 
 }
