@@ -38,7 +38,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNew
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorAction;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlRequestLauncherAction;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -59,7 +59,7 @@ public class DatasourceExtension {
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
                                NewDatasourceAction newDSConnectionAction,
-                               SqlEditorAction sqlEditorAction,
+                               SqlRequestLauncherAction sqlEditorAction,
                                Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,

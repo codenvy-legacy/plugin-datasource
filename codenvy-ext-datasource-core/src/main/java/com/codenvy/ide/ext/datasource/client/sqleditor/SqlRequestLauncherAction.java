@@ -9,10 +9,9 @@ import com.google.inject.Inject;
  * 
  * @author "Mickaël Leduque"
  */
-public class SqlEditorAction extends Action {
-
+public class SqlRequestLauncherAction extends Action {
     @Inject
-    public SqlEditorAction(final SqlEditorConstants constants) {
+    public SqlRequestLauncherAction(final SqlRequestLauncherConstants constants) {
         super(constants.menuEntryOpenSqlEditor());
     }
 
