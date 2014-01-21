@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.properties;
 
+import com.google.gwt.cell.client.Cell.Context;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -43,6 +45,9 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     @UiField(provided = true)
     CellTable<Property>    propertiesDisplay;
 
+    @UiField
+    PropertiesStyle        style;
+
     @Inject
     public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder) {
         this.propertiesDisplay = new CellTable<Property>();
@@ -51,6 +56,11 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
             @Override
             public String getValue(final Property property) {
                 return property.getName();
+            }
+
+            @Override
+            public String getCellStyleNames(final Context context, final Property object) {
+                return style.keyColumnText();
             }
         });
         propertiesDisplay.addColumn(new TextColumn<Property>() {
@@ -84,5 +94,9 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     @Override
     public void setShown(final boolean shown) {
         this.mainContainer.setVisible(shown);
+    }
+
+    interface PropertiesStyle extends CssResource {
+        String keyColumnText();
     }
 }
