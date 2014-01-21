@@ -65,6 +65,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         this.view.bindDataProvider(this.dataProvider);
         this.constants = constants;
         eventBus.addHandler(DatabaseEntitySelectionEvent.getType(), this);
+        eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
     }
 
     @Override
@@ -203,6 +204,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     @Override
     public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
         this.currentDatabaseInfo = event.getReceivedInfo();
+        Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + this.currentDatabaseInfo.getName());
         updateDisplay(this.currentDatabaseInfo);
     }
 }
