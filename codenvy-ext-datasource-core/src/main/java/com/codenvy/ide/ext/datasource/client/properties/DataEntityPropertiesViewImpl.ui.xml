@@ -20,7 +20,11 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
     <ui:style type="com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl.PropertiesStyle">
-        .keyColumnText { font-weight: bold; }
+        .valueColumnText { font-size: small; }
+        .keyColumnText {
+            font-size: x-small;
+            font-weight: bold;
+        }
     </ui:style>
 
     <g:HTMLPanel>

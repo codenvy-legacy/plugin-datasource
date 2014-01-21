@@ -69,6 +69,11 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
             public String getValue(final Property property) {
                 return property.getValue(); // goes through a SafeHtmlRenderer
             }
+
+            @Override
+            public String getCellStyleNames(final Context context, final Property object) {
+                return style.valueColumnText();
+            }
         });
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -98,5 +103,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     interface PropertiesStyle extends CssResource {
         String keyColumnText();
+
+        String valueColumnText();
     }
 }
