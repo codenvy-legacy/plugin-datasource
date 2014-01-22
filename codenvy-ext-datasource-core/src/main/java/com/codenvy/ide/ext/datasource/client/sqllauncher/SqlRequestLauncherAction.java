@@ -1,4 +1,4 @@
-package com.codenvy.ide.ext.datasource.client.sqleditor;
+package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.api.ui.action.Action;
 import com.codenvy.ide.api.ui.action.ActionEvent;

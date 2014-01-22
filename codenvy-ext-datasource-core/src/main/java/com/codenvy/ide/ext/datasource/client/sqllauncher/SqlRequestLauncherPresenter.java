@@ -15,7 +15,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client.sqleditor;
+package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
