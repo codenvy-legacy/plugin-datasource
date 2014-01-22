@@ -18,8 +18,8 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:DockLayoutPanel>
-        <g:north size="2em">
+    <g:DockLayoutPanel unit="EM">
+        <g:north size="2">
             <g:FlowPanel>
                 <!-- use some kind of toolbar ? -->
                 <g:Label ui:field="selectDatasourceLabel" />
