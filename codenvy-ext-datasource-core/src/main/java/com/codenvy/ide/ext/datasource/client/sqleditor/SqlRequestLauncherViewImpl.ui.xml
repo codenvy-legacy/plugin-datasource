@@ -18,8 +18,23 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel>
-    	<p>(Temporary) SQL editor window</p>
-    </g:HTMLPanel>
+    <g:DockLayoutPanel>
+        <g:north size="2em">
+            <g:FlowPanel>
+                <!-- use some kind of toolbar ? -->
+                <g:Label ui:field="selectDatasourceLabel" />
+                <g:ListBox ui:field="datasourceList" />
+                <g:Label ui:field="resultLimitLabel" />
+                <g:TextBox ui:field="resultLimitInput" />
+                <g:Button ui:field="executeButton" />
+            </g:FlowPanel>
+        </g:north>
+        <g:center>
+            <g:VerticalSplitPanel>
+                <g:SimplePanel ui:field="editionZone" />
+                <g:SimplePanel ui:field="resultZone" />
+            </g:VerticalSplitPanel>
+        </g:center>
+    </g:DockLayoutPanel>
 
 </ui:UiBinder>
