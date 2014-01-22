@@ -19,7 +19,15 @@ package com.codenvy.ide.ext.datasource.client.sqleditor;
 
 import com.codenvy.ide.api.mvp.View;
 
+/**
+ * Interface for the SQL editor view component.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.ActionDelegate> {
+
+    /** Change the displayed value of the request result limit. */
+    void setResultLimit(int newResultLimit);
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {

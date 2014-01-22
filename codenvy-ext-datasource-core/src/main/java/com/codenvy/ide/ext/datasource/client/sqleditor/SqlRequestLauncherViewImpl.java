@@ -70,6 +70,11 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
         this.actionDelegate = delegate;
     }
 
+    @Override
+    public void setResultLimit(int newResultLimit) {
+        this.resultLimitInput.setValue(Integer.toString(newResultLimit));
+    }
+
     @UiHandler("executeButton")
     void handleExecuteClick(final ClickEvent e) {
 
