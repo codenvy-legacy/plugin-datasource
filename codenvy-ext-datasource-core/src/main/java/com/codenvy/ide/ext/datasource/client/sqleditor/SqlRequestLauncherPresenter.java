@@ -17,23 +17,56 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
+import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
 public class SqlRequestLauncherPresenter extends AbstractPartPresenter implements SqlRequestLauncherView.ActionDelegate {
 
+    /** Preference property name for default result limit. */
+    private static final String               PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
+
+    /** Default value for request limit (when no pref is set). */
+    private static final int                  DEFAULT_REQUEST_LIMIT                = 20;
     /** The matching view. */
     private final SqlRequestLauncherView      view;
     /** The i18n-able constants. */
     private final SqlRequestLauncherConstants constants;
 
+    private String                            selectedDatasourceId                 = null;
+    private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
+
     @Inject
-    public SqlRequestLauncherPresenter(final SqlRequestLauncherView view, final SqlRequestLauncherConstants constants) {
+    public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
+                                       final SqlRequestLauncherConstants constants,
+                                       final PreferencesManager preferencesManager) {
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
+
+        final String prefRequestLimit = preferencesManager.getValue(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT);
+
+        if (prefRequestLimit != null) {
+            try {
+                int prefValue = Integer.valueOf(prefRequestLimit);
+                if (prefValue > 0) {
+                    this.resultLimit = prefValue;
+                } else {
+                    Log.warn(SqlRequestLauncherPresenter.class, "negative value stored in preference "
+                                                                + PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT);
+                }
+            } catch (final NumberFormatException e) {
+                StringBuilder sb = new StringBuilder("Preference stored in ")
+                                                                             .append(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT)
+                                                                             .append(" is not an integer (")
+                                                                             .append(resultLimit)
+                                                                             .append(").");
+                Log.warn(SqlRequestLauncherPresenter.class, sb.toString());
+            }
+        }
     }
 
     @Override
@@ -54,5 +87,24 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
+    }
+
+    @Override
+    public void datasourceChanged(final String newDataSourceId) {
+        this.selectedDatasourceId = newDataSourceId;
+    }
+
+    @Override
+    public void resultLimitChanged(final int newResultLimit) {
+        if (newResultLimit > 0) {
+            this.resultLimit = newResultLimit;
+        } else {
+            this.view.setResultLimit(this.resultLimit);
+        }
+    }
+
+    @Override
+    public void executeRequested(final String request) {
+
     }
 }

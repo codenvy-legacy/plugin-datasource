@@ -32,5 +32,10 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
+        void datasourceChanged(String newDataSourceId);
+
+        void resultLimitChanged(int newResultLimit);
+
+        void executeRequested(String request);
     }
 }
