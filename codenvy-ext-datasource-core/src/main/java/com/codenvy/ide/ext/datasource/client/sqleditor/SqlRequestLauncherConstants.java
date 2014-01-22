@@ -9,4 +9,10 @@ public interface SqlRequestLauncherConstants extends Constants {
 
     @DefaultStringValue("SQL editor")
     String sqlEditorWindowTitle();
+
+    @DefaultStringValue("Select datasource")
+    String selectDatasourceLabel();
+
+    @DefaultStringValue("Result limit")
+    String resultLimitLabel();
 }
