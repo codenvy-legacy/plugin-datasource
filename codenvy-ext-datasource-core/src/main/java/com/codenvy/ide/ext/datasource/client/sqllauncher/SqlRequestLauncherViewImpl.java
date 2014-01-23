@@ -30,28 +30,40 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * Implementation of the view component of the SQL request launcher.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestLauncherView {
 
     private ActionDelegate actionDelegate;
 
+    /** The SQL edition zone. */
     @UiField
     AcceptsOneWidget       editorZone;
 
+    /** The request result display. */
     @UiField
     AcceptsOneWidget       resultZone;
 
+    /** The label for the datasource selection widget. */
     @UiField
     Label                  selectDatasourceLabel;
 
+    /** the datasource selection widget. */
     @UiField
     ListBox                datasourceList;
 
+    /** The label for the request result limit widget. */
     @UiField
     Label                  resultLimitLabel;
 
+    /** The request result limit widget. */
     @UiField
     TextBox                resultLimitInput;
 
+    /** The button that commands request execution. */
     @UiField
     Button                 executeButton;
 
@@ -71,7 +83,7 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
     }
 
     @Override
-    public void setResultLimit(int newResultLimit) {
+    public void setResultLimit(final int newResultLimit) {
         this.resultLimitInput.setValue(Integer.toString(newResultLimit));
     }
 
@@ -80,11 +92,19 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
         return editorZone;
     }
 
+    /**
+     * Handler for clicks on the execute button.
+     * 
+     * @param event the click event
+     */
     @UiHandler("executeButton")
-    void handleExecuteClick(final ClickEvent e) {
+    void handleExecuteClick(final ClickEvent event) {
 
     }
 
+    /**
+     * The UiBinder interface for this component.
+     */
     interface SqlRequestLauncherViewImplUiBinder extends UiBinder<Widget, SqlRequestLauncherViewImpl> {
     }
 }
