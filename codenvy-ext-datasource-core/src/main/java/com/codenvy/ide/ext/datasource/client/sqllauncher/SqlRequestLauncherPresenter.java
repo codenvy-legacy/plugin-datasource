@@ -17,8 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -39,13 +41,18 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private String                            selectedDatasourceId                 = null;
     private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
 
+    private EditorPartPresenter               editor;
+
     @Inject
     public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
                                        final SqlRequestLauncherConstants constants,
-                                       final PreferencesManager preferencesManager) {
+                                       final PreferencesManager preferencesManager,
+                                       final SqlEditorProvider sqlEditorProvider) {
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
+
+        this.editor = sqlEditorProvider.getEditor();
 
         final String prefRequestLimit = preferencesManager.getValue(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT);
 
@@ -87,6 +94,17 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
+        editor.go(this.view.getEditorZone());
+    }
+
+    @Override
+    public boolean onClose() {
+        return this.editor.onClose();
+    }
+
+    @Override
+    public void onOpen() {
+        this.editor.onOpen();
     }
 
     @Override
