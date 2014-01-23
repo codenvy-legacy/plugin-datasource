@@ -1,50 +1,27 @@
-/*
- * CODENVY CONFIDENTIAL
- * __________________
- *
- * [2013] - [2014] Codenvy, S.A.
- * All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains
- * the property of Codenvy S.A. and its suppliers,
- * if any.  The intellectual and technical concepts contained
- * herein are proprietary to Codenvy S.A.
- * and its suppliers and may be covered by U.S. and Foreign Patents,
- * patents in process, and are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Codenvy S.A..
- */
 package com.codenvy.ide.ext.datasource.core;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.sql.DataSource;
 
 import org.junit.Ignore;
 import org.junit.Test;
-
 import schemacrawler.crawl.SchemaCrawler;
-import schemacrawler.schema.Column;
-import schemacrawler.schema.Database;
-import schemacrawler.schema.Schema;
-import schemacrawler.schema.Table;
-import schemacrawler.schema.View;
+import schemacrawler.schema.*;
 import schemacrawler.schemacrawler.DatabaseConnectionOptions;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 
-public class TestPostgres {
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Properties;
+
+/**
+ * Created by Wafa on 22/01/14.
+ */
+public class TestMysql {
 
     @Ignore
     @Test
-    public void testPostgres() throws Exception {
+    public void testMysql() throws Exception {
         // having a jdbc driver connected to a local jdbc driver, explore the
         // tables and column and schemas
 
@@ -52,7 +29,7 @@ public class TestPostgres {
         props.setProperty("user", "admin");
         props.setProperty("password", "admin");
         Connection conn = DriverManager.getConnection(
-                                                      "jdbc:postgresql://localhost:5432/wafa", props);
+                "jdbc:mysql://localhost:3306/wafa", props);
         try {
             DatabaseMetaData metadata = conn.getMetaData();
             ResultSet catalogRS = metadata.getCatalogs();
@@ -82,11 +59,28 @@ public class TestPostgres {
             conn.close();
         }
 
-        final DataSource dataSource = new DatabaseConnectionOptions(
-                                                                    "org.postgresql.Driver",
-                                                                    "jdbc:postgresql://localhost:5432/wafa");
-        final Connection connection = dataSource.getConnection("admin",
-                                                               "admin");
+        System.out.println("-------- MySQL JDBC Connection Testing ------------");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Where is your MySQL JDBC Driver?");
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("MySQL JDBC Driver Registered!");
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/wafa", "admin", "admin");
+
+        } catch (SQLException e) {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+
         // Create the options
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         // Set what details are required in the schema - this affects the
@@ -116,7 +110,7 @@ public class TestPostgres {
 
                 for (final Column column : table.getColumns()) {
                     System.out.println("     o--> " + column + " ("
-                                       + column.getColumnDataType() + ")");
+                            + column.getColumnDataType() + ")");
                 }
             }
         }

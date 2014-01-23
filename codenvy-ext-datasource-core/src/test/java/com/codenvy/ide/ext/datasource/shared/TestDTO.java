@@ -40,15 +40,15 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 import com.codenvy.dto.server.DtoFactory;
 
 public class TestDTO {
-    @Ignore
+    //@Ignore
     @Test
     public void test() throws Exception {
 
         final DataSource dataSource = new DatabaseConnectionOptions(
                                                                     "org.postgresql.Driver",
-                                                                    "jdbc:postgresql://localhost:5432/nuxeo");
-        final Connection connection = dataSource.getConnection("postgres",
-                                                               "nuxeospirit");
+                                                                    "jdbc:postgresql://localhost:5432/wafa");
+        final Connection connection = dataSource.getConnection("admin",
+                                                               "admin");
         // Create the options
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         // Set what details are required in the schema - this affects the
