@@ -35,7 +35,7 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
     private ActionDelegate actionDelegate;
 
     @UiField
-    AcceptsOneWidget       editionZone;
+    AcceptsOneWidget       editorZone;
 
     @UiField
     AcceptsOneWidget       resultZone;

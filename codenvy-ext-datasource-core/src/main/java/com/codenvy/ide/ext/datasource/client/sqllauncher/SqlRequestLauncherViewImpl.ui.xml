@@ -31,7 +31,7 @@
         </g:north>
         <g:center>
             <g:VerticalSplitPanel>
-                <g:SimplePanel ui:field="editionZone" />
+                <g:SimplePanel ui:field="editorZone" />
                 <g:SimplePanel ui:field="resultZone" />
             </g:VerticalSplitPanel>
         </g:center>
