@@ -20,14 +20,14 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <g:DockLayoutPanel unit="EM">
         <g:north size="2">
-            <g:FlowPanel>
+            <g:HorizontalPanel>
                 <!-- use some kind of toolbar ? -->
                 <g:Label ui:field="selectDatasourceLabel" />
                 <g:ListBox ui:field="datasourceList" />
                 <g:Label ui:field="resultLimitLabel" />
                 <g:TextBox ui:field="resultLimitInput" />
                 <g:Button ui:field="executeButton" />
-            </g:FlowPanel>
+            </g:HorizontalPanel>
         </g:north>
         <g:center>
             <g:VerticalSplitPanel>
