@@ -15,4 +15,7 @@ public interface SqlRequestLauncherConstants extends Constants {
 
     @DefaultStringValue("Result limit")
     String resultLimitLabel();
+
+    @DefaultStringValue("Execute")
+    String executeButtonLabel();
 }

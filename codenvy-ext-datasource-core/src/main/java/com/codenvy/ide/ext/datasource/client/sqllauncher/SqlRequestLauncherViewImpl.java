@@ -62,6 +62,7 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
         initWidget(uiBinder.createAndBindUi(this));
         selectDatasourceLabel.setText(constants.selectDatasourceLabel());
         resultLimitLabel.setText(constants.resultLimitLabel());
+        executeButton.setText(constants.executeButtonLabel());
     }
 
     @Override
