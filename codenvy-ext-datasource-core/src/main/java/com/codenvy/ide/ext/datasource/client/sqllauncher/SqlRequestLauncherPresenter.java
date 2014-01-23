@@ -74,6 +74,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                 Log.warn(SqlRequestLauncherPresenter.class, sb.toString());
             }
         }
+
+        // push the request limit value to the view
+        this.view.setResultLimit(this.resultLimit);
     }
 
     @Override
