@@ -18,6 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.api.mvp.View;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 /**
  * Interface for the SQL editor view component.
@@ -29,6 +30,9 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     /** Change the displayed value of the request result limit. */
     void setResultLimit(int newResultLimit);
 
+    /** Returns the zone in which the SQL editor is to be shown. */
+    AcceptsOneWidget getEditorZone();
+
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
@@ -38,4 +42,5 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
         void executeRequested(String request);
     }
+
 }

@@ -64,7 +64,6 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
         resultLimitLabel.setText(constants.resultLimitLabel());
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setDelegate(final ActionDelegate delegate) {
         this.actionDelegate = delegate;
@@ -73,6 +72,11 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
     @Override
     public void setResultLimit(int newResultLimit) {
         this.resultLimitInput.setValue(Integer.toString(newResultLimit));
+    }
+
+    @Override
+    public AcceptsOneWidget getEditorZone() {
+        return editorZone;
     }
 
     @UiHandler("executeButton")
