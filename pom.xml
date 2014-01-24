@@ -36,7 +36,11 @@
         <codenvy.datasource.version>3.0.0-M8-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M8-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
+        <mysql-driver.version>5.1.18</mysql-driver.version>
+        <oracle-driver.version>11.2.0</oracle-driver.version>
+        <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sqlserver-driver.version>4.0</sqlserver-driver.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -124,17 +128,17 @@
             <dependency>
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>sqljdbc4</artifactId>
-                <version>4.0</version>
+                <version>${sqlserver-driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc6</artifactId>
-                <version>11.2.0</version>
+                <version>${oracle-driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.18</version>
+                <version>${mysql-driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.schemacrawler</groupId>
@@ -144,7 +148,7 @@
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>9.3-1100-jdbc41</version>
+                <version>${postgresql-driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
