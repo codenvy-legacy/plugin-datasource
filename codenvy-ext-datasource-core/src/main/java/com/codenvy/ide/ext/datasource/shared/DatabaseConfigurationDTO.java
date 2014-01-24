@@ -22,6 +22,8 @@ import com.codenvy.dto.shared.DTO;
 @DTO
 public interface DatabaseConfigurationDTO {
 
+    String getDatasourceId();
+
     String getHostname();
 
     int getPort();
@@ -35,6 +37,8 @@ public interface DatabaseConfigurationDTO {
     DatabaseType getDatabaseType();
 
 
+    DatabaseConfigurationDTO withDatasourceId(String type);
+
     DatabaseConfigurationDTO withDatabaseName(String databaseName);
 
     DatabaseConfigurationDTO withHostname(String hostname);
@@ -47,6 +51,8 @@ public interface DatabaseConfigurationDTO {
 
     DatabaseConfigurationDTO withDatabaseType(DatabaseType type);
 
+
+    void setDatasourceId(String id);
 
     void setDatabaseName(String databaseName);
 
