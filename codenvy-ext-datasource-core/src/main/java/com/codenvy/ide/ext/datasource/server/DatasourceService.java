@@ -18,10 +18,14 @@
 package com.codenvy.ide.ext.datasource.server;
 
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -36,7 +40,6 @@ import schemacrawler.schema.Database;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
-import schemacrawler.schemacrawler.DatabaseConnectionOptions;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
@@ -47,11 +50,27 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
+import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.google.inject.Inject;
 
 @Path("{ws-name}/datasource")
 public class DatasourceService {
-    private static final Logger LOG = LoggerFactory.getLogger(DatasourceService.class);
+    private static final Logger  LOG = LoggerFactory.getLogger(DatasourceService.class);
 
+    private final JdbcUrlBuilder jdbcUrlBuilder;
+
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("postgresql driver not present");
+        }
+    }
+
+    @Inject
+    public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder) {
+        this.jdbcUrlBuilder = jdbcUrlBuilder;
+    }
 
     @Path("database")
     @POST
@@ -59,14 +78,8 @@ public class DatasourceService {
     public String getDatabase(final DatabaseConfigurationDTO databaseConfig) throws Exception {
 
         Database database = null;
-        final DataSource dataSource = new DatabaseConnectionOptions(
-                                                                    "org.postgresql.Driver",
-                                                                    "jdbc:postgresql://" + databaseConfig.getHostname() +
-                                                                        ":" + Integer.toString(databaseConfig.getPort()) +
-                                                                        "/" + databaseConfig.getDatabaseName());
 
-        try (final Connection connection = dataSource.getConnection(databaseConfig.getUsername(),
-                                                                    databaseConfig.getPassword());) {
+        try (final Connection connection = getDatabaseConnection(databaseConfig)) {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
             options.setSchemaInfoLevel(SchemaInfoLevel.standard());
             options.setRoutineInclusionRule(new ExcludeAll());
@@ -111,5 +124,17 @@ public class DatasourceService {
         }
 
         return DtoFactory.getInstance().toJson(databaseDTO);
+    }
+
+    private Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
+        Driver[] drivers = Collections.list(DriverManager.getDrivers()).toArray(new Driver[0]);
+
+
+        LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
+        Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
+                                                            configuration.getUsername(),
+                                                            configuration.getPassword());
+
+        return connection;
     }
 }
