@@ -19,6 +19,7 @@ package com.codenvy.ide.ext.datasource.client;
 
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
@@ -29,6 +30,9 @@ public interface DatasourceClientService {
                            @NotNull int port,
                            @NotNull String username,
                            @NotNull String password,
+                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
+
+    void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,
                            @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
 }

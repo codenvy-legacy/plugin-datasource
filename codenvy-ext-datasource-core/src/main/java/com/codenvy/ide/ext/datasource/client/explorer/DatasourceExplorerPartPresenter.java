@@ -148,8 +148,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
             DatabaseConfigurationDTO datasourceObject = datasourcesMap.get(datasourceId);
             final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...", Notification.Status.PROGRESS);
             notificationManager.showNotification(fetchDatabaseNotification);
-            service.fetchDatabaseInfo(datasourceObject.getDatabaseName(), datasourceObject.getHostname(), datasourceObject.getPort(),
-                                      datasourceObject.getUsername(), datasourceObject.getPassword(),
+            service.fetchDatabaseInfo(datasourceObject,
                                       new AsyncRequestCallback<String>(new StringUnmarshaller()) {
                                           @Override
                                           protected void onSuccess(String result) {

@@ -81,4 +81,15 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                     .header(ACCEPT, APPLICATION_JSON).send(asyncRequestCallback);
     }
 
+    @Override
+    public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
+                                  final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        String url = restServiceContext + "/datasource/database";
+        AsyncRequest.build(RequestBuilder.POST, url, true)
+                    .data(dtoFactory.toJson(configuration))
+                    .header(CONTENTTYPE, APPLICATION_JSON)
+                    .header(ACCEPT, APPLICATION_JSON)
+                    .send(asyncRequestCallback);
+    }
+
 }
