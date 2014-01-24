@@ -26,6 +26,7 @@ public class DatasourceServiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(DatasourceService.class);
+        bind(JdbcUrlBuilder.class);
     }
 
 }
