@@ -35,4 +35,7 @@ public interface DatasourceClientService {
     void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,
                            @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
+    void executeSqlRequest(@NotNull DatabaseConfigurationDTO configuration,
+                           int resultLimit,
+                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 }
