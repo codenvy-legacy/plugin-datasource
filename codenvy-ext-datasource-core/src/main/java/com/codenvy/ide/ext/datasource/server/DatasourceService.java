@@ -20,7 +20,10 @@ package com.codenvy.ide.ext.datasource.server;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,6 +57,7 @@ import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
@@ -165,6 +169,63 @@ public class DatasourceService {
         }
 
         return DtoFactory.getInstance().toJson(databaseDTO);
+    }
+
+
+    @Path("executeSqlRequest")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String executeSqlRequest(final DatabaseConfigurationDTO databaseConfig,
+                                    final String rawRequest,
+                                    final int resultLimit) throws SQLException, DatabaseDefinitionException {
+
+        try (
+            final Connection connection = getDatabaseConnection(databaseConfig);
+            Statement statement = connection.createStatement();) {
+
+            RequestResultDTO result = DtoFactory.getInstance().createDto(RequestResultDTO.class);
+
+            statement.setMaxRows(resultLimit);
+            boolean returnsRows = statement.execute(rawRequest);
+
+            final List<List<String>> lines = new ArrayList<>();
+
+            if (returnsRows) {
+                ResultSet resultSet = statement.getResultSet();
+                while (resultSet != null) {
+                    final ResultSetMetaData metadata = resultSet.getMetaData();
+                    final int columnCount = metadata.getColumnCount();
+
+                    // first line : column names
+                    final List<String> columnNames = new ArrayList<>();
+                    for (int i = 0; i < columnCount; i++) {
+                        columnNames.add(metadata.getColumnLabel(i));
+                    }
+                    lines.add(columnNames);
+
+                    // following lines : actual data
+                    while (resultSet.next()) {
+                        final List<String> line = new ArrayList<>();
+                        for (int i = 0; i < columnCount; i++) {
+                            line.add(resultSet.getString(i));
+                        }
+                        lines.add(line);
+                    }
+                    resultSet.close();
+                    resultSet = statement.getResultSet();
+                }
+            } else {
+                int count = statement.getUpdateCount();
+                while (count != -1) {
+                    final List<String> line = new ArrayList<>();
+                    lines.add(line);
+                    line.add(Integer.toString(count));
+                    count = statement.getUpdateCount();
+                }
+            }
+            result.setLines(lines);
+            return DtoFactory.getInstance().toJson(result);
+        }
     }
 
     private Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
