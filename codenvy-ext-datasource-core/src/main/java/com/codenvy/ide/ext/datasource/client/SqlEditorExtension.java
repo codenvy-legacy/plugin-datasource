@@ -25,6 +25,7 @@ import com.codenvy.ide.api.resources.ResourceProvider;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -47,6 +48,7 @@ public class SqlEditorExtension {
                               final SqlEditorResources sqlEditorResources,
                               final ResourceProvider resourceProvider) {
 
+        Log.info(SqlEditorExtension.class, "Initialization of SQL editor extension.");
         // inject sql parser
         ScriptInjector.fromString(sqlEditorResources.sqlParserJs().getText()).setWindow(TOP_WINDOW).inject();
 
