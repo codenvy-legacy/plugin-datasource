@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
@@ -43,16 +44,20 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
     private EditorPartPresenter               editor;
 
+    protected DatasourceClientService         datasourceClientService;
+
     @Inject
     public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
                                        final SqlRequestLauncherConstants constants,
                                        final PreferencesManager preferencesManager,
-                                       final SqlEditorProvider sqlEditorProvider) {
+                                       final SqlEditorProvider sqlEditorProvider,
+                                       final DatasourceClientService service) {
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
 
         this.editor = sqlEditorProvider.getEditor();
+        this.datasourceClientService = service;
 
         final String prefRequestLimit = preferencesManager.getValue(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT);
 
