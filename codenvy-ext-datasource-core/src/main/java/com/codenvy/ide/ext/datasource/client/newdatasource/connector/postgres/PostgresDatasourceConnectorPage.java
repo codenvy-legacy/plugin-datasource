@@ -28,6 +28,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
@@ -83,7 +84,8 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                            dtoFactory.createDto(DatabaseConfigurationDTO.class)
                                      .withDatabaseName(view.getDatabaseName())
                                      .withHostname(view.getHostname()).withPort(view.getPort()).withUsername(view.getUsername())
-                                     .withPassword(view.getPassword()));
+                                     .withPassword(view.getPassword())
+                                     .withDatabaseType(DatabaseType.POSTGRES));
         preferencesManager.setPreference("datasources", dtoFactory.toJson(datasourcesPreferences));
 
         datasourceExplorerView.refreshDatasourceList();
