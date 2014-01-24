@@ -92,6 +92,11 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
         return editorZone;
     }
 
+    @Override
+    public ListBox getDatasourceSelector() {
+        return this.datasourceList;
+    }
+
     /**
      * Handler for clicks on the execute button.
      * 

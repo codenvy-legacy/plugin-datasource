@@ -19,6 +19,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.api.mvp.View;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.ListBox;
 
 /**
  * Interface for the SQL editor view component.
@@ -32,6 +33,8 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
     /** Returns the zone in which the SQL editor is to be shown. */
     AcceptsOneWidget getEditorZone();
+
+    ListBox getDatasourceSelector();
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
