@@ -32,6 +32,8 @@ public interface DatabaseConfigurationDTO {
 
     String getPassword();
 
+    DatabaseType getDatabaseType();
+
 
     DatabaseConfigurationDTO withDatabaseName(String databaseName);
 
@@ -43,6 +45,9 @@ public interface DatabaseConfigurationDTO {
 
     DatabaseConfigurationDTO withPassword(String password);
 
+    DatabaseConfigurationDTO withDatabaseType(DatabaseType type);
+
+
     void setDatabaseName(String databaseName);
 
     void setHostname(String hostname);
@@ -52,5 +57,7 @@ public interface DatabaseConfigurationDTO {
     void setUsername(String username);
 
     void setPassword(String password);
+
+    void setDatabaseType(DatabaseType type);
 
 }
