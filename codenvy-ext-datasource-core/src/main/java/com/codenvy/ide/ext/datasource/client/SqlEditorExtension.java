@@ -39,6 +39,8 @@ public class SqlEditorExtension {
 
     public static final String GENERIC_SQL_MIME_TYPE = "text/x-sql";
     public static final String ORACLE_SQL_MIME_TYPE  = "text/x-plsql";
+    public static final String MYSQL_SQL_MIME_TYPE   = "text/x-mysql";
+    public static final String MSSQL_SQL_MIME_TYPE   = "text/x-mssql";
 
     public static final String SQL_FILE_EXTENSION    = "sql";
 
