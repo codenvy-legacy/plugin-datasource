@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import java.util.Collection;
+
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.mvp.View;
@@ -28,8 +30,8 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
  */
 public interface DatasourceExplorerView extends
                                        View<DatasourceExplorerView.ActionDelegate> {
-
     void refreshDatasourceList();
+
     /**
      * Sets items into tree.
      * 
@@ -44,6 +46,16 @@ public interface DatasourceExplorerView extends
      */
     void setTitle(@NotNull String title);
 
+    /**
+     * Fills the datasource selection component.
+     * 
+     * @param datasourceIds the ids (keys) of the datasources
+     */
+    void setDatasourceList(Collection<String> datasourceIds);
+
+    /**
+     * The action delegate for this view.
+     */
     public interface ActionDelegate extends BaseActionDelegate {
         /**
          * Performs any actions in response to node selection.

@@ -17,6 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -100,6 +101,14 @@ public class DatasourceExplorerViewImpl extends
         datasourceListBox.clear();
         for (String dsIds : datasourcesIds) {
             datasourceListBox.insertItem(dsIds, i++);
+        }
+    }
+
+    @Override
+    public void setDatasourceList(final Collection<String> datasourceIds) {
+        datasourceListBox.clear();
+        for (String dsIds : datasourceIds) {
+            datasourceListBox.addItem(dsIds);
         }
     }
 
