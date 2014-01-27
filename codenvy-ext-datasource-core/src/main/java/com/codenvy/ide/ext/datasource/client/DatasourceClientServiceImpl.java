@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.ui.loader.Loader;
@@ -93,10 +94,16 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     }
 
     @Override
-    public void executeSqlRequest(DatabaseConfigurationDTO configuration, int resultLimit, AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+    public void executeSqlRequest(final DatabaseConfigurationDTO configuration,
+                                  final int resultLimit,
+                                  final AsyncRequestCallback<String> asyncRequestCallback)
+                                                                                          throws RequestException {
         String url = restServiceContext + "/datasource/executeSqlRequest";
+        RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
+                                                            .withDatabase(configuration)
+                                                            .withResultLimit(resultLimit);
         AsyncRequest.build(RequestBuilder.POST, url, true)
-                    .data(dtoFactory.toJson(configuration))
+                    .data(dtoFactory.toJson(requestParameterDTO))
                     .header(CONTENTTYPE, APPLICATION_JSON)
                     .header(ACCEPT, APPLICATION_JSON)
                     .send(asyncRequestCallback);
