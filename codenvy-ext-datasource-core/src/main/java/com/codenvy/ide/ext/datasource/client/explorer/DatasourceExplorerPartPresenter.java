@@ -92,6 +92,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+
+        // fill the datasources list (deferred until insertion)
+        setupDatasourceList();
     }
 
     /** Adds behavior to view components */
@@ -172,6 +175,13 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onDatasourceCreated(final DatasourceCreatedEvent event) {
+        setupDatasourceList();
+    }
+
+    /**
+     * Fills the datasource list widget with the known datasource ids.
+     */
+    private void setupDatasourceList() {
         Collection<String> datasourceIds = this.datasourceManager.getNames();
         this.view.setDatasourceList(datasourceIds);
     }
