@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import java.util.Collection;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -93,8 +95,30 @@ public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestL
     }
 
     @Override
-    public ListBox getDatasourceSelector() {
-        return this.datasourceList;
+    public void setDatasourceList(final Collection<String> datasourceIds) {
+        // save the currently selected item
+        int index = this.datasourceList.getSelectedIndex();
+        String selectedValue = null;
+        if (index != -1) {
+            selectedValue = this.datasourceList.getValue(index);
+        }
+
+        this.datasourceList.clear();
+        if (datasourceIds != null) {
+            for (String datasourceId : datasourceIds) {
+                this.datasourceList.addItem(datasourceId);
+            }
+        }
+
+        // restore selected value if needed
+        if (index != -1) {
+            for (int i = 0; i < this.datasourceList.getItemCount(); i++) {
+                if (this.datasourceList.getItemText(i).equals(selectedValue)) {
+                    this.datasourceList.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
     }
 
     /**
