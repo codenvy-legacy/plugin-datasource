@@ -72,4 +72,8 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
     private void saveDatasourceConfigPreferences(final DatasourceConfigPreferences datasourcesPreferences) {
         preferencesManager.setPreference(PREFERENCE_KEY, dtoFactory.toJson(datasourcesPreferences));
     }
+
+    public String toString() {
+        return "DatasourceManagerPrefImpl[" + preferencesManager.getValue(PREFERENCE_KEY) + "]";
+    }
 }
