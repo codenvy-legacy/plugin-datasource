@@ -86,6 +86,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.datasourceManager = datasourceManager;
         this.view.setTitle("DataSource Explorer");
         bind();
+
+        // register for datasource creation events
+        this.eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
     }
 
     /** {@inheritDoc} */
