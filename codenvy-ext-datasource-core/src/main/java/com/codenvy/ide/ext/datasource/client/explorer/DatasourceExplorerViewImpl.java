@@ -18,16 +18,12 @@
 package com.codenvy.ide.ext.datasource.client.explorer;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
-import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
-import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
@@ -80,28 +76,6 @@ public class DatasourceExplorerViewImpl extends
         dsContainer.addSouth(new Label("Property Panel"), 200);
         dsContainer.add(tree.asWidget());
         container.add(dsContainer);
-    }
-
-    @Override
-    public void refreshDatasourceList() {
-        // TODO do it from a service
-        String datasourcesJson = preferencesManager.getValue("datasources");
-
-        if (datasourcesJson == null) {
-            return;
-        }
-        DatasourceConfigPreferences datasourcesPreferences =
-                                                             dtoFactory.createDtoFromJson(datasourcesJson,
-                                                                                          DatasourceConfigPreferences.class);
-
-        Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
-        Set<String> datasourcesIds = datasourcesMap.keySet();
-
-        int i = 0;
-        datasourceListBox.clear();
-        for (String dsIds : datasourcesIds) {
-            datasourceListBox.insertItem(dsIds, i++);
-        }
     }
 
     @Override

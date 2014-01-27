@@ -30,7 +30,6 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
  */
 public interface DatasourceExplorerView extends
                                        View<DatasourceExplorerView.ActionDelegate> {
-    void refreshDatasourceList();
 
     /**
      * Sets items into tree.
