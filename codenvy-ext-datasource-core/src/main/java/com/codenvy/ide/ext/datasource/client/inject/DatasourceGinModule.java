@@ -21,6 +21,8 @@ import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeView;
 import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeViewImpl;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
@@ -55,5 +57,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
         bind(PostgresDatasourceConnectorView.class).to(PostgresDatasourceConnectorViewImpl.class);
 
+        bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
     }
 }
