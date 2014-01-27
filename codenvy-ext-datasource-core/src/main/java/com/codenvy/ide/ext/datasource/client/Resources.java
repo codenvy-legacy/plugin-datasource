@@ -15,4 +15,13 @@ public interface Resources extends ClientBundle {
      */
     @Source("PostgreSQL.png")
     ImageResource getPostgreSqlLogo();
+
+    @Source("mySQL.png")
+    ImageResource getMySqlLogo();
+
+    @Source("sqlServer.png")
+    ImageResource getSqlServerLogo();
+
+    @Source("oracle.png")
+    ImageResource getOracleLogo();
 }
