@@ -57,6 +57,7 @@ import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
@@ -175,18 +176,16 @@ public class DatasourceService {
     @Path("executeSqlRequest")
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public String executeSqlRequest(final DatabaseConfigurationDTO databaseConfig,
-                                    final String rawRequest,
-                                    final int resultLimit) throws SQLException, DatabaseDefinitionException {
+    public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
 
         try (
-            final Connection connection = getDatabaseConnection(databaseConfig);
+            final Connection connection = getDatabaseConnection(request.getDatabase());
             Statement statement = connection.createStatement();) {
 
             RequestResultDTO result = DtoFactory.getInstance().createDto(RequestResultDTO.class);
 
-            statement.setMaxRows(resultLimit);
-            boolean returnsRows = statement.execute(rawRequest);
+            statement.setMaxRows(request.getResultLimit());
+            boolean returnsRows = statement.execute(request.getSqlRequest());
 
             final List<List<String>> lines = new ArrayList<>();
 
