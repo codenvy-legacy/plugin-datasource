@@ -21,16 +21,35 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
+import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.web.bindery.event.shared.EventBus;
 
 public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage {
-    private String datasourceId;
+    private String            datasourceId;
+    private DatasourceManager datasourceManager;
+    private EventBus          eventBus;
 
-    public AbstractNewDatasourceConnectorPage(@Nullable String caption, @Nullable ImageResource image, @NotNull String datasourceId) {
+    public AbstractNewDatasourceConnectorPage(@Nullable final String caption,
+                                              @Nullable final ImageResource image,
+                                              @NotNull final String datasourceId,
+                                              @NotNull final DatasourceManager datasourceManager,
+                                              @NotNull final EventBus eventBus) {
         super(caption, image);
         this.datasourceId = datasourceId;
+        this.datasourceManager = datasourceManager;
+        this.eventBus = eventBus;
     }
+
+    /**
+     * Returns the currently configured database.
+     * 
+     * @return the database
+     */
+    protected abstract DatabaseConfigurationDTO getConfiguredDatabase();
 
     /** {@inheritDoc} */
     @Override
@@ -61,5 +80,14 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     public boolean inContext() {
         NewDatasourceConnector datasourceConnector = wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR);
         return datasourceConnector != null && datasourceConnector.getId().equals(datasourceId);
+    }
+
+
+    @Override
+    public void commit(final CommitCallback callback) {
+        DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
+        this.datasourceManager.add(configuredDatabase);
+
+        this.eventBus.fireEvent(new DatasourceCreatedEvent(configuredDatabase));
     }
 }
