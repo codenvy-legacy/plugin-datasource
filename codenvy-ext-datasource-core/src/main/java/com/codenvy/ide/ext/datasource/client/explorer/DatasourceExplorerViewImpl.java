@@ -107,8 +107,10 @@ public class DatasourceExplorerViewImpl extends
     @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
         datasourceListBox.clear();
-        for (String dsIds : datasourceIds) {
-            datasourceListBox.addItem(dsIds);
+        if (datasourceIds != null) {
+            for (String dsIds : datasourceIds) {
+                datasourceListBox.addItem(dsIds);
+            }
         }
     }
 
