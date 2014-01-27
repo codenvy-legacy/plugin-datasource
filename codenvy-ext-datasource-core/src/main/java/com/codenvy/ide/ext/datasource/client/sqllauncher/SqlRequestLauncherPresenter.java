@@ -175,6 +175,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                 try {
                     datasourceClientService.executeSqlRequest(databaseConf,
                                                               this.resultLimit,
+                                                              rawSql,
                                                               new AsyncRequestCallback<String>(new StringUnmarshaller()) {
 
                                                                   @Override

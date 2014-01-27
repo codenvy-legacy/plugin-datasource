@@ -96,12 +96,14 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public void executeSqlRequest(final DatabaseConfigurationDTO configuration,
                                   final int resultLimit,
+                                  final String sqlRequest,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
         String url = restServiceContext + "/datasource/executeSqlRequest";
         RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
                                                             .withDatabase(configuration)
-                                                            .withResultLimit(resultLimit);
+                                                            .withResultLimit(resultLimit)
+                                                            .withSqlRequest(sqlRequest);
         AsyncRequest.build(RequestBuilder.POST, url, true)
                     .data(dtoFactory.toJson(requestParameterDTO))
                     .header(CONTENTTYPE, APPLICATION_JSON)
