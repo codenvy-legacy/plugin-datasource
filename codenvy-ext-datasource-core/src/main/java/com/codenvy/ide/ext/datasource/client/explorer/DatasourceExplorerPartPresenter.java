@@ -17,7 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import java.util.Map;
+import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,14 +25,15 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
-import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
+import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
-import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
 import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.util.loging.Log;
@@ -51,13 +52,15 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 @Singleton
 public class DatasourceExplorerPartPresenter extends BasePresenter implements
-                                                                  DatasourceExplorerView.ActionDelegate, DatasourceExplorerPart {
+                                                                  DatasourceExplorerView.ActionDelegate,
+                                                                  DatasourceExplorerPart,
+                                                                  DatasourceCreatedHandler {
     protected DatasourceExplorerView  view;
     protected EventBus                eventBus;
     protected DatasourceClientService service;
     protected DtoFactory              dtoFactory;
     protected NotificationManager     notificationManager;
-    protected PreferencesManager      preferencesManager;
+    protected DatasourceManager       datasourceManager;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -74,13 +77,13 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            DatasourceClientService service,
                                            DtoFactory dtoFactory,
                                            NotificationManager notificationManager,
-                                           PreferencesManager preferencesManager) {
+                                           final DatasourceManager datasourceManager) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
-        this.preferencesManager = preferencesManager;
+        this.datasourceManager = datasourceManager;
         this.view.setTitle("DataSource Explorer");
         bind();
     }
@@ -121,7 +124,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onDatabaseMetadataEntityAction(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
-        Window.alert("datasources preferences: " + preferencesManager.getValue("datasources"));
+        Window.alert("datasources preferences: " + this.datasourceManager.toString());
     }
 
     /** {@inheritDoc} */
@@ -133,20 +136,11 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     @Override
     public void onClickExploreButton(String datasourceId) {
         try {
-            // fetch datasource from datasourceId
-            // TODO do it from a service
-            String datasourcesJson = preferencesManager.getValue("datasources");
 
-            if (datasourcesJson == null) {
-                return;
-            }
-            DatasourceConfigPreferences datasourcesPreferences =
-                                                                 dtoFactory.createDtoFromJson(datasourcesJson,
-                                                                                              DatasourceConfigPreferences.class);
+            DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
 
-            Map<String, DatabaseConfigurationDTO> datasourcesMap = datasourcesPreferences.getDatasources();
-            DatabaseConfigurationDTO datasourceObject = datasourcesMap.get(datasourceId);
-            final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...", Notification.Status.PROGRESS);
+            final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...",
+                                                                            Notification.Status.PROGRESS);
             notificationManager.showNotification(fetchDatabaseNotification);
             service.fetchDatabaseInfo(datasourceObject,
                                       new AsyncRequestCallback<String>(new StringUnmarshaller()) {
@@ -174,5 +168,11 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
             notificationManager.showNotification(new Notification("Failed fetching database metadatas",
                                                                   Type.ERROR));
         }
+    }
+
+    @Override
+    public void onDatasourceCreated(final DatasourceCreatedEvent event) {
+        Collection<String> datasourceIds = this.datasourceManager.getNames();
+        this.view.setDatasourceList(datasourceIds);
     }
 }
