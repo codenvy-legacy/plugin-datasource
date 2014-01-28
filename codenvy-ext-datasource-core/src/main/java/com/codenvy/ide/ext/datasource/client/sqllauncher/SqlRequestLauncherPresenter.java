@@ -38,6 +38,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -63,6 +64,8 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private DatasourceClientService           datasourceClientService;
     private NotificationManager               notificationManager;
     private DatasourceManager                 datasourceManager;
+
+    private TextArea                          editorArea                           = new TextArea();
 
     @Inject
     public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
@@ -133,7 +136,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
-        editor.go(this.view.getEditorZone());
+        // editor.go(this.view.getEditorZone());
+        this.view.getEditorZone().setWidget(editorArea);
+
 
         setupDatasourceComponent();
     }
