@@ -19,13 +19,14 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import java.util.Collection;
 
+import com.codenvy.ide.Resources;
+import com.codenvy.ide.api.parts.base.BaseView;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -37,51 +38,51 @@ import com.google.inject.Inject;
  * 
  * @author "Mickaël Leduque"
  */
-public class SqlRequestLauncherViewImpl extends Composite implements SqlRequestLauncherView {
+public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
 
-    private ActionDelegate actionDelegate;
+    @UiField
+    Widget           launcherContainer;
 
     /** The SQL edition zone. */
     @UiField
-    AcceptsOneWidget       editorZone;
+    AcceptsOneWidget editorZone;
 
     /** The request result display. */
     @UiField
-    AcceptsOneWidget       resultZone;
+    AcceptsOneWidget resultZone;
 
     /** The label for the datasource selection widget. */
     @UiField
-    Label                  selectDatasourceLabel;
+    Label            selectDatasourceLabel;
 
     /** the datasource selection widget. */
     @UiField
-    ListBox                datasourceList;
+    ListBox          datasourceList;
 
     /** The label for the request result limit widget. */
     @UiField
-    Label                  resultLimitLabel;
+    Label            resultLimitLabel;
 
     /** The request result limit widget. */
     @UiField
-    TextBox                resultLimitInput;
+    TextBox          resultLimitInput;
 
     /** The button that commands request execution. */
     @UiField
-    Button                 executeButton;
+    Button           executeButton;
 
 
     @Inject
-    public SqlRequestLauncherViewImpl(final SqlRequestLauncherViewImplUiBinder uiBinder,
+    public SqlRequestLauncherViewImpl(final Resources resources,
+                                      final SqlRequestLauncherViewImplUiBinder uiBinder,
                                       final SqlRequestLauncherConstants constants) {
-        initWidget(uiBinder.createAndBindUi(this));
+        super(resources);
+        uiBinder.createAndBindUi(this);
+        container.add(this.launcherContainer);
+
         selectDatasourceLabel.setText(constants.selectDatasourceLabel());
         resultLimitLabel.setText(constants.resultLimitLabel());
         executeButton.setText(constants.executeButtonLabel());
-    }
-
-    @Override
-    public void setDelegate(final ActionDelegate delegate) {
-        this.actionDelegate = delegate;
     }
 
     @Override
