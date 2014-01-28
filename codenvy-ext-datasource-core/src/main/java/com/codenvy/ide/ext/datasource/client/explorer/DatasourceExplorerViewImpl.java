@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
-import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -48,7 +47,6 @@ public class DatasourceExplorerViewImpl extends
     protected Tree<EntityTreeNode> tree;
     protected DockLayoutPanel      dsContainer;
     protected ListBox              datasourceListBox;
-    protected PreferencesManager   preferencesManager;
     protected DtoFactory           dtoFactory;
     protected Button               exploreButton;
     protected DockLayoutPanel      topDsContainer;
@@ -57,10 +55,8 @@ public class DatasourceExplorerViewImpl extends
 
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
-                                      final PreferencesManager preferenceManager,
                                       final DtoFactory dtoFactory) {
         super(resources);
-        this.preferencesManager = preferenceManager;
         this.dtoFactory = dtoFactory;
         dsContainer = new DockLayoutPanel(Style.Unit.PX);
         topDsContainer = new DockLayoutPanel(Style.Unit.PX);
