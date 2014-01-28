@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import java.util.Collection;
 
 import com.codenvy.ide.api.mvp.View;
+import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 /**
@@ -38,7 +39,7 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     void setDatasourceList(Collection<String> datasourceIds);
 
     /** Required for delegating functions in view. */
-    public interface ActionDelegate {
+    public interface ActionDelegate extends BaseActionDelegate {
 
         void datasourceChanged(String newDataSourceId);
 

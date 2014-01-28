@@ -205,4 +205,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     public void onDatasourceCreated(DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
     }
+
+    @Override
+    public void minimize() {
+        // nothing to do
+    }
 }
