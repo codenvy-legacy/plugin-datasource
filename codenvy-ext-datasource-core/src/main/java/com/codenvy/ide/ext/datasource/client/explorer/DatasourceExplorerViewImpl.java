@@ -27,15 +27,16 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -45,45 +46,46 @@ import elemental.html.DragEvent;
 public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
                                                                                       DatasourceExplorerView {
-    protected Tree<EntityTreeNode> tree;
-    protected DockLayoutPanel      dsContainer;
-    protected ListBox              datasourceListBox;
-    protected DtoFactory           dtoFactory;
-    protected Button               exploreButton;
-    protected DockLayoutPanel      topDsContainer;
 
-    private SimplePanel            propertiesContainer;
+    protected DtoFactory           dtoFactory;
+
+    @UiField
+    protected Panel                mainContainer;
+
+    @UiField(provided = true)
+    protected Tree<EntityTreeNode> tree;
+
+    @UiField
+    protected ListBox              datasourceListBox;
+
+    @UiField
+    protected SimplePanel          propertiesContainer;
+
+    @UiField
+    protected Button               exploreButton;
+
+    @UiHandler("exploreButton")
+    public void onClick(ClickEvent event) {
+        delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+    }
 
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
-                                      final DtoFactory dtoFactory) {
+                                      final DtoFactory dtoFactory,
+                                      final DatasourceExplorerViewUiBinder uiBinder,
+                                      final DatasourceExplorerConstants constants) {
         super(resources);
         this.dtoFactory = dtoFactory;
-        dsContainer = new DockLayoutPanel(Style.Unit.PX);
-        topDsContainer = new DockLayoutPanel(Style.Unit.PX);
+
         tree = Tree.create(resources,
                            new DatabaseMetadataEntityDTODataAdapter(),
                            new DatabaseMetadataEntityDTORenderer(resources));
-        datasourceListBox = new ListBox();
-        exploreButton = new Button("Explore");
-        exploreButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
-            }
-        });
-        dsContainer.addNorth(topDsContainer, 25);
-        topDsContainer.addWest(datasourceListBox, 120);
-        topDsContainer.add(exploreButton);
 
-        this.propertiesContainer = new SimplePanel();
+        uiBinder.createAndBindUi(this);
 
-        SplitLayoutPanel splitPanel = new SplitLayoutPanel();
-        splitPanel.addSouth(this.propertiesContainer, 200);
-        splitPanel.add(tree.asWidget());
+        this.exploreButton.setText(constants.exploreButtonLabel());
 
-        dsContainer.add(splitPanel);
-        container.add(dsContainer);
+        container.add(mainContainer);
     }
 
     @Override
@@ -153,5 +155,8 @@ public class DatasourceExplorerViewImpl extends
             public void onRootDragDrop(DragEvent event) {
             }
         });
+    }
+
+    interface DatasourceExplorerViewUiBinder extends UiBinder<Widget, DatasourceExplorerViewImpl> {
     }
 }
