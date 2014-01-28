@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
-import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
@@ -47,8 +46,6 @@ public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
                                                                                       DatasourceExplorerView {
 
-    protected DtoFactory           dtoFactory;
-
     @UiField
     protected Panel                mainContainer;
 
@@ -71,11 +68,9 @@ public class DatasourceExplorerViewImpl extends
 
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
-                                      final DtoFactory dtoFactory,
                                       final DatasourceExplorerViewUiBinder uiBinder,
                                       final DatasourceExplorerConstants constants) {
         super(resources);
-        this.dtoFactory = dtoFactory;
 
         tree = Tree.create(resources,
                            new DatabaseMetadataEntityDTODataAdapter(),
