@@ -57,7 +57,6 @@ public class PostgresDatasourceConnectorViewImpl extends Composite implements Po
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
         portField.setText("5432"); // default postgres port
-        dbName.setText("nuxeo");
     }
 
     @Override
