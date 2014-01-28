@@ -84,7 +84,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages = Collections.createArray();
         wizardPages.add(pgConnectorPageProvider);
         connectorAgent.register("postgres", "PostgreSQL", resources.getPostgreSqlLogo(), wizardPages);
-        connectorAgent.register("mysql","mySQL", resources.getMySqlLogo(), wizardPages);
+       // connectorAgent.register("mysql","mySQL", resources.getMySqlLogo(), wizardPages);
     }
 
 }

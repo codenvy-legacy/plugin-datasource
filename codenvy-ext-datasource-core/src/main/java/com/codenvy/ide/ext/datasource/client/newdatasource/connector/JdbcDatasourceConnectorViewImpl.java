@@ -15,7 +15,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres;
+package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -26,12 +26,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 /**
- * The implementation of {@link PostgresDatasourceConnectorView}.
+ * The implementation of {@link JdbcDatasourceConnectorView}.
  * 
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */
-public class PostgresDatasourceConnectorViewImpl extends Composite implements PostgresDatasourceConnectorView {
-    interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, PostgresDatasourceConnectorViewImpl> {
+public class JdbcDatasourceConnectorViewImpl extends Composite implements JdbcDatasourceConnectorView {
+    interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, JdbcDatasourceConnectorViewImpl> {
     }
 
     @UiField
@@ -53,7 +53,7 @@ public class PostgresDatasourceConnectorViewImpl extends Composite implements Po
 
 
     @Inject
-    public PostgresDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
+    public JdbcDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
         portField.setText("5432"); // default postgres port

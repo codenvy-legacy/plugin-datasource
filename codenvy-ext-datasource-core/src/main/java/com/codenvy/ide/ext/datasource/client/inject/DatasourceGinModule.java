@@ -33,8 +33,8 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPr
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorViewImpl;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorViewImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -56,7 +56,7 @@ public class DatasourceGinModule extends AbstractGinModule {
                                  .in(Singleton.class);
         bind(NewDatasourceConnectorAgent.class).to(NewDatasourceConnectorAgentImpl.class).in(Singleton.class);
         bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
-        bind(PostgresDatasourceConnectorView.class).to(PostgresDatasourceConnectorViewImpl.class);
+        bind(JdbcDatasourceConnectorView.class).to(JdbcDatasourceConnectorViewImpl.class);
 
         bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
 

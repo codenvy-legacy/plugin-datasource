@@ -15,18 +15,18 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres;
+package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.api.mvp.View;
 import com.google.inject.ImplementedBy;
 
 /**
- * The view of {@link PostgresDatasourceConnectorPage}.
+ * The view of {@link com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage}.
  * 
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */
-@ImplementedBy(PostgresDatasourceConnectorViewImpl.class)
-public interface PostgresDatasourceConnectorView extends View<PostgresDatasourceConnectorView.ActionDelegate> {
+@ImplementedBy(JdbcDatasourceConnectorViewImpl.class)
+public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnectorView.ActionDelegate> {
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
