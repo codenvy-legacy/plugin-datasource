@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -76,9 +77,12 @@ public class DatasourceExplorerViewImpl extends
         topDsContainer.add(exploreButton);
 
         this.propertiesContainer = new SimplePanel();
-        dsContainer.addSouth(this.propertiesContainer, 200);
 
-        dsContainer.add(tree.asWidget());
+        SplitLayoutPanel splitPanel = new SplitLayoutPanel();
+        splitPanel.addSouth(this.propertiesContainer, 200);
+        splitPanel.add(tree.asWidget());
+
+        dsContainer.add(splitPanel);
         container.add(dsContainer);
     }
 
