@@ -177,7 +177,7 @@ public class DatasourceService {
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
-
+        LOG.info("Execution request ; parameter : {}", request);
         try (
             final Connection connection = getDatabaseConnection(request.getDatabase());
             Statement statement = connection.createStatement();) {
@@ -186,12 +186,16 @@ public class DatasourceService {
 
             statement.setMaxRows(request.getResultLimit());
             boolean returnsRows = statement.execute(request.getSqlRequest());
+            LOG.info("Request executed successfully");
 
             final List<List<String>> lines = new ArrayList<>();
 
+            // assume simplest case where the statement doesn't return a mix of result sets and update counts
             if (returnsRows) {
+                LOG.info("   Request returns rows");
                 ResultSet resultSet = statement.getResultSet();
                 while (resultSet != null) {
+                    LOG.info("   new result set");
                     final ResultSetMetaData metadata = resultSet.getMetaData();
                     final int columnCount = metadata.getColumnCount();
 
@@ -214,6 +218,7 @@ public class DatasourceService {
                     resultSet = statement.getResultSet();
                 }
             } else {
+                LOG.info("   Request returns update count");
                 int count = statement.getUpdateCount();
                 while (count != -1) {
                     final List<String> line = new ArrayList<>();
