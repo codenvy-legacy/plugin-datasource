@@ -197,7 +197,7 @@ public class DatasourceService {
 
                     // first line : column names
                     final List<String> columnNames = new ArrayList<>();
-                    for (int i = 0; i < columnCount; i++) {
+                    for (int i = 1; i < columnCount + 1; i++) {
                         columnNames.add(metadata.getColumnLabel(i));
                     }
                     lines.add(columnNames);
@@ -205,7 +205,7 @@ public class DatasourceService {
                     // following lines : actual data
                     while (resultSet.next()) {
                         final List<String> line = new ArrayList<>();
-                        for (int i = 0; i < columnCount; i++) {
+                        for (int i = 1; i < columnCount + 1; i++) {
                             line.add(resultSet.getString(i));
                         }
                         lines.add(line);
