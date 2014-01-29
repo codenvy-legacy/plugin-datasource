@@ -125,6 +125,11 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
                     break;
                 }
             }
+        } else {
+            if (this.datasourceList.getItemCount() == 1) {
+                this.datasourceList.setSelectedIndex(0);
+                delegate.datasourceChanged(this.datasourceList.getValue(0));
+            }
         }
     }
 
