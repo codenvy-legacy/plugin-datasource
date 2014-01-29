@@ -96,6 +96,11 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
     }
 
     @Override
+    public AcceptsOneWidget getResultZone() {
+        return resultZone;
+    }
+
+    @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
         // save the currently selected item
         int index = this.datasourceList.getSelectedIndex();

@@ -36,6 +36,8 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     /** Returns the zone in which the SQL editor is to be shown. */
     AcceptsOneWidget getEditorZone();
 
+    AcceptsOneWidget getResultZone();
+
     void setDatasourceList(Collection<String> datasourceIds);
 
     /** Required for delegating functions in view. */
