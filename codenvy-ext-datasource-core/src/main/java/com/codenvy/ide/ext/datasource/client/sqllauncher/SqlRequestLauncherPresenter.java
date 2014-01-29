@@ -169,11 +169,13 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
     @Override
     public void datasourceChanged(final String newDataSourceId) {
+        Log.info(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
     }
 
     @Override
     public void resultLimitChanged(final int newResultLimit) {
+        Log.info(SqlRequestLauncherPresenter.class, "Result limit changed to " + newResultLimit);
         if (newResultLimit > 0) {
             this.resultLimit = newResultLimit;
         } else {
