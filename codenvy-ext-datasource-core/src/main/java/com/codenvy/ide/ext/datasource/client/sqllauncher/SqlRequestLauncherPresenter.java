@@ -197,6 +197,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         Log.info(SqlRequestLauncherPresenter.class, "Execution requested.");
         if (this.selectedDatasourceId == null) {
             Window.alert("No datasource selected");
+            return;
         }
         DatabaseConfigurationDTO databaseConf = this.datasourceManager.getByName(this.selectedDatasourceId);
         String rawSql = getSqlRequestInput();
