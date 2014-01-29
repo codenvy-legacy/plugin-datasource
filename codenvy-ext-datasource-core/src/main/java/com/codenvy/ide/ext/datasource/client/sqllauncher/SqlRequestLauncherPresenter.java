@@ -25,6 +25,7 @@ import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
@@ -55,6 +56,8 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private final SqlRequestLauncherView      view;
     /** The i18n-able constants. */
     private final SqlRequestLauncherConstants constants;
+    /** The DTO factory. */
+    private final DtoFactory                  dtoFactory;
 
     private String                            selectedDatasourceId                 = null;
     private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
@@ -76,10 +79,12 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                                        final DatasourceClientService service,
                                        final NotificationManager notificationManager,
                                        final DatasourceManager datasourceManager,
-                                       final EventBus eventBus) {
+                                       final EventBus eventBus,
+                                       final DtoFactory dtoFactory) {
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
+        this.dtoFactory = dtoFactory;
 
         this.editor = sqlEditorProvider.getEditor();
         this.datasourceClientService = service;
