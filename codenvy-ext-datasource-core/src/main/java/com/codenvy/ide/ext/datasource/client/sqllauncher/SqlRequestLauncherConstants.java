@@ -1,21 +1,24 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.i18n.client.Messages;
 
-public interface SqlRequestLauncherConstants extends Constants {
+public interface SqlRequestLauncherConstants extends Messages {
 
-    @DefaultStringValue("Open SQL editor")
+    @DefaultMessage("Open SQL editor")
     String menuEntryOpenSqlEditor();
 
-    @DefaultStringValue("SQL editor")
+    @DefaultMessage("SQL editor")
     String sqlEditorWindowTitle();
 
-    @DefaultStringValue("Select datasource")
+    @DefaultMessage("Select datasource")
     String selectDatasourceLabel();
 
-    @DefaultStringValue("Result limit")
+    @DefaultMessage("Result limit")
     String resultLimitLabel();
 
-    @DefaultStringValue("Execute")
+    @DefaultMessage("Execute")
     String executeButtonLabel();
+
+    @DefaultMessage("{0} rows.")
+    String updateCountMessage(int count);
 }
