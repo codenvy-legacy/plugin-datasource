@@ -118,7 +118,9 @@ public class DatasourceService {
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
             SchemaDTO schemaDTO = DtoFactory.getInstance().createDto(SchemaDTO.class)
-                                            .withName(schema.getName())
+                                            // TODO maybe clean up this (schema.getName() can be null with mysql and the json serializer has a constraint on it)
+                                            // TODO do we always want to display the fullname ? rather than the name ?
+                                            .withName((schema.getName()==null)?schema.getFullName():schema.getName())
                                             .withLookupKey(schema.getLookupKey());
             Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
             for (final Table table : database.getTables(schema)) {
