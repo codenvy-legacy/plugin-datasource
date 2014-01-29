@@ -36,6 +36,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -60,7 +61,8 @@ public class DatasourceExtension {
                                Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
-                               Resources resources, Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider) {
+                               Resources resources, Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
+                               Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider) {
         workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
@@ -81,10 +83,13 @@ public class DatasourceExtension {
         wizard.addPage(newDatasourcePageProvider);
 
         // add a new postgres connector
-        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages = Collections.createArray();
-        wizardPages.add(pgConnectorPageProvider);
-        connectorAgent.register("postgres", "PostgreSQL", resources.getPostgreSqlLogo(), wizardPages);
-       // connectorAgent.register("mysql","mySQL", resources.getMySqlLogo(), wizardPages);
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
+        pgWizardPages.add(pgConnectorPageProvider);
+        connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, "PostgreSQL", resources.getPostgreSqlLogo(), pgWizardPages);
+
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
+        mysqlWizardPages.add(mysqlConnectorPageProvider);
+        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(), mysqlWizardPages);
     }
 
 }

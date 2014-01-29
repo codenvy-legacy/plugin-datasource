@@ -31,6 +31,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
                                                                                        JdbcDatasourceConnectorView.ActionDelegate {
+    public static final String PG_DB_ID = "postgres";
     protected JdbcDatasourceConnectorView view;
     protected DtoFactory                      dtoFactory;
     protected NotificationManager             notificationManager;
@@ -41,7 +42,7 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                            final DtoFactory dtoFactory,
                                            final DatasourceManager datasourceManager,
                                            final EventBus eventBus) {
-        super("PostgreSQL", null, "postgres", datasourceManager, eventBus);
+        super("PostgreSQL", null, PG_DB_ID, datasourceManager, eventBus);
         this.view = view;
         this.notificationManager = notificationManager;
         this.dtoFactory = dtoFactory;
