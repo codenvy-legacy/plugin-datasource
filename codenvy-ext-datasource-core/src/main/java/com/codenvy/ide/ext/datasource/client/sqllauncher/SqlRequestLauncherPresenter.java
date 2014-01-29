@@ -194,6 +194,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
     @Override
     public void executeRequested(final String request) {
+        Log.info(SqlRequestLauncherPresenter.class, "Execution requested.");
         if (this.selectedDatasourceId == null) {
             Window.alert("No datasource selected");
         }
