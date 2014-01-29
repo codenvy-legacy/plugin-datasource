@@ -8,6 +8,8 @@ import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionExcepti
 public class JdbcUrlBuilder {
     private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
 
+    private static final String URL_TEMPLATE_MYSQL= "jdbc:mysql://{0}:{1}/{2}";
+    
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
         if (configuration.getDatabaseType() == null) {
@@ -39,17 +41,18 @@ public class JdbcUrlBuilder {
     }
 
     private String getMySQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        // TODO implement
-        return null;
+        String url = MessageFormat.format(URL_TEMPLATE_MYSQL,
+                                          configuration.getHostname(),
+                                          Integer.toString(configuration.getPort()),
+                                          configuration.getDatabaseName());
+        return url;
     }
 
     private String getOracleJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        // TODO implement
-        return null;
+        throw new UnsupportedOperationException("oracle jdbc url not implemented");
     }
 
     private String getMSSQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        // TODO implement
-        return null;
+        throw new UnsupportedOperationException("mssql jdbc url not implemented");
     }
 }

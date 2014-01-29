@@ -50,7 +50,7 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                                     .withHostname(view.getHostname()).withPort(view.getPort())
                                                     .withUsername(view.getUsername())
                                                     .withPassword(view.getPassword())
-                                                    .withDatabaseType(DatabaseType.POSTGRES)
+                                                    .withDatabaseType(DatabaseType.MYSQL)
                                                     .withDatasourceId(datasourceId);
         return result;
     }

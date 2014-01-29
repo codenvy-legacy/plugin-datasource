@@ -69,8 +69,14 @@ public class DatasourceService {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("postgresql driver not present");
+            throw new RuntimeException("postgresql driver not present", e);
         }
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL driver not present", e);
+        }
+        
     }
 
     @Inject
