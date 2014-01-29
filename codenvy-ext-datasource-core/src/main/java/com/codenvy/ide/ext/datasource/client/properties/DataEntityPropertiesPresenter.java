@@ -204,7 +204,11 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     @Override
     public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
         this.currentDatabaseInfo = event.getReceivedInfo();
-        Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + this.currentDatabaseInfo.getName());
+        if (this.currentDatabaseInfo != null) {
+            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + this.currentDatabaseInfo.getName());
+        } else {
+            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : null");
+        }
         updateDisplay(this.currentDatabaseInfo);
     }
 }
