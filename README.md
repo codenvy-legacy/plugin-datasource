@@ -16,10 +16,9 @@ For example: You can get Oracle Database 11g Release 2 JDBC Drivers from: http:/
 2.Install It:
 To install your Oracle jdbc driver, issue following command :
 
-mvn install:install-file -Dfile={Path/to/your/ojdbc.jar} -DgroupId=com.oracle 
--DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
+mvn install:install-file -Dfile={Path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 
-3. pom.xml:
+3.pom.xml:
 You reference it by declares following Oracle details in your pom.xml.
 
 		<!-- ORACLE database driver -->
