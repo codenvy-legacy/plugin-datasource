@@ -78,14 +78,14 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
      * @param contextMenuPresenter
      */
     @Inject
-    public DatasourceExplorerPartPresenter(DatasourceExplorerView view,
-                                           EventBus eventBus,
-                                           DatasourceClientService service,
-                                           DtoFactory dtoFactory,
-                                           NotificationManager notificationManager,
-                                           final DatasourceManager datasourceManager,
-                                           final PreferencesManager preferencesManager,
-                                           final DataEntityPropertiesPresenter propertiesPresenter) {
+    public DatasourceExplorerPartPresenter(@NotNull final DatasourceExplorerView view,
+                                           @NotNull final EventBus eventBus,
+                                           @NotNull final DatasourceClientService service,
+                                           @NotNull final DtoFactory dtoFactory,
+                                           @NotNull final NotificationManager notificationManager,
+                                           @NotNull final DatasourceManager datasourceManager,
+                                           @NotNull final PreferencesManager preferencesManager,
+                                           @NotNull final DataEntityPropertiesPresenter propertiesPresenter) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
