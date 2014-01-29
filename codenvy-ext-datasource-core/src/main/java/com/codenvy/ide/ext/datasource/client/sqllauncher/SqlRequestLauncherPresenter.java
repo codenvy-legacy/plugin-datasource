@@ -121,11 +121,8 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
 
         // temporary
-        editorArea = new TextArea();
-        editorArea.getElement().getStyle().clearBackgroundColor();
-        resultArea = new TextArea();
-        resultArea.getElement().getStyle().clearBackgroundColor();
-        resultArea.setReadOnly(true);
+        editorArea = new SqlLauncherTextArea(false);
+        resultArea = new SqlLauncherTextArea(true);
     }
 
     private void setupDatasourceComponent() {
@@ -211,6 +208,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
                         @Override
                         protected void onSuccess(final String result) {
+                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received.");
                             final RequestResultDTO resultDto = dtoFactory.createDtoFromJson(result,
                                                                                             RequestResultDTO.class);
                             updateResultDisplay(resultDto);
@@ -218,6 +216,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
                         @Override
                         protected void onFailure(final Throwable exception) {
+                            Log.info(SqlRequestLauncherPresenter.class, "SQL request failure.");
                             updateResultDisplay(exception.getMessage());
                         }
                     };
@@ -238,10 +237,12 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     }
 
     protected void updateResultDisplay(String message) {
+        Log.info(SqlRequestLauncherPresenter.class, "Printing request error message.");
         this.resultArea.setText(message);
     }
 
     protected void updateResultDisplay(final RequestResultDTO resultDto) {
+        Log.info(SqlRequestLauncherPresenter.class, "Printing request results. (" + resultDto.getLines().size() + " lines).");
         this.resultArea.setText("");
 
         // TODO should probably use a cellwidget at some point
