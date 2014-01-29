@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -134,7 +135,12 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
      */
     @UiHandler("executeButton")
     void handleExecuteClick(final ClickEvent event) {
+        delegate.executeRequested("");
+    }
 
+    @UiHandler("datasourceList")
+    void handleDatasourceSelection(final ChangeEvent event) {
+        delegate.datasourceChanged(datasourceList.getValue(datasourceList.getSelectedIndex()));
     }
 
     /**
