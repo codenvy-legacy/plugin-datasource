@@ -65,7 +65,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private NotificationManager               notificationManager;
     private DatasourceManager                 datasourceManager;
 
-    private TextArea                          editorArea                           = new TextArea();
+    private TextArea                          editorArea;
 
     @Inject
     public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
@@ -111,6 +111,10 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
         // register for datasource creation events
         eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
+
+        // temporary
+        editorArea = new TextArea();
+        editorArea.getElement().getStyle().clearBackgroundColor();
     }
 
     private void setupDatasourceComponent() {
