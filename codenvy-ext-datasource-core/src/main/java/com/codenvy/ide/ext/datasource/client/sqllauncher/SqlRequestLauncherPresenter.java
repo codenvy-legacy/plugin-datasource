@@ -229,8 +229,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                                                                           Type.ERROR));
                 }
             }
+        } else {
+            Window.alert("No SQL request");
         }
-        Window.alert("No SQL request");
     }
 
     @Override
