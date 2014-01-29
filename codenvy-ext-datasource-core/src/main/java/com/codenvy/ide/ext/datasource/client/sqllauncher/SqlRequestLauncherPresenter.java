@@ -183,13 +183,22 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         }
     }
 
+    private String getSqlRequestInput() {
+        final String selectedText = this.editorArea.getSelectedText();
+        if ("".equals(selectedText)) {
+            return this.editorArea.getText();
+        } else {
+            return selectedText;
+        }
+    }
+
     @Override
     public void executeRequested(final String request) {
         if (this.selectedDatasourceId == null) {
             Window.alert("No datasource selected");
         }
         DatabaseConfigurationDTO databaseConf = this.datasourceManager.getByName(this.selectedDatasourceId);
-        String rawSql = this.editor.getEditorInput().getFile().getContent();
+        String rawSql = getSqlRequestInput();
         if (rawSql != null) {
             rawSql = rawSql.trim();
             if (!"".equals(rawSql)) {
