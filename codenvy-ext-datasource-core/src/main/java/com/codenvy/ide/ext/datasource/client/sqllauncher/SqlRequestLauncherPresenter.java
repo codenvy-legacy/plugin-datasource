@@ -207,23 +207,24 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
             rawSql = rawSql.trim();
             if (!"".equals(rawSql)) {
                 try {
+                    AsyncRequestCallback<String> callback = new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+
+                        @Override
+                        protected void onSuccess(final String result) {
+                            final RequestResultDTO resultDto = dtoFactory.createDtoFromJson(result,
+                                                                                            RequestResultDTO.class);
+                            updateResultDisplay(resultDto);
+                        }
+
+                        @Override
+                        protected void onFailure(final Throwable exception) {
+                            updateResultDisplay(exception.getMessage());
+                        }
+                    };
                     datasourceClientService.executeSqlRequest(databaseConf,
                                                               this.resultLimit,
                                                               rawSql,
-                                                              new AsyncRequestCallback<String>(new StringUnmarshaller()) {
-
-                                                                  @Override
-                                                                  protected void onSuccess(final String result) {
-                                                                      // TODO Auto-generated method stub
-
-                                                                  }
-
-                                                                  @Override
-                                                                  protected void onFailure(final Throwable exception) {
-                                                                      // TODO Auto-generated method stub
-
-                                                                  }
-                                                              });
+                                                              callback);
                 } catch (final RequestException e) {
                     Log.error(SqlRequestLauncherPresenter.class,
                               "Exception on SQL request execution : " + e.getMessage());
