@@ -18,6 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.notification.Notification;
@@ -32,6 +33,7 @@ import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.RequestResultDTO;
 import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.util.loging.Log;
@@ -231,6 +233,75 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
             }
         } else {
             Window.alert("No SQL request");
+        }
+    }
+
+    protected void updateResultDisplay(String message) {
+        this.resultArea.setText(message);
+    }
+
+    protected void updateResultDisplay(final RequestResultDTO resultDto) {
+        this.resultArea.setText("");
+
+        // TODO should probably use a cellwidget at some point
+        StringBuilder sb = new StringBuilder();
+        for (final List<String> line : resultDto.getLines()) {
+            for (String cell : line) {
+                sb.append(formatCell(cell));
+            }
+            sb.append("\n");
+        }
+
+        this.resultArea.setText(sb.toString());
+    }
+
+    private String formatCell(final String cell) {
+        if (cell.length() > 12) {
+            String cut = cell.substring(0, 10);
+            return cut + "..";
+        } else {
+            String padding = "";
+            switch (cell.length()) {
+                case 0:
+                    padding = "            ";
+                    break;
+                case 1:
+                    padding = "           ";
+                    break;
+                case 2:
+                    padding = "          ";
+                    break;
+                case 3:
+                    padding = "         ";
+                    break;
+                case 4:
+                    padding = "        ";
+                    break;
+                case 5:
+                    padding = "       ";
+                    break;
+                case 6:
+                    padding = "      ";
+                    break;
+                case 7:
+                    padding = "     ";
+                    break;
+                case 8:
+                    padding = "    ";
+                    break;
+                case 9:
+                    padding = "   ";
+                    break;
+                case 10:
+                    padding = "  ";
+                    break;
+                case 11:
+                    padding = " ";
+                    break;
+                default:
+                    break;
+            }
+            return cell + padding;
         }
     }
 
