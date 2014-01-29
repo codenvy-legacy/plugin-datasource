@@ -67,6 +67,8 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     public void onConnectorSelected(int id) {
         NewDatasourceConnector connector = dbConnectors.get(id);
         wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
+        
+        view.selectConnector(id);
         delegate.updateControls();
     }
 

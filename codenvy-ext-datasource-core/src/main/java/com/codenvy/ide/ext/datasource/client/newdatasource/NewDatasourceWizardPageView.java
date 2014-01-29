@@ -40,4 +40,6 @@ public interface NewDatasourceWizardPageView extends View<NewDatasourceWizardPag
     void setConnectors(Array<NewDatasourceConnector> connectors);
 
     String getDatasourceName();
+
+    void selectConnector(int id);
 }

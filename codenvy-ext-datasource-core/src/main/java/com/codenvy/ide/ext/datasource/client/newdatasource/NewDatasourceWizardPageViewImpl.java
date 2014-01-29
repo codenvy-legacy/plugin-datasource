@@ -116,4 +116,12 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
         return datasourceName.getText();
     }
 
+    @Override
+    public void selectConnector(int id) {
+        for (int i = 0; i < connectorButtons.size(); i++) {
+            ToggleButton button = connectorButtons.get(i);
+            button.setDown(i == id);
+        }
+    }
+
 }
