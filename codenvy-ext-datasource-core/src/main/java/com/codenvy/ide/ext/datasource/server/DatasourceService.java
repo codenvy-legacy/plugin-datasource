@@ -58,10 +58,10 @@ import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
-import com.codenvy.ide.ext.datasource.shared.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.google.inject.Inject;
 
 @Path("{ws-name}/datasource")
@@ -214,7 +214,8 @@ public class DatasourceService {
                         }
                         lines.add(line);
                     }
-                    resultSet.close();
+                    resultSet.close(); // getMoreResult should close it, but just to remove the warning
+                    boolean moreResults = statement.getMoreResults();
                     resultSet = statement.getResultSet();
                 }
             } else {
@@ -224,6 +225,7 @@ public class DatasourceService {
                     final List<String> line = new ArrayList<>();
                     lines.add(line);
                     line.add(Integer.toString(count));
+                    statement.getMoreResults();
                     count = statement.getUpdateCount();
                 }
             }
