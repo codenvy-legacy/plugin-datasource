@@ -66,6 +66,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private DatasourceManager                 datasourceManager;
 
     private TextArea                          editorArea;
+    private TextArea                          resultArea;
 
     @Inject
     public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
@@ -115,6 +116,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         // temporary
         editorArea = new TextArea();
         editorArea.getElement().getStyle().clearBackgroundColor();
+        resultArea = new TextArea();
+        resultArea.getElement().getStyle().clearBackgroundColor();
+        resultArea.setReadOnly(true);
     }
 
     private void setupDatasourceComponent() {
@@ -142,6 +146,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         container.setWidget(view);
         // editor.go(this.view.getEditorZone());
         this.view.getEditorZone().setWidget(editorArea);
+        this.view.getResultZone().setWidget(resultArea);
 
 
         setupDatasourceComponent();
