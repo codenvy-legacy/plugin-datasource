@@ -19,7 +19,7 @@ public interface SelectResultDTO extends RequestResultDTO {
 
     void setResultLines(List<List<String>> lines);
 
-    RequestResultDTO withResultLines(List<List<String>> lines);
+    SelectResultDTO withResultLines(List<List<String>> lines);
 
     SelectResultDTO withResultType(int type);
 }
