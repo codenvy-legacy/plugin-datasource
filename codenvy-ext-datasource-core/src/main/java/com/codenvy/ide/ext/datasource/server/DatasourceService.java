@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -84,7 +82,7 @@ public class DatasourceService {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("MySQL driver not present", e);
         }
-        
+
     }
 
     @Inject
@@ -126,9 +124,10 @@ public class DatasourceService {
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
             SchemaDTO schemaDTO = DtoFactory.getInstance().createDto(SchemaDTO.class)
-                                            // TODO maybe clean up this (schema.getName() can be null with mysql and the json serializer has a constraint on it)
+                                            // TODO maybe clean up this (schema.getName() can be null with mysql and the json serializer has
+                                            // a constraint on it)
                                             // TODO do we always want to display the fullname ? rather than the name ?
-                                            .withName((schema.getName()==null)?schema.getFullName():schema.getName())
+                                            .withName((schema.getName() == null) ? schema.getFullName() : schema.getName())
                                             .withLookupKey(schema.getLookupKey());
             Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
             for (final Table table : database.getTables(schema)) {
