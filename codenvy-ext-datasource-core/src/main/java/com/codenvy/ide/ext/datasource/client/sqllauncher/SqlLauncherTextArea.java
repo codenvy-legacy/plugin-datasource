@@ -9,6 +9,6 @@ public class SqlLauncherTextArea extends TextArea {
         super();
         setReadOnly(readOnly);
         getElement().getStyle().setBackgroundColor("white");
-        getElement().getStyle().setProperty("font-family", "monospace");
+        getElement().getStyle().setProperty("fontFamily", "monospace");
     }
 }
