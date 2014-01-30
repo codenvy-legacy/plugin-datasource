@@ -204,6 +204,8 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
             rawSql = rawSql.trim();
             if (!"".equals(rawSql)) {
                 try {
+                    final Notification requestNotification = new Notification("Executing SQL request...",
+                                                                              Notification.Status.PROGRESS);
                     AsyncRequestCallback<String> callback = new AsyncRequestCallback<String>(new StringUnmarshaller()) {
 
                         @Override
@@ -211,15 +213,23 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                             Log.info(SqlRequestLauncherPresenter.class, "SQL request result received.");
                             final RequestResultDTO resultDto = dtoFactory.createDtoFromJson(result,
                                                                                             RequestResultDTO.class);
+                            requestNotification.setMessage("SQL request execution completed");
+                            requestNotification.setStatus(Notification.Status.FINISHED);
                             updateResultDisplay(resultDto);
                         }
 
                         @Override
                         protected void onFailure(final Throwable exception) {
                             Log.info(SqlRequestLauncherPresenter.class, "SQL request failure.");
+                            requestNotification.setStatus(Notification.Status.FINISHED);
+                            notificationManager.showNotification(new Notification("SQL request failed",
+                                                                                  Type.ERROR));
+
                             updateResultDisplay(exception.getMessage());
                         }
                     };
+
+                    notificationManager.showNotification(requestNotification);
                     datasourceClientService.executeSqlRequest(databaseConf,
                                                               this.resultLimit,
                                                               rawSql,
