@@ -9,15 +9,7 @@ public interface SelectResultDTO extends RequestResultDTO {
 
     static int TYPE = 1;
 
-    List<String> getHeaderLine();
-
-    void setHeaderLine(List<String> line);
-
     SelectResultDTO withHeaderLine(List<String> line);
-
-    List<List<String>> getResultLines();
-
-    void setResultLines(List<List<String>> lines);
 
     SelectResultDTO withResultLines(List<List<String>> lines);
 

@@ -267,11 +267,11 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
             switch (result.getResultType()) {
                 case UpdateResultDTO.TYPE:
                     Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'update'.");
-                    appendUpdateResult(sb, (UpdateResultDTO)result);
+                    appendUpdateResult(sb, result);
                     break;
                 case SelectResultDTO.TYPE:
                     Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
-                    appendSelectResult(sb, (SelectResultDTO)result);
+                    appendSelectResult(sb, result);
                     break;
                 default:
                     Log.error(SqlRequestLauncherPresenter.class, "unknown result type : "
@@ -285,7 +285,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         this.resultArea.setText(sb.toString());
     }
 
-    private void appendSelectResult(StringBuilder sb, SelectResultDTO result) {
+    private void appendSelectResult(final StringBuilder sb, final RequestResultDTO result) {
         // append header
         StringBuilder headerBuilder = new StringBuilder();
         for (String cell : result.getHeaderLine()) {
@@ -314,7 +314,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
     }
 
-    private void appendUpdateResult(StringBuilder sb, UpdateResultDTO result) {
+    private void appendUpdateResult(final StringBuilder sb, final RequestResultDTO result) {
         sb.append(this.constants.updateCountMessage(result.getUpdateCount()));
     }
 
