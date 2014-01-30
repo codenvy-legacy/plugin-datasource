@@ -36,7 +36,9 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle.OracleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -48,8 +50,8 @@ import com.google.inject.Singleton;
 @Singleton
 @Extension(title = "Datasource Extension", version = "1.0.0")
 public class DatasourceExtension {
-    public static boolean SHOW_ITEM          = true;
 
+    public static boolean SHOW_ITEM          = true;
     public static String  DS_GROUP_MAIN_MENU = "DatasourceMainMenu";
 
     @Inject
@@ -61,8 +63,11 @@ public class DatasourceExtension {
                                Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
-                               Resources resources, Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
-                               Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider) {
+                               Resources resources,
+                               Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
+                               Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
+                               Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
+                               Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider) {
         workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
@@ -87,9 +92,20 @@ public class DatasourceExtension {
         pgWizardPages.add(pgConnectorPageProvider);
         connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, "PostgreSQL", resources.getPostgreSqlLogo(), pgWizardPages);
 
+        //Add a new mysql connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
         connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(), mysqlWizardPages);
+
+        //add a new oracle connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
+        oracleWizardPages.add(oracleConnectorPageProvider);
+        connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, "Oracle", resources.getOracleLogo(), oracleWizardPages);
+
+        //add a new SQLserver connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
+        sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
+        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "SqlServer", resources.getSqlServerLogo(), sqlServerWizardPages);
     }
 
 }

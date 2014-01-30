@@ -75,9 +75,9 @@ public class TestSqlServer {
             conn.close();
         }
 
-        final DataSource dataSource = new DatabaseConnectionOptions("oracle.jdbc.driver.OracleDriver","jdbc:oracle:thin:@localhost:1521:orcl");
-        final Connection connection = dataSource.getConnection("system",
-                                                               "admin");
+        final DataSource dataSource = new DatabaseConnectionOptions("com.microsoft.jdbc.sqlserver.SQLServerDriver","jdbc:sqlserver://localhost:1433/wafa");
+        final Connection connection = dataSource.getConnection("sa",
+                                                               "Swear$Flai");
         // Create the options
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         // Set what details are required in the schema - this affects the

@@ -45,7 +45,7 @@ public class TestOracle {
         Properties props = new Properties();
         props.setProperty("user", "system");
         props.setProperty("password", "admin");
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", props);
+        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.86.190:1521:xe", props);
         try {
             DatabaseMetaData metadata = conn.getMetaData();
             ResultSet catalogRS = metadata.getCatalogs();
@@ -75,7 +75,8 @@ public class TestOracle {
             conn.close();
         }
 
-        final DataSource dataSource = new DatabaseConnectionOptions("oracle.jdbc.driver.OracleDriver","jdbc:oracle:thin:@localhost:1521:orcl");
+        final DataSource dataSource = new DatabaseConnectionOptions("oracle.jdbc.driver.OracleDriver",
+                                                                    "jdbc:oracle:thin:@192.168.86.190:1521:xe");
         final Connection connection = dataSource.getConnection("system",
                                                                "admin");
         // Create the options

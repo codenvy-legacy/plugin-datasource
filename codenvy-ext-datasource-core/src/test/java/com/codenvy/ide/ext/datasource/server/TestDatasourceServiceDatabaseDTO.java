@@ -44,7 +44,7 @@ public class TestDatasourceServiceDatabaseDTO {
     @Test
     public void testPostgresDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.POSTGRES);
-        when(databaseConfig.getDatabaseName()).thenReturn("nuxeo");
+        when(databaseConfig.getDatabaseName()).thenReturn("wafa");
         when(databaseConfig.getHostname()).thenReturn("localhost");
         when(databaseConfig.getPort()).thenReturn(5432);
         when(databaseConfig.getUsername()).thenReturn("postgres");
@@ -76,4 +76,37 @@ public class TestDatasourceServiceDatabaseDTO {
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"MySQL\""));
     }
+
+    @Ignore
+    @Test
+    public void testOracleDTOgeneration() throws Exception {
+        when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.ORACLE);
+        when(databaseConfig.getDatabaseName()).thenReturn("xe");
+        when(databaseConfig.getHostname()).thenReturn("192.168.86.190");
+        when(databaseConfig.getPort()).thenReturn(1521);
+        when(databaseConfig.getUsername()).thenReturn("admin");
+        when(databaseConfig.getPassword()).thenReturn("admin");
+
+        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+        System.out.println(json);
+        Assert.assertNotNull(json);
+        Assert.assertTrue(json.contains("\"databaseProductName\":\"Oracle\""));
+    }
+
+    @Ignore
+    @Test
+    public void testSqlserverDTOgeneration() throws Exception {
+        when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.MSSQL);
+        when(databaseConfig.getDatabaseName()).thenReturn("SQLEXPRESS");
+        when(databaseConfig.getHostname()).thenReturn("192.168.86.190");
+        when(databaseConfig.getPort()).thenReturn(1433);
+        when(databaseConfig.getUsername()).thenReturn("sa");
+        when(databaseConfig.getPassword()).thenReturn("Swear$Flai");
+
+        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+        System.out.println(json);
+        Assert.assertNotNull(json);
+        Assert.assertTrue(json.contains("\"databaseProductName\":\"MSSqlServer\""));
+    }
+
 }

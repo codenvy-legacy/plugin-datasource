@@ -6,9 +6,11 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 
 public class JdbcUrlBuilder {
-    private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
 
-    private static final String URL_TEMPLATE_MYSQL= "jdbc:mysql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_MYSQL = "jdbc:mysql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_ORACLE = "jdbc:oracle:thin:@{0}:{1}:{2}";
+    private static final String URL_TEMPLATE_MSSQLSERVER ="jdbc:sqlserver://{0}:{1}/{2}";
     
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
@@ -49,10 +51,18 @@ public class JdbcUrlBuilder {
     }
 
     private String getOracleJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        throw new UnsupportedOperationException("oracle jdbc url not implemented");
+        String url = MessageFormat.format(URL_TEMPLATE_ORACLE,
+                configuration.getHostname(),
+                Integer.toString(configuration.getPort()),
+                configuration.getDatabaseName());
+        return url;
     }
 
     private String getMSSQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        throw new UnsupportedOperationException("mssql jdbc url not implemented");
+        String url = MessageFormat.format(URL_TEMPLATE_MSSQLSERVER,
+                configuration.getHostname(),
+                Integer.toString(configuration.getPort()),
+                configuration.getDatabaseName());
+        return url;
     }
 }

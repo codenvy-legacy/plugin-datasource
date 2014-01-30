@@ -82,7 +82,16 @@ public class DatasourceService {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("MySQL driver not present", e);
         }
-
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Oracle driver not present", e);
+        }
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("SQLserver driver not present", e);
+        }
     }
 
     @Inject
