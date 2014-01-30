@@ -233,7 +233,11 @@ public class DatasourceService {
                 }
 
                 // continue the loop - next result
-                resultSet.close(); // getMoreResult should close it, but just to remove the warning
+
+                // getMoreResult should close it, but just to remove the warning
+                if (resultSet != null) {
+                    resultSet.close();
+                }
                 boolean moreResults = statement.getMoreResults();
                 resultSet = statement.getResultSet();
                 count = statement.getUpdateCount();
