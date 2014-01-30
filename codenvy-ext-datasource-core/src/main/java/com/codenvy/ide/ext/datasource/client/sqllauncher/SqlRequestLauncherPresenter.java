@@ -33,7 +33,10 @@ import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
-import com.codenvy.ide.ext.datasource.shared.RequestResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
+import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.util.loging.Log;
@@ -211,10 +214,12 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
                         @Override
                         protected void onSuccess(final String result) {
                             Log.info(SqlRequestLauncherPresenter.class, "SQL request result received.");
-                            final RequestResultDTO resultDto = dtoFactory.createDtoFromJson(result,
-                                                                                            RequestResultDTO.class);
                             requestNotification.setMessage("SQL request execution completed");
                             requestNotification.setStatus(Notification.Status.FINISHED);
+                            final RequestResultGroupDTO resultDto = dtoFactory.createDtoFromJson(result,
+                                                                                                 RequestResultGroupDTO.class);
+                            Log.info(SqlRequestLauncherPresenter.class, "JSON->dto conversion OK - result :"
+                                                                        + resultDto);
                             updateResultDisplay(resultDto);
                         }
 
@@ -251,20 +256,66 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         this.resultArea.setText(message);
     }
 
-    protected void updateResultDisplay(final RequestResultDTO resultDto) {
-        Log.info(SqlRequestLauncherPresenter.class, "Printing request results. (" + resultDto.getLines().size() + " lines).");
+    protected void updateResultDisplay(final RequestResultGroupDTO resultDto) {
+        Log.info(SqlRequestLauncherPresenter.class,
+                 "Printing request results. (" + resultDto.getResults().size() + " individual results).");
         this.resultArea.setText("");
 
         // TODO should probably use a cellwidget at some point
         StringBuilder sb = new StringBuilder();
-        for (final List<String> line : resultDto.getLines()) {
+        for (final RequestResultDTO result : resultDto.getResults()) {
+            switch (result.getResultType()) {
+                case UpdateResultDTO.TYPE:
+                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'update'.");
+                    appendUpdateResult(sb, (UpdateResultDTO)result);
+                    break;
+                case SelectResultDTO.TYPE:
+                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
+                    appendSelectResult(sb, (SelectResultDTO)result);
+                    break;
+                default:
+                    Log.error(SqlRequestLauncherPresenter.class, "unknown result type : "
+                                                                 + result.getResultType());
+                    sb.append("Result can't be displayed");
+            }
+            sb.append("\n\n");
+        }
+
+        Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
+        this.resultArea.setText(sb.toString());
+    }
+
+    private void appendSelectResult(StringBuilder sb, SelectResultDTO result) {
+        // append header
+        StringBuilder headerBuilder = new StringBuilder();
+        for (String cell : result.getHeaderLine()) {
+            headerBuilder.append(formatCell(cell));
+            headerBuilder.append(" ");
+        }
+        String header = headerBuilder.toString();
+
+        sb.append(header)
+          .append("\n");
+
+        // separator
+        for (int i = 0; i < header.length(); i++) {
+            sb.append("-");
+        }
+        sb.append("\n");
+
+        // actual data
+        for (List<String> line : result.getResultLines()) {
             for (String cell : line) {
-                sb.append(formatCell(cell));
+                sb.append(formatCell(cell))
+                  .append(" ");
             }
             sb.append("\n");
         }
 
-        this.resultArea.setText(sb.toString());
+    }
+
+    private void appendUpdateResult(StringBuilder sb, UpdateResultDTO result) {
+        sb.append(this.constants.updateCountMessage(result.getUpdateCount()));
     }
 
     private String formatCell(final String cell) {

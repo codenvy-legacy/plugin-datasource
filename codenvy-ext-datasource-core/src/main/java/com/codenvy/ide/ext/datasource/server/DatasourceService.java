@@ -62,6 +62,9 @@ import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
+import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.google.inject.Inject;
 
 @Path("{ws-name}/datasource")
@@ -180,33 +183,45 @@ public class DatasourceService {
         LOG.info("Execution request ; parameter : {}", request);
         try (
             final Connection connection = getDatabaseConnection(request.getDatabase());
-            Statement statement = connection.createStatement();) {
+            final Statement statement = connection.createStatement();) {
 
-            RequestResultDTO result = DtoFactory.getInstance().createDto(RequestResultDTO.class);
+            final RequestResultGroupDTO resultGroup = DtoFactory.getInstance().createDto(RequestResultGroupDTO.class);
+            final List<RequestResultDTO> resultList = new ArrayList<>();
+            resultGroup.setResults(resultList);
 
             statement.setMaxRows(request.getResultLimit());
             boolean returnsRows = statement.execute(request.getSqlRequest());
             LOG.info("Request executed successfully");
 
-            final List<List<String>> lines = new ArrayList<>();
+            ResultSet resultSet = statement.getResultSet();
+            int count = statement.getUpdateCount();
+            while (resultSet != null || count != -1) {
+                LOG.info("New result returned by request :");
 
-            // assume simplest case where the statement doesn't return a mix of result sets and update counts
-            if (returnsRows) {
-                LOG.info("   Request returns rows");
-                ResultSet resultSet = statement.getResultSet();
-                while (resultSet != null) {
-                    LOG.info("   new result set");
+                if (count != -1) {
+                    LOG.info("   is an update count");
+                    final UpdateResultDTO result = DtoFactory.getInstance().createDto(UpdateResultDTO.class);
+                    resultList.add(result);
+                    result.withResultType(UpdateResultDTO.TYPE).withUpdateCount(count);
+                } else {
+                    LOG.info("   is a result set");
+                    final SelectResultDTO result = DtoFactory.getInstance().createDto(SelectResultDTO.class);
+                    result.setResultType(SelectResultDTO.TYPE);
+                    resultList.add(result);
+
                     final ResultSetMetaData metadata = resultSet.getMetaData();
                     final int columnCount = metadata.getColumnCount();
 
-                    // first line : column names
+                    // header : column names
                     final List<String> columnNames = new ArrayList<>();
                     for (int i = 1; i < columnCount + 1; i++) {
                         columnNames.add(metadata.getColumnLabel(i));
                     }
-                    lines.add(columnNames);
+                    result.setHeaderLine(columnNames);
 
-                    // following lines : actual data
+                    final List<List<String>> lines = new ArrayList<>();
+
+                    // result : actual data
                     while (resultSet.next()) {
                         final List<String> line = new ArrayList<>();
                         for (int i = 1; i < columnCount + 1; i++) {
@@ -214,23 +229,17 @@ public class DatasourceService {
                         }
                         lines.add(line);
                     }
-                    resultSet.close(); // getMoreResult should close it, but just to remove the warning
-                    boolean moreResults = statement.getMoreResults();
-                    resultSet = statement.getResultSet();
+                    result.setResultLines(lines);
                 }
-            } else {
-                LOG.info("   Request returns update count");
-                int count = statement.getUpdateCount();
-                while (count != -1) {
-                    final List<String> line = new ArrayList<>();
-                    lines.add(line);
-                    line.add(Integer.toString(count));
-                    statement.getMoreResults();
-                    count = statement.getUpdateCount();
-                }
+
+                // continue the loop - next result
+                resultSet.close(); // getMoreResult should close it, but just to remove the warning
+                boolean moreResults = statement.getMoreResults();
+                resultSet = statement.getResultSet();
+                count = statement.getUpdateCount();
             }
-            result.setLines(lines);
-            return DtoFactory.getInstance().toJson(result);
+
+            return DtoFactory.getInstance().toJson(resultGroup);
         }
     }
 
