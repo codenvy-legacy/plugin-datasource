@@ -148,6 +148,11 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
         delegate.datasourceChanged(datasourceList.getValue(datasourceList.getSelectedIndex()));
     }
 
+    @UiHandler("resultLimitInput")
+    void handleResultLimitChange(final ChangeEvent event) {
+        delegate.resultLimitChanged(this.resultLimitInput.getValue());
+    }
+
     /**
      * The UiBinder interface for this component.
      */
