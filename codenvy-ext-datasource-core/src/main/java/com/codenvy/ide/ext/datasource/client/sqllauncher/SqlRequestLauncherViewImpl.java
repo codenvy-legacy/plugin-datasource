@@ -20,7 +20,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import java.util.Collection;
 
 import com.codenvy.ide.Resources;
-import com.codenvy.ide.api.parts.base.BaseView;
+import com.codenvy.ide.ext.datasource.client.common.SimpleView;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -39,7 +39,7 @@ import com.google.inject.Inject;
  * 
  * @author "Mickaël Leduque"
  */
-public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
+public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
 
     @UiField
     Widget           launcherContainer;
@@ -79,7 +79,7 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
                                       final SqlRequestLauncherConstants constants) {
         super(resources);
         uiBinder.createAndBindUi(this);
-        container.add(this.launcherContainer);
+        getContainer().add(this.launcherContainer);
 
         selectDatasourceLabel.setText(constants.selectDatasourceLabel());
         resultLimitLabel.setText(constants.resultLimitLabel());
@@ -128,7 +128,7 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
         } else {
             if (this.datasourceList.getItemCount() == 1) {
                 this.datasourceList.setSelectedIndex(0);
-                delegate.datasourceChanged(this.datasourceList.getValue(0));
+                getDelegate().datasourceChanged(this.datasourceList.getValue(0));
             }
         }
     }
@@ -140,17 +140,17 @@ public class SqlRequestLauncherViewImpl extends BaseView<SqlRequestLauncherView.
      */
     @UiHandler("executeButton")
     void handleExecuteClick(final ClickEvent event) {
-        delegate.executeRequested("");
+        getDelegate().executeRequested("");
     }
 
     @UiHandler("datasourceList")
     void handleDatasourceSelection(final ChangeEvent event) {
-        delegate.datasourceChanged(datasourceList.getValue(datasourceList.getSelectedIndex()));
+        getDelegate().datasourceChanged(datasourceList.getValue(datasourceList.getSelectedIndex()));
     }
 
     @UiHandler("resultLimitInput")
     void handleResultLimitChange(final ChangeEvent event) {
-        delegate.resultLimitChanged(this.resultLimitInput.getValue());
+        getDelegate().resultLimitChanged(this.resultLimitInput.getValue());
     }
 
     /**
