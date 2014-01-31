@@ -26,6 +26,10 @@
             <artifactId>gin</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.googlecode.gwt-test-utils</groupId>
+            <artifactId>gwt-test-utils</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
