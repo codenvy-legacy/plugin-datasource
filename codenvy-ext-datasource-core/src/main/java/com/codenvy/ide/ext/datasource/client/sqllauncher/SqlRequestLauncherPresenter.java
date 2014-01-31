@@ -176,13 +176,9 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     }
 
     @Override
-    public void resultLimitChanged(final int newResultLimit) {
-        Log.info(SqlRequestLauncherPresenter.class, "Result limit changed to " + newResultLimit);
-        if (newResultLimit > 0) {
-            this.resultLimit = newResultLimit;
-        } else {
-            this.view.setResultLimit(this.resultLimit);
-        }
+    public void resultLimitChanged(final String newResultLimitString) {
+        Log.info(SqlRequestLauncherPresenter.class, "Result limit changed to " + newResultLimitString);
+
     }
 
     private String getSqlRequestInput() {
