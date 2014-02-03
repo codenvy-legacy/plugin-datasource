@@ -29,6 +29,7 @@ import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.common.SinglePartPresenter.HasEditorPartPresenter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
@@ -50,7 +51,8 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class SqlRequestLauncherPresenter extends AbstractPartPresenter implements
                                                                       SqlRequestLauncherView.ActionDelegate,
-                                                                      DatasourceCreatedHandler {
+                                                                      DatasourceCreatedHandler,
+                                                                      HasEditorPartPresenter {
 
     /** Preference property name for default result limit. */
     private static final String               PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
@@ -380,5 +382,10 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void onDatasourceCreated(DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
+    }
+
+    @Override
+    public EditorPartPresenter getEditorPartPresenter() {
+        return this.editor;
     }
 }
