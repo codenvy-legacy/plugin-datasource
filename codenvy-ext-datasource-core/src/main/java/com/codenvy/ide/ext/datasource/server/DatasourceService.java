@@ -242,7 +242,9 @@ public class DatasourceService {
                 count = statement.getUpdateCount();
             }
 
-            return DtoFactory.getInstance().toJson(resultGroup);
+            String json = DtoFactory.getInstance().toJson(resultGroup);
+            LOG.debug("Return " + json);
+            return json;
         }
     }
 
