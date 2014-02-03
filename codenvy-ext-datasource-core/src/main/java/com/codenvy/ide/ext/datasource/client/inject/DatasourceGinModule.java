@@ -31,12 +31,13 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardProvider;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorViewImpl;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherView;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherViewImpl;
@@ -69,5 +70,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
 
         install(new GinFactoryModuleBuilder().build(SqlRequestLauncherPresenterFactory.class));
+
+        bind(SqlResourceProvider.class);
     }
 }
