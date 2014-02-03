@@ -75,7 +75,6 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private NotificationManager               notificationManager;
     private DatasourceManager                 datasourceManager;
 
-    private TextArea                          editorArea;
     private TextArea                          resultArea;
 
     @Inject
@@ -126,7 +125,6 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
 
         // temporary
-        editorArea = new SqlLauncherTextArea(false);
         resultArea = new SqlLauncherTextArea(true);
     }
 
@@ -153,8 +151,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
-        // editor.go(this.view.getEditorZone());
-        this.view.getEditorZone().setWidget(editorArea);
+        editor.go(this.view.getEditorZone());
         this.view.getResultZone().setWidget(resultArea);
 
 
@@ -197,12 +194,7 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     }
 
     private String getSqlRequestInput() {
-        final String selectedText = this.editorArea.getSelectedText();
-        if ("".equals(selectedText)) {
-            return this.editorArea.getText();
-        } else {
-            return selectedText;
-        }
+        return "";
     }
 
     @Override
