@@ -30,7 +30,8 @@ public class SqlRequestLauncherAction extends Action {
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        this.workspaceAgent.openPart(this.sqlEditorFactory.createSqlEditor(), PartStackType.EDITING);
+        SqlRequestLauncherAdapter requestLauncher = this.sqlEditorFactory.createSqlEditor();
+        this.workspaceAgent.openPart(requestLauncher, PartStackType.EDITING);
     }
 
 }
