@@ -39,6 +39,7 @@ import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherPresenterFactory;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherView;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -70,6 +71,8 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
 
         install(new GinFactoryModuleBuilder().build(SqlRequestLauncherPresenterFactory.class));
+
+        install(new GinFactoryModuleBuilder().build(SqlRequestLauncherFactory.class));
 
         bind(SqlResourceProvider.class);
     }
