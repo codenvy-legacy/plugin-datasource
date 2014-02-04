@@ -141,6 +141,11 @@ public class SinglePartPresenter implements PartStack, EditorPartPresenter {
     }
 
     @Override
+    public void onFileChanged() {
+        this.part.getEditorPartPresenter().onFileChanged();
+    }
+
+    @Override
     public boolean isDirty() {
         return this.part.getEditorPartPresenter().isDirty();
     }
