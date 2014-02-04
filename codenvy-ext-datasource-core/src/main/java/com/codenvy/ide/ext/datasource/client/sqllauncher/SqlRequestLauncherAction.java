@@ -14,23 +14,23 @@ import com.google.inject.Inject;
 public class SqlRequestLauncherAction extends Action {
 
     /** The workspace agent. */
-    private final WorkspaceAgent                     workspaceAgent;
+    private final WorkspaceAgent            workspaceAgent;
 
     /** The factory to create new SQL editors. */
-    private final SqlRequestLauncherPresenterFactory sqlEditorFactory;
+    private final SqlRequestLauncherFactory requestLauncherFactory;
 
     @Inject
     public SqlRequestLauncherAction(final SqlRequestLauncherConstants constants,
                                     final WorkspaceAgent workspaceAgent,
-                                    final SqlRequestLauncherPresenterFactory sqlEditorFactory) {
+                                    final SqlRequestLauncherFactory requestLauncherFactory) {
         super(constants.menuEntryOpenSqlEditor());
         this.workspaceAgent = workspaceAgent;
-        this.sqlEditorFactory = sqlEditorFactory;
+        this.requestLauncherFactory = requestLauncherFactory;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        SqlRequestLauncherAdapter requestLauncher = this.sqlEditorFactory.createSqlEditor();
+        SqlRequestLauncherAdapter requestLauncher = this.requestLauncherFactory.createSqlRequestLauncherAdapter();
         this.workspaceAgent.openPart(requestLauncher, PartStackType.EDITING);
     }
 
