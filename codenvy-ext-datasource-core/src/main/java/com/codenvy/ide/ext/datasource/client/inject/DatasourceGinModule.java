@@ -69,7 +69,9 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
 
-        install(new GinFactoryModuleBuilder().build(SqlRequestLauncherFactory.class));
+        install(new GinFactoryModuleBuilder()
+                                             .implement(SqlRequestLauncherView.class, SqlRequestLauncherViewImpl.class)
+                                             .build(SqlRequestLauncherFactory.class));
 
         bind(SqlResourceProvider.class);
     }
