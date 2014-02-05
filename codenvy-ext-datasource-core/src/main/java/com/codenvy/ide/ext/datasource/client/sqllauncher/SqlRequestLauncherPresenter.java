@@ -97,6 +97,16 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
 
+        setupResultLimit(preferencesManager);
+
+        // register for datasource creation events
+        eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
+
+        // temporary
+        resultArea = new SqlLauncherTextArea(true);
+    }
+
+    private void setupResultLimit(final PreferencesManager preferencesManager) {
         final String prefRequestLimit = preferencesManager.getValue(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT);
 
         if (prefRequestLimit != null) {
@@ -120,12 +130,6 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
 
         // push the request limit value to the view
         this.view.setResultLimit(this.resultLimit);
-
-        // register for datasource creation events
-        eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
-
-        // temporary
-        resultArea = new SqlLauncherTextArea(true);
     }
 
     private void setupDatasourceComponent() {
