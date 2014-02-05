@@ -27,9 +27,9 @@ import com.google.gwt.resources.client.ImageResource;
  * Aggregate information about registered DatasourceConnector.
  */
 public class NewDatasourceConnector {
-    private String        id;
-    private String        title;
-    private ImageResource image;
+    protected String        id;
+    protected String        title;
+    protected ImageResource image;
 
     public NewDatasourceConnector(@NotNull String id,
                                @NotNull String title,
@@ -39,17 +39,14 @@ public class NewDatasourceConnector {
         this.image = image;
     }
 
-    /** @return {@link String} PaaS id */
     public String getId() {
         return id;
     }
 
-    /** @return the title */
     public String getTitle() {
         return title;
     }
 
-    /** @return the image */
     public ImageResource getImage() {
         return image;
     }
