@@ -8,7 +8,6 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
-import com.google.gwt.core.shared.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -30,6 +29,8 @@ public class SqlLauncherEditorProvider implements EditorProvider {
 
     private DtoFactory                  dtoFactory;
 
+    private SqlRequestLauncherFactory   sqlRequestLauncherFactory;
+
 
     @Inject
     public SqlLauncherEditorProvider(final NotificationManager notificationManager,
@@ -39,7 +40,8 @@ public class SqlLauncherEditorProvider implements EditorProvider {
                                      final DatasourceManager datasourceManager,
                                      final EventBus eventBus,
                                      final DatasourceClientService service,
-                                     final DtoFactory dtoFactory) {
+                                     final DtoFactory dtoFactory,
+                                     final SqlRequestLauncherFactory sqlRequestLauncherFactory) {
         this.notificationManager = notificationManager;
         this.sqlEditorProvider = sqlEditorProvider;
         this.constants = constants;
@@ -48,11 +50,12 @@ public class SqlLauncherEditorProvider implements EditorProvider {
         this.eventBus = eventBus;
         this.service = service;
         this.dtoFactory = dtoFactory;
+        this.sqlRequestLauncherFactory = sqlRequestLauncherFactory;
     }
 
     @Override
     public EditorPartPresenter getEditor() {
-        return new SqlRequestLauncherAdapter(GWT.<SqlRequestLauncherView> create(SqlRequestLauncherView.class),
+        return new SqlRequestLauncherAdapter(sqlRequestLauncherFactory.createSqlRequestLauncherView(),
                                              constants,
                                              preferencesManager,
                                              sqlEditorProvider,
