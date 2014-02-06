@@ -300,6 +300,13 @@
                                     <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
                                     <destFileName>mysql-connector-java-${mysql-driver.version}.jar</destFileName>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>net.sourceforge.jtds</groupId>
+                                    <artifactId>jtds</artifactId>
+                                    <version>${jtds-driver.version}</version>
+                                    <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                    <destFileName>jtds-${jtds-driver.version}.jar</destFileName>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -559,13 +566,6 @@
                                             <version>${oracle-driver.version}</version>
                                             <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
                                             <destFileName>ojdbc6-${oracle-driver.version}.jar</destFileName>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>com.microsoft.sqlserver</groupId>
-                                            <artifactId>sqljdbc4</artifactId>
-                                            <version>${sqlserver-driver.version}</version>
-                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
-                                            <destFileName>sqljdbc4-${sqlserver-driver.version}.jar</destFileName>
                                         </artifactItem>
                                     </artifactItems>
                                 </configuration>

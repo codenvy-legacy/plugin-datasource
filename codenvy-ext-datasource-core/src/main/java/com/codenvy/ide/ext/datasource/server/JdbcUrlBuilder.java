@@ -10,8 +10,8 @@ public class JdbcUrlBuilder {
     private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_MYSQL = "jdbc:mysql://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_ORACLE = "jdbc:oracle:thin:@{0}:{1}:{2}";
-    private static final String URL_TEMPLATE_MSSQLSERVER ="jdbc:sqlserver://{0}:{1}/{2}";
-    
+    private static final String URL_TEMPLATE_JTDS ="jdbc:jtds:sqlserver://{0}:{1}/{2}";
+
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
         if (configuration.getDatabaseType() == null) {
@@ -24,8 +24,8 @@ public class JdbcUrlBuilder {
                 return getMySQLJdbcUrl(configuration);
             case ORACLE:
                 return getOracleJdbcUrl(configuration);
-            case MSSQL:
-                return getMSSQLJdbcUrl(configuration);
+            case JTDS:
+                return getJTDSJdbcUrl(configuration);
             default:
                 throw new DatabaseDefinitionException("Unknown database type "
                                                       + configuration.getDatabaseType()
@@ -58,8 +58,8 @@ public class JdbcUrlBuilder {
         return url;
     }
 
-    private String getMSSQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
-        String url = MessageFormat.format(URL_TEMPLATE_MSSQLSERVER,
+    private String getJTDSJdbcUrl(final DatabaseConfigurationDTO configuration) {
+        String url = MessageFormat.format(URL_TEMPLATE_JTDS,
                 configuration.getHostname(),
                 Integer.toString(configuration.getPort()),
                 configuration.getDatabaseName());

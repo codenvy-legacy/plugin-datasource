@@ -88,9 +88,9 @@ public class DatasourceService {
             throw new RuntimeException("Oracle driver not present", e);
         }
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("SQLserver driver not present", e);
+            throw new RuntimeException("JTDS driver not present", e);
         }
     }
 

@@ -12,8 +12,9 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
+
 /**
- * Created by Wafa on 20/01/14.
+ * This connector page is using JTDS JDBC Driver to connect to MS SQLserver.
  */
 public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
                                                                                     JdbcDatasourceConnectorView.ActionDelegate {
@@ -50,7 +51,7 @@ public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceCon
                                                     .withHostname(view.getHostname()).withPort(view.getPort())
                                                     .withUsername(view.getUsername())
                                                     .withPassword(view.getPassword())
-                                                    .withDatabaseType(DatabaseType.MSSQL)
+                                                    .withDatabaseType(DatabaseType.JTDS)
                                                     .withDatasourceId(datasourceId);
         return result;
     }

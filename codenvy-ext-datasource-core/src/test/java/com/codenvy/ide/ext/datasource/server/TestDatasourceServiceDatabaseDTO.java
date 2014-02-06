@@ -82,7 +82,7 @@ public class TestDatasourceServiceDatabaseDTO {
     public void testOracleDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.ORACLE);
         when(databaseConfig.getDatabaseName()).thenReturn("xe");
-        when(databaseConfig.getHostname()).thenReturn("192.168.86.190");
+        when(databaseConfig.getHostname()).thenReturn("192.168.86.191");
         when(databaseConfig.getPort()).thenReturn(1521);
         when(databaseConfig.getUsername()).thenReturn("admin");
         when(databaseConfig.getPassword()).thenReturn("admin");
@@ -96,17 +96,17 @@ public class TestDatasourceServiceDatabaseDTO {
     @Ignore
     @Test
     public void testSqlserverDTOgeneration() throws Exception {
-        when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.MSSQL);
-        when(databaseConfig.getDatabaseName()).thenReturn("SQLEXPRESS");
-        when(databaseConfig.getHostname()).thenReturn("192.168.86.190");
+        when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.JTDS);
+        when(databaseConfig.getDatabaseName()).thenReturn("master");
+        when(databaseConfig.getHostname()).thenReturn("192.168.56.101");
         when(databaseConfig.getPort()).thenReturn(1433);
         when(databaseConfig.getUsername()).thenReturn("sa");
-        when(databaseConfig.getPassword()).thenReturn("Swear$Flai");
+        when(databaseConfig.getPassword()).thenReturn("admin");
 
         String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
         System.out.println(json);
         Assert.assertNotNull(json);
-        Assert.assertTrue(json.contains("\"databaseProductName\":\"MSSqlServer\""));
+        Assert.assertTrue(json.contains("\"databaseProductName\":\"Microsoft SQL Server\""));
     }
 
 }

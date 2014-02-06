@@ -38,6 +38,10 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.sourceforge.schemacrawler</groupId>
             <artifactId>schemacrawler</artifactId>
         </dependency>
@@ -224,10 +228,6 @@
         <profile>
             <id>nonFreeJDBC</id>
             <dependencies>
-                <dependency>
-                    <groupId>com.microsoft.sqlserver</groupId>
-                    <artifactId>sqljdbc4</artifactId>
-                </dependency>
                 <dependency>
                     <groupId>com.oracle</groupId>
                     <artifactId>ojdbc6</artifactId>
