@@ -172,6 +172,20 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
     }
 
     private String getSqlRequestInput() {
+        final String selection = getSelectedText();
+        if (selection == null || "".equals(selection.trim())) {
+            final String content = getEditorContent();
+            return content;
+        } else {
+            return selection;
+        }
+    }
+
+    private String getSelectedText() {
+        return "";
+    }
+
+    private String getEditorContent() {
         return "";
     }
 
