@@ -45,7 +45,6 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -71,8 +70,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
     private DatasourceClientService           datasourceClientService;
     private NotificationManager               notificationManager;
     private DatasourceManager                 datasourceManager;
-
-    private TextArea                          resultArea;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -100,9 +97,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
 
         // register for datasource creation events
         eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
-
-        // temporary
-        resultArea = new SqlLauncherTextArea(true);
     }
 
     private void setupResultLimit(final PreferencesManager preferencesManager) {
@@ -140,8 +134,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
         getEditor().go(this.view.getEditorZone());
-        this.view.getResultZone().setWidget(resultArea);
-
 
         setupDatasourceComponent();
     }
@@ -248,13 +240,13 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
 
     protected void updateResultDisplay(String message) {
         Log.info(SqlRequestLauncherPresenter.class, "Printing request error message.");
-        this.resultArea.setText(message);
+        this.view.setResultZoneContent(message);
     }
 
     protected void updateResultDisplay(final RequestResultGroupDTO resultDto) {
         Log.info(SqlRequestLauncherPresenter.class,
                  "Printing request results. (" + resultDto.getResults().size() + " individual results).");
-        this.resultArea.setText("");
+        this.view.setResultZoneContent("");
 
         // TODO should probably use a cellwidget at some point
         StringBuilder sb = new StringBuilder();
@@ -277,7 +269,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implement
         }
 
         Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
-        this.resultArea.setText(sb.toString());
+        this.view.setResultZoneContent(sb.toString());
     }
 
     private void appendSelectResult(final StringBuilder sb, final RequestResultDTO result) {

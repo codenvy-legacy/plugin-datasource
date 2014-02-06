@@ -99,11 +99,6 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     }
 
     @Override
-    public AcceptsOneWidget getResultZone() {
-        return null;
-    }
-
-    @Override
     public void setResultZoneContent(final String newContent) {
         resultZone.setText(newContent);
     }
