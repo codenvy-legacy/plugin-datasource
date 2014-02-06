@@ -2,68 +2,21 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.editor.EditorProvider;
-import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.preferences.PreferencesManager;
-import com.codenvy.ide.dto.DtoFactory;
-import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
+import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 public class SqlLauncherEditorProvider implements EditorProvider {
 
-    private final NotificationManager   notificationManager;
-
-    private final SqlEditorProvider     sqlEditorProvider;
-
-    private SqlRequestLauncherConstants constants;
-
-    private PreferencesManager          preferencesManager;
-
-    private DatasourceManager           datasourceManager;
-
-    private EventBus                    eventBus;
-
-    private DatasourceClientService     service;
-
-    private DtoFactory                  dtoFactory;
-
-    private SqlRequestLauncherFactory   sqlRequestLauncherFactory;
-
+    private SqlRequestLauncherFactory sqlRequestLauncherFactory;
 
     @Inject
-    public SqlLauncherEditorProvider(final NotificationManager notificationManager,
-                                     final SqlEditorProvider sqlEditorProvider,
-                                     final SqlRequestLauncherConstants constants,
-                                     final PreferencesManager preferencesManager,
-                                     final DatasourceManager datasourceManager,
-                                     final EventBus eventBus,
-                                     final DatasourceClientService service,
-                                     final DtoFactory dtoFactory,
-                                     final SqlRequestLauncherFactory sqlRequestLauncherFactory) {
-        this.notificationManager = notificationManager;
-        this.sqlEditorProvider = sqlEditorProvider;
-        this.constants = constants;
-        this.preferencesManager = preferencesManager;
-        this.datasourceManager = datasourceManager;
-        this.eventBus = eventBus;
-        this.service = service;
-        this.dtoFactory = dtoFactory;
+    public SqlLauncherEditorProvider(final SqlRequestLauncherFactory sqlRequestLauncherFactory) {
         this.sqlRequestLauncherFactory = sqlRequestLauncherFactory;
     }
 
     @Override
     public EditorPartPresenter getEditor() {
-        return new SqlRequestLauncherAdapter(sqlRequestLauncherFactory.createSqlRequestLauncherView(),
-                                             constants,
-                                             preferencesManager,
-                                             sqlEditorProvider,
-                                             service,
-                                             notificationManager,
-                                             datasourceManager,
-                                             eventBus,
-                                             dtoFactory);
-
+        Log.info(SqlLauncherEditorProvider.class, "New instance of SQL launcher editor requested.");
+        return sqlRequestLauncherFactory.createSqlRequestLauncherPresenter();
     }
 }
