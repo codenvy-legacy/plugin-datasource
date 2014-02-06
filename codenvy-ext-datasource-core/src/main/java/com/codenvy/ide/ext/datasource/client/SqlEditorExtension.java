@@ -26,9 +26,9 @@ import com.codenvy.ide.api.resources.ResourceProvider;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.wizard.newresource.NewResourceAgent;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlLauncherEditorProvider;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.inject.Inject;
@@ -54,7 +54,7 @@ public class SqlEditorExtension {
                               final SqlEditorResources sqlEditorResources,
                               final ResourceProvider resourceProvider,
                               final EditorRegistry editorRegistry,
-                              final SqlEditorProvider sqlEditorProvider,
+                              final SqlLauncherEditorProvider sqlEditorProvider,
                               final NewResourceAgent newResourceAgent,
                               final SqlResourceProvider sqlResourceProvider) {
 
