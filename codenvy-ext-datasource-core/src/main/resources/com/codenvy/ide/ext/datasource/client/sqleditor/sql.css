@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+@external sql-keyword, sql-atom, sql-number, sql-def, sql-variable, sql-variable-2, sql-variable-3;
+@external sql-property, sql-operator, sql-comment, sql-string, sql-string-2, sql-meta, sql-qualifier;
+@external sql-builtin, sql-bracket, sql-tag, sql-attribute, sql-header, sql-quote, sql-hr,sql-link;
+@external sql-negative, sql-positive, sql-header, sql-strong, sql-em, sql-link, sql-error, sql-invalidchar;
+
+.sql-keyword {color: #708;}
+.sql-atom {color: #219;}
+.sql-number {color: #164;}
+.sql-def {color: #00f;}
+.sql-variable {color: black;}
+.sql-variable-2 {color: #05a;}
+.sql-variable-3 {color: #085;}
+.sql-property {color: black;}
+.sql-operator {color: black;}
+.sql-comment {color: #a50;}
+.sql-string {color: #a11;}
+.sql-string-2 {color: #f50;}
+.sql-meta {color: #555;}
+.sql-qualifier {color: #555;}
+.sql-builtin {color: #30a;}
+.sql-bracket {color: #997;}
+.sql-tag {color: #170;}
+.sql-attribute {color: #00c;}
+.sql-header {color: blue;}
+.sql-quote {color: #090;}
+.sql-hr {color: #999;}
+.sql-link {color: #00c;}
+.sql-negative {color: #d44;}
+.sql-positive {color: #292;}
+.sql-header, .sql-strong {font-weight: bold;}
+.sql-em {font-style: italic;}
+.sql-link {text-decoration: underline;}
+.sql-error {color: #f00;}
+.sql-invalidchar {color: #f00;}
