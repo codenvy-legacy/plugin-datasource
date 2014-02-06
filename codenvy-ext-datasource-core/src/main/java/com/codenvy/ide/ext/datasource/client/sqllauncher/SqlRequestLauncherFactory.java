@@ -6,5 +6,4 @@ public interface SqlRequestLauncherFactory {
 
     SqlRequestLauncherPresenter createSqlRequestLauncherPresenter();
 
-    SqlRequestLauncherAdapter createSqlRequestLauncherAdapter();
 }
