@@ -25,6 +25,8 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeView;
 import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeViewImpl;
+import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
+import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
@@ -74,5 +76,7 @@ public class DatasourceGinModule extends AbstractGinModule {
                                              .build(SqlRequestLauncherFactory.class));
 
         bind(SqlResourceProvider.class);
+
+        bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);
     }
 }
