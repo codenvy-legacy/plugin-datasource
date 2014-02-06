@@ -18,6 +18,14 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style type="com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherViewImpl.Style">
+        .resultZone {
+            background-color: white;
+            font-family: monospace;
+        }
+    </ui:style>
+
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
         <g:north size="25">
             <g:HorizontalPanel>
@@ -35,7 +43,7 @@
                     <g:SimpleLayoutPanel ui:field="editorZone" />
                 </g:center>
                 <g:south size="200">
-                    <g:SimpleLayoutPanel ui:field="resultZone" />
+                    <g:TextArea ui:field="resultZone" readOnly="true" addStyleNames="style.resultZone" />
                 </g:south>
             </g:SplitLayoutPanel>
         </g:center>

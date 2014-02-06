@@ -37,6 +37,8 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
     AcceptsOneWidget getResultZone();
 
+    void setResultZoneContent(String newContent);
+
     void setDatasourceList(Collection<String> datasourceIds);
 
     /** Required for delegating functions in view. */
@@ -48,5 +50,4 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
         void executeRequested(String request);
     }
-
 }

@@ -23,6 +23,7 @@ import com.codenvy.ide.Resources;
 import com.codenvy.ide.ext.datasource.client.common.SimpleView;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -30,6 +31,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -50,7 +52,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     /** The request result display. */
     @UiField
-    AcceptsOneWidget resultZone;
+    TextArea         resultZone;
 
     /** The label for the datasource selection widget. */
     @UiField
@@ -98,7 +100,12 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     @Override
     public AcceptsOneWidget getResultZone() {
-        return resultZone;
+        return null;
+    }
+
+    @Override
+    public void setResultZoneContent(final String newContent) {
+        resultZone.setText(newContent);
     }
 
     @Override
@@ -157,5 +164,9 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
      * The UiBinder interface for this component.
      */
     interface SqlRequestLauncherViewImplUiBinder extends UiBinder<Widget, SqlRequestLauncherViewImpl> {
+    }
+
+    interface Style extends CssResource {
+        String resultZone();
     }
 }
