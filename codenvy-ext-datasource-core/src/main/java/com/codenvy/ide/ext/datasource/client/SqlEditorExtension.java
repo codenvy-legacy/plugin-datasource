@@ -61,6 +61,8 @@ public class SqlEditorExtension {
         Log.info(SqlEditorExtension.class, "Initialization of SQL editor extension.");
         // inject sql parser
         ScriptInjector.fromString(sqlEditorResources.sqlParserJs().getText()).setWindow(TOP_WINDOW).inject();
+        // inject CSS
+        sqlEditorResources.sqlCSS().ensureInjected();
 
         final FileType sqlFile = new FileType(sqlEditorResources.sqlFile(), GENERIC_SQL_MIME_TYPE, SQL_FILE_EXTENSION);
         resourceProvider.registerFileType(sqlFile);
