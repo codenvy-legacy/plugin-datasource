@@ -20,16 +20,17 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import java.util.Collection;
 import java.util.List;
 
-import com.codenvy.ide.api.editor.EditorPartPresenter;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.preferences.PreferencesManager;
-import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.common.SinglePartPresenter.HasEditorPartPresenter;
+import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
@@ -42,17 +43,15 @@ import com.codenvy.ide.resources.marshal.StringUnmarshaller;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class SqlRequestLauncherPresenter extends AbstractPartPresenter implements
+public class SqlRequestLauncherPresenter extends TextEditorPartAdapter implements
                                                                       SqlRequestLauncherView.ActionDelegate,
-                                                                      DatasourceCreatedHandler,
-                                                                      HasEditorPartPresenter {
+                                                                      DatasourceCreatedHandler {
 
     /** Preference property name for default result limit. */
     private static final String               PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
@@ -69,8 +68,6 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private String                            selectedDatasourceId                 = null;
     private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
 
-    private EditorPartPresenter               editor;
-
     private DatasourceClientService           datasourceClientService;
     private NotificationManager               notificationManager;
     private DatasourceManager                 datasourceManager;
@@ -78,21 +75,23 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     private TextArea                          resultArea;
 
     @Inject
-    public SqlRequestLauncherPresenter(final SqlRequestLauncherView view,
-                                       final SqlRequestLauncherConstants constants,
-                                       final PreferencesManager preferencesManager,
-                                       final SqlEditorProvider sqlEditorProvider,
-                                       final DatasourceClientService service,
-                                       final NotificationManager notificationManager,
-                                       final DatasourceManager datasourceManager,
-                                       final EventBus eventBus,
-                                       final DtoFactory dtoFactory) {
+    public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
+                                       final @NotNull SqlRequestLauncherConstants constants,
+                                       final @NotNull PreferencesManager preferencesManager,
+                                       final @NotNull SqlEditorProvider sqlEditorProvider,
+                                       final @NotNull DatasourceClientService service,
+                                       final @NotNull NotificationManager notificationManager,
+                                       final @NotNull DatasourceManager datasourceManager,
+                                       final @NotNull EventBus eventBus,
+                                       final @NotNull DtoFactory dtoFactory,
+                                       final @NotNull WorkspaceAgent workspaceAgent) {
+        super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
+        Log.info(SqlRequestLauncherPresenter.class, "New instance of SQL request launcher presenter resquested.");
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
         this.dtoFactory = dtoFactory;
 
-        this.editor = sqlEditorProvider.getEditor();
         this.datasourceClientService = service;
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
@@ -138,38 +137,13 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     }
 
     @Override
-    public String getTitle() {
-        return this.constants.sqlEditorWindowTitle();
-    }
-
-    @Override
-    public ImageResource getTitleImage() {
-        return null;
-    }
-
-    @Override
-    public String getTitleToolTip() {
-        return null;
-    }
-
-    @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
-        editor.go(this.view.getEditorZone());
+        getEditor().go(this.view.getEditorZone());
         this.view.getResultZone().setWidget(resultArea);
 
 
         setupDatasourceComponent();
-    }
-
-    @Override
-    public boolean onClose() {
-        return this.editor.onClose();
-    }
-
-    @Override
-    public void onOpen() {
-        this.editor.onOpen();
     }
 
     @Override
@@ -378,10 +352,5 @@ public class SqlRequestLauncherPresenter extends AbstractPartPresenter implement
     @Override
     public void onDatasourceCreated(DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
-    }
-
-    @Override
-    public EditorPartPresenter getEditorPartPresenter() {
-        return this.editor;
     }
 }
