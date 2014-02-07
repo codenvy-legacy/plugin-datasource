@@ -9,8 +9,8 @@
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" width="100%" height="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="80.0">
-                    <g:Label text="Database Name" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
+                <g:west size="90.0">
+                    <g:Label text="Name" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>
                     <g:TextBox ui:field="dbName" width="97%" height="16px" />
@@ -19,7 +19,7 @@
         </g:north>
         <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="80.0">
+                <g:west size="90.0">
                     <g:Label text="Host" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>
@@ -29,7 +29,7 @@
         </g:north>
         <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="80.0">
+                <g:west size="90.0">
                     <g:Label text="Port" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>
@@ -39,7 +39,7 @@
         </g:north>
         <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="80.0">
+                <g:west size="90.0">
                     <g:Label text="Username" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>
@@ -49,7 +49,7 @@
         </g:north>
         <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="80.0">
+                <g:west size="90.0">
                     <g:Label text="Password" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:west>
                 <g:center>

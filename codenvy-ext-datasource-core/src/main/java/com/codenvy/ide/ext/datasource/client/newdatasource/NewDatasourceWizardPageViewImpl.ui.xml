@@ -41,17 +41,14 @@
         	border: 0px;
         }
         
-        .emptyBackground {
-        	background: #ffffff;
-        }
     </ui:style>
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:north size="50">
             <g:FlowPanel addStyleNames="{res.coreCss.line}">
                 <g:DockLayoutPanel unit="PX" width="100%" height="100%">
-                    <g:west size="100">
+                    <g:west size="130">
                         <g:FlowPanel>
-                            <g:Label text="Datasource Name" addStyleNames="{res.coreCss.mainBoldFont} {res.coreCss.greyFontColor} {style.projectNamePosition}" />
+                            <g:Label text="Datasource Name" addStyleNames="{res.coreCss.mainBoldFont}" />
                         </g:FlowPanel>
                     </g:west>
                     <g:center>
@@ -66,9 +63,9 @@
         </g:north>
         <g:north size="140">
             <g:FlowPanel addStyleNames="{res.coreCss.line}">
-                <g:Label text="Choose Database Type" addStyleNames="{style.title} {res.coreCss.mainBoldFont} {res.coreCss.greyFontColor} {style.alignLeft}" />
+                <g:Label text="Choose Database Type" addStyleNames="{style.title} {res.coreCss.mainBoldFont} {style.alignLeft}" />
                 <g:Image ui:field="chooseTechnologyTooltip" resource="{res.question}" addStyleNames="{style.questionImage} {res.coreCss.cursorPointer} {style.alignLeft}" />
-                <g:SimplePanel ui:field="databasePanel" addStyleNames="{res.coreCss.mainFont} {style.clearLeft} {style.emptyBorder} {style.emptyBackground}" />
+                <g:SimplePanel ui:field="databasePanel" addStyleNames="{res.coreCss.mainFont} {style.clearLeft} {style.emptyBorder}" />
             </g:FlowPanel>
         </g:north>
     </g:DockLayoutPanel>
