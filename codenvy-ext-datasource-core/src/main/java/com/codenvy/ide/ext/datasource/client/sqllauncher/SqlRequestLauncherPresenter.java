@@ -233,6 +233,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                     notificationManager.showNotification(new Notification("Failed execution of SQL request",
                                                                           Type.ERROR));
                 }
+            } else {
+                Window.alert("No SQL request");
             }
         } else {
             Window.alert("No SQL request");
