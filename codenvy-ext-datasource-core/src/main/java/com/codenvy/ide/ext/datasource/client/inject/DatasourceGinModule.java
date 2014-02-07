@@ -21,6 +21,8 @@ import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoStoreImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
@@ -80,6 +82,9 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(SqlResourceProvider.class);
 
         bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);
+
         bind(AvailableJdbcDriversService.class).to(AvailableJdbcDriversServiceRestImpl.class).in(Singleton.class);
+
+        bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
     }
 }
