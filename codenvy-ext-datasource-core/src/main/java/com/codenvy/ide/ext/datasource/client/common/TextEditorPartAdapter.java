@@ -28,11 +28,11 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class TextEditorPartAdapter implements PartStack, TextEditorPartPresenter, FileEventHandler {
+public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements PartStack, TextEditorPartPresenter, FileEventHandler {
 
     private final SimpleLayoutPanel                 panel;
 
-    private final TextEditorPartPresenter           editor;
+    private final T                                 editor;
 
     private final ListenerManager<PropertyListener> manager;
 
@@ -44,9 +44,9 @@ public class TextEditorPartAdapter implements PartStack, TextEditorPartPresenter
 
     private final WorkspaceAgent                    workspaceAgent;
 
-    public TextEditorPartAdapter(final @NotNull TextEditorPartPresenter editor,
-                               final @NotNull WorkspaceAgent workspaceAgent,
-                               final @NotNull EventBus eventBus) {
+    public TextEditorPartAdapter(final @NotNull T editor,
+                                 final @NotNull WorkspaceAgent workspaceAgent,
+                                 final @NotNull EventBus eventBus) {
         this.editor = editor;
         this.workspaceAgent = workspaceAgent;
 
@@ -87,7 +87,7 @@ public class TextEditorPartAdapter implements PartStack, TextEditorPartPresenter
         eventBus.addHandler(FileEvent.TYPE, this);
     }
 
-    public TextEditorPartPresenter getEditor() {
+    public T getEditor() {
         return this.editor;
     }
 
