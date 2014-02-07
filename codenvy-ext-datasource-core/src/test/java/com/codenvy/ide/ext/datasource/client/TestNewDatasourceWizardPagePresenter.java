@@ -26,6 +26,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwt.test.GwtModule;
 import com.googlecode.gwt.test.GwtTestWithMockito;
 
@@ -35,12 +36,17 @@ public class TestNewDatasourceWizardPagePresenter extends GwtTestWithMockito {
     NewDatasourceWizardPageView      view;
     @Mock
     NewDatasourceConnectorAgent      connectorAgent;
-
+    @Mock
+    EventBus eventbus;
+    @Mock
+    AvailableJdbcDriversService      jdbcDrivers;
+    
+    
     NewDatasourceWizardPagePresenter presenter;
 
     @Before
     public void init() {
-        presenter = new NewDatasourceWizardPagePresenter(view, connectorAgent);
+        presenter = new NewDatasourceWizardPagePresenter(view, connectorAgent, jdbcDrivers, eventbus);
     }
 
     @Test

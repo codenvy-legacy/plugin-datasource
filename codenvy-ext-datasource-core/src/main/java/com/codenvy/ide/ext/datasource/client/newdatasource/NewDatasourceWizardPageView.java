@@ -41,5 +41,9 @@ public interface NewDatasourceWizardPageView extends View<NewDatasourceWizardPag
 
     String getDatasourceName();
 
-    void selectConnector(int id);
+    void selectConnector(int buttonIndex);
+
+    void enableDbTypeButton(int buttonIndex);
+
+    void disableAllDbTypeButton();
 }

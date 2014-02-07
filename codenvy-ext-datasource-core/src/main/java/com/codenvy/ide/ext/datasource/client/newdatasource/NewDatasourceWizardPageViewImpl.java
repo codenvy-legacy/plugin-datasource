@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
+import java.util.List;
+
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
@@ -56,6 +58,8 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     protected Array<ToggleButton> connectorButtons;
 
     protected ActionDelegate      delegate;
+
+    protected List<String>        drivers;
 
 
     @Inject
@@ -121,6 +125,20 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
         for (int i = 0; i < connectorButtons.size(); i++) {
             ToggleButton button = connectorButtons.get(i);
             button.setDown(i == id);
+        }
+    }
+
+    @Override
+    public void enableDbTypeButton(int index) {
+        ToggleButton button = connectorButtons.get(index);
+        button.setEnabled(true);
+    }
+
+    @Override
+    public void disableAllDbTypeButton() {
+        for (int i = 0; i < connectorButtons.size(); i++) {
+            ToggleButton button = connectorButtons.get(i);
+            button.setEnabled(false);
         }
     }
 

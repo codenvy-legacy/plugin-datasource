@@ -32,6 +32,7 @@ public interface NewDatasourceConnectorAgent {
     void register(@NotNull String id,
                   @NotNull String title,
                   @Nullable ImageResource image,
+                  @NotNull String jdbcClassName,
                   @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages);
 
     Array<NewDatasourceConnector> getConnectors();

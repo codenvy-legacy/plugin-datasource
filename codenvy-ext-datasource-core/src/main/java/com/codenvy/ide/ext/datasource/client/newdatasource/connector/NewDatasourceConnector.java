@@ -30,13 +30,16 @@ public class NewDatasourceConnector {
     protected String        id;
     protected String        title;
     protected ImageResource image;
+    protected String        jdbcClassName;
 
     public NewDatasourceConnector(@NotNull String id,
-                               @NotNull String title,
-                               @Nullable ImageResource image) {
+                                  @NotNull String title,
+                                  @Nullable ImageResource image,
+                                  @NotNull String jdbcClassName) {
         this.id = id;
         this.title = title;
         this.image = image;
+        this.jdbcClassName = jdbcClassName;
     }
 
     public String getId() {
@@ -49,5 +52,9 @@ public class NewDatasourceConnector {
 
     public ImageResource getImage() {
         return image;
+    }
+
+    public String getJdbcClassName() {
+        return jdbcClassName;
     }
 }

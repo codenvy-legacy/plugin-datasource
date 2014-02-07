@@ -27,10 +27,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -55,6 +57,7 @@ import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.DriversDTO;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
@@ -75,22 +78,22 @@ public class DatasourceService {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("postgresql driver not present", e);
+            LOG.info("postgresql driver not present", e);
         }
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MySQL driver not present", e);
+            LOG.info("MySQL driver not present", e);
         }
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Oracle driver not present", e);
+            LOG.info("Oracle driver not present", e);
         }
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("JTDS driver not present", e);
+            LOG.info("JTDS driver not present", e);
         }
     }
 
@@ -98,6 +101,21 @@ public class DatasourceService {
     public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder) {
         this.jdbcUrlBuilder = jdbcUrlBuilder;
     }
+
+    @Path("drivers")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String isDatabaseDriverAvailable() throws Exception {
+        Enumeration<Driver> loadedDrivers = DriverManager.getDrivers();
+        List<String> drivers = new ArrayList<>();
+        while (loadedDrivers.hasMoreElements()) {
+            Driver driver = loadedDrivers.nextElement();
+            drivers.add(driver.getClass().getCanonicalName());
+        }
+        DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
+        return DtoFactory.getInstance().toJson(driversDTO);
+    }
+
 
     @Path("database")
     @POST

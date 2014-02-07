@@ -111,4 +111,11 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                     .send(asyncRequestCallback);
     }
 
+    public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        String url = restServiceContext + "/datasource/drivers";
+        AsyncRequest.build(RequestBuilder.GET, url, true)
+                    .header(ACCEPT, APPLICATION_JSON)
+                    .send(asyncRequestCallback);
+    }
+
 }

@@ -46,13 +46,14 @@ public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAg
     public void register(@NotNull String id,
                          @NotNull String title,
                          @Nullable ImageResource image,
+                         @NotNull String jdbcClassName,
                          @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
         if (registeredConnectors.containsKey(id)) {
             // TODO this shouldn't happen: notification error instead of the alert ?
             Window.alert("Datasource connector with " + id + " id already exists");
             return;
         }
-        NewDatasourceConnector connector = new NewDatasourceConnector(id, title, image);
+        NewDatasourceConnector connector = new NewDatasourceConnector(id, title, image, jdbcClassName);
         registeredConnectors.put(id, connector);
         for (Provider< ? extends AbstractNewDatasourceConnectorPage> provider : wizardPages.asIterable()) {
             datasourceWizard.addPage(provider);
