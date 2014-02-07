@@ -56,7 +56,6 @@ public class JdbcDatasourceConnectorViewImpl extends Composite implements JdbcDa
     public JdbcDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
-        portField.setText("5432"); // default postgres port
     }
 
     @Override
@@ -87,6 +86,11 @@ public class JdbcDatasourceConnectorViewImpl extends Composite implements JdbcDa
     @Override
     public String getPassword() {
         return passwordField.getText();
+    }
+
+    @Override
+    public void setPort(int port) {
+        portField.setText(Integer.toString(port));
     }
 
 

@@ -39,6 +39,7 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+        view.setPort(3306);
     }
 
 

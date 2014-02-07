@@ -42,5 +42,6 @@ public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnecto
 
     String getPassword();
 
+    void setPort(int port);
 
 }

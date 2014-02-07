@@ -52,6 +52,7 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+        view.setPort(5432);
     }
 
 

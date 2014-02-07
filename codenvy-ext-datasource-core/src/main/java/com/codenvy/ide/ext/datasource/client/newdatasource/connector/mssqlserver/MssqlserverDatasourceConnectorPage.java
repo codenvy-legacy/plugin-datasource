@@ -40,6 +40,8 @@ public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceCon
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+        // set the default port
+        view.setPort(1433);
     }
 
 

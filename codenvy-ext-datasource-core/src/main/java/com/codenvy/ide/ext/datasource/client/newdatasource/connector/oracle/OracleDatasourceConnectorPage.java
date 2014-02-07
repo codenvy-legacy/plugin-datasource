@@ -39,6 +39,7 @@ public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnecto
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+        view.setPort(1521);
     }
 
 
