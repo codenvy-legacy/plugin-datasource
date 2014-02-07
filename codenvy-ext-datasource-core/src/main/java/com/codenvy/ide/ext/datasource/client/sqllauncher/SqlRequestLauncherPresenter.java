@@ -175,11 +175,11 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private String getSelectedText() {
-        return "";
+        return getEditor().getSelectedContent();
     }
 
     private String getEditorContent() {
-        return "";
+        return getEditor().getEditorContent();
     }
 
     @Override
