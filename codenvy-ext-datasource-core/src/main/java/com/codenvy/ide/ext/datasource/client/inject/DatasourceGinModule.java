@@ -21,6 +21,8 @@ import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracleImpl;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStoreImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
@@ -86,5 +88,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(AvailableJdbcDriversService.class).to(AvailableJdbcDriversServiceRestImpl.class).in(Singleton.class);
 
         bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
+
+        bind(DatabaseInfoOracle.class).to(DatabaseInfoOracleImpl.class);
     }
 }
