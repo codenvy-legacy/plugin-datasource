@@ -111,7 +111,7 @@ public class DatasourceExtension {
         //add a new SQLserver connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
-        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "SqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "Microsoft Sql Server", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
     }
 
 }
