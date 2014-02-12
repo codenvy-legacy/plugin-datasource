@@ -296,6 +296,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         // actual data
         for (List<String> line : result.getResultLines()) {
             for (String cell : line) {
+                if (cell == null) {
+                    cell = "null";
+                }
                 sb.append(formatCell(cell))
                   .append(" ");
             }
