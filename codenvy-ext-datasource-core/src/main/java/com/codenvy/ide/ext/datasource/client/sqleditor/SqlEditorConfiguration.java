@@ -16,7 +16,12 @@ import com.codenvy.ide.texteditor.api.parser.Parser;
 
 public class SqlEditorConfiguration extends TextEditorConfiguration {
 
-    private SqlCodeAssistProcessor codeAssistProcessor;
+    protected SqlCodeAssistProcessor codeAssistProcessor;
+    protected SqlEditorResources resource;
+
+    public SqlEditorConfiguration(SqlEditorResources resource) {
+        this.resource = resource;
+    }
 
     @Override
     public Parser getParser(@NotNull final TextEditorPartView view) {
@@ -34,7 +39,7 @@ public class SqlEditorConfiguration extends TextEditorConfiguration {
 
     private SqlCodeAssistProcessor getOrCreateCodeAssistProcessor() {
         if (codeAssistProcessor == null) {
-            codeAssistProcessor = new SqlCodeAssistProcessor();
+            codeAssistProcessor = new SqlCodeAssistProcessor(resource);
         }
         return codeAssistProcessor;
     }

@@ -16,20 +16,24 @@ public class SqlEditorProvider implements EditorProvider {
 
     private final NotificationManager                 notificationManager;
 
+    protected SqlEditorResources resource;
+
     @Inject
     public SqlEditorProvider(final DocumentProvider documentProvider,
                              final Provider<ReadableContentTextEditor> editorProvider,
-                             final NotificationManager notificationManager) {
+                             final NotificationManager notificationManager,
+                             final SqlEditorResources resource) {
         this.documentProvider = documentProvider;
         this.editorProvider = editorProvider;
         this.notificationManager = notificationManager;
+        this.resource = resource;
     }
 
     @Override
     public ReadableContentTextEditor getEditor() {
         Log.info(SqlEditorProvider.class, "New instance of SQL editor requested.");
         ReadableContentTextEditor textEditor = editorProvider.get();
-        textEditor.initialize(new SqlEditorConfiguration(), documentProvider, notificationManager);
+        textEditor.initialize(new SqlEditorConfiguration(resource), documentProvider, notificationManager);
         return textEditor;
     }
 
