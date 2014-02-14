@@ -118,6 +118,11 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ide-env-dummy</artifactId>
+                <version>${codenvy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ide-security</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
