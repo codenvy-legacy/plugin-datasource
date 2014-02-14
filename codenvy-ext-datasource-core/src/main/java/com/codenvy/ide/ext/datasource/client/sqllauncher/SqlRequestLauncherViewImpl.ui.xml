@@ -17,7 +17,7 @@
   -->
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <ui:style type="com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherViewImpl.Style">
         .resultZone {
@@ -43,7 +43,9 @@
                     <g:SimpleLayoutPanel ui:field="editorZone" />
                 </g:center>
                 <g:south size="200">
-                    <g:TextArea ui:field="resultZone" readOnly="true" addStyleNames="style.resultZone" />
+                    <g:ScrollPanel height="100%" width="100%">
+                        <g:TextArea ui:field="resultZone" readOnly="true" addStyleNames="style.resultZone" />
+                    </g:ScrollPanel>
                 </g:south>
             </g:SplitLayoutPanel>
         </g:center>
