@@ -1,7 +1,9 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.i18n.client.Messages;
 
+@DefaultLocale("en")
 public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("Open SQL editor")
@@ -20,5 +22,6 @@ public interface SqlRequestLauncherConstants extends Messages {
     String executeButtonLabel();
 
     @DefaultMessage("{0} rows.")
-    String updateCountMessage(int count);
+    @AlternateMessage({"one", "{0} row."})
+    String updateCountMessage(@PluralCount int count);
 }
