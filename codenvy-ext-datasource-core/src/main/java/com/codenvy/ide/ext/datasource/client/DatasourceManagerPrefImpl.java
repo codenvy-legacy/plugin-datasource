@@ -7,6 +7,7 @@ import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -49,6 +50,11 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
     public DatabaseConfigurationDTO getByName(final String name) {
         DatasourceConfigPreferences datasourcesPreferences = getDatasourceConfigPreferences();
         return datasourcesPreferences.getDatasources().get(name);
+    }
+
+    @Override
+    public void persist(final AsyncCallback<Void> callback) {
+        this.preferencesManager.flushPreferences(callback);
     }
 
     public Set<String> getNames() {

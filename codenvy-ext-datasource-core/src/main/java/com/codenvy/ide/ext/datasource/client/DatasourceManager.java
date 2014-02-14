@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DatasourceManager {
 
@@ -16,4 +17,6 @@ public interface DatasourceManager {
     public DatabaseConfigurationDTO getByName(final String name);
 
     public Set<String> getNames();
+
+    public void persist(AsyncCallback<Void> callback);
 }
