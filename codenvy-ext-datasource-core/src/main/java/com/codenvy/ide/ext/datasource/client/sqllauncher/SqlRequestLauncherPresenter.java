@@ -44,8 +44,11 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -241,124 +244,55 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
     }
 
-    protected void updateResultDisplay(String message) {
+    protected void updateResultDisplay(final String message) {
         Log.info(SqlRequestLauncherPresenter.class, "Printing request error message.");
-        this.view.setResultZoneContent(message);
+        Label messageLabel = new Label(message);
+        this.view.appendResult(messageLabel);
     }
 
     protected void updateResultDisplay(final RequestResultGroupDTO resultDto) {
         Log.info(SqlRequestLauncherPresenter.class,
                  "Printing request results. (" + resultDto.getResults().size() + " individual results).");
-        this.view.setResultZoneContent("");
+        this.view.clearResultZone();
 
-        // TODO should probably use a cellwidget at some point
-        StringBuilder sb = new StringBuilder();
         for (final RequestResultDTO result : resultDto.getResults()) {
             switch (result.getResultType()) {
                 case UpdateResultDTO.TYPE:
                     Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'update'.");
-                    appendUpdateResult(sb, result);
+                    appendUpdateResult(result);
                     break;
                 case SelectResultDTO.TYPE:
                     Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
-                    appendSelectResult(sb, result);
+                    appendSelectResult(result);
                     break;
                 default:
                     Log.error(SqlRequestLauncherPresenter.class, "unknown result type : "
                                                                  + result.getResultType());
-                    sb.append("Result can't be displayed");
+                    this.view.appendResult(new Label("Result can't be displayed"));
             }
-            sb.append("\n\n");
         }
 
         Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
-        this.view.setResultZoneContent(sb.toString());
     }
 
-    private void appendSelectResult(final StringBuilder sb, final RequestResultDTO result) {
-        // append header
-        StringBuilder headerBuilder = new StringBuilder();
-        for (String cell : result.getHeaderLine()) {
-            headerBuilder.append(formatCell(cell));
-            headerBuilder.append(" ");
-        }
-        String header = headerBuilder.toString();
+    private void appendSelectResult(final RequestResultDTO result) {
 
-        sb.append(header)
-          .append("\n");
+        CellTable<List<String>> resultTable = new CellTable<List<String>>();
 
-        // separator
-        for (int i = 0; i < header.length(); i++) {
-            sb.append("-");
+        int i = 0;
+        for (final String headerEntry : result.getHeaderLine()) {
+            resultTable.addColumn(new FixedIndexTextColumn(i), new RightAlignColumnHeader(headerEntry));
+            i++;
         }
-        sb.append("\n");
 
-        // actual data
-        for (List<String> line : result.getResultLines()) {
-            for (String cell : line) {
-                if (cell == null) {
-                    cell = "null";
-                }
-                sb.append(formatCell(cell))
-                  .append(" ");
-            }
-            sb.append("\n");
-        }
+        new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
+
+        this.view.appendResult(resultTable);
 
     }
 
-    private void appendUpdateResult(final StringBuilder sb, final RequestResultDTO result) {
-        sb.append(this.constants.updateCountMessage(result.getUpdateCount()));
-    }
-
-    private String formatCell(final String cell) {
-        if (cell.length() > 12) {
-            String cut = cell.substring(0, 10);
-            return cut + "..";
-        } else {
-            String padding = "";
-            switch (cell.length()) {
-                case 0:
-                    padding = "            ";
-                    break;
-                case 1:
-                    padding = "           ";
-                    break;
-                case 2:
-                    padding = "          ";
-                    break;
-                case 3:
-                    padding = "         ";
-                    break;
-                case 4:
-                    padding = "        ";
-                    break;
-                case 5:
-                    padding = "       ";
-                    break;
-                case 6:
-                    padding = "      ";
-                    break;
-                case 7:
-                    padding = "     ";
-                    break;
-                case 8:
-                    padding = "    ";
-                    break;
-                case 9:
-                    padding = "   ";
-                    break;
-                case 10:
-                    padding = "  ";
-                    break;
-                case 11:
-                    padding = " ";
-                    break;
-                default:
-                    break;
-            }
-            return cell + padding;
-        }
+    private void appendUpdateResult(final RequestResultDTO result) {
+        this.view.appendResult(new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
     @Override

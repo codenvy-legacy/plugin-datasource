@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import com.codenvy.ide.api.mvp.View;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Interface for the SQL editor view component.
@@ -35,9 +36,11 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     /** Returns the zone in which the SQL editor is to be shown. */
     AcceptsOneWidget getEditorZone();
 
-    void setResultZoneContent(String newContent);
-
     void setDatasourceList(Collection<String> datasourceIds);
+
+    void appendResult(Widget widget);
+
+    void clearResultZone();
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
