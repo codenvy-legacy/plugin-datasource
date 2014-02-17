@@ -16,12 +16,11 @@ import com.google.web.bindery.event.shared.EventBus;
  * Created by Wafa on 20/01/14.
  */
 public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
-                                                                                    JdbcDatasourceConnectorView.ActionDelegate {
-    final public static String ORACLE_DB_ID = "oracle";
+                                                                                     JdbcDatasourceConnectorView.ActionDelegate {
+    final public static String            ORACLE_DB_ID = "oracle";
 
     protected JdbcDatasourceConnectorView view;
     protected DtoFactory                  dtoFactory;
-    protected NotificationManager         notificationManager;
 
     @Inject
     public OracleDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -29,9 +28,8 @@ public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnecto
                                          final DtoFactory dtoFactory,
                                          final DatasourceManager datasourceManager,
                                          final EventBus eventBus) {
-        super("Oracle", null, ORACLE_DB_ID, datasourceManager, eventBus);
+        super("Oracle", null, ORACLE_DB_ID, datasourceManager, eventBus, notificationManager);
         this.view = view;
-        this.notificationManager = notificationManager;
         this.dtoFactory = dtoFactory;
     }
 

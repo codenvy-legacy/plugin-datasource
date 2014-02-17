@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
@@ -29,19 +30,22 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.web.bindery.event.shared.EventBus;
 
 public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage {
-    private String            datasourceId;
-    private DatasourceManager datasourceManager;
-    private EventBus          eventBus;
+    private final String              datasourceId;
+    private final DatasourceManager   datasourceManager;
+    private final EventBus            eventBus;
+    private final NotificationManager notificationManager;
 
     public AbstractNewDatasourceConnectorPage(@Nullable final String caption,
                                               @Nullable final ImageResource image,
                                               @NotNull final String datasourceId,
                                               @NotNull final DatasourceManager datasourceManager,
-                                              @NotNull final EventBus eventBus) {
+                                              @NotNull final EventBus eventBus,
+                                              @NotNull final NotificationManager notificationManager) {
         super(caption, image);
         this.datasourceId = datasourceId;
         this.datasourceManager = datasourceManager;
         this.eventBus = eventBus;
+        this.notificationManager = notificationManager;
     }
 
     /**

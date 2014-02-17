@@ -17,12 +17,11 @@ import com.google.web.bindery.event.shared.EventBus;
  * This connector page is using JTDS JDBC Driver to connect to MS SQLserver.
  */
 public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
-                                                                                    JdbcDatasourceConnectorView.ActionDelegate {
-    final public static String SQLSERVER_DB_ID = "sqlserver";
+                                                                                          JdbcDatasourceConnectorView.ActionDelegate {
+    final public static String            SQLSERVER_DB_ID = "sqlserver";
 
     protected JdbcDatasourceConnectorView view;
     protected DtoFactory                  dtoFactory;
-    protected NotificationManager         notificationManager;
 
     @Inject
     public MssqlserverDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -30,9 +29,8 @@ public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceCon
                                               final DtoFactory dtoFactory,
                                               final DatasourceManager datasourceManager,
                                               final EventBus eventBus) {
-        super("sqlserver", null, SQLSERVER_DB_ID, datasourceManager, eventBus);
+        super("sqlserver", null, SQLSERVER_DB_ID, datasourceManager, eventBus, notificationManager);
         this.view = view;
-        this.notificationManager = notificationManager;
         this.dtoFactory = dtoFactory;
     }
 

@@ -17,11 +17,10 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
                                                                                     JdbcDatasourceConnectorView.ActionDelegate {
-    final public static String MYSQL_DB_ID = "mysql";
-    
+    final public static String            MYSQL_DB_ID = "mysql";
+
     protected JdbcDatasourceConnectorView view;
     protected DtoFactory                  dtoFactory;
-    protected NotificationManager         notificationManager;
 
     @Inject
     public MysqlDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -29,9 +28,8 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                         final DtoFactory dtoFactory,
                                         final DatasourceManager datasourceManager,
                                         final EventBus eventBus) {
-        super("mySQL", null, MYSQL_DB_ID, datasourceManager, eventBus);
+        super("mySQL", null, MYSQL_DB_ID, datasourceManager, eventBus, notificationManager);
         this.view = view;
-        this.notificationManager = notificationManager;
         this.dtoFactory = dtoFactory;
     }
 
