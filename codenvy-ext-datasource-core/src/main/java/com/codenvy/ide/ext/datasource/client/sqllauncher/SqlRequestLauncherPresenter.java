@@ -277,7 +277,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private void appendSelectResult(final RequestResultDTO result) {
 
-        CellTable<List<String>> resultTable = new CellTable<List<String>>();
+        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size());
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
