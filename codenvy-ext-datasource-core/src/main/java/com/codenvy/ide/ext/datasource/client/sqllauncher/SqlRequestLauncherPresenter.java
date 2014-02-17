@@ -71,9 +71,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private String                            selectedDatasourceId                 = null;
     private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
 
-    private DatasourceClientService           datasourceClientService;
-    private NotificationManager               notificationManager;
-    private DatasourceManager                 datasourceManager;
+    private final DatasourceClientService     datasourceClientService;
+    private final NotificationManager         notificationManager;
+    private final DatasourceManager           datasourceManager;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
