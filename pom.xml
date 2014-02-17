@@ -39,6 +39,7 @@
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <jtds-driver.version>1.2</jtds-driver.version>
         <mysql-driver.version>5.1.18</mysql-driver.version>
+        <opencsv.version>2.3</opencsv.version>
         <oracle-driver.version>11.2.0</oracle-driver.version>
         <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -131,6 +132,11 @@
                 <groupId>com.google.gwt.inject</groupId>
                 <artifactId>gin</artifactId>
                 <version>${gin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.schemacrawler</groupId>
