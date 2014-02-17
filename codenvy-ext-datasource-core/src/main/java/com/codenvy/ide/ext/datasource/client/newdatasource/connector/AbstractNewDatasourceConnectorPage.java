@@ -20,13 +20,17 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.ide.api.notification.Notification;
+import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 
 public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage {
@@ -91,6 +95,27 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     public void commit(final CommitCallback callback) {
         DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
         this.datasourceManager.add(configuredDatabase);
+
+        Log.info(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
+        final Notification requestNotification = new Notification("Persisting datasources...",
+                                                                  Notification.Status.PROGRESS);
+        this.datasourceManager.persist(new AsyncCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void result) {
+                Log.info(AbstractNewDatasourceConnectorPage.class, "Datasources persisted.");
+                requestNotification.setMessage("Datasources saved");
+                requestNotification.setStatus(Notification.Status.FINISHED);
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Log.info(AbstractNewDatasourceConnectorPage.class, "Failed to persist datasources.");
+                requestNotification.setStatus(Notification.Status.FINISHED);
+                notificationManager.showNotification(new Notification("Failed to persist datasources", Type.ERROR));
+
+            }
+        });
 
         this.eventBus.fireEvent(new DatasourceCreatedEvent(configuredDatabase));
     }
