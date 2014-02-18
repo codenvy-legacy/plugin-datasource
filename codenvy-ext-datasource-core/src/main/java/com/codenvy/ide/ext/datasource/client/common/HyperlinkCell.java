@@ -1,4 +1,4 @@
-package com.codenvy.ide.ext.datasource.client.sqllauncher;
+package com.codenvy.ide.ext.datasource.client.common;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;

@@ -1,5 +1,6 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.codenvy.ide.ext.datasource.client.common.HyperlinkCell;
 import com.google.gwt.user.cellview.client.Header;
 
 /**
