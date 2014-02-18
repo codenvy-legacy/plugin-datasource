@@ -1,4 +1,4 @@
-package com.codenvy.ide.ext.datasource.client.sqllauncher;
+package com.codenvy.ide.ext.datasource.client.common;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
