@@ -41,12 +41,12 @@ import com.google.web.bindery.event.shared.EventBus;
 @Singleton
 public class DatasourceClientServiceImpl implements DatasourceClientService {
 
-    protected Loader     loader;
-    protected String     wsName;
-    protected String     restServiceContext;
-    protected MessageBus wsMessageBus;
-    protected EventBus   eventBus;
-    protected DtoFactory dtoFactory;
+    private final Loader     loader;
+    private final String     wsName;
+    private final String     restServiceContext;
+    private final MessageBus wsMessageBus;
+    private final EventBus   eventBus;
+    private final DtoFactory dtoFactory;
 
     /**
      * @param restContext rest context
