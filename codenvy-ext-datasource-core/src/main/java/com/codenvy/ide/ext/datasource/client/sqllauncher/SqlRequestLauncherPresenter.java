@@ -46,6 +46,7 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -280,14 +281,15 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size());
 
+        Header<String> footer = new HyperlinkHeader(buildCsvExportUrl(result), constants.exportCsvLabel());
+
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
-            resultTable.addColumn(new FixedIndexTextColumn(i), new RightAlignColumnHeader(headerEntry));
+            resultTable.addColumn(new FixedIndexTextColumn(i), new RightAlignColumnHeader(headerEntry), footer);
             i++;
         }
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
-
         this.view.appendResult(resultTable);
 
     }
