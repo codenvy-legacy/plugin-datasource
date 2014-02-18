@@ -111,6 +111,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                     .send(asyncRequestCallback);
     }
 
+    @Override
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = restServiceContext + "/datasource/drivers";
         AsyncRequest.build(RequestBuilder.GET, url, true)
