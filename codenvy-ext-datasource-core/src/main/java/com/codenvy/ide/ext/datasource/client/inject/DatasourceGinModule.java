@@ -29,8 +29,6 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
-import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeView;
-import com.codenvy.ide.ext.datasource.client.DatasourceWelcomeViewImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
@@ -58,8 +56,6 @@ public class DatasourceGinModule extends AbstractGinModule {
     /** {@inheritDoc} */
     @Override
     protected void configure() {
-        bind(DatasourceWelcomeView.class).to(DatasourceWelcomeViewImpl.class)
-                                         .in(Singleton.class);
         bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
                                           .in(Singleton.class);
         bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)

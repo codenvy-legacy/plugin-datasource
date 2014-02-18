@@ -21,8 +21,6 @@ import static com.codenvy.ide.api.ui.action.Anchor.BEFORE;
 import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_MAIN_MENU;
 import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_WINDOW;
 
-import java.util.List;
-
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.action.Constraints;
@@ -58,7 +56,6 @@ public class DatasourceExtension {
 
     @Inject
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
-                               DatasourceWelcomePresenter howToPresenter,
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
                                NewDatasourceAction newDSConnectionAction,
@@ -71,7 +68,6 @@ public class DatasourceExtension {
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers) {
-        workspaceAgent.openPart(howToPresenter, PartStackType.EDITING);
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
         // create de "Datasource" menu in menubar and insert it
@@ -92,26 +88,30 @@ public class DatasourceExtension {
 
         // fetching available drivers list from the server
         availableJdbcDrivers.fetch();
-        
+
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
-        connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, "PostgreSQL", resources.getPostgreSqlLogo(), "org.postgresql.Driver", pgWizardPages);
+        connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, "PostgreSQL", resources.getPostgreSqlLogo(),
+                                "org.postgresql.Driver", pgWizardPages);
 
-        //Add a new mysql connector
+        // Add a new mysql connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
-        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(), "com.mysql.jdbc.Driver", mysqlWizardPages);
+        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(), "com.mysql.jdbc.Driver",
+                                mysqlWizardPages);
 
-        //add a new oracle connector
+        // add a new oracle connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
         oracleWizardPages.add(oracleConnectorPageProvider);
-        connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, "Oracle", resources.getOracleLogo(), "oracle.jdbc.driver.OracleDriver", oracleWizardPages);
+        connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, "Oracle", resources.getOracleLogo(),
+                                "oracle.jdbc.driver.OracleDriver", oracleWizardPages);
 
-        //add a new SQLserver connector
+        // add a new SQLserver connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
-        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "Microsoft Sql Server", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "Microsoft Sql Server", resources.getSqlServerLogo(),
+                                "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
     }
 
 }
