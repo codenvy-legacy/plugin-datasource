@@ -119,4 +119,8 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                     .send(asyncRequestCallback);
     }
 
+    @Override
+    public String getRestServiceContext() {
+        return this.restServiceContext;
+    }
 }
