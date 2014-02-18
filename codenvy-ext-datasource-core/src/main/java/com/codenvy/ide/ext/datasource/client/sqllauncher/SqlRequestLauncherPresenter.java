@@ -44,6 +44,7 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -298,5 +299,12 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void onDatasourceCreated(DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
+    }
+
+    private String buildCsvExportUrl(final RequestResultDTO requestResult) {
+        final String jsonParameter = dtoFactory.toJson(requestResult);
+        final String result = this.datasourceClientService.getRestServiceContext() + "/csv/" + URL.encode(jsonParameter);
+        Log.info(SqlRequestLauncherPresenter.class, "buildCsvExportUrl : " + result);
+        return result;
     }
 }
