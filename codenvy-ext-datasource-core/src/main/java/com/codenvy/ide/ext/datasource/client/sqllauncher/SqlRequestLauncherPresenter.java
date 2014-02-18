@@ -297,7 +297,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void onDatasourceCreated(DatasourceCreatedEvent event) {
+    public void onDatasourceCreated(final DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
     }
 
