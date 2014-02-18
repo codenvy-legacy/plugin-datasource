@@ -17,6 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.server;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -35,9 +39,13 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +60,7 @@ import schemacrawler.schema.View;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
+import au.com.bytecode.opencsv.CSVWriter;
 
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
@@ -66,13 +75,21 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
+import com.google.common.base.Charsets;
+import com.google.common.net.HttpHeaders;
 import com.google.inject.Inject;
 
 @Path("{ws-name}/datasource")
 public class DatasourceService {
-    private static final Logger  LOG = LoggerFactory.getLogger(DatasourceService.class);
+    private static final Logger   LOG                          = LoggerFactory.getLogger(DatasourceService.class);
 
-    private final JdbcUrlBuilder jdbcUrlBuilder;
+    public final static String    TEXT_CSV                     = "text/csv";
+    public final static String    TEXT_CSV_HEADER_OPTION       = "; header=present";
+    public final static String    TEXT_CSV_NO_HEADER_OPTION    = "; header=absent";
+    public final static String    TEXT_CSV_CHARSET_UTF8_OPTION = "; charset=utf8";
+    public final static MediaType TEXT_CSV_TYPE                = new MediaType("text", "csv");
+
+    private final JdbcUrlBuilder  jdbcUrlBuilder;
 
     static {
         try {
@@ -277,6 +294,59 @@ public class DatasourceService {
             LOG.debug("Return " + json);
             return json;
         }
+    }
+
+    @Path("csv/{data}")
+    @GET
+    @Produces({TEXT_CSV + TEXT_CSV_CHARSET_UTF8_OPTION + TEXT_CSV_HEADER_OPTION, MediaType.TEXT_PLAIN})
+    public Response exportAsCSV(@PathParam("data") final String encodedRequestResult) {
+        if (encodedRequestResult == null) {
+            throw new IllegalArgumentException("Missing data parameter for exportAsCSV");
+        }
+        String jsonRequestResult;
+        try {
+            jsonRequestResult = URLDecoder.decode(encodedRequestResult, Charsets.UTF_8.name());
+        } catch (final UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Incorrect encoding in parameter string " + e.getMessage());
+        }
+        final RequestResultDTO requestResult = DtoFactory.getInstance().createDtoFromJson(jsonRequestResult,
+                                                                                          RequestResultDTO.class);
+        if (requestResult == null) {
+            throw new IllegalArgumentException("The parameter doesn't contain a result request");
+        }
+        if (requestResult.getResultType() == UpdateResultDTO.TYPE) {
+            throw new IllegalArgumentException("Only request results for select can be converted to CSV");
+        }
+
+        final ResponseBuilder response = Response.ok();
+        response.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.csv");
+        response.entity(convertDataToCsv(requestResult, true));
+
+        return response.build();
+    }
+
+    private String convertDataToCsv(final RequestResultDTO requestResult, boolean withHeader) {
+        LOG.info("convertDataToCsv - called for {}, withHeader={}", requestResult, withHeader);
+
+        final StringBuilder sb = new StringBuilder();
+        try (
+            final Writer writer = new StringBuilderWriter(sb);
+            final CSVWriter csvWriter = new CSVWriter(writer)) {
+
+            // header
+            if (withHeader) {
+                csvWriter.writeNext(requestResult.getHeaderLine().toArray(new String[0]));
+            }
+
+            // body
+            for (final List<String> line : requestResult.getResultLines()) {
+                csvWriter.writeNext(line.toArray(new String[0]));
+            }
+        } catch (final IOException e) {
+            LOG.error("Close failed on resource - expect leaks and incorrect operation", e);
+        }
+
+        return sb.toString();
     }
 
     private Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
