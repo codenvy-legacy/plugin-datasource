@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
@@ -43,4 +44,6 @@ public interface DatasourceClientService {
     void getAvailableDrivers(@NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
     String getRestServiceContext();
+
+    String buildCsvExportUrl(RequestResultDTO requestResult);
 }

@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.ui.loader.Loader;
@@ -33,6 +34,7 @@ import com.codenvy.ide.util.Utils;
 import com.codenvy.ide.websocket.MessageBus;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.URL;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -122,5 +124,13 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public String getRestServiceContext() {
         return this.restServiceContext;
+    }
+
+    @Override
+    public String buildCsvExportUrl(final RequestResultDTO requestResult) {
+        // the dto is converted to json then uri-escaped
+        final String jsonParameter = dtoFactory.toJson(requestResult);
+        final String result = this.restServiceContext + "/datasource/csv/" + URL.encode(jsonParameter);
+        return result;
     }
 }
