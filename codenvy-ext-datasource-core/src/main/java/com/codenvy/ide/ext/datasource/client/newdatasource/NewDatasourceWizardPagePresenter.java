@@ -57,7 +57,9 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
 
     @Override
     public boolean isCompleted() {
-        return true;
+        return (this.view.getDatasourceName() != null)
+               && (!"".equals(this.view.getDatasourceName()))
+               && (wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR) != null);
     }
 
     @Override
