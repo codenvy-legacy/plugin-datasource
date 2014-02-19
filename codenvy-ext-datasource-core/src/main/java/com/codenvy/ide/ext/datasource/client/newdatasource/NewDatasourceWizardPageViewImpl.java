@@ -24,9 +24,11 @@ import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLTable;
@@ -135,4 +137,8 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
         }
     }
 
+    @UiHandler("datasourceName")
+    public void onDatasourceIdChanged(final KeyUpEvent event) {
+        this.delegate.onDatasourceNameModified(this.datasourceName.getValue());
+    }
 }
