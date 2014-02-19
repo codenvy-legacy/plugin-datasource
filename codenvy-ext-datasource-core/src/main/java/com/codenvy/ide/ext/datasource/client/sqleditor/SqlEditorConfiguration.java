@@ -1,10 +1,29 @@
+/*
+ * CODENVY CONFIDENTIAL
+ * __________________
+ *
+ * [2013] - [2014] Codenvy, S.A.
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Codenvy S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Codenvy S.A.
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Codenvy S.A..
+ */
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.collections.StringMap;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
+import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.codeassist.SqlCodeAssistProcessor;
 import com.codenvy.ide.text.Document;
 import com.codenvy.ide.texteditor.api.TextEditorConfiguration;
@@ -16,11 +35,20 @@ import com.codenvy.ide.texteditor.api.parser.Parser;
 
 public class SqlEditorConfiguration extends TextEditorConfiguration {
 
-    protected SqlCodeAssistProcessor codeAssistProcessor;
-    protected SqlEditorResources resource;
+    protected SqlCodeAssistProcessor    codeAssistProcessor;
+    protected SqlEditorResources        resource;
+    protected DatabaseInfoOracle        databaseInfoOracle;
+    protected ReadableContentTextEditor textEditor;
+    protected EditorDatasourceOracle    editorDatasourceOracle;
 
-    public SqlEditorConfiguration(SqlEditorResources resource) {
+    public SqlEditorConfiguration(ReadableContentTextEditor textEditor,
+                                  SqlEditorResources resource,
+                                  DatabaseInfoOracle databaseInfoOracle,
+                                  EditorDatasourceOracle editorDatasourceOracle) {
+        this.textEditor = textEditor;
         this.resource = resource;
+        this.databaseInfoOracle = databaseInfoOracle;
+        this.editorDatasourceOracle = editorDatasourceOracle;
     }
 
     @Override
@@ -39,7 +67,7 @@ public class SqlEditorConfiguration extends TextEditorConfiguration {
 
     private SqlCodeAssistProcessor getOrCreateCodeAssistProcessor() {
         if (codeAssistProcessor == null) {
-            codeAssistProcessor = new SqlCodeAssistProcessor(resource);
+            codeAssistProcessor = new SqlCodeAssistProcessor(textEditor, resource, databaseInfoOracle, editorDatasourceOracle);
         }
         return codeAssistProcessor;
     }

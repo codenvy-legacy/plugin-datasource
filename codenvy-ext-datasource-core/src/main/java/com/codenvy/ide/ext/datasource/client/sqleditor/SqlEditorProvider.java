@@ -1,8 +1,26 @@
+/*
+ * CODENVY CONFIDENTIAL
+ * __________________
+ *
+ * [2013] - [2014] Codenvy, S.A.
+ * All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Codenvy S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Codenvy S.A.
+ * and its suppliers and may be covered by U.S. and Foreign Patents,
+ * patents in process, and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Codenvy S.A..
+ */
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorProvider;
 import com.codenvy.ide.api.notification.NotificationManager;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
@@ -16,16 +34,24 @@ public class SqlEditorProvider implements EditorProvider {
 
     private final NotificationManager                 notificationManager;
 
-    protected SqlEditorResources resource;
+    protected SqlEditorResources                      resource;
+
+    protected DatabaseInfoOracle                      databaseInfoOracle;
+
+    protected EditorDatasourceOracle                  editorDatasourceOracle;
 
     @Inject
     public SqlEditorProvider(final DocumentProvider documentProvider,
                              final Provider<ReadableContentTextEditor> editorProvider,
                              final NotificationManager notificationManager,
+                             final DatabaseInfoOracle databaseInfoOracle,
+                             final EditorDatasourceOracle editorDatasourceOracle,
                              final SqlEditorResources resource) {
         this.documentProvider = documentProvider;
         this.editorProvider = editorProvider;
         this.notificationManager = notificationManager;
+        this.databaseInfoOracle = databaseInfoOracle;
+        this.editorDatasourceOracle = editorDatasourceOracle;
         this.resource = resource;
     }
 
@@ -33,7 +59,8 @@ public class SqlEditorProvider implements EditorProvider {
     public ReadableContentTextEditor getEditor() {
         Log.info(SqlEditorProvider.class, "New instance of SQL editor requested.");
         ReadableContentTextEditor textEditor = editorProvider.get();
-        textEditor.initialize(new SqlEditorConfiguration(resource), documentProvider, notificationManager);
+        textEditor.initialize(new SqlEditorConfiguration(textEditor, resource, databaseInfoOracle, editorDatasourceOracle),
+                              documentProvider, notificationManager);
         return textEditor;
     }
 

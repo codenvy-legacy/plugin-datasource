@@ -85,8 +85,9 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
             public void apply(Document document) {
                 ReplaceEdit replaceEdit =
                                           new ReplaceEdit(
-                                                          invocationContext.getOffset() - invocationContext.getQuery().getPrefix().length(),
-                                                          invocationContext.getQuery().getPrefix().length(), replacementString);
+                                                          invocationContext.getOffset()
+                                                              - invocationContext.getQuery().getLastQueryPrefix().length(),
+                                                          invocationContext.getQuery().getLastQueryPrefix().length(), replacementString);
                 try {
                     replaceEdit.apply(document);
                     // Do not try a new codeassist proposal
@@ -101,7 +102,8 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
             /** {@inheritDoc} */
             @Override
             public Region getSelection(Document document) {
-                return new RegionImpl(invocationContext.getOffset() + cursorPosition - invocationContext.getQuery().getPrefix().length(), 0);
+                return new RegionImpl(invocationContext.getOffset() + cursorPosition
+                                      - invocationContext.getQuery().getLastQueryPrefix().length(), 0);
             }
         });
     }

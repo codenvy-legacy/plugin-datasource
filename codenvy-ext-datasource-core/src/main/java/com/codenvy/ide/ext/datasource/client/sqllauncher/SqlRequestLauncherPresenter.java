@@ -28,6 +28,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
@@ -35,8 +36,11 @@ import com.codenvy.ide.ext.datasource.client.common.RightAlignColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
+import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
+import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
@@ -76,6 +80,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final DatasourceClientService     datasourceClientService;
     private final NotificationManager         notificationManager;
     private final DatasourceManager           datasourceManager;
+    protected final DatabaseInfoStore         databaseInfoStore;
+
+    protected EditorDatasourceOracle          editorDatasourceOracle;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -83,12 +90,16 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull PreferencesManager preferencesManager,
                                        final @NotNull SqlEditorProvider sqlEditorProvider,
                                        final @NotNull DatasourceClientService service,
+                                       final @NotNull DatabaseInfoStore databaseInfoStore,
                                        final @NotNull NotificationManager notificationManager,
                                        final @NotNull DatasourceManager datasourceManager,
+                                       final @NotNull EditorDatasourceOracle editorDatasourceOracle,
                                        final @NotNull EventBus eventBus,
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
+        this.databaseInfoStore = databaseInfoStore;
+        this.editorDatasourceOracle = editorDatasourceOracle;
         Log.info(SqlRequestLauncherPresenter.class, "New instance of SQL request launcher presenter resquested.");
         this.view = view;
         this.view.setDelegate(this);
@@ -148,6 +159,47 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     public void datasourceChanged(final String newDataSourceId) {
         Log.info(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
+        String editorFileId = getEditorInput().getFile().getId();
+        Log.info(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
+        editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
+        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(newDataSourceId);
+        if (dsMeta == null) {
+            try {
+                final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...",
+                                                                                Notification.Status.PROGRESS);
+                notificationManager.showNotification(fetchDatabaseNotification);
+                datasourceClientService.fetchDatabaseInfo(datasourceManager.getByName(newDataSourceId),
+                                                          new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                                                              @Override
+                                                              protected void onSuccess(String result) {
+                                                                  DatabaseDTO database = dtoFactory.createDtoFromJson(result,
+                                                                                                                      DatabaseDTO.class);
+                                                                  fetchDatabaseNotification.setMessage("Succesfully fetched database metadata");
+                                                                  fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+                                                                  notificationManager.showNotification(fetchDatabaseNotification);
+                                                                  databaseInfoStore.setDatabaseInfo(newDataSourceId, database);
+                                                              }
+
+                                                              @Override
+                                                              protected void onFailure(Throwable exception) {
+                                                                  fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+                                                                  notificationManager.showNotification(new Notification(
+                                                                                                                        "Failed fetching database metadatas",
+                                                                                                                        Type.ERROR));
+                                                              }
+                                                          }
+
+                                       );
+            } catch (RequestException e) {
+                Log.error(DatasourceExplorerPartPresenter.class,
+                          "Exception on database info fetch : " + e.getMessage());
+                notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+                                                                      Type.ERROR));
+            }
+        }
+        ;
+
+
     }
 
     @Override

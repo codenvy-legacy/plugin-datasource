@@ -15,21 +15,20 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.util.AbstractTrie;
 
-public class SqlCodeTrie {
+public class SqlCodeTemplateTrie {
     private static final Array<String> ELEMENTS = Collections.createArray(
             "SELECT * FROM table WHERE column = 'value';",//
             "SELECT COUNT(1) FROM table;",//
-            "INSERT INTO table (name, age) VALUES (‘alan’, 28);",//
-            "DELETE FROM table WHERE name = ‘alan’;",//
-            "UPDATE table SET age = 30 WHERE name = ‘alan’;",//
-            "SELECT * FROM table WHERE column LIKE ‘%rg%’;"
+            "INSERT INTO table (column1, column2) VALUES ('value1', 0);",//
+            "DELETE FROM table WHERE column = 'value';",//
+            "UPDATE table SET column2 = 30 WHERE column1 = 'value1';",//
+            "SELECT * FROM table WHERE column LIKE '%rg%';"
                                                                          );
 
     private static final AbstractTrie<SqlCodeCompletionProposal> sqlCodeTrie = createTrie();
@@ -44,7 +43,7 @@ public class SqlCodeTrie {
 
     public static Array<SqlCodeCompletionProposal> findAndFilterAutocompletions(SqlCodeQuery query) {
         // use tolower case
-        String prefix = query.getPrefix();
+        String prefix = query.getLastQueryPrefix();
 
         // search attributes
         Array<SqlCodeCompletionProposal> searchedProposals = sqlCodeTrie.search(prefix.toLowerCase());

@@ -28,6 +28,7 @@ import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
@@ -67,6 +68,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     protected PreferencesManager                preferencesManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
     private final DatasourceExplorerConstants   constants;
+    protected DatabaseInfoStore                 databaseInfoStore;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -86,7 +88,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            @NotNull final DatasourceManager datasourceManager,
                                            @NotNull final PreferencesManager preferencesManager,
                                            @NotNull final DataEntityPropertiesPresenter propertiesPresenter,
-                                           @NotNull final DatasourceExplorerConstants constants) {
+                                           @NotNull final DatasourceExplorerConstants constants,
+                                           @NotNull final DatabaseInfoStore databaseInfoStore) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
@@ -96,6 +99,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.preferencesManager = preferencesManager;
         this.propertiesPresenter = propertiesPresenter;
         this.constants = constants;
+        this.databaseInfoStore = databaseInfoStore;
 
         this.view.setTitle("DataSource Explorer");
         bind();
@@ -156,9 +160,14 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     }
 
     @Override
-    public void onClickExploreButton(String datasourceId) {
+    public void onClickExploreButton(final String datasourceId) {
+        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
+        if (dsMeta != null) {
+            view.setItems(dsMeta);
+            eventBus.fireEvent(new DatabaseInfoReceivedEvent(dsMeta));
+            return;
+        }
         try {
-
             DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
 
             final Notification fetchDatabaseNotification = new Notification(constants.notificationFetchStart(),
@@ -174,6 +183,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               view.setItems(database);
                                               eventBus.fireEvent(new DatabaseInfoReceivedEvent(database));
+                                              databaseInfoStore.setDatabaseInfo(datasourceId, database);
                                           }
 
                                           @Override
@@ -181,7 +191,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
                                                                                                     Type.ERROR));
-
                                               // clean up current database
                                               eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
                                           }

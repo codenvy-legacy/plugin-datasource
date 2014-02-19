@@ -43,6 +43,8 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasour
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
+import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
+import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherView;
@@ -86,5 +88,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
 
         bind(DatabaseInfoOracle.class).to(DatabaseInfoOracleImpl.class);
+        bind(EditorDatasourceOracle.class).to(EditorDatasourceOracleImpl.class).in(Singleton.class);
     }
 }

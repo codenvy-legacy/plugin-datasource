@@ -15,26 +15,21 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Codenvy S.A..
  */
-package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
+package com.codenvy.ide.ext.datasource.client.sqleditor;
 
-/**
- * All the elements needed after having parse the context to compute results.
- */
-public class SqlCodeQuery {
-    private String lastQueryPrefix;
+import java.util.HashMap;
+import java.util.Map;
 
-    /**
-     * @param lastQueryPrefix : Prefix of the last query in the SQL file or selected element. for instance "SELECT * FRO".
-     */
-    public SqlCodeQuery(String lastQueryPrefix) {
-        this.lastQueryPrefix = lastQueryPrefix;
+public class EditorDatasourceOracleImpl implements EditorDatasourceOracle {
+    Map<String, String> fileDatasourcesMap = new HashMap<String, String>();
+
+    @Override
+    public String getSelectedDatasourceId(String editorInputFileId) {
+        return fileDatasourcesMap.get(editorInputFileId);
     }
 
-    public String getLastQueryPrefix() {
-        return lastQueryPrefix;
-    }
-
-    public void setLastQueryPrefix(String queryPrefix) {
-        this.lastQueryPrefix = queryPrefix;
+    @Override
+    public void setSelectedDatasourceId(String editorInputFileId, String datasourceId) {
+        fileDatasourcesMap.put(editorInputFileId, datasourceId);
     }
 }
