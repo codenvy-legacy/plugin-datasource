@@ -94,6 +94,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     @Override
     public void commit(final CommitCallback callback) {
         DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
+        Log.info(AbstractNewDatasourceConnectorPage.class, "Adding datasource with id " + configuredDatabase.getDatasourceId());
         this.datasourceManager.add(configuredDatabase);
 
         Log.info(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
