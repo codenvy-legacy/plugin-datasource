@@ -108,11 +108,4 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
         view.selectConnector(id);
         delegate.updateControls();
     }
-
-    @Override
-    public void onDatasourceNameModified(String datasourceName) {
-        wizardContext.putData(NewDatasourceWizard.DATASOURCE_NAME, view.getDatasourceName());
-    }
-
-
 }
