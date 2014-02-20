@@ -22,4 +22,11 @@ public interface RequestParameterDTO {
     void setResultLimit(int resultLimit);
 
     RequestParameterDTO withResultLimit(int resultLimit);
+
+
+    MultipleRequestExecutionMode getMultipleRequestExecutionMode();
+
+    void setMultipleRequestExecutionMode(MultipleRequestExecutionMode mode);
+
+    RequestParameterDTO withMultipleRequestExecutionMode(MultipleRequestExecutionMode mode);
 }
