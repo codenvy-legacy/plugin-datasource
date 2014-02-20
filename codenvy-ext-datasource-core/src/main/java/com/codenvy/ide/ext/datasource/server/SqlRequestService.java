@@ -41,7 +41,7 @@ public class SqlRequestService {
 
         LOG.info("Execution request ; parameter : {}", requestParameter);
         final String agglutinatedRequests = requestParameter.getSqlRequest();
-        Iterable<String> requests = SQL_REQUEST_SPLITTER.split(agglutinatedRequests);
+        Iterable<String> requests = SQL_REQUEST_SPLITTER.split(agglutinatedRequests); // TODO allow ; inside /* ... */ or '...'
 
         // prepare result dto
         final RequestResultGroupDTO resultGroup = DtoFactory.getInstance().createDto(RequestResultGroupDTO.class);
