@@ -67,6 +67,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     protected DatasourceManager                 datasourceManager;
     protected PreferencesManager                preferencesManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
+    private final DatasourceExplorerConstants   constants;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -85,7 +86,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            @NotNull final NotificationManager notificationManager,
                                            @NotNull final DatasourceManager datasourceManager,
                                            @NotNull final PreferencesManager preferencesManager,
-                                           @NotNull final DataEntityPropertiesPresenter propertiesPresenter) {
+                                           @NotNull final DataEntityPropertiesPresenter propertiesPresenter,
+                                           @NotNull final DatasourceExplorerConstants constants) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
@@ -94,6 +96,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.datasourceManager = datasourceManager;
         this.preferencesManager = preferencesManager;
         this.propertiesPresenter = propertiesPresenter;
+        this.constants = constants;
 
         this.view.setTitle("DataSource Explorer");
         bind();
@@ -159,7 +162,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
             DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
 
-            final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...",
+            final Notification fetchDatabaseNotification = new Notification(constants.notificationFetchStart(),
                                                                             Notification.Status.PROGRESS);
             notificationManager.showNotification(fetchDatabaseNotification);
             service.fetchDatabaseInfo(datasourceObject,
@@ -168,7 +171,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           protected void onSuccess(String result) {
                                               DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                                                   DatabaseDTO.class);
-                                              fetchDatabaseNotification.setMessage("Succesfully fetched database metadata");
+                                              fetchDatabaseNotification.setMessage(constants.notificationFetchSuccess());
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               view.setItems(database);
                                               eventBus.fireEvent(new DatabaseInfoReceivedEvent(database));
@@ -177,7 +180,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           @Override
                                           protected void onFailure(Throwable exception) {
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                              notificationManager.showNotification(new Notification("Failed fetching database metadata",
+                                              notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
                                                                                                     Type.ERROR));
 
                                               // clean up current database
@@ -189,7 +192,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         } catch (RequestException e) {
             Log.error(DatasourceExplorerPartPresenter.class,
                       "Exception on database info fetch : " + e.getMessage());
-            notificationManager.showNotification(new Notification("Failed fetching database metadata",
+            notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
                                                                   Type.ERROR));
         }
     }
