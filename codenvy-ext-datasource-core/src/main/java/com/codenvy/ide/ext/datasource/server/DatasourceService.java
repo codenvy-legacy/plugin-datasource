@@ -358,6 +358,26 @@ public class DatasourceService {
                                                             configuration.getUsername(),
                                                             configuration.getPassword());
 
+
         return connection;
+    }
+
+
+    @Path("testDatabaseConnectivity")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) throws Exception {
+
+        Database database = null;
+        try (final Connection connection = getDatabaseConnection(databaseConfig)) {
+           if (connection != null && !connection.equals("")){
+               return("Connection Succeeded !");
+           }
+            else{
+               return("Connection Failed !");
+           }
+        }catch (SQLException e) {
+            return("Connection Failed: " + e.getLocalizedMessage());
+        }
     }
 }

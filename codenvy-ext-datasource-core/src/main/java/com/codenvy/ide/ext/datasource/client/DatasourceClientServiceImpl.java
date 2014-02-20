@@ -133,4 +133,16 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
         final String result = this.restServiceContext + "/datasource/csv/" + URL.encode(jsonParameter);
         return result;
     }
-}
+
+    public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
+                                        final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        String url = restServiceContext + "/datasource/testDatabaseConnectivity";
+        AsyncRequest.build(RequestBuilder.POST, url, true)
+                .data(dtoFactory.toJson(configuration))
+                .header(CONTENTTYPE, APPLICATION_JSON)
+                .header(ACCEPT, APPLICATION_JSON)
+                .send(asyncRequestCallback);
+    }
+
+
+ }

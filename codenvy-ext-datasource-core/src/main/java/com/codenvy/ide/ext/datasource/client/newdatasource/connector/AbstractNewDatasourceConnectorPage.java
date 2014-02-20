@@ -24,32 +24,51 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
+import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.rest.StringUnmarshaller;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 
-public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage {
-    private final String              datasourceId;
-    private final DatasourceManager   datasourceManager;
-    private final EventBus            eventBus;
-    private final NotificationManager notificationManager;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.client.Window;
 
-    public AbstractNewDatasourceConnectorPage(@Nullable final String caption,
+public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage implements
+             JdbcDatasourceConnectorView.ActionDelegate {
+
+    private JdbcDatasourceConnectorView      view;
+    private String                           datasourceId;
+    private DatasourceManager                datasourceManager;
+    private EventBus                         eventBus;
+    private DatasourceClientService          service;
+    private NotificationManager              notificationManager;
+
+    public AbstractNewDatasourceConnectorPage(@Nullable final JdbcDatasourceConnectorView view,
+                                              @Nullable final String caption,
                                               @Nullable final ImageResource image,
                                               @NotNull final String datasourceId,
                                               @NotNull final DatasourceManager datasourceManager,
                                               @NotNull final EventBus eventBus,
+                                              @NotNull final DatasourceClientService service,
                                               @NotNull final NotificationManager notificationManager) {
         super(caption, image);
+        view.setDelegate(this);
         this.datasourceId = datasourceId;
         this.datasourceManager = datasourceManager;
         this.eventBus = eventBus;
+        this.service = service;
+        this.view = view;
         this.notificationManager = notificationManager;
+    }
+
+    public JdbcDatasourceConnectorView getView() {
+        return view;
     }
 
     /**
@@ -119,5 +138,34 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         });
 
         this.eventBus.fireEvent(new DatasourceCreatedEvent(configuredDatabase));
+    }
+
+
+    @Override
+    public void onClickTestConnectionButton() {
+        DatabaseConfigurationDTO configuration = getConfiguredDatabase();
+        try {
+            final Notification connectingNotification = new Notification("Establishing Database Connection...",
+                    Notification.Status.PROGRESS);
+            notificationManager.showNotification(connectingNotification);
+            service.testDatabaseConnectivity(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                @Override
+                protected void onSuccess(String result) {
+                    Window.alert(result);
+                    connectingNotification.setMessage("Succesfully connected to database");
+                    connectingNotification.setStatus(Notification.Status.FINISHED);
+                }
+
+                @Override
+                protected void onFailure(Throwable exception) {
+                    connectingNotification.setStatus(Notification.Status.FINISHED);
+                }
+            }
+
+            );
+        } catch (RequestException e) {
+            Log.info(AbstractNewDatasourceConnectorPage.class, e.getMessage());
+
+        }
     }
 }

@@ -48,13 +48,20 @@
             </g:DockLayoutPanel>
         </g:north>
         <g:north size="30.0">
-            <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
-                <g:west size="90.0">
-                    <g:Label text="Password" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
-                </g:west>
-                <g:center>
-                    <g:PasswordTextBox ui:field="passwordField" width="97%" height="16px" />
-                </g:center>
+        <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
+            <g:west size="90.0">
+                <g:Label text="Password" height="18px" addStyleNames="{res.coreCss.mainBoldFont}" />
+            </g:west>
+            <g:center>
+                <g:PasswordTextBox ui:field="passwordField" width="97%" height="16px" />
+            </g:center>
+        </g:DockLayoutPanel>
+        </g:north>
+        <g:north size="30.0">
+            <g:DockLayoutPanel unit="PX" >
+                <g:east size="127" >
+                    <g:Button ui:field="testConnectionButton" text="Test Connection" />
+                </g:east>
             </g:DockLayoutPanel>
         </g:north>
     </g:DockLayoutPanel>

@@ -44,6 +44,8 @@ public interface DatasourceClientService {
     void getAvailableDrivers(@NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
     String getRestServiceContext();
-
     String buildCsvExportUrl(RequestResultDTO requestResult);
+
+    void testDatabaseConnectivity(@NotNull DatabaseConfigurationDTO configuration,
+                                  @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 }

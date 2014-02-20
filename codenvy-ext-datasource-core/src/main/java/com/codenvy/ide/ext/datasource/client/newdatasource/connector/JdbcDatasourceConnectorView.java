@@ -18,6 +18,8 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.api.mvp.View;
+import com.codenvy.ide.api.parts.base.BaseActionDelegate;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -27,9 +29,10 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(JdbcDatasourceConnectorViewImpl.class)
 public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnectorView.ActionDelegate> {
-    /** Required for delegating functions in view. */
-    public interface ActionDelegate {
 
+    /** Required for delegating functions in view. */
+    public interface ActionDelegate  {
+        void onClickTestConnectionButton();
     }
 
     String getDatabaseName();
