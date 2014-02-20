@@ -55,7 +55,9 @@ public class SqlRequestService {
                 final ExecutionErrorResultDTO errorDto = DtoFactory.getInstance().createDto(ExecutionErrorResultDTO.class);
                 final SqlExecutionError sqlError = DtoFactory.getInstance().createDto(SqlExecutionError.class);
                 errorDto.setSqlExecutionError(sqlError);
-                sqlError.withErrorCode(e.getErrorCode()).withErrorMessage(e.getMessage());
+                errorDto.setOriginRequest(request);
+                sqlError.withErrorCode(e.getErrorCode())
+                        .withErrorMessage(e.getMessage());
                 resultList.add(errorDto);
 
                 switch (mode) {
@@ -91,11 +93,14 @@ public class SqlRequestService {
                 LOG.info("   is an update count");
                 final UpdateResultDTO result = DtoFactory.getInstance().createDto(UpdateResultDTO.class);
                 resultList.add(result);
-                result.withResultType(UpdateResultDTO.TYPE).withUpdateCount(count);
+                result.withResultType(UpdateResultDTO.TYPE)
+                      .withUpdateCount(count)
+                      .withOriginRequest(request);
             } else {
                 LOG.info("   is a result set");
                 final SelectResultDTO result = DtoFactory.getInstance().createDto(SelectResultDTO.class);
-                result.setResultType(SelectResultDTO.TYPE);
+                result.withResultType(SelectResultDTO.TYPE)
+                      .withOriginRequest(request);
                 resultList.add(result);
 
                 final ResultSetMetaData metadata = resultSet.getMetaData();
