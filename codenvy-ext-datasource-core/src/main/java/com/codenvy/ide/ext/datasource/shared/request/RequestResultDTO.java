@@ -31,4 +31,10 @@ public interface RequestResultDTO {
 
     RequestResultDTO withUpdateCount(int count);
 
+
+    SqlExecutionError getSqlExecutionError();
+
+    void setSqlExecutionError(SqlExecutionError error);
+
+    RequestResultDTO withSqlExecutionError(SqlExecutionError error);
 }
