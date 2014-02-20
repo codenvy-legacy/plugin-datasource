@@ -13,6 +13,6 @@ public interface SqlEditorResources extends ClientBundle {
     @Source("sql-icon.png")
     ImageResource sqlFile();
 
-    @Source("sql.css")
+    @Source({"sql.css", "com/codenvy/ide/api/ui/style.css"})
     CssResource sqlCSS();
 }
