@@ -17,4 +17,7 @@ public interface DatasourceExplorerConstants extends Messages {
 
     @DefaultMessage("Failed fetching database metadata")
     String notificationFetchFailure();
+
+    @DefaultMessage("Datasource Explorer")
+    String datasourceExplorerTitle();
 }

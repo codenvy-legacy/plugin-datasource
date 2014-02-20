@@ -122,7 +122,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     /** {@inheritDoc} */
     @Override
     public String getTitle() {
-        return "Datasource Explorer";
+        return constants.datasourceExplorerTitle();
     }
 
     /** {@inheritDoc} */
