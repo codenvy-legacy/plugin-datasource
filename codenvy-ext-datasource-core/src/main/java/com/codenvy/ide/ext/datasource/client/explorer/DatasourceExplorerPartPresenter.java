@@ -43,7 +43,6 @@ import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -147,7 +146,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onDatabaseMetadataEntityAction(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
-        Window.alert("datasources preferences: " + this.datasourceManager.toString());
+        // do nothing ATM
     }
 
     /** {@inheritDoc} */
