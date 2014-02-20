@@ -28,7 +28,9 @@ public class SqlRequestService {
     private static final Logger                      LOG                   = LoggerFactory.getLogger(SqlRequestService.class);
 
     private static final String                      SQL_REQUEST_DELIMITER = ";";
-    private static final Splitter                    SQL_REQUEST_SPLITTER  = Splitter.on(SQL_REQUEST_DELIMITER);
+    private static final Splitter                    SQL_REQUEST_SPLITTER  = Splitter.on(SQL_REQUEST_DELIMITER)
+                                                                                     .omitEmptyStrings()
+                                                                                     .trimResults();
 
     public static final MultipleRequestExecutionMode DEFAULT_MODE          = MultipleRequestExecutionMode.ONE_BY_ONE;
 
