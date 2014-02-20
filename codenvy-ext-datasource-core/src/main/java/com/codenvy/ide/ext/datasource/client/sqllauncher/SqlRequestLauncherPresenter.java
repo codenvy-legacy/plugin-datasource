@@ -197,9 +197,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                                       Type.ERROR));
             }
         }
-        ;
-
-
     }
 
     @Override
