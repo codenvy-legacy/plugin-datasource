@@ -37,4 +37,11 @@ public interface RequestResultDTO {
     void setSqlExecutionError(SqlExecutionError error);
 
     RequestResultDTO withSqlExecutionError(SqlExecutionError error);
+
+
+    String getOriginRequest();
+
+    void setOriginRequest(String request);
+
+    RequestResultDTO withOriginRequest(String request);
 }

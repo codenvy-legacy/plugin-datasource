@@ -14,4 +14,6 @@ public interface SelectResultDTO extends RequestResultDTO {
     SelectResultDTO withResultLines(List<List<String>> lines);
 
     SelectResultDTO withResultType(int type);
+
+    SelectResultDTO withOriginRequest(String request);
 }

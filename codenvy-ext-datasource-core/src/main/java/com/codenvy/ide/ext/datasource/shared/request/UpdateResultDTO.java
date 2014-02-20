@@ -10,4 +10,6 @@ public interface UpdateResultDTO extends RequestResultDTO {
     UpdateResultDTO withUpdateCount(int count);
 
     UpdateResultDTO withResultType(int type);
+
+    UpdateResultDTO withOriginRequest(String request);
 }
