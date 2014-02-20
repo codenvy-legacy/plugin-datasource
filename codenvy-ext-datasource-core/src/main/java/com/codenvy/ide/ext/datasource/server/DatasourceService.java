@@ -24,10 +24,7 @@ import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,13 +64,13 @@ import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DriversDTO;
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
-import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
@@ -81,15 +78,17 @@ import com.google.inject.Inject;
 
 @Path("{ws-name}/datasource")
 public class DatasourceService {
-    private static final Logger   LOG                          = LoggerFactory.getLogger(DatasourceService.class);
+    private static final Logger     LOG                          = LoggerFactory.getLogger(DatasourceService.class);
 
-    public final static String    TEXT_CSV                     = "text/csv";
-    public final static String    TEXT_CSV_HEADER_OPTION       = "; header=present";
-    public final static String    TEXT_CSV_NO_HEADER_OPTION    = "; header=absent";
-    public final static String    TEXT_CSV_CHARSET_UTF8_OPTION = "; charset=utf8";
-    public final static MediaType TEXT_CSV_TYPE                = new MediaType("text", "csv");
+    public final static String      TEXT_CSV                     = "text/csv";
+    public final static String      TEXT_CSV_HEADER_OPTION       = "; header=present";
+    public final static String      TEXT_CSV_NO_HEADER_OPTION    = "; header=absent";
+    public final static String      TEXT_CSV_CHARSET_UTF8_OPTION = "; charset=utf8";
+    public final static MediaType   TEXT_CSV_TYPE                = new MediaType("text", "csv");
 
-    private final JdbcUrlBuilder  jdbcUrlBuilder;
+    private final JdbcUrlBuilder    jdbcUrlBuilder;
+
+    private final SqlRequestService sqlRequestService;
 
     static {
         try {
@@ -119,8 +118,10 @@ public class DatasourceService {
     }
 
     @Inject
-    public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder) {
+    public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder,
+                             final SqlRequestService sqlRequestService) {
         this.jdbcUrlBuilder = jdbcUrlBuilder;
+        this.sqlRequestService = sqlRequestService;
     }
 
     @Path("drivers")
@@ -227,73 +228,18 @@ public class DatasourceService {
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
-        LOG.info("Execution request ; parameter : {}", request);
-        try (
-            final Connection connection = getDatabaseConnection(request.getDatabase());
-            final Statement statement = connection.createStatement();) {
+        final Connection connection = getDatabaseConnection(request.getDatabase());
 
-            final RequestResultGroupDTO resultGroup = DtoFactory.getInstance().createDto(RequestResultGroupDTO.class);
-            final List<RequestResultDTO> resultList = new ArrayList<>();
-            resultGroup.setResults(resultList);
-
-            statement.setMaxRows(request.getResultLimit());
-            boolean returnsRows = statement.execute(request.getSqlRequest());
-            LOG.info("Request executed successfully");
-
-            ResultSet resultSet = statement.getResultSet();
-            int count = statement.getUpdateCount();
-            while (resultSet != null || count != -1) {
-                LOG.info("New result returned by request :");
-
-                if (count != -1) {
-                    LOG.info("   is an update count");
-                    final UpdateResultDTO result = DtoFactory.getInstance().createDto(UpdateResultDTO.class);
-                    resultList.add(result);
-                    result.withResultType(UpdateResultDTO.TYPE).withUpdateCount(count);
-                } else {
-                    LOG.info("   is a result set");
-                    final SelectResultDTO result = DtoFactory.getInstance().createDto(SelectResultDTO.class);
-                    result.setResultType(SelectResultDTO.TYPE);
-                    resultList.add(result);
-
-                    final ResultSetMetaData metadata = resultSet.getMetaData();
-                    final int columnCount = metadata.getColumnCount();
-
-                    // header : column names
-                    final List<String> columnNames = new ArrayList<>();
-                    for (int i = 1; i < columnCount + 1; i++) {
-                        columnNames.add(metadata.getColumnLabel(i));
-                    }
-                    result.setHeaderLine(columnNames);
-
-                    final List<List<String>> lines = new ArrayList<>();
-
-                    // result : actual data
-                    while (resultSet.next()) {
-                        final List<String> line = new ArrayList<>();
-                        for (int i = 1; i < columnCount + 1; i++) {
-                            line.add(resultSet.getString(i));
-                        }
-                        lines.add(line);
-                    }
-                    result.setResultLines(lines);
-                }
-
-                // continue the loop - next result
-
-                // getMoreResult should close it, but just to remove the warning
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                boolean moreResults = statement.getMoreResults();
-                resultSet = statement.getResultSet();
-                count = statement.getUpdateCount();
-            }
-
-            String json = DtoFactory.getInstance().toJson(resultGroup);
-            LOG.debug("Return " + json);
-            return json;
+        MultipleRequestExecutionMode mode = SqlRequestService.DEFAULT_MODE;
+        if (request.getMultipleRequestExecutionMode() != null) {
+            mode = request.getMultipleRequestExecutionMode();
         }
+
+        final RequestResultGroupDTO resultGroup = this.sqlRequestService.executeSqlRequest(request, connection, mode);
+
+        String json = DtoFactory.getInstance().toJson(resultGroup);
+        LOG.debug("Return " + json);
+        return json;
     }
 
     @Path("csv/{data}")

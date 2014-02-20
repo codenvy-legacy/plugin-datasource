@@ -26,8 +26,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.codenvy.ide.ext.datasource.server.DatasourceService;
-import com.codenvy.ide.ext.datasource.server.JdbcUrlBuilder;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 
@@ -57,7 +55,7 @@ public class TestDatasourceServiceDatabaseDTO {
     }
 
     protected String getDatabaseJsonDTOFromDatasourceService(DatabaseConfigurationDTO databaseConfig) throws Exception {
-        DatasourceService dsService = new DatasourceService(new JdbcUrlBuilder());
+        DatasourceService dsService = new DatasourceService(new JdbcUrlBuilder(), new SqlRequestService());
         return dsService.getDatabase(databaseConfig);
     }
 
