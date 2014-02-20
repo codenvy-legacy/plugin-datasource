@@ -177,7 +177,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           @Override
                                           protected void onFailure(Throwable exception) {
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                              notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+                                              notificationManager.showNotification(new Notification("Failed fetching database metadata",
                                                                                                     Type.ERROR));
 
                                               // clean up current database
@@ -189,7 +189,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         } catch (RequestException e) {
             Log.error(DatasourceExplorerPartPresenter.class,
                       "Exception on database info fetch : " + e.getMessage());
-            notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+            notificationManager.showNotification(new Notification("Failed fetching database metadata",
                                                                   Type.ERROR));
         }
     }
