@@ -41,6 +41,7 @@ import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.request.ExecutionErrorResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
@@ -316,6 +317,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                     Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
                     appendSelectResult(result);
                     break;
+                case ExecutionErrorResultDTO.TYPE:
+                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'error'.");
+                    appendErrorReport(result);
+                    break;
                 default:
                     Log.error(SqlRequestLauncherPresenter.class, "unknown result type : "
                                                                  + result.getResultType());
@@ -324,6 +329,12 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
 
         Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
+    }
+
+    private void appendErrorReport(final RequestResultDTO result) {
+        this.view.appendResult(new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
+                                         + " - "
+                                         + result.getSqlExecutionError().getErrorMessage()));
     }
 
     private void appendSelectResult(final RequestResultDTO result) {
