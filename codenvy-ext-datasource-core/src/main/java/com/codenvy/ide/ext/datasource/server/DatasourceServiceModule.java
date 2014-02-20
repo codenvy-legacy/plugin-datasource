@@ -27,6 +27,7 @@ public class DatasourceServiceModule extends AbstractModule {
     protected void configure() {
         bind(DatasourceService.class);
         bind(JdbcUrlBuilder.class);
+        bind(SqlRequestService.class);
     }
 
 }
