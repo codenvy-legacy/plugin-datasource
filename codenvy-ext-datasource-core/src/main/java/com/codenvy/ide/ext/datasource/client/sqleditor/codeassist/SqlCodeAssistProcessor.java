@@ -134,8 +134,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
             line--;
             textBefore = text.concat(textBefore);
         }
-        return textBefore;
-
+        return textBefore.replaceAll("^\\s*", "");
     }
 
     protected SqlCodeQuery getQuery(String text) {

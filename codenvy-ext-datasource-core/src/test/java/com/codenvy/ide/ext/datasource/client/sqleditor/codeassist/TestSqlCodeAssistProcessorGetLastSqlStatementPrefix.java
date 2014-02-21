@@ -55,8 +55,8 @@ public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
 
     @Test
     public void testingSqlStatementWithCarriageReturns() throws BadLocationException {
-        String expectedlastQuery = "\nselect * \nfrom table\nwhere colum";
-        String content = "Select * from Database;" + expectedlastQuery;
+        String expectedlastQuery = "select * \nfrom table\nwhere colum";
+        String content = "Select * from Database;\n" + expectedlastQuery;
 
         DocumentImpl document = new DocumentImpl(content);
         Position position = new Position(content.length());
@@ -65,8 +65,8 @@ public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
     
     @Test
     public void testingSqlStatementWithCarriageReturns2() throws BadLocationException {
-        String expectedlastQuery = "\nselect * \nfrom table\nwhere ";
-        String content = "Select * from Database;" + expectedlastQuery;
+        String expectedlastQuery = "select * \nfrom table\nwhere ";
+        String content = "Select * from Database\n;" + expectedlastQuery;
 
         DocumentImpl document = new DocumentImpl(content);
         Position position = new Position(content.length());

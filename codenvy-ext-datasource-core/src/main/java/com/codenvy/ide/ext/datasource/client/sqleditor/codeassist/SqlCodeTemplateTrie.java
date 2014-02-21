@@ -43,11 +43,11 @@ public class SqlCodeTemplateTrie {
     }
 
     public static Array<SqlCodeCompletionProposal> findAndFilterAutocompletions(SqlCodeQuery query) {
-        // use tolower case
         String prefix = query.getLastQueryPrefix();
+        // remove leading trailing space
+        prefix = prefix.replaceAll("^\\s*", "").toLowerCase();
 
-        // search attributes
-        Array<SqlCodeCompletionProposal> searchedProposals = sqlCodeTrie.search(prefix.toLowerCase());
+        Array<SqlCodeCompletionProposal> searchedProposals = sqlCodeTrie.search(prefix);
         return searchedProposals;
     }
 }

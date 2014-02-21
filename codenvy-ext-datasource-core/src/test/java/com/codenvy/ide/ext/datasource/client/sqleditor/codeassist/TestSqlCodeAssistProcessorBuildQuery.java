@@ -72,6 +72,12 @@ public class TestSqlCodeAssistProcessorBuildQuery {
     }
 
     @Test
+    public void completeSelectTemplateAfter2statements() {
+        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findAutoCompletions(new SqlCodeQuery("\nSELEC"));
+        Assert.assertEquals("For number of results for SELEC autocompletion after two statements, we expect ", 3, results.size());
+    }
+
+    @Test
     public void completeInsertTemplate() {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findAutoCompletions(new SqlCodeQuery("inser"));
         assertEquals("For number of results for inser autocompletion, we expect ", 1, results.size());
