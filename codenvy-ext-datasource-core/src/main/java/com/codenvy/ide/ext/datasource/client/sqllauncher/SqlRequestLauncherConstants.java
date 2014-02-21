@@ -27,4 +27,16 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("Export as CSV file")
     String exportCsvLabel();
+
+    @DefaultMessage("Execution mode")
+    String executionModeLabel();
+
+    @DefaultMessage("Execute all - ignore and report errors")
+    String executeAllModeItem();
+
+    @DefaultMessage("First error - stop on first error")
+    String stopOnErrorModeitem();
+
+    @DefaultMessage("Transaction - rollback on first error")
+    String transactionModeItem();
 }
