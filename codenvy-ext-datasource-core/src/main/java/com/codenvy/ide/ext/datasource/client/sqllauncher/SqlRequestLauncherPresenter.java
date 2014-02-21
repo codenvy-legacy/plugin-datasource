@@ -151,6 +151,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private void setupExecutionMode(final PreferencesManager preferencesManager) {
         // TODO : try to read preferences
+        this.view.setExecutionMode(this.executionMode);
     }
 
     private void setupDatasourceComponent() {
