@@ -23,12 +23,13 @@ import com.codenvy.ide.util.AbstractTrie;
 
 public class SqlCodeTemplateTrie {
     private static final Array<String> ELEMENTS = Collections.createArray(
-            "SELECT * FROM table WHERE column = 'value';",//
-            "SELECT COUNT(1) FROM table;",//
-            "INSERT INTO table (column1, column2) VALUES ('value1', 0);",//
-            "DELETE FROM table WHERE column = 'value';",//
-            "UPDATE table SET column2 = 30 WHERE column1 = 'value1';",//
-            "SELECT * FROM table WHERE column LIKE '%rg%';"
+            "SELECT * FROM aTable WHERE column = 'value';",//
+            "SELECT COUNT(1) FROM aTable;",//
+            "INSERT INTO aTable (column1, column2) VALUES ('value1', 0);",//
+            "DELETE FROM aTable WHERE column = 'value';",//
+            "UPDATE aTable SET column2 = 30 WHERE column1 = 'value1';",//
+            "SELECT * FROM aTable WHERE column LIKE '%rg%';",//
+            "CREATE TABLE aTable (IntColumn int, VarcharColumn1 varchar(255), VarcharColumn2 varchar(255));"
                                                                          );
 
     private static final AbstractTrie<SqlCodeCompletionProposal> sqlCodeTrie = createTrie();
