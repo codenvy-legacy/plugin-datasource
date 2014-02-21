@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
@@ -101,11 +102,22 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final String sqlRequest,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
+        executeSqlRequest(configuration, resultLimit, sqlRequest, MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR, asyncRequestCallback);
+    }
+
+    @Override
+    public void executeSqlRequest(final DatabaseConfigurationDTO configuration,
+                                  final int resultLimit,
+                                  final String sqlRequest,
+                                  final MultipleRequestExecutionMode execMode,
+                                  final AsyncRequestCallback<String> asyncRequestCallback)
+                                                                                          throws RequestException {
         String url = restServiceContext + "/datasource/executeSqlRequest";
         RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
                                                             .withDatabase(configuration)
                                                             .withResultLimit(resultLimit)
-                                                            .withSqlRequest(sqlRequest);
+                                                            .withSqlRequest(sqlRequest)
+                                                            .withMultipleRequestExecutionMode(execMode);
         AsyncRequest.build(RequestBuilder.POST, url, true)
                     .data(dtoFactory.toJson(requestParameterDTO))
                     .header(CONTENTTYPE, APPLICATION_JSON)
@@ -135,14 +147,14 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     }
 
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
-                                        final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+                                         final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = restServiceContext + "/datasource/testDatabaseConnectivity";
         AsyncRequest.build(RequestBuilder.POST, url, true)
-                .data(dtoFactory.toJson(configuration))
-                .header(CONTENTTYPE, APPLICATION_JSON)
-                .header(ACCEPT, APPLICATION_JSON)
-                .send(asyncRequestCallback);
+                    .data(dtoFactory.toJson(configuration))
+                    .header(CONTENTTYPE, APPLICATION_JSON)
+                    .header(ACCEPT, APPLICATION_JSON)
+                    .send(asyncRequestCallback);
     }
 
 
- }
+}
