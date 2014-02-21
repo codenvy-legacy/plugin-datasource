@@ -127,3 +127,27 @@
 .cellTableLoading {
   margin: 30px;
 }
+
+.infoHeader {
+  background: windowHeaderBackground;
+  color: editorDefaultFontColor;
+}
+
+.queryReminder {
+  font-weight: normal;
+  font-size: fontSize;
+  text-overflow: ellipsis;
+  float: left;
+  padding-right: 2em;
+}
+
+.csvButton {
+  font-weight: normal;
+  font-size: fontSize;
+}
+
+.infoHeaderTitle {
+  float: left;
+  font-weight: bold;
+  font-size: largeFontSize;
+}
