@@ -296,6 +296,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                     datasourceClientService.executeSqlRequest(databaseConf,
                                                               this.resultLimit,
                                                               rawSql,
+                                                              this.executionMode,
                                                               callback);
                 } catch (final RequestException e) {
                     Log.error(SqlRequestLauncherPresenter.class,
