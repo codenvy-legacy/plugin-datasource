@@ -24,11 +24,11 @@
             <g:HorizontalPanel>
                 <!-- use some kind of toolbar ? -->
                 <g:Label ui:field="selectDatasourceLabel" />
-                <g:ListBox ui:field="datasourceList" />
+                <g:ListBox ui:field="datasourceList" width="9em" />
                 <g:Label ui:field="resultLimitLabel" />
                 <g:TextBox ui:field="resultLimitInput" />
                 <g:Label ui:field="executionModeLabel" />
-                <g:ListBox ui:field="executionModeList" />
+                <g:ListBox ui:field="executionModeList" width="7em" />
                 <g:Button ui:field="executeButton" />
             </g:HorizontalPanel>
         </g:north>
