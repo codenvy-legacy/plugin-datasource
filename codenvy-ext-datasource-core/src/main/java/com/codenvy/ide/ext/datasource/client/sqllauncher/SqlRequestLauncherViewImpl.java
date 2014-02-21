@@ -156,6 +156,37 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         }
     }
 
+    @Override
+    public void setExecutionMode(final MultipleRequestExecutionMode executionMode) {
+        String searchValue = null;
+        switch (executionMode) {
+            case ONE_BY_ONE:
+                searchValue = EXECUTE_ALL;
+                break;
+            case STOP_AT_FIRST_ERROR:
+                searchValue = STOP_ON_ERROR;
+                break;
+            case TRANSACTIONAL:
+                searchValue = TRANSACTION;
+                break;
+            default:
+                return;
+        }
+        Integer foundIndex = null;
+        for (int i = 0; i < this.executionModeList.getItemCount(); i++) {
+            if (searchValue.equals(this.executionModeList.getValue(i))) {
+                foundIndex = i;
+                break;
+            }
+        }
+        if (foundIndex != null) {
+            for (int i = 0; i < this.executionModeList.getItemCount(); i++) {
+                this.executionModeList.setItemSelected(i, (foundIndex == i));
+            }
+        }
+
+    }
+
     /**
      * Handler for clicks on the execute button.
      * 

@@ -43,6 +43,8 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
     void clearResultZone();
 
+    void setExecutionMode(MultipleRequestExecutionMode executionMode);
+
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
