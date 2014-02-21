@@ -96,6 +96,12 @@ public class TestSqlCodeAssistProcessorBuildQuery {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from t"));
         assertEquals("for number of results for table autocompletion starting with t, we expect ", 1, results.size());
     }
+    
+    @Test
+    public void completeTableCaseInsensitive() {
+        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from metat"));
+        assertEquals("for number of results for table autocompletion starting with metat, we expect ", 1, results.size());
+    }
 
     @Test
     public void completeTableForSelectFromMultipleTable() {

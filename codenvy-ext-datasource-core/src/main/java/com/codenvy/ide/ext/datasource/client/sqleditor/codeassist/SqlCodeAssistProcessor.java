@@ -161,7 +161,11 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
             for (String schema : schemas) {
                 Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);
                 for (String table : tables) {
-                    if (table.startsWith(tablePrefix) || (schema + "." + table).startsWith(tablePrefix)) {
+                    String tablePrefixLowerCase = tablePrefix.toLowerCase();
+                    String tableLowerCase = table.toLowerCase();
+                    String schemaLowerCase = schema.toLowerCase();
+                    if (tableLowerCase.startsWith(tablePrefixLowerCase)
+                        || (schemaLowerCase + "." + tableLowerCase).startsWith(tablePrefixLowerCase)) {
                         String replacementString = lineReplacementPrefix + schema + "." + table;
                         array.add(new SqlCodeCompletionProposal(schema + "." + table, replacementString, replacementString.length()));
                     }
