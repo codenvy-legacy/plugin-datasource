@@ -39,4 +39,7 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("Transaction - rollback on first error")
     String transactionModeItem();
+
+    @DefaultMessage("Query Results")
+    String queryResultsTitle();
 }
