@@ -41,6 +41,7 @@ import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.request.ExecutionErrorResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
@@ -64,26 +65,30 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                                                                  DatasourceCreatedHandler {
 
     /** Preference property name for default result limit. */
-    private static final String               PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
+    private static final String                       PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
 
     /** Default value for request limit (when no pref is set). */
-    private static final int                  DEFAULT_REQUEST_LIMIT                = 20;
+    private static final int                          DEFAULT_REQUEST_LIMIT                = 20;
+
+    private static final MultipleRequestExecutionMode DEFAULT_EXECUTION_MODE               =
+                                                                                             MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR;
     /** The matching view. */
-    private final SqlRequestLauncherView      view;
+    private final SqlRequestLauncherView              view;
     /** The i18n-able constants. */
-    private final SqlRequestLauncherConstants constants;
+    private final SqlRequestLauncherConstants         constants;
     /** The DTO factory. */
-    private final DtoFactory                  dtoFactory;
+    private final DtoFactory                          dtoFactory;
 
-    private String                            selectedDatasourceId                 = null;
-    private int                               resultLimit                          = DEFAULT_REQUEST_LIMIT;
+    private String                                    selectedDatasourceId                 = null;
+    private int                                       resultLimit                          = DEFAULT_REQUEST_LIMIT;
+    private MultipleRequestExecutionMode              executionMode                        = DEFAULT_EXECUTION_MODE;
 
-    private final DatasourceClientService     datasourceClientService;
-    private final NotificationManager         notificationManager;
-    private final DatasourceManager           datasourceManager;
-    protected final DatabaseInfoStore         databaseInfoStore;
+    private final DatasourceClientService             datasourceClientService;
+    private final NotificationManager                 notificationManager;
+    private final DatasourceManager                   datasourceManager;
+    protected final DatabaseInfoStore                 databaseInfoStore;
 
-    protected EditorDatasourceOracle          editorDatasourceOracle;
+    protected EditorDatasourceOracle                  editorDatasourceOracle;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -112,6 +117,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.datasourceManager = datasourceManager;
 
         setupResultLimit(preferencesManager);
+        setupExecutionMode(preferencesManager);
 
         // register for datasource creation events
         eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
@@ -141,6 +147,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         // push the request limit value to the view
         this.view.setResultLimit(this.resultLimit);
+    }
+
+    private void setupExecutionMode(final PreferencesManager preferencesManager) {
+        // TODO : try to read preferences
     }
 
     private void setupDatasourceComponent() {
@@ -362,5 +372,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void onDatasourceCreated(final DatasourceCreatedEvent event) {
         this.setupDatasourceComponent();
+    }
+
+    @Override
+    public void executionModeChanged(final MultipleRequestExecutionMode mode) {
+        this.executionMode = mode;
     }
 }

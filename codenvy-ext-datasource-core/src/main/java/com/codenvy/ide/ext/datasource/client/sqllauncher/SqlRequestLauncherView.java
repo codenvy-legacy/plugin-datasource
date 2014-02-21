@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import java.util.Collection;
 
 import com.codenvy.ide.api.mvp.View;
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -50,5 +51,7 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
         void resultLimitChanged(String newResultLimitString);
 
         void executeRequested(String request);
+
+        void executionModeChanged(MultipleRequestExecutionMode oneByOne);
     }
 }
