@@ -53,9 +53,14 @@ import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeUri;
+import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -93,6 +98,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     protected EditorDatasourceOracle                  editorDatasourceOracle;
     private final CellTableResources                  cellTableResources;
+
+    /** The instance of the hyperlink template. */
+    private static final HeaderTemplate               TEMPLATE                             = GWT.create(HeaderTemplate.class);
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -363,20 +371,33 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size(), cellTableResources);
 
-        Header<String> footer = new HyperlinkHeader(this.datasourceClientService.buildCsvExportUrl(result),
-                                                    constants.exportCsvLabel());
+        SafeHtml headerHtml = buildResultTableHeader(result,
+                                                     this.datasourceClientService.buildCsvExportUrl(result),
+                                                     constants.exportCsvLabel());
+        resultTable.setHeaderBuilder(new ResultHeaderBuilder(resultTable,
+                                                             headerHtml,
+                                                             result.getHeaderLine().size(),
+                                                             cellTableResources.cellTableStyle().infoHeader()));
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
             resultTable.addColumn(new FixedIndexTextColumn(i, ALIGN_LEFT),
-                                  new AlignableColumnHeader(headerEntry, ALIGN_LEFT),
-                                  footer);
+                                  new AlignableColumnHeader(headerEntry, ALIGN_LEFT));
             i++;
         }
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
         this.view.appendResult(resultTable);
 
+    }
+
+    private SafeHtml buildResultTableHeader(final RequestResultDTO result, final String link, final String text) {
+        SafeHtmlBuilder builder = new SafeHtmlBuilder();
+        builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
+        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), result.getOriginRequest()));
+        builder.append(TEMPLATE.hyperlink(UriUtils.fromString(link), text));
+
+        return builder.toSafeHtml();
     }
 
     private void appendUpdateResult(final RequestResultDTO result) {
@@ -391,5 +412,21 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void executionModeChanged(final MultipleRequestExecutionMode mode) {
         this.executionMode = mode;
+    }
+
+    /**
+     * Template to build a SafeHtml hyperlink.
+     * 
+     * @author "Mickaël Leduque"
+     */
+    interface HeaderTemplate extends SafeHtmlTemplates {
+        @Template("<a target=\"_blank\" href=\"{0}\">{1}</a>")
+        SafeHtml hyperlink(SafeUri link, String text);
+
+        @Template("<span class='{0}'>{1}</span>")
+        SafeHtml queryReminder(String className, String query);
+
+        @Template("<span class='{0}'>{1}</span>")
+        SafeHtml infoHeaderTitle(String className, String label);
     }
 }
