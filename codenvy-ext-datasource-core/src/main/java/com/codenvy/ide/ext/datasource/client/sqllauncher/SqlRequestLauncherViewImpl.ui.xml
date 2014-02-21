@@ -27,6 +27,8 @@
                 <g:ListBox ui:field="datasourceList" />
                 <g:Label ui:field="resultLimitLabel" />
                 <g:TextBox ui:field="resultLimitInput" />
+                <g:Label ui:field="executionModeLabel" />
+                <g:ListBox ui:field="executionModeList" />
                 <g:Button ui:field="executeButton" />
             </g:HorizontalPanel>
         </g:north>

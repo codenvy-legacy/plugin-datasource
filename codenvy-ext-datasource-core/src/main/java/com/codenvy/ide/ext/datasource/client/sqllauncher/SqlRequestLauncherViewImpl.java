@@ -21,6 +21,7 @@ import java.util.Collection;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.ext.datasource.client.common.SimpleView;
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -42,36 +43,48 @@ import com.google.inject.Inject;
  */
 public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
 
+    private static final String EXECUTE_ALL   = "all";
+    private static final String STOP_ON_ERROR = "stop";
+    private static final String TRANSACTION   = "transaction";
+
     @UiField
-    Widget           launcherContainer;
+    Widget                      launcherContainer;
 
     /** The SQL edition zone. */
     @UiField
-    AcceptsOneWidget editorZone;
+    AcceptsOneWidget            editorZone;
 
     /** The request result display. */
     @UiField
-    FlowPanel        resultZone;
+    FlowPanel                   resultZone;
 
     /** The label for the datasource selection widget. */
     @UiField
-    Label            selectDatasourceLabel;
+    Label                       selectDatasourceLabel;
 
     /** The datasource selection widget. */
     @UiField
-    ListBox          datasourceList;
+    ListBox                     datasourceList;
 
     /** The label for the request result limit widget. */
     @UiField
-    Label            resultLimitLabel;
+    Label                       resultLimitLabel;
 
     /** The request result limit widget. */
     @UiField
-    TextBox          resultLimitInput;
+    TextBox                     resultLimitInput;
+
+    /** The label for the execution mode widget. */
+    @UiField
+    Label                       executionModeLabel;
+
+    /** The execution mode selection widget. */
+    @UiField
+    ListBox                     executionModeList;
 
     /** The button that commands request execution. */
     @UiField
-    Button           executeButton;
+    Button                      executeButton;
 
 
     @Inject
@@ -85,7 +98,10 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
         selectDatasourceLabel.setText(constants.selectDatasourceLabel());
         resultLimitLabel.setText(constants.resultLimitLabel());
+        executionModeLabel.setText(constants.executionModeLabel());
         executeButton.setText(constants.executeButtonLabel());
+
+        fillExecutionModeList(constants);
     }
 
     @Override
@@ -158,6 +174,27 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     @UiHandler("resultLimitInput")
     void handleResultLimitChange(final ChangeEvent event) {
         getDelegate().resultLimitChanged(this.resultLimitInput.getValue());
+    }
+
+    @UiHandler("executionModeList")
+    void handleExecutionModeChange(final ChangeEvent event) {
+        final String newExecmode = this.executionModeList.getValue(this.executionModeList.getSelectedIndex());
+        if (newExecmode == null) {
+            getDelegate().executionModeChanged(null);
+        } else if (newExecmode.equals(EXECUTE_ALL)) {
+            getDelegate().executionModeChanged(MultipleRequestExecutionMode.ONE_BY_ONE);
+        } else if (newExecmode.equals(STOP_ON_ERROR)) {
+            getDelegate().executionModeChanged(MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR);
+        } else if (newExecmode.equals(TRANSACTION)) {
+            getDelegate().executionModeChanged(MultipleRequestExecutionMode.TRANSACTIONAL);
+        }
+    }
+
+    private void fillExecutionModeList(final SqlRequestLauncherConstants constants) {
+        this.executionModeList.addItem(constants.executeAllModeItem(), EXECUTE_ALL);
+        this.executionModeList.addItem(constants.stopOnErrorModeitem(), STOP_ON_ERROR);
+        /* Not supported at the moment. */
+        /* this.executionModeList.addItem(constants.transactionModeItem(), TRANSACTION); */
     }
 
     /**
