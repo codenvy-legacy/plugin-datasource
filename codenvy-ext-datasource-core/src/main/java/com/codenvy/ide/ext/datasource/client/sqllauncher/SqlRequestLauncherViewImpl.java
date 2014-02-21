@@ -57,7 +57,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     @UiField
     Label            selectDatasourceLabel;
 
-    /** the datasource selection widget. */
+    /** The datasource selection widget. */
     @UiField
     ListBox          datasourceList;
 
