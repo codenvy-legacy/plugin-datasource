@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_LEFT;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -31,9 +33,9 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
-import com.codenvy.ide.ext.datasource.client.common.RightAlignColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
@@ -366,7 +368,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
-            resultTable.addColumn(new FixedIndexTextColumn(i), new RightAlignColumnHeader(headerEntry), footer);
+            resultTable.addColumn(new FixedIndexTextColumn(i, ALIGN_LEFT),
+                                  new AlignableColumnHeader(headerEntry, ALIGN_LEFT),
+                                  footer);
             i++;
         }
 
