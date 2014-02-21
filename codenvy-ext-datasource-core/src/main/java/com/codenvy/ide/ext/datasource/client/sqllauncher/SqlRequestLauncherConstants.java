@@ -25,7 +25,7 @@ public interface SqlRequestLauncherConstants extends Messages {
     @AlternateMessage({"one", "{0} row."})
     String updateCountMessage(@PluralCount int count);
 
-    @DefaultMessage("Export as CSV file")
+    @DefaultMessage("Export")
     String exportCsvLabel();
 
     @DefaultMessage("Execution mode")
