@@ -1,4 +1,4 @@
-package com.codenvy.ide.ext.datasource.client.common;
+package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.google.gwt.user.cellview.client.CellTable;
 
