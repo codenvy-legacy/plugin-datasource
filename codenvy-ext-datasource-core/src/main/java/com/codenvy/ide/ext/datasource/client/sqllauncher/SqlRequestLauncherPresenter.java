@@ -255,6 +255,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
             Window.alert("No datasource selected");
             return;
         }
+        if (this.executionMode == null) {
+            Window.alert("No execute mode selected");
+            return;
+        }
         DatabaseConfigurationDTO databaseConf = this.datasourceManager.getByName(this.selectedDatasourceId);
         String rawSql = getSqlRequestInput();
         if (rawSql != null) {
