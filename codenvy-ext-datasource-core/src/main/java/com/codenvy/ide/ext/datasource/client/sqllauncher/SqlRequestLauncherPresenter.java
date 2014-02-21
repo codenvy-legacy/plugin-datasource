@@ -31,6 +31,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.RightAlignColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
@@ -89,6 +90,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     protected final DatabaseInfoStore                 databaseInfoStore;
 
     protected EditorDatasourceOracle                  editorDatasourceOracle;
+    private final CellTableResources                  cellTableResources;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -102,7 +104,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull EditorDatasourceOracle editorDatasourceOracle,
                                        final @NotNull EventBus eventBus,
                                        final @NotNull DtoFactory dtoFactory,
-                                       final @NotNull WorkspaceAgent workspaceAgent) {
+                                       final @NotNull WorkspaceAgent workspaceAgent,
+                                       final @NotNull CellTableResources cellTableResources) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -115,6 +118,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.datasourceClientService = service;
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
+        this.cellTableResources = cellTableResources;
 
         setupResultLimit(preferencesManager);
         setupExecutionMode(preferencesManager);
@@ -355,7 +359,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private void appendSelectResult(final RequestResultDTO result) {
 
-        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size());
+        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size(), cellTableResources);
 
         Header<String> footer = new HyperlinkHeader(this.datasourceClientService.buildCsvExportUrl(result),
                                                     constants.exportCsvLabel());
