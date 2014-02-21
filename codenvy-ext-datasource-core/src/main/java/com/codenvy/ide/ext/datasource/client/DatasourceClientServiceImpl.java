@@ -100,15 +100,6 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     public void executeSqlRequest(final DatabaseConfigurationDTO configuration,
                                   final int resultLimit,
                                   final String sqlRequest,
-                                  final AsyncRequestCallback<String> asyncRequestCallback)
-                                                                                          throws RequestException {
-        executeSqlRequest(configuration, resultLimit, sqlRequest, MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR, asyncRequestCallback);
-    }
-
-    @Override
-    public void executeSqlRequest(final DatabaseConfigurationDTO configuration,
-                                  final int resultLimit,
-                                  final String sqlRequest,
                                   final MultipleRequestExecutionMode execMode,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {

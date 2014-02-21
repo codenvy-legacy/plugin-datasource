@@ -40,11 +40,6 @@ public interface DatasourceClientService {
     void executeSqlRequest(@NotNull DatabaseConfigurationDTO configuration,
                            int resultLimit,
                            @NotNull String sqlRequest,
-                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
-
-    void executeSqlRequest(@NotNull DatabaseConfigurationDTO configuration,
-                           int resultLimit,
-                           @NotNull String sqlRequest,
                            MultipleRequestExecutionMode execmode,
                            @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
