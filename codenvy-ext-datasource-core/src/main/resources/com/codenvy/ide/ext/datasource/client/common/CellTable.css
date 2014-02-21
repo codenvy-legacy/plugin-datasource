@@ -15,8 +15,10 @@
   border-top: 2px solid #6f7277;
   padding: 3px 15px;
   text-align: left;
-  color: editorBackgroundColor;
-  text-shadow: #ddf 1px 1px 0;
+  color: editorDefaultFontColor;
+  text-shadow: none;
+  font-weight: normal;
+  font-size: fontSize;
   overflow: hidden;
 }
 
@@ -24,14 +26,19 @@
   border-bottom: 2px solid #6f7277;
   padding: 3px 15px;
   text-align: left;
-  color: editorBackgroundColor;
-  text-shadow: #ddf 1px 1px 0;
+  color: editorDefaultFontColor;
+  text-shadow: none;
+  font-weight: normal;
+  font-size: fontSize;
   overflow: hidden;
 }
 
 .cellTableCell {
   padding: 2px 15px;
   overflow: hidden;
+  font-weight: normal;
+  font-size: fontSize;
+  text-overflow : ellipsis;
 }
 
 .cellTableFirstColumnFooter {
@@ -101,7 +108,7 @@
 
 .cellTableSelectedRow {
   background: cellKeyboardSelectedRow;
-  color: white;
+  color: editorSelectionColor;
   height: auto;
   overflow: auto;
 }
