@@ -171,4 +171,12 @@ public class TestSqlCodeAssistProcessorBuildQuery {
                              "For the results of a column autocompletion using an UPDATE/SET statement, we expect ",
                              2);
     }
+
+    @Test
+    public void completeColumnSelectMultipleTable() {
+        testColumnCompletion("Select * from atable, meta.metaTable WHERE "
+                             ,
+                             "For the results of a column autocompletion using an SELECT/WHERE statement with multiple selected table, we expect ",
+                             5);
+    }
 }

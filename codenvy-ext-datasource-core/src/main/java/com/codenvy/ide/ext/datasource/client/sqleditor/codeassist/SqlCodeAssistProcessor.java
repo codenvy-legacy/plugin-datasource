@@ -17,7 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
@@ -43,14 +46,15 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     protected ReadableContentTextEditor textEditor;
     protected EditorDatasourceOracle    editorDatasourceOracle;
 
-    protected final static RegExp       TABLE_REGEXP_PATTERN         =
-                                                                       RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
-    protected final static int          TABLE_REGEXP_GROUP           = 6;
-    protected final static RegExp       COLUMN_REGEXP_PATTERN        =
-                                                                       RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)((where\\s+|\\()|set\\s+)(\\w*\\.*\\w*\\.*\\w*)$",
-                                                                                      "m");
-    protected final static int          COLUMN_REGEXP_GROUP          = 12;
-    protected final static int          TABLE_IN_COLUMN_REGEXP_GROUP = 6;
+    protected final static RegExp       TABLE_REGEXP_PATTERN               =
+                                                                             RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
+    protected final static int          TABLE_REGEXP_GROUP                 = 6;
+    protected final static RegExp       COLUMN_REGEXP_PATTERN              =
+                                                                             RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)((where\\s+|\\()|set\\s+)(\\w*\\.*\\w*\\.*\\w*)$"
+                                                                                ,"gm"            );
+    protected final static int          COLUMN_REGEXP_GROUP                = 13;
+    protected final static int          TABLE_IN_COLUMN_REGEXP_GROUP       = 7;
+    protected final static int          PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 5;
 
     public SqlCodeAssistProcessor(ReadableContentTextEditor textEditor,
                                   SqlEditorResources resources,
@@ -188,16 +192,30 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
         linePrefix = linePrefix.toLowerCase();
 
         MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
-        if (matcher != null) {
+        List<String> selectedTables = new ArrayList<String>();
+        String columnPrefix = "";
+        while (matcher != null) {
             String selectedTable = matcher.getGroup(TABLE_IN_COLUMN_REGEXP_GROUP);
-            String columnPrefix = matcher.getGroup(COLUMN_REGEXP_GROUP);
-            String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - columnPrefix.length());
-            String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
-            Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
-            for (String schema : schemas) {
-                Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);
-                String schemaLowerCase = schema.toLowerCase();
-                for (String table : tables) {
+            columnPrefix = matcher.getGroup(COLUMN_REGEXP_GROUP);
+            if (selectedTable != null && !selectedTable.trim().isEmpty() && !selectedTables.contains(selectedTable)) {
+                selectedTables.add(selectedTable);
+            }
+            String prevSelectedTable = matcher.getGroup(PREV_TABLES_IN_COLUMN_REGEXP_GROUP);
+            if (prevSelectedTable != null && !prevSelectedTable.trim().isEmpty() && !selectedTables.contains(prevSelectedTable)) {
+                selectedTables.add(prevSelectedTable);
+            }
+
+            matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
+        }
+
+        String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - columnPrefix.length());
+        String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
+        Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
+        for (String schema : schemas) {
+            Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);
+            String schemaLowerCase = schema.toLowerCase();
+            for (String table : tables) {
+                for (String selectedTable : selectedTables) {
                     String tablePrefixLowerCase = selectedTable.toLowerCase();
                     String tableLowerCase = table.toLowerCase();
                     if (tableLowerCase.startsWith(tablePrefixLowerCase)
