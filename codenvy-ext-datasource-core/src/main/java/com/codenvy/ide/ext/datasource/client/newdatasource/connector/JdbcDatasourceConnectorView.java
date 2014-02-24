@@ -18,8 +18,6 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.api.mvp.View;
-import com.codenvy.ide.api.parts.base.BaseActionDelegate;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.inject.ImplementedBy;
 
 /**
