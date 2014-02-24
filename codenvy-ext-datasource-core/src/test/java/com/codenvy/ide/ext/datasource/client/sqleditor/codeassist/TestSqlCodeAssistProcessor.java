@@ -35,8 +35,11 @@ import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.google.gwt.dev.util.collect.Lists;
 
+/**
+ * Testing template based, table and column completion processing.
+ */
 @RunWith(MockitoJUnitRunner.class)
-public class TestSqlCodeAssistProcessorBuildQuery {
+public class TestSqlCodeAssistProcessor {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     protected ReadableContentTextEditor textEditor;
@@ -93,57 +96,57 @@ public class TestSqlCodeAssistProcessorBuildQuery {
 
     @Test
     public void completeTableForSelectFrom() {
-        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from "));
-        assertEquals("for number of results for table autocompletion, we expect ", 4, results.size());
+        testTableCompletion("Select * from ", "for number of results for table autocompletion, we expect ", 4);
+    }
+
+    protected void testTableCompletion(String queryPrefix, String assertMessage, int expectedResultsCount) {
+        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery(queryPrefix));
+        assertEquals(assertMessage, expectedResultsCount, results.size());
     }
 
     @Test
     public void completeTableForFirstLetterSelectFrom() {
-        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from t"));
-        assertEquals("for number of results for table autocompletion starting with t, we expect ", 1, results.size());
+        testTableCompletion("Select * from t", "for number of results for table autocompletion starting with t, we expect ", 1);
     }
 
     @Test
     public void completeTableCaseInsensitive() {
-        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from metat"));
-        assertEquals("for number of results for table autocompletion starting with metat, we expect ", 1, results.size());
+        testTableCompletion("Select * from metat", "for number of results for table autocompletion starting with metat, we expect ", 1);
     }
 
     @Test
     public void completeTableForSelectFromMultipleTable() {
-        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from atable, "));
-        assertEquals("for number of results for table autocompletion (with multiple tables selected), we expect ", 4, results.size());
+        testTableCompletion("Select * from atable, ",
+                            "for number of results for table autocompletion (with multiple tables selected), we expect ",
+                            4);
     }
 
     @Test
     public void completeTableForSelectFromFourthTable() {
-        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(
-                                                                      new SqlCodeQuery("Select * from atable, another, table, "));
-        assertEquals("for number of results for table autocompletion (with 4+ tables selected), we expect ", 4, results.size());
+        testTableCompletion("Select * from atable, another, table, ",
+                            "for number of results for table autocompletion (with 4+ tables selected), we expect ", 4);
     }
 
     @Test
     public void completeTableForSelectFromTableWithSchema() {
-        Array<SqlCodeCompletionProposal> results =
-                                                   codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery(
-                                                                                                                 "Select * from schema.atable, "));
-        assertEquals("for number of results for table autocompletion with a table with schema selected), we expect ", 4, results.size());
+        testTableCompletion("Select * from schema.atable, ",
+                            "for number of results for table autocompletion with a table with schema selected), we expect ",
+                            4);
     }
 
     @Test
     public void completeTableForSelectFromWithCarriageRuturns() {
-        Array<SqlCodeCompletionProposal> results =
-                                                   codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery(
-                                                                                                                 "select * \nfrom "));
-        assertEquals("for number of results for table autocompletion with a statement with CR, we expect ", 4, results.size());
+        testTableCompletion("select * \nfrom ",
+                            "for number of results for table autocompletion with a statement with CR, we expect ",
+                            4);
     }
 
     @Test
     public void completeTableWithFullName() {
-        Array<SqlCodeCompletionProposal> results =
-                                                   codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery(
-                                                                                                                 "select * \nfrom pu"));
-        assertEquals("for number of results for table autocompletion when starting writing public, we expect ", 2, results.size());
+        testTableCompletion(
+                            "select * \nfrom pu",
+                            "for number of results for table autocompletion when starting writing public, we expect ",
+                            2);
     }
 
     @Test
@@ -153,9 +156,9 @@ public class TestSqlCodeAssistProcessorBuildQuery {
                              2);
     }
 
-    protected void testColumnCompletion(String queryPrefix, String assertMessage, int expectedResults) {
+    protected void testColumnCompletion(String queryPrefix, String assertMessage, int expectedResultsCount) {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findColumnAutocompletions(new SqlCodeQuery(queryPrefix));
-        assertEquals(assertMessage, expectedResults, results.size());
+        assertEquals(assertMessage, expectedResultsCount, results.size());
     }
 
     @Test
@@ -174,8 +177,7 @@ public class TestSqlCodeAssistProcessorBuildQuery {
 
     @Test
     public void completeColumnSelectMultipleTable() {
-        testColumnCompletion("Select * from atable, meta.metaTable WHERE "
-                             ,
+        testColumnCompletion("Select * from atable, meta.metaTable WHERE ",
                              "For the results of a column autocompletion using an SELECT/WHERE statement with multiple selected table, we expect ",
                              5);
     }
@@ -203,8 +205,7 @@ public class TestSqlCodeAssistProcessorBuildQuery {
 
     @Test
     public void complete2ndColumnSelectMultipleTable() {
-        testColumnCompletion("Select * from atable, meta.metaTable WHERE column1 = 'value1' AND "
-                             ,
+        testColumnCompletion("Select * from atable, meta.metaTable WHERE column1 = 'value1' AND ",
                              "For the results of a column autocompletion using an SELECT/WHERE statement with multiple selected table, we expect ",
                              5);
     }
