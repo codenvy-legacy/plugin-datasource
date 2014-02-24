@@ -50,9 +50,11 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                                                                              RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
     protected final static int          TABLE_REGEXP_GROUP                 = 6;
     protected final static RegExp       COLUMN_REGEXP_PATTERN              =
-                                                                             RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)((where\\s+|\\()|set\\s+)(\\w*\\.*\\w*\\.*\\w*)$"
-                                                                                ,"gm"            );
-    protected final static int          COLUMN_REGEXP_GROUP                = 13;
+                                                                             RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)"
+                                                                                                + "\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)"
+                                                                                                + "((where\\s+(.*\\s+)*|\\()(\\w*\\.*\\w*\\.*\\w+,?\\s+)*|set\\s+((.+\\s*)+,\\s*)*)(\\w*\\.*\\w*\\.*\\w*)$"
+                                                                                            , "gm");
+    protected final static int          COLUMN_REGEXP_GROUP                = 17;
     protected final static int          TABLE_IN_COLUMN_REGEXP_GROUP       = 7;
     protected final static int          PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 5;
 

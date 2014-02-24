@@ -179,4 +179,34 @@ public class TestSqlCodeAssistProcessorBuildQuery {
                              "For the results of a column autocompletion using an SELECT/WHERE statement with multiple selected table, we expect ",
                              5);
     }
+
+    @Test
+    public void complete2ndColumnSelectWhere() {
+        testColumnCompletion("select * \nfrom public.atable where public.atable.column1 = 'test' AND ",
+                             "For the results of a column autocompletion when using a select/where statement, we expect ",
+                             2);
+    }
+
+    @Test
+    public void complete2ndColumnInsertInto() {
+        testColumnCompletion("INSERT INTO atable (atable.column1, ",
+                             "For the results of a column autocompletion using an insert into statement, we expect ",
+                             2);
+    }
+
+    @Test
+    public void complete2ndColumnUpdateTable() {
+        testColumnCompletion("UPDATE atable SET column1 = 'value1', ",
+                             "For the results of a column autocompletion using an UPDATE/SET statement, we expect ",
+                             2);
+    }
+
+    @Test
+    public void complete2ndColumnSelectMultipleTable() {
+        testColumnCompletion("Select * from atable, meta.metaTable WHERE column1 = 'value1' AND "
+                             ,
+                             "For the results of a column autocompletion using an SELECT/WHERE statement with multiple selected table, we expect ",
+                             5);
+    }
+
 }
