@@ -43,9 +43,14 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     protected ReadableContentTextEditor textEditor;
     protected EditorDatasourceOracle    editorDatasourceOracle;
 
-    protected final static RegExp       TABLE_REGEXP_PATTERN =
-                                                               RegExp.compile(".*((from((\\s+(\\w+.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
-    protected final static int          TABLE_REGEXP_GROUP   = 6;
+    protected final static RegExp       TABLE_REGEXP_PATTERN         =
+                                                                       RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
+    protected final static int          TABLE_REGEXP_GROUP           = 6;
+    protected final static RegExp       COLUMN_REGEXP_PATTERN        =
+                                                                       RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)((where\\s+|\\()|set\\s+)(\\w*\\.*\\w*\\.*\\w*)$",
+                                                                                      "m");
+    protected final static int          COLUMN_REGEXP_GROUP          = 12;
+    protected final static int          TABLE_IN_COLUMN_REGEXP_GROUP = 6;
 
     public SqlCodeAssistProcessor(ReadableContentTextEditor textEditor,
                                   SqlEditorResources resources,
@@ -143,9 +148,11 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
     protected Array<SqlCodeCompletionProposal> findAutoCompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> completionProposals = findTableAutocompletions(query);
+        completionProposals.addAll(findColumnAutocompletions(query));
         completionProposals.addAll(SqlCodeTemplateTrie.findAndFilterAutocompletions(query));
         return completionProposals;
     }
+
 
     protected Array<SqlCodeCompletionProposal> findTableAutocompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> array = Collections.createArray();
@@ -168,6 +175,46 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                         || (schemaLowerCase + "." + tableLowerCase).startsWith(tablePrefixLowerCase)) {
                         String replacementString = lineReplacementPrefix + schema + "." + table;
                         array.add(new SqlCodeCompletionProposal(schema + "." + table, replacementString, replacementString.length()));
+                    }
+                }
+            }
+        }
+        return array;
+    }
+
+    protected Array<SqlCodeCompletionProposal> findColumnAutocompletions(SqlCodeQuery query) {
+        Array<SqlCodeCompletionProposal> array = Collections.createArray();
+        String linePrefix = query.getLastQueryPrefix();
+        linePrefix = linePrefix.toLowerCase();
+
+        MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
+        if (matcher != null) {
+            String selectedTable = matcher.getGroup(TABLE_IN_COLUMN_REGEXP_GROUP);
+            String columnPrefix = matcher.getGroup(COLUMN_REGEXP_GROUP);
+            String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - columnPrefix.length());
+            String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
+            Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
+            for (String schema : schemas) {
+                Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);
+                String schemaLowerCase = schema.toLowerCase();
+                for (String table : tables) {
+                    String tablePrefixLowerCase = selectedTable.toLowerCase();
+                    String tableLowerCase = table.toLowerCase();
+                    if (tableLowerCase.startsWith(tablePrefixLowerCase)
+                        || (schemaLowerCase + "." + tableLowerCase).startsWith(tablePrefixLowerCase)) {
+
+                        Collection<String> columns = databaseInfoOracle.getColumnsFor(datasourceId, schema, table);
+                        for (String column : columns) {
+                            String columnPrefixLowerCase = columnPrefix.toLowerCase();
+                            String columnLowerCase = column.toLowerCase();
+                            if (columnLowerCase.startsWith(columnPrefixLowerCase)
+                                || (schemaLowerCase + "." + tableLowerCase + "." + columnLowerCase).startsWith(columnPrefixLowerCase)
+                                || (tableLowerCase + "." + columnLowerCase).startsWith(columnPrefixLowerCase)) {
+                                String replacementString = lineReplacementPrefix + schema + "." + table + "." + column;
+                                array.add(new SqlCodeCompletionProposal(schema + "." + table + "." + column, replacementString,
+                                                                        replacementString.length()));
+                            }
+                        }
                     }
                 }
             }

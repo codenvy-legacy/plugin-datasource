@@ -60,6 +60,12 @@ public class TestSqlCodeAssistProcessorBuildQuery {
         when(databaseInfoOracle.getSchemasFor("datasourceId")).thenReturn(Lists.create("public", "meta"));
         when(databaseInfoOracle.getTablesFor("datasourceId", "public")).thenReturn(Lists.create("table", "atable"));
         when(databaseInfoOracle.getTablesFor("datasourceId", "meta")).thenReturn(Lists.create("metaTable", "aMetaTable"));
+        when(databaseInfoOracle.getColumnsFor("datasourceId", "public", "atable")).thenReturn(Lists.create("column11", "column12"));
+        when(databaseInfoOracle.getColumnsFor("datasourceId", "public", "table")).thenReturn(Lists.create("column21", "column22", "coumn23"));
+        when(databaseInfoOracle.getColumnsFor("datasourceId", "meta", "metaTable")).thenReturn(Lists.create("column11", "column12",
+                                                                                                            "column222"));
+        when(databaseInfoOracle.getColumnsFor("datasourceId", "meta", "aMetaTable")).thenReturn(Lists.create("column11", "column12",
+                                                                                                             "column234"));
 
         codeAssistProcessor = new SqlCodeAssistProcessor(textEditor, resources, databaseInfoOracle, editorDatasourceOracle);
     }
@@ -96,7 +102,7 @@ public class TestSqlCodeAssistProcessorBuildQuery {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from t"));
         assertEquals("for number of results for table autocompletion starting with t, we expect ", 1, results.size());
     }
-    
+
     @Test
     public void completeTableCaseInsensitive() {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery("Select * from metat"));
@@ -140,4 +146,29 @@ public class TestSqlCodeAssistProcessorBuildQuery {
         assertEquals("for number of results for table autocompletion when starting writing public, we expect ", 2, results.size());
     }
 
+    @Test
+    public void completeColumnSelectWhere() {
+        testColumnCompletion("select * \nfrom public.atable where ",
+                             "For the results of a column autocompletion when using a select/where statement, we expect ",
+                             2);
+    }
+
+    protected void testColumnCompletion(String queryPrefix, String assertMessage, int expectedResults) {
+        Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findColumnAutocompletions(new SqlCodeQuery(queryPrefix));
+        assertEquals(assertMessage, expectedResults, results.size());
+    }
+
+    @Test
+    public void completeColumnInsertInto() {
+        testColumnCompletion("INSERT INTO atable (",
+                             "For the results of a column autocompletion using an insert into statement, we expect ",
+                             2);
+    }
+
+    @Test
+    public void completeColumnUpdateTable() {
+        testColumnCompletion("UPDATE atable SET ",
+                             "For the results of a column autocompletion using an UPDATE/SET statement, we expect ",
+                             2);
+    }
 }
