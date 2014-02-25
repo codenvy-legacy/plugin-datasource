@@ -19,6 +19,7 @@ import com.codenvy.ide.api.ui.workspace.PartStack;
 import com.codenvy.ide.api.ui.workspace.PropertyListener;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.resources.model.File;
+import com.codenvy.ide.text.Document;
 import com.codenvy.ide.texteditor.api.outline.OutlinePresenter;
 import com.codenvy.ide.util.ListenerManager;
 import com.codenvy.ide.util.ListenerManager.Dispatcher;
@@ -303,5 +304,10 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
         if (file.equals(eventFile)) {
             workspaceAgent.removePart(this);
         }
+    }
+
+    @Override
+    public Document getDocument() {
+        return editor.getDocument();
     }
 }
