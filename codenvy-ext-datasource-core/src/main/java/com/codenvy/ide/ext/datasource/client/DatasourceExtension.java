@@ -105,7 +105,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
         oracleWizardPages.add(oracleConnectorPageProvider);
         connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, "Oracle", resources.getOracleLogo(),
-                                "oracle.jdbc.driver.OracleDriver", oracleWizardPages);
+                                "oracle.jdbc.OracleDriver", oracleWizardPages);
 
         // add a new SQLserver connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();

@@ -135,7 +135,9 @@ public class DatasourceService {
             drivers.add(driver.getClass().getCanonicalName());
         }
         DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
-        return DtoFactory.getInstance().toJson(driversDTO);
+        String msg = DtoFactory.getInstance().toJson(driversDTO);
+        LOG.info(msg);
+        return msg;
     }
 
 
