@@ -10,7 +10,7 @@
         <version>3.0.0-M8</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>3.0.0-M9-SNAPSHOT</version>
+    <version>3.0.0-M11-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
@@ -34,7 +34,7 @@
         </site>
     </distributionManagement>
     <properties>
-        <codenvy.datasource.version>3.0.0-M9-SNAPSHOT</codenvy.datasource.version>
+        <codenvy.datasource.version>3.0.0-M11-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M8</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <jtds-driver.version>1.2</jtds-driver.version>
