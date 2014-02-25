@@ -7,7 +7,7 @@
     <parent>
         <artifactId>codenvy-ide-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M8</version>
+        <version>3.0.0-M11-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
     <version>3.0.0-M11-SNAPSHOT</version>
@@ -35,7 +35,7 @@
     </distributionManagement>
     <properties>
         <codenvy.datasource.version>3.0.0-M11-SNAPSHOT</codenvy.datasource.version>
-        <codenvy.version>3.0.0-M8</codenvy.version>
+        <codenvy.version>3.0.0-M11-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <jtds-driver.version>1.2</jtds-driver.version>
         <mysql-driver.version>5.1.18</mysql-driver.version>
