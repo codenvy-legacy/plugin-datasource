@@ -20,22 +20,46 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:my='urn:import:com.codenvy.ide.ui.tree'>
     <ui:style>
+        @eval mainFontColor com.codenvy.ide.api.ui.theme.Style.getMainFontColor();
+        @eval partBackground com.codenvy.ide.api.ui.theme.Style.getPartBackground();
+        @eval activeTabBackground com.codenvy.ide.api.ui.theme.Style.getActiveTabBackground();
+        .datasourceList {
+        	color: mainFontColor;
+        	background-color: partBackground;
+        	border: tabBorder;
+        	border-radius: 2px;
+        	font-size: fontSize;
+        	font-weight: bold;
+        	width: 99%;
+        	margin: 2px;
+        	margin-top: 5px;
+        	margin-bottom: 5px;
+        	margin-right: 5px;
+        }
+        
         .refreshButton {
         	width: 16px;
         	height: 16px;
         	margin: 5px;
         	margin-right: 0px
         }
+        
+        .topPanel {
+        	background-color: activeTabBackground;
+        	border-bottom: 1px;
+        	height: 35px;
+        }
     </ui:style>
+
     <g:DockLayoutPanel unit="PX" ui:field="mainContainer">
-        <g:north size="25">
-            <g:DockLayoutPanel unit="PX">
-                <g:west size="120">
-                    <g:ListBox ui:field="datasourceListBox" />
-                </g:west>
+        <g:north size="50">
+            <g:DockLayoutPanel unit="PX" addStyleNames="{style.topPanel}">
                 <g:center>
-                    <g:PushButton ui:field="refreshButton" addStyleNames="{style.refreshButton}" />
+                    <g:ListBox ui:field="datasourceListBox" addStyleNames="{style.datasourceList}" />
                 </g:center>
+                <g:east size="40">
+                    <g:PushButton ui:field="refreshButton" addStyleNames="{style.refreshButton}" />
+                </g:east>
             </g:DockLayoutPanel>
         </g:north>
         <g:center>
