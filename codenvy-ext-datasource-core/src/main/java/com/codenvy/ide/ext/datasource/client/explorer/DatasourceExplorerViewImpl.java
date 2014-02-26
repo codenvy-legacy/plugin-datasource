@@ -26,6 +26,7 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -65,6 +66,11 @@ public class DatasourceExplorerViewImpl extends
     @UiHandler("refreshButton")
     public void onClick(ClickEvent event) {
         delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+    }
+
+    @UiHandler("datasourceListBox")
+    public void onDatasourceListChanged(ChangeEvent event) {
+        delegate.onSelectedDatasourceChanged(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
     }
 
     @Inject

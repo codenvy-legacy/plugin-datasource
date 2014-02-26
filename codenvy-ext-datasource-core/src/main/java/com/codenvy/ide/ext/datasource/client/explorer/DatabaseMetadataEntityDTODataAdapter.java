@@ -109,6 +109,9 @@ public class DatabaseMetadataEntityDTODataAdapter implements NodeDataAdapter<Ent
 
     @Override
     public TreeNodeElement<EntityTreeNode> getRenderedTreeNode(final EntityTreeNode node) {
+        if (node == null) {
+            return null;
+        }
         return node.getTreeNodeElement();
     }
 

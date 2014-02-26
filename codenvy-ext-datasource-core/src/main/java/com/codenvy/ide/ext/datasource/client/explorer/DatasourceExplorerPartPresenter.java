@@ -161,12 +161,10 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onClickExploreButton(final String datasourceId) {
-        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
-        if (dsMeta != null) {
-            view.setItems(dsMeta);
-            eventBus.fireEvent(new DatabaseInfoReceivedEvent(dsMeta));
-            return;
-        }
+        loadDatasource(datasourceId);
+    }
+
+    protected void loadDatasource(final String datasourceId) {
         try {
             DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
 
@@ -203,6 +201,17 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
             notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
                                                                   Type.ERROR));
         }
+    }
+
+    @Override
+    public void onSelectedDatasourceChanged(String datasourceId) {
+        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
+        if (dsMeta != null) {
+            view.setItems(dsMeta);
+            eventBus.fireEvent(new DatabaseInfoReceivedEvent(dsMeta));
+            return;
+        }
+        loadDatasource(datasourceId);
     }
 
     @Override

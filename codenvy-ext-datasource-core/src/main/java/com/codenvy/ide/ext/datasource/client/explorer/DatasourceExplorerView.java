@@ -87,5 +87,7 @@ public interface DatasourceExplorerView extends
         void onContextMenu(int mouseX, int mouseY);
 
         void onClickExploreButton(String datasourceId);
+
+        void onSelectedDatasourceChanged(String datasourceId);
     }
 }
