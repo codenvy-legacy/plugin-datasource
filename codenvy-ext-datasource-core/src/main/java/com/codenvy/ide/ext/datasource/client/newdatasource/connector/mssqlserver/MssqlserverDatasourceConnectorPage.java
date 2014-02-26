@@ -4,6 +4,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.Resources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
@@ -29,8 +30,9 @@ public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceCon
                                               final DtoFactory dtoFactory,
                                               final DatasourceManager datasourceManager,
                                               final EventBus eventBus,
-                                              final DatasourceClientService service) {
-        super(view,"sqlserver", null, SQLSERVER_DB_ID, datasourceManager, eventBus, service,notificationManager);
+                                              final DatasourceClientService service,
+                                              final Resources resources) {
+        super(view,"Microsoft SQL Server", resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,notificationManager);
         this.dtoFactory = dtoFactory;
     }
 
