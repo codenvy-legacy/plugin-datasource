@@ -24,4 +24,7 @@ public interface Resources extends ClientBundle {
 
     @Source("oracle.png")
     ImageResource getOracleLogo();
+    
+    @Source("refresh.png")
+    ImageResource getRefreshIcon();
 }

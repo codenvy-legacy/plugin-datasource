@@ -31,9 +31,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -59,9 +60,9 @@ public class DatasourceExplorerViewImpl extends
     protected SimplePanel          propertiesContainer;
 
     @UiField
-    protected Button               exploreButton;
+    protected PushButton           refreshButton;
 
-    @UiHandler("exploreButton")
+    @UiHandler("refreshButton")
     public void onClick(ClickEvent event) {
         delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
     }
@@ -69,7 +70,8 @@ public class DatasourceExplorerViewImpl extends
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
                                       final DatasourceExplorerViewUiBinder uiBinder,
-                                      final DatasourceExplorerConstants constants) {
+                                      final DatasourceExplorerConstants constants,
+                                      final com.codenvy.ide.ext.datasource.client.Resources clientResource) {
         super(resources);
 
         tree = Tree.create(resources,
@@ -78,7 +80,7 @@ public class DatasourceExplorerViewImpl extends
 
         uiBinder.createAndBindUi(this);
 
-        this.exploreButton.setText(constants.exploreButtonLabel());
+        this.refreshButton.getUpFace().setImage(new Image(clientResource.getRefreshIcon()));
 
         container.add(mainContainer);
     }
