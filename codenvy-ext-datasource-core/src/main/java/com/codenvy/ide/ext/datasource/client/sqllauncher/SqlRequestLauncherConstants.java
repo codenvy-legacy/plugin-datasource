@@ -12,13 +12,13 @@ public interface SqlRequestLauncherConstants extends Messages {
     @DefaultMessage("SQL editor")
     String sqlEditorWindowTitle();
 
-    @DefaultMessage("Select datasource")
+    @DefaultMessage("Datasource Target:")
     String selectDatasourceLabel();
 
-    @DefaultMessage("Result limit")
+    @DefaultMessage("Result limit:")
     String resultLimitLabel();
 
-    @DefaultMessage("Execute")
+    @DefaultMessage("Execute Query")
     String executeButtonLabel();
 
     @DefaultMessage("{0} rows.")
@@ -28,7 +28,7 @@ public interface SqlRequestLauncherConstants extends Messages {
     @DefaultMessage("Export")
     String exportCsvLabel();
 
-    @DefaultMessage("Execution mode")
+    @DefaultMessage("Execution mode:")
     String executionModeLabel();
 
     @DefaultMessage("Execute all - ignore and report errors")
