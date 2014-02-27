@@ -193,12 +193,14 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
         MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
         List<String> selectedTables = new ArrayList<String>();
-        String statementTypeGroup = matcher.getGroup(2);
-        boolean isSelectStatement = (statementTypeGroup != null)
-                                    && !statementTypeGroup.trim().isEmpty()
-                                    && statementTypeGroup.startsWith("from");
+        boolean isSelectStatement = false;
+
         String columnPrefix = "";
         while (matcher != null) {
+            String statementTypeGroup = matcher.getGroup(2);
+            isSelectStatement = (statementTypeGroup != null)
+                                && !statementTypeGroup.trim().isEmpty()
+                                && statementTypeGroup.startsWith("from");
             String selectedTable = matcher.getGroup(TABLE_IN_COLUMN_REGEXP_GROUP);
             columnPrefix = matcher.getGroup(COLUMN_REGEXP_GROUP);
             if (selectedTable != null && !selectedTable.trim().isEmpty() && !selectedTables.contains(selectedTable)) {
