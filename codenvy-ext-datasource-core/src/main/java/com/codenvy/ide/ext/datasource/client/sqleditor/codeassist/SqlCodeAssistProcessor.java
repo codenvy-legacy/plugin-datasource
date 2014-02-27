@@ -154,10 +154,9 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     protected Array<SqlCodeCompletionProposal> findAutoCompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> completionProposals = findTableAutocompletions(query);
         completionProposals.addAll(findColumnAutocompletions(query));
-        completionProposals.addAll(SqlCodeTemplateTrie.findAndFilterAutocompletions(query));
+        completionProposals.addAll(findTemplateAutocompletion(query));
         return completionProposals;
     }
-
 
     protected Array<SqlCodeCompletionProposal> findTableAutocompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> array = Collections.createArray();
@@ -239,6 +238,17 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
             }
         }
         return array;
+    }
+
+    protected Array<SqlCodeCompletionProposal> findTemplateAutocompletion(SqlCodeQuery query) {
+        Array<SqlCodeCompletionProposal> findAndFilterAutocompletions = SqlCodeTemplateTrie.findAndFilterAutocompletions(query);
+        for (SqlCodeCompletionProposal proposal : findAndFilterAutocompletions.asIterable()) {
+            int nextTablePosition = proposal.getReplacementString().indexOf("aTable");
+            if (nextTablePosition > 0) {
+                proposal.setCursorPosition(nextTablePosition);
+            }
+        }
+        return findAndFilterAutocompletions;
     }
 
     /**

@@ -115,4 +115,20 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     public void setInvocationContext(InvocationContext invocationContext) {
         this.invocationContext = invocationContext;
     }
+
+    public String getReplacementString() {
+        return replacementString;
+    }
+
+    public void setReplacementString(String replacementString) {
+        this.replacementString = replacementString;
+    }
+
+    public int getCursorPosition() {
+        return cursorPosition;
+    }
+
+    public void setCursorPosition(int cursorPosition) {
+        this.cursorPosition = cursorPosition;
+    }
 }

@@ -91,7 +91,7 @@ public class TestSqlCodeAssistProcessor {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findAutoCompletions(new SqlCodeQuery("inser"));
         assertEquals("For number of results for inser autocompletion, we expect ", 1, results.size());
         assertEquals("Replacement String should be", "INSERT INTO aTable (column1, column2) VALUES ('value1', 0);",
-                     results.get(0).replacementString);
+                     results.get(0).getReplacementString());
     }
 
     @Test
