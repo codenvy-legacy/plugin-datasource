@@ -18,6 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.codenvy.ide.api.parts.PartStackUIResources;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
@@ -31,6 +32,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
+import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
@@ -89,5 +91,8 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(DatabaseInfoOracle.class).to(DatabaseInfoOracleImpl.class);
         bind(EditorDatasourceOracle.class).to(EditorDatasourceOracleImpl.class).in(Singleton.class);
+
+        bind(Resources.class).in(Singleton.class);
+        bind(com.codenvy.ide.Resources.class).to(Resources.class).in(Singleton.class);
     }
 }

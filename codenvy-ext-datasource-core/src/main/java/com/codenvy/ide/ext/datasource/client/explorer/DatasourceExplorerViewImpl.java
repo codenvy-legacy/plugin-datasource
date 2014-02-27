@@ -19,9 +19,9 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 
 import java.util.Collection;
 
-import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
+import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
@@ -80,9 +80,10 @@ public class DatasourceExplorerViewImpl extends
                                       final com.codenvy.ide.ext.datasource.client.Resources clientResource) {
         super(resources);
 
+
         tree = Tree.create(resources,
                            new DatabaseMetadataEntityDTODataAdapter(),
-                           new DatabaseMetadataEntityDTORenderer(resources));
+                           DatabaseMetadataEntityDTORenderer.create(resources));
 
         uiBinder.createAndBindUi(this);
 

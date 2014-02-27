@@ -1,0 +1,11 @@
+@sprite .schema {
+    gwt-image: "schema";
+}
+
+@sprite .table {
+    gwt-image: "table";
+}
+
+@sprite .column {
+    gwt-image: "column";
+}
