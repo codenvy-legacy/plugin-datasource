@@ -35,6 +35,7 @@
             	margin-bottom: 5px;
             	padding-left: 7px;
             	padding-right: 7px;
+            	float: right;
             }
             
             .textBox {
@@ -43,6 +44,7 @@
             	margin-top: 5px;
             	margin-bottom: 5px;
             	text-align: right;
+            	float: right;
             }
             
             .executeButton {
@@ -63,20 +65,27 @@
             	margin-left: 25px;
             	margin-top: 10px;
             	margin-bottom: 5px;
+            	float: right;
             }
         </ui:style>
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
-        <g:north size="35">
-            <g:HorizontalPanel>
-                <!-- use some kind of toolbar ? -->
-                <g:Button ui:field="executeButton" addStyleNames="{style.executeButton}"/>
-                <g:Label ui:field="selectDatasourceLabel" addStyleNames="{style.label}"/>
-                <g:ListBox ui:field="datasourceList" width="9em" addStyleNames="{style.listBox}" />
-                <g:Label ui:field="resultLimitLabel" addStyleNames="{style.label}"/>
-                <g:TextBox ui:field="resultLimitInput" width="4em" addStyleNames="{style.textBox}"/>
-                <g:Label ui:field="executionModeLabel" addStyleNames="{style.label}"/>
-                <g:ListBox ui:field="executionModeList" width="8em" addStyleNames="{style.listBox}" />
-            </g:HorizontalPanel>
+    <g:north size="35">
+        <g:DockLayoutPanel unit="PX">
+            <g:center>
+                <g:Button ui:field="executeButton" addStyleNames="{style.executeButton}" />
+            </g:center>
+            <g:east size="800">
+                <g:FlowPanel>
+                    <!-- use some kind of toolbar ? -->
+                    <g:ListBox ui:field="executionModeList" width="8em" addStyleNames="{style.listBox}" />
+                    <g:Label ui:field="executionModeLabel" addStyleNames="{style.label}" />
+                    <g:TextBox ui:field="resultLimitInput" width="4em" addStyleNames="{style.textBox}" />
+                    <g:Label ui:field="resultLimitLabel" addStyleNames="{style.label}" />
+                    <g:ListBox ui:field="datasourceList" width="9em" addStyleNames="{style.listBox}" />
+                    <g:Label ui:field="selectDatasourceLabel" addStyleNames="{style.label}" />
+                </g:FlowPanel>
+            </g:east>
+        </g:DockLayoutPanel>
         </g:north>
         <g:center>
             <g:SplitLayoutPanel>
