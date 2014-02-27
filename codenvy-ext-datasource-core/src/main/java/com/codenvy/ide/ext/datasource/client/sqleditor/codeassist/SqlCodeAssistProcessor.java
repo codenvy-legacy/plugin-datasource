@@ -193,6 +193,10 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
         MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
         List<String> selectedTables = new ArrayList<String>();
+        String statementTypeGroup = matcher.getGroup(2);
+        boolean isSelectStatement = (statementTypeGroup != null)
+                                    && !statementTypeGroup.trim().isEmpty()
+                                    && statementTypeGroup.startsWith("from");
         String columnPrefix = "";
         while (matcher != null) {
             String selectedTable = matcher.getGroup(TABLE_IN_COLUMN_REGEXP_GROUP);
@@ -228,7 +232,8 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                             if (columnLowerCase.startsWith(columnPrefixLowerCase)
                                 || (schemaLowerCase + "." + tableLowerCase + "." + columnLowerCase).startsWith(columnPrefixLowerCase)
                                 || (tableLowerCase + "." + columnLowerCase).startsWith(columnPrefixLowerCase)) {
-                                String replacementString = lineReplacementPrefix + schema + "." + table + "." + column;
+                                String columnReplacementString = isSelectStatement ? (schema + "." + table + "." + column) : column;
+                                String replacementString = lineReplacementPrefix + columnReplacementString;
                                 array.add(new SqlCodeCompletionProposal(schema + "." + table + "." + column, replacementString,
                                                                         replacementString.length()));
                             }
