@@ -4,6 +4,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.Resources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
@@ -17,10 +18,10 @@ import com.google.web.bindery.event.shared.EventBus;
  * Created by Wafa on 20/01/14.
  */
 public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
-        implements JdbcDatasourceConnectorView.ActionDelegate {
+                                                                                    implements JdbcDatasourceConnectorView.ActionDelegate {
 
     final public static String MYSQL_DB_ID = "mysql";
-    protected DtoFactory dtoFactory;
+    protected DtoFactory       dtoFactory;
 
     @Inject
     public MysqlDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -28,8 +29,9 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                         final DtoFactory dtoFactory,
                                         final DatasourceManager datasourceManager,
                                         final EventBus eventBus,
-                                        final DatasourceClientService service) {
-        super(view,"mySQL", null, MYSQL_DB_ID, datasourceManager, eventBus, service,notificationManager);
+                                        final DatasourceClientService service,
+                                        final Resources resources) {
+        super(view, "mySQL", resources.getMySqlLogo(), MYSQL_DB_ID, datasourceManager, eventBus, service, notificationManager);
         this.dtoFactory = dtoFactory;
     }
 

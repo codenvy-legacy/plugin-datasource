@@ -21,6 +21,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.Resources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
@@ -31,10 +32,11 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
-        implements JdbcDatasourceConnectorView.ActionDelegate {
+                                                                                       implements
+                                                                                       JdbcDatasourceConnectorView.ActionDelegate {
 
     final public static String PG_DB_ID = "postgres";
-    protected DtoFactory dtoFactory;
+    protected DtoFactory       dtoFactory;
 
     @Inject
     public PostgresDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -42,8 +44,9 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                            final DtoFactory dtoFactory,
                                            final DatasourceManager datasourceManager,
                                            final EventBus eventBus,
-                                           final DatasourceClientService service) {
-        super(view ,"PostgreSQL", null, PG_DB_ID, datasourceManager, eventBus, service, notificationManager);
+                                           final DatasourceClientService service,
+                                           final Resources resources) {
+        super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager);
         this.dtoFactory = dtoFactory;
     }
 

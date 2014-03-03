@@ -4,6 +4,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.Resources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
@@ -17,9 +18,9 @@ import com.google.web.bindery.event.shared.EventBus;
  * Created by Wafa on 20/01/14.
  */
 public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
-                                                                                    JdbcDatasourceConnectorView.ActionDelegate {
+                                                                                     JdbcDatasourceConnectorView.ActionDelegate {
     final public static String ORACLE_DB_ID = "oracle";
-    protected DtoFactory dtoFactory;
+    protected DtoFactory       dtoFactory;
 
     @Inject
     public OracleDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -27,8 +28,9 @@ public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnecto
                                          final DtoFactory dtoFactory,
                                          final DatasourceManager datasourceManager,
                                          final EventBus eventBus,
-                                         final DatasourceClientService service) {
-        super(view,"Oracle", null, ORACLE_DB_ID, datasourceManager, eventBus, service,notificationManager);
+                                         final DatasourceClientService service,
+                                         final Resources resources) {
+        super(view, "Oracle", resources.getOracleLogo(), ORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager);
         this.dtoFactory = dtoFactory;
     }
 
@@ -52,8 +54,4 @@ public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnecto
                                                     .withDatasourceId(datasourceId);
         return result;
     }
-
-
-
-    }
-
+}
