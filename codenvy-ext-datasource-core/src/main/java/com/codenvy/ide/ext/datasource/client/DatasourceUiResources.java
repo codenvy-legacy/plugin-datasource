@@ -1,6 +1,7 @@
 package com.codenvy.ide.ext.datasource.client;
 
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
@@ -24,7 +25,22 @@ public interface DatasourceUiResources extends ClientBundle {
 
     @Source("oracle.png")
     ImageResource getOracleLogo();
-    
+
     @Source("refresh.png")
     ImageResource getRefreshIcon();
+
+    @Source({"datasource-ui.css", "com/codenvy/ide/api/ui/style.css"})
+    DatasourceUiStyle datasourceUiCSS();
+
+    public interface DatasourceUiStyle extends CssResource {
+
+        @ClassName("explorer-datasourceList")
+        String explorerDatasourceList();
+
+        @ClassName("explorer-topPanel")
+        String explorerTopPanel();
+
+        @ClassName("explorer-refreshButton")
+        String explorerRefreshButton();
+    }
 }

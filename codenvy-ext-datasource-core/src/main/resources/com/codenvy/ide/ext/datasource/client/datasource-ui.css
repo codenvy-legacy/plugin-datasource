@@ -1,0 +1,27 @@
+
+.explorer-datasourceList {
+    color: mainFontColor;
+    background-color: partBackground;
+    border: tabBorder;
+    border-radius: 2px;
+    font-size: fontSize;
+    font-weight: bold;
+    width: 99%;
+    margin: 2px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.explorer-refreshButton {
+    width: 16px;
+    height: 16px;
+    margin: 5px;
+    margin-right: 0px
+}
+
+.explorer-topPanel {
+    background-color: activeTabBackground;
+    border-bottom: 1px;
+    height: 35px;
+}
