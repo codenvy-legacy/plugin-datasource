@@ -89,6 +89,9 @@ public class DatasourceExtension {
         // fetching available drivers list from the server
         availableJdbcDrivers.fetch();
 
+        // inject CSS
+        resources.datasourceUiCSS().ensureInjected();
+
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
