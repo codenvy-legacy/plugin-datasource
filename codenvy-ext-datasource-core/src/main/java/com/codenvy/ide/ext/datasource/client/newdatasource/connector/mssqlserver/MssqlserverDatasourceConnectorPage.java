@@ -19,10 +19,13 @@ import com.google.web.bindery.event.shared.EventBus;
  * This connector page is using JTDS JDBC Driver to connect to MS SQLserver.
  */
 public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
-                                                implements JdbcDatasourceConnectorView.ActionDelegate {
+                                                                                          implements
+                                                                                          JdbcDatasourceConnectorView.ActionDelegate {
 
-    final public static String SQLSERVER_DB_ID = "sqlserver";
-    protected DtoFactory dtoFactory;
+    public static final String SQLSERVER_DB_ID        = "sqlserver";
+    private static final int   DEFAULT_PORT_SQLSERVER = 1433;
+
+    private final DtoFactory   dtoFactory;
 
     @Inject
     public MssqlserverDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -32,16 +35,17 @@ public class MssqlserverDatasourceConnectorPage extends AbstractNewDatasourceCon
                                               final EventBus eventBus,
                                               final DatasourceClientService service,
                                               final Resources resources) {
-        super(view,"Microsoft SQL Server", resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,notificationManager);
+        super(view, "Microsoft SQL Server", resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,
+              notificationManager);
         this.dtoFactory = dtoFactory;
     }
 
 
     @Override
-    public void go(AcceptsOneWidget container) {
+    public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
         // set the default port
-        getView().setPort(1433);
+        getView().setPort(DEFAULT_PORT_SQLSERVER);
     }
 
 

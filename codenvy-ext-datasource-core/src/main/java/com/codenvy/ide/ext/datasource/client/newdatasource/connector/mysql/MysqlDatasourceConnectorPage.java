@@ -20,8 +20,10 @@ import com.google.web.bindery.event.shared.EventBus;
 public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
                                                                                     implements JdbcDatasourceConnectorView.ActionDelegate {
 
-    final public static String MYSQL_DB_ID = "mysql";
-    protected DtoFactory       dtoFactory;
+    public static final String MYSQL_DB_ID        = "mysql";
+    private static final int   DEFAULT_PORT_MYSQL = 3306;
+
+    private final DtoFactory   dtoFactory;
 
     @Inject
     public MysqlDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -37,9 +39,9 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
 
 
     @Override
-    public void go(AcceptsOneWidget container) {
+    public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
-        getView().setPort(3306);
+        getView().setPort(DEFAULT_PORT_MYSQL);
     }
 
 

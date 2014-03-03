@@ -19,8 +19,10 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
                                                                                      JdbcDatasourceConnectorView.ActionDelegate {
-    final public static String ORACLE_DB_ID = "oracle";
-    protected DtoFactory       dtoFactory;
+    public static final String ORACLE_DB_ID        = "oracle";
+    private static final int   DEFAULT_PORT_ORACLE = 1521;
+
+    private final DtoFactory   dtoFactory;
 
     @Inject
     public OracleDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -36,9 +38,9 @@ public class OracleDatasourceConnectorPage extends AbstractNewDatasourceConnecto
 
 
     @Override
-    public void go(AcceptsOneWidget container) {
+    public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
-        getView().setPort(1521);
+        getView().setPort(DEFAULT_PORT_ORACLE);
     }
 
 

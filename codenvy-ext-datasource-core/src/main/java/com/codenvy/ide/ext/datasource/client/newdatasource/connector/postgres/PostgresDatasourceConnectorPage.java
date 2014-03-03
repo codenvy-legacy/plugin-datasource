@@ -35,8 +35,10 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                                                                        implements
                                                                                        JdbcDatasourceConnectorView.ActionDelegate {
 
-    final public static String PG_DB_ID = "postgres";
-    protected DtoFactory       dtoFactory;
+    public static final String PG_DB_ID           = "postgres";
+    private static final int   DEFAULT_PORT_PGSQL = 5432;
+
+    private final DtoFactory   dtoFactory;
 
     @Inject
     public PostgresDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -52,9 +54,9 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
 
 
     @Override
-    public void go(AcceptsOneWidget container) {
+    public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
-        getView().setPort(5432);
+        getView().setPort(DEFAULT_PORT_PGSQL);
     }
 
 
