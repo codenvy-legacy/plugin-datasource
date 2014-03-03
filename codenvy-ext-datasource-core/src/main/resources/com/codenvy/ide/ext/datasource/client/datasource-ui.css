@@ -6,18 +6,20 @@
     border-radius: 2px;
     font-size: fontSize;
     font-weight: bold;
-    width: 99%;
-    margin: 2px;
+    width: 100%;
     margin-top: 5px;
-    margin-bottom: 5px;
     margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 2px;
 }
 
 .explorer-refreshButton {
-    width: 16px;
+    width: 16px; /* keep px units, it comes from the image sizes */
     height: 16px;
-    margin: 5px;
-    margin-right: 0px
+    margin-top: 5px;
+    margin-right: 0;
+    margin-bottom: 5px;
+    margin-left: 5px;
 }
 
 .explorer-topPanel {
