@@ -77,7 +77,7 @@ public class DatasourceExplorerViewImpl extends
     public DatasourceExplorerViewImpl(final Resources resources,
                                       final DatasourceExplorerViewUiBinder uiBinder,
                                       final DatasourceExplorerConstants constants,
-                                      final com.codenvy.ide.ext.datasource.client.Resources clientResource) {
+                                      final com.codenvy.ide.ext.datasource.client.DatasourceUiResources clientResource) {
         super(resources);
 
 

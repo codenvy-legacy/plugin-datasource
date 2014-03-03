@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.ImageResource;
 /**
  * Client bundle interface for datasource plugin resources.
  */
-public interface Resources extends ClientBundle {
+public interface DatasourceUiResources extends ClientBundle {
 
     /**
      * The PostgreSQL logo.

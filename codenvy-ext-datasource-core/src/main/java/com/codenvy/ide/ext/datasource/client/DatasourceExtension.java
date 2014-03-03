@@ -62,7 +62,7 @@ public class DatasourceExtension {
                                Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
-                               Resources resources,
+                               DatasourceUiResources resources,
                                Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
                                Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
