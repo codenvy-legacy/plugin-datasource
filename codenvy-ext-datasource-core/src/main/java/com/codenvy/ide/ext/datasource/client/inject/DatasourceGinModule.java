@@ -18,7 +18,6 @@
 package com.codenvy.ide.ext.datasource.client.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
-import com.codenvy.ide.api.parts.PartStackUIResources;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
