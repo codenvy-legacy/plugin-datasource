@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 import java.util.Collection;
 
 import com.codenvy.ide.api.parts.base.BaseView;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
@@ -49,19 +50,23 @@ public class DatasourceExplorerViewImpl extends
                                                                                       DatasourceExplorerView {
 
     @UiField
-    protected Panel                mainContainer;
+    protected Panel                 mainContainer;
 
     @UiField(provided = true)
-    protected Tree<EntityTreeNode> tree;
+    protected Tree<EntityTreeNode>  tree;
 
     @UiField
-    protected ListBox              datasourceListBox;
+    protected ListBox               datasourceListBox;
 
     @UiField
-    protected SimplePanel          propertiesContainer;
+    protected SimplePanel           propertiesContainer;
 
     @UiField
-    protected PushButton           refreshButton;
+    protected PushButton            refreshButton;
+
+    /** The CSS resource. */
+    @UiField(provided = true)
+    protected DatasourceUiResources datasourceUiResources;
 
     @UiHandler("refreshButton")
     public void onClick(ClickEvent event) {
@@ -77,13 +82,15 @@ public class DatasourceExplorerViewImpl extends
     public DatasourceExplorerViewImpl(final Resources resources,
                                       final DatasourceExplorerViewUiBinder uiBinder,
                                       final DatasourceExplorerConstants constants,
-                                      final com.codenvy.ide.ext.datasource.client.DatasourceUiResources clientResource) {
+                                      final DatasourceUiResources clientResource) {
         super(resources);
 
 
         tree = Tree.create(resources,
                            new DatabaseMetadataEntityDTODataAdapter(),
                            DatabaseMetadataEntityDTORenderer.create(resources));
+
+        this.datasourceUiResources = clientResource;
 
         uiBinder.createAndBindUi(this);
 
