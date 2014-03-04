@@ -368,7 +368,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private void appendSelectResult(final RequestResultDTO result) {
 
-        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getHeaderLine().size(), cellTableResources);
+        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
         SafeHtml headerHtml = buildResultTableHeader(result,
                                                      this.datasourceClientService.buildCsvExportUrl(result),
