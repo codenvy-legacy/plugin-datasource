@@ -101,7 +101,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.constants = constants;
         this.databaseInfoStore = databaseInfoStore;
 
-        this.view.setTitle("DataSource Explorer");
+        this.view.setTitle(constants.datasourceExplorerTitle());
         bind();
 
         // register for datasource creation events
