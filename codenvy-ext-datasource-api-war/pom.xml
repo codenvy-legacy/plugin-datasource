@@ -36,6 +36,16 @@
         <dependency>
             <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-ext-datasource-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>codenvy-ide-core</artifactId>
+                    <groupId>com.codenvy.ide</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>codenvy-ide-api</artifactId>
+                    <groupId>com.codenvy.ide</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
