@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 import java.util.Collection;
 
 import com.codenvy.ide.Resources;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.common.SimpleView;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -43,55 +44,62 @@ import com.google.inject.Inject;
  */
 public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
 
-    private static final String EXECUTE_ALL   = "all";
-    private static final String STOP_ON_ERROR = "stop";
-    private static final String TRANSACTION   = "transaction";
+    private static final String     EXECUTE_ALL   = "all";
+    private static final String     STOP_ON_ERROR = "stop";
+    private static final String     TRANSACTION   = "transaction";
 
     @UiField
-    Widget                      launcherContainer;
+    Widget                          launcherContainer;
 
     /** The SQL edition zone. */
     @UiField
-    AcceptsOneWidget            editorZone;
+    AcceptsOneWidget                editorZone;
 
     /** The request result display. */
     @UiField
-    FlowPanel                   resultZone;
+    FlowPanel                       resultZone;
 
     /** The label for the datasource selection widget. */
     @UiField
-    Label                       selectDatasourceLabel;
+    Label                           selectDatasourceLabel;
 
     /** The datasource selection widget. */
     @UiField
-    ListBox                     datasourceList;
+    ListBox                         datasourceList;
 
     /** The label for the request result limit widget. */
     @UiField
-    Label                       resultLimitLabel;
+    Label                           resultLimitLabel;
 
     /** The request result limit widget. */
     @UiField
-    TextBox                     resultLimitInput;
+    TextBox                         resultLimitInput;
 
     /** The label for the execution mode widget. */
     @UiField
-    Label                       executionModeLabel;
+    Label                           executionModeLabel;
 
     /** The execution mode selection widget. */
     @UiField
-    ListBox                     executionModeList;
+    ListBox                         executionModeList;
 
     /** The button that commands request execution. */
     @UiField
-    Button                      executeButton;
+    Button                          executeButton;
+
+    /** The CSS resource. */
+    @UiField(provided = true)
+    protected DatasourceUiResources datasourceUiResources;
 
 
     @Inject
     public SqlRequestLauncherViewImpl(final Resources resources,
                                       final SqlRequestLauncherViewImplUiBinder uiBinder,
-                                      final SqlRequestLauncherConstants constants) {
+                                      final SqlRequestLauncherConstants constants,
+                                      final DatasourceUiResources datasourceUiResources) {
         super(resources);
+
+        this.datasourceUiResources = datasourceUiResources;
 
         uiBinder.createAndBindUi(this);
         getContainer().add(this.launcherContainer);

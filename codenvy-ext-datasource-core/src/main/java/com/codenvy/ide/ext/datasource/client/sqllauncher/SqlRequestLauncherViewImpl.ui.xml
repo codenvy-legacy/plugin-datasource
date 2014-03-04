@@ -18,71 +18,31 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:c="urn:import:com.google.gwt.user.cellview.client">
-    <ui:style>
-            @eval mainFontColor com.codenvy.ide.api.ui.theme.Style.getMainFontColor();
-            @eval partBackground com.codenvy.ide.api.ui.theme.Style.getPartBackground();
-            @eval activeTabBackground com.codenvy.ide.api.ui.theme.Style.getActiveTabBackground();
-            .listBox {
-            	color: mainFontColor;
-            	background-color: partBackground;
-            	border: tabBorder;
-            	border-radius: 2px;
-            	font-size: fontSize;
-            	font-weight: bold;
-            	height: 25px;
-            	margin: 2px;
-            	margin-top: 5px;
-            	margin-bottom: 5px;
-            	padding-left: 7px;
-            	padding-right: 7px;
-            	float: right;
-            }
-            
-            .textBox {
-            	height: 25px;
-            	margin: 2px;
-            	margin-top: 5px;
-            	margin-bottom: 5px;
-            	text-align: right;
-            	float: right;
-            }
-            
-            .executeButton {
-            	color: white;
-            	background-image: none !important;
-            	background-color: #2d6ba3;
-            	font-size: fontSize;
-            	font-weight: bold;
-            	padding-left: 12px;
-            	padding-right: 12px;
-            	height: 25px;
-            	margin: 5px;
-            }
-            
-            .label {
-            	height: 20px;
-            	margin-right: 4px;
-            	margin-left: 25px;
-            	margin-top: 10px;
-            	margin-bottom: 5px;
-            	float: right;
-            }
-        </ui:style>
+
+    <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
+
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
     <g:north size="35">
         <g:DockLayoutPanel unit="PX">
             <g:center>
-                <g:Button ui:field="executeButton" addStyleNames="{style.executeButton}" />
+                <g:Button ui:field="executeButton"
+                    addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherExecuteButton}" />
             </g:center>
             <g:east size="800">
                 <g:FlowPanel>
                     <!-- use some kind of toolbar ? -->
-                    <g:ListBox ui:field="executionModeList" width="8em" addStyleNames="{style.listBox}" />
-                    <g:Label ui:field="executionModeLabel" addStyleNames="{style.label}" />
-                    <g:TextBox ui:field="resultLimitInput" width="4em" addStyleNames="{style.textBox}" />
-                    <g:Label ui:field="resultLimitLabel" addStyleNames="{style.label}" />
-                    <g:ListBox ui:field="datasourceList" width="9em" addStyleNames="{style.listBox}" />
-                    <g:Label ui:field="selectDatasourceLabel" addStyleNames="{style.label}" />
+                    <g:ListBox ui:field="executionModeList" width="8em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
+                    <g:Label ui:field="executionModeLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                    <g:TextBox ui:field="resultLimitInput" width="4em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherTextBox}" />
+                    <g:Label ui:field="resultLimitLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                    <g:ListBox ui:field="datasourceList" width="9em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
+                    <g:Label ui:field="selectDatasourceLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
                 </g:FlowPanel>
             </g:east>
         </g:DockLayoutPanel>
