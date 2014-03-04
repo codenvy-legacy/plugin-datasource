@@ -63,7 +63,8 @@
 
 .requestLauncher-executeButton {
     color:mainFontColor;
-    background-color:partBackground;
+    background: none repeat scroll 0% 0% rgb(45, 107, 163); /* same as com.codenvy.ide.wizard.newproject.step.Step style .stepNum */
+    border-color: brColor;
     font-size: fontSize;
     font-weight: bold;
     padding-left: 12px;
