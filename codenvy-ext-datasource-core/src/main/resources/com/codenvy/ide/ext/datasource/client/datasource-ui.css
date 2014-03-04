@@ -27,3 +27,66 @@
     border-bottom: 1px;
     height: 35px;
 }
+
+.requestLauncher-listBox {
+    color: mainFontColor;
+    background-color: partBackground;
+    border: tabBorder;
+    border-radius: 2px;
+    font-size: fontSize;
+    font-weight: bold;
+    height: 25px;
+    margin-top: 5px;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    margin-right: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
+    float: right;
+}
+.requestLauncher-executionModeListBox {
+}
+
+.requestLauncher-datasourceListBox {
+}
+
+.requestLauncher-textBox {
+    height: 25px;
+    margin: 2px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: right;
+    float: right;
+}
+.requestLauncher-resultLimitInput {
+}
+
+.requestLauncher-executeButton {
+    color:mainFontColor;
+    background-color:partBackground;
+    font-size: fontSize;
+    font-weight: bold;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 25px;
+    margin: 5px;
+}
+
+.requestLauncher-label {
+    height: 20px;
+    margin-right: 4px;
+    margin-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    float: right;
+}
+
+.requestLauncher-executionModeLabel {
+}
+
+.requestLauncher-resultLimitLabel {
+}
+
+.requestLauncher-selectDatasourceLabel {
+}
+

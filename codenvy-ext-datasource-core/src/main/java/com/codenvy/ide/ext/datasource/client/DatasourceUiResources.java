@@ -42,5 +42,35 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("explorer-refreshButton")
         String explorerRefreshButton();
+
+        @ClassName("requestLauncher-listBox")
+        String requestLauncherListBox();
+
+        @ClassName("requestLauncher-executionModeListBox")
+        String requestLauncherExecutionModeListBox();
+
+        @ClassName("requestLauncher-datasourceListBox")
+        String requestLauncherDatasourceListBox();
+
+        @ClassName("requestLauncher-textBox")
+        String requestLauncherTextBox();
+
+        @ClassName("requestLauncher-resultLimitInput")
+        String requestLauncherResultLimitInp();
+
+        @ClassName("requestLauncher-executeButton")
+        String requestLauncherExecuteButton();
+
+        @ClassName("requestLauncher-label")
+        String requestLauncherLabel();
+
+        @ClassName("requestLauncher-executionModeLabel")
+        String requestLauncherExecutionModeLabel();
+
+        @ClassName("requestLauncher-resultLimitLabel")
+        String requestLauncherResultLimitLabel();
+
+        @ClassName("requestLauncher-selectDatasourceLabel")
+        String requestLauncherSelectDatasourceLabel();
     }
 }
