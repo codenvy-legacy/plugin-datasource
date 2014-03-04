@@ -23,10 +23,8 @@ import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ui.tree.NodeRenderer;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
-import com.codenvy.ide.ui.tree.TreeNodeMutator;
 import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 
 import elemental.html.DivElement;
 import elemental.html.Element;
