@@ -128,6 +128,12 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     }
 
     @Override
+    public void appendResult(final InfoHeader header, final Widget widget) {
+        resultZone.add(header);
+        resultZone.add(widget);
+    }
+
+    @Override
     public void clearResultZone() {
         this.resultZone.clear();
     }
