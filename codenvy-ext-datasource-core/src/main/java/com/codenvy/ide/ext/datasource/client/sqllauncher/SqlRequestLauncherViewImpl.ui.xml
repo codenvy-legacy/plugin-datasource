@@ -53,7 +53,7 @@
                     <g:SimpleLayoutPanel ui:field="editorZone" />
                 </g:center>
                 <g:south size="200">
-                    <g:ScrollPanel>
+                    <g:ScrollPanel ui:field="resultScroll">
                         <g:FlowPanel ui:field="resultZone" />
                     </g:ScrollPanel>
                 </g:south>

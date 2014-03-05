@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -58,6 +59,10 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     /** The request result display. */
     @UiField
     FlowPanel                       resultZone;
+
+    /** The request result display scroll component. */
+    @UiField
+    ScrollPanel                     resultScroll;
 
     /** The label for the datasource selection widget. */
     @UiField
