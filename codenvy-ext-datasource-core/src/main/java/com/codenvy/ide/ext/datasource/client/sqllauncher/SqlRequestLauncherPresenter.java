@@ -364,9 +364,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         SafeHtml headerHtml = buildErrorHeader(result.getOriginRequest());
         InfoHeader infoHeader = new InfoHeader(headerHtml);
         infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
-        this.view.appendResult(new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
-                                         + " - "
-                                         + result.getSqlExecutionError().getErrorMessage()));
+        this.view.appendResult(infoHeader, new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
+                                                     + " - "
+                                                     + result.getSqlExecutionError().getErrorMessage()));
     }
 
     private void appendSelectResult(final RequestResultDTO result) {
