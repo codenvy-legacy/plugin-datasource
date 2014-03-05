@@ -373,7 +373,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
-        SafeHtml headerHtml = buildResultTableHeader(result.getOriginRequest(),
+        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(),
                                                      this.datasourceClientService.buildCsvExportUrl(result),
                                                      constants.exportCsvLabel());
         InfoHeader infoHeader = new InfoHeader(headerHtml);
@@ -391,7 +391,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     }
 
-    private SafeHtml buildResultTableHeader(final String originRequest, final String link, final String text) {
+    private SafeHtml buildResultHeader(final String originRequest, final String link, final String text) {
         SafeHtmlBuilder builder = new SafeHtmlBuilder();
         builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
         builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
@@ -411,7 +411,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private void appendUpdateResult(final RequestResultDTO result) {
-        SafeHtml headerHtml = buildResultTableHeader(result.getOriginRequest(), null, null);
+        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(), null, null);
         InfoHeader infoHeader = new InfoHeader(headerHtml);
         infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
         this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
