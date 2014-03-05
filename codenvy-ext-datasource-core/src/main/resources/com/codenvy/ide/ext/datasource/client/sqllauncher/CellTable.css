@@ -147,10 +147,8 @@
 }
 
 .csvButton {
-  font-weight: normal;
-  font-size: fontSize;
-  display: inline-block;
-  line-height: 2em;
+  font-weight: bold;
+  font-size: largeFontSize;
 }
 
 .infoHeaderTitle {
