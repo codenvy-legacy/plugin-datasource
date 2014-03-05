@@ -134,6 +134,8 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     @Override
     public void appendResult(final InfoHeader header, final Widget widget) {
+        // Set initial width to the header, won't resize
+        header.setWidth(Integer.toString(this.resultScroll.getOffsetWidth()) + "px");
         resultZone.add(header);
         resultZone.add(widget);
     }
