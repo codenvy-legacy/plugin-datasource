@@ -394,7 +394,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         SafeHtmlBuilder builder = new SafeHtmlBuilder();
         builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
         builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
-        builder.append(TEMPLATE.hyperlink(UriUtils.fromString(link), text));
+        if (link != null || text != null) {
+            builder.append(TEMPLATE.hyperlink(UriUtils.fromString(link), text));
+        }
 
         return builder.toSafeHtml();
     }
