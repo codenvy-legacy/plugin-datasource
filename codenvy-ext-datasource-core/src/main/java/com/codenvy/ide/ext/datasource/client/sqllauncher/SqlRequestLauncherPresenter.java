@@ -374,8 +374,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
         SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(),
-                                                     this.datasourceClientService.buildCsvExportUrl(result),
-                                                     constants.exportCsvLabel());
+                                                this.datasourceClientService.buildCsvExportUrl(result),
+                                                constants.exportCsvLabel());
         InfoHeader infoHeader = new InfoHeader(headerHtml);
         infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
 
@@ -389,6 +389,13 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
         this.view.appendResult(infoHeader, resultTable);
 
+    }
+
+    private void appendUpdateResult(final RequestResultDTO result) {
+        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(), null, null);
+        InfoHeader infoHeader = new InfoHeader(headerHtml);
+        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
+        this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
     private SafeHtml buildResultHeader(final String originRequest, final String link, final String text) {
@@ -408,13 +415,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
 
         return builder.toSafeHtml();
-    }
-
-    private void appendUpdateResult(final RequestResultDTO result) {
-        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(), null, null);
-        InfoHeader infoHeader = new InfoHeader(headerHtml);
-        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
-        this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
     @Override
