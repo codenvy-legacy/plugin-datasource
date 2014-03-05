@@ -132,7 +132,8 @@
   background: windowHeaderBackground;
   color: editorDefaultFontColor;
   display: inline-block;
-  line-height: 1.5em;
+  line-height: 2em;
+  height:2em;
 }
 
 .queryReminder {
@@ -142,14 +143,14 @@
   float: left;
   padding-right: 2em;
   display: inline-block;
-  line-height: 1.5em;
+  line-height: 2em;
 }
 
 .csvButton {
   font-weight: normal;
   font-size: fontSize;
   display: inline-block;
-  line-height: 1.5em;
+  line-height: 2em;
 }
 
 .infoHeaderTitle {

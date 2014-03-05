@@ -52,12 +52,7 @@ import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
@@ -97,9 +92,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     protected EditorDatasourceOracle                  editorDatasourceOracle;
     private final CellTableResources                  cellTableResources;
-
-    /** The instance of the hyperlink template. */
-    private static final HeaderTemplate               TEMPLATE                             = GWT.create(HeaderTemplate.class);
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -361,9 +353,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private void appendErrorReport(final RequestResultDTO result) {
-        SafeHtml headerHtml = buildErrorHeader(result.getOriginRequest());
-        InfoHeader infoHeader = new InfoHeader(headerHtml);
-        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
+        final RequestResultHeader infoHeader = buildErrorHeader(result.getOriginRequest());
         this.view.appendResult(infoHeader, new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
                                                      + " - "
                                                      + result.getSqlExecutionError().getErrorMessage()));
@@ -373,11 +363,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
-        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(),
-                                                this.datasourceClientService.buildCsvExportUrl(result),
-                                                constants.exportCsvLabel());
-        InfoHeader infoHeader = new InfoHeader(headerHtml);
-        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
+        final RequestResultHeader infoHeader = buildResultHeader(result.getOriginRequest(),
+                                                                 this.datasourceClientService.buildCsvExportUrl(result),
+                                                                 constants.exportCsvLabel());
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
@@ -392,29 +380,26 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private void appendUpdateResult(final RequestResultDTO result) {
-        SafeHtml headerHtml = buildResultHeader(result.getOriginRequest(), null, null);
-        InfoHeader infoHeader = new InfoHeader(headerHtml);
-        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
+        final RequestResultHeader infoHeader = buildResultHeader(result.getOriginRequest(), null, null);
         this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
-    private SafeHtml buildResultHeader(final String originRequest, final String link, final String text) {
-        SafeHtmlBuilder builder = new SafeHtmlBuilder();
-        builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
-        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
+    private RequestResultHeader buildResultHeader(final String originRequest, final String link, final String text) {
+        final RequestResultHeader result = new RequestResultHeader(this.cellTableResources.cellTableStyle());
+        result.setInfoHeaderTitle(constants.queryResultsTitle());
+        result.setRequestReminder(originRequest);
         if (link != null || text != null) {
-            builder.append(TEMPLATE.hyperlink(cellTableResources.cellTableStyle().csvButton(), UriUtils.fromString(link), text));
+            result.setExportButton(UriUtils.fromString(link), text);
         }
-
-        return builder.toSafeHtml();
+        return result.prepare();
     }
 
-    private SafeHtml buildErrorHeader(final String originRequest) {
-        SafeHtmlBuilder builder = new SafeHtmlBuilder();
-        builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryErrorTitle()));
-        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
+    private RequestResultHeader buildErrorHeader(final String originRequest) {
+        final RequestResultHeader result = new RequestResultHeader(this.cellTableResources.cellTableStyle());
+        result.setInfoHeaderTitle(constants.queryErrorTitle());
+        result.setRequestReminder(originRequest);
 
-        return builder.toSafeHtml();
+        return result.prepare();
     }
 
     @Override
@@ -425,21 +410,5 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void executionModeChanged(final MultipleRequestExecutionMode mode) {
         this.executionMode = mode;
-    }
-
-    /**
-     * Template to build a SafeHtml hyperlink.
-     * 
-     * @author "Mickaël Leduque"
-     */
-    interface HeaderTemplate extends SafeHtmlTemplates {
-        @Template("<a class='{0}' target=\"_blank\" href=\"{1}\">{2}</a>")
-        SafeHtml hyperlink(String className, SafeUri link, String text);
-
-        @Template("<span class='{0}'>{1}</span>")
-        SafeHtml queryReminder(String className, String query);
-
-        @Template("<span class='{0}'>{1}</span>")
-        SafeHtml infoHeaderTitle(String className, String label);
     }
 }
