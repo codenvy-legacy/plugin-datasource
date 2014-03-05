@@ -131,8 +131,6 @@
 .infoHeader {
   background: windowHeaderBackground;
   color: editorDefaultFontColor;
-  display: inline-block;
-  line-height: 2em;
   height:2em;
 }
 
@@ -140,20 +138,24 @@
   font-weight: normal;
   font-size: fontSize;
   text-overflow: ellipsis;
-  float: left;
+  overflow: hidden;
   padding-right: 2em;
-  display: inline-block;
-  line-height: 2em;
+  white-space: nowrap;
+  width: 50em;
 }
 
 .csvButton {
   font-weight: bold;
-  font-size: largeFontSize;
+  font-size: fontSize;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  margin-right: 3em;
+  height: 1.6em;
 }
 
 .infoHeaderTitle {
-  float: left;
   font-weight: bold;
-  font-size: largeFontSize;
+  font-size: fontSize;
   margin-right: 30px;
+  line-height: 2em;
 }

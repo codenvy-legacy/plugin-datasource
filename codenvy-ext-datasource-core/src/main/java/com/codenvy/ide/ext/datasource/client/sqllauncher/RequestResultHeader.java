@@ -37,7 +37,8 @@ public class RequestResultHeader extends DockLayoutPanel {
     }
 
     public RequestResultHeader setRequestReminder(final String query) {
-        this.queryReminder = new HTML(TEMPLATE.queryReminder(style.queryReminder(), query));
+        final String queryPart = query.substring(0, 150); // limit size of displayed query - just a bit over overflow
+        this.queryReminder = new HTML(TEMPLATE.queryReminder(style.queryReminder(), queryPart));
         return this;
     }
 
@@ -66,7 +67,7 @@ public class RequestResultHeader extends DockLayoutPanel {
 
     interface HeaderTemplate extends SafeHtmlTemplates {
 
-        @Template("<span class='{0}'>{1}</span>")
+        @Template("<div class='{0}'>{1}</div>")
         SafeHtml queryReminder(String className, String query);
 
         @Template("<span class='{0}'>{1}</span>")
