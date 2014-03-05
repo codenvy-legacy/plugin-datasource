@@ -370,7 +370,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
-        SafeHtml headerHtml = buildResultTableHeader(result,
+        SafeHtml headerHtml = buildResultTableHeader(result.getOriginRequest(),
                                                      this.datasourceClientService.buildCsvExportUrl(result),
                                                      constants.exportCsvLabel());
         resultTable.setHeaderBuilder(new ResultHeaderBuilder(resultTable,
@@ -390,10 +390,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     }
 
-    private SafeHtml buildResultTableHeader(final RequestResultDTO result, final String link, final String text) {
+    private SafeHtml buildResultTableHeader(final String originRequest, final String link, final String text) {
         SafeHtmlBuilder builder = new SafeHtmlBuilder();
         builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
-        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), result.getOriginRequest()));
+        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
         builder.append(TEMPLATE.hyperlink(UriUtils.fromString(link), text));
 
         return builder.toSafeHtml();
