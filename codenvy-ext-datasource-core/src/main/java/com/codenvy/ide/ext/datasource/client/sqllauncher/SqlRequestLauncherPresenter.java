@@ -361,6 +361,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private void appendErrorReport(final RequestResultDTO result) {
+        SafeHtml headerHtml = buildErrorHeader(result.getOriginRequest());
+        InfoHeader infoHeader = new InfoHeader(headerHtml);
+        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
         this.view.appendResult(new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
                                          + " - "
                                          + result.getSqlExecutionError().getErrorMessage()));
