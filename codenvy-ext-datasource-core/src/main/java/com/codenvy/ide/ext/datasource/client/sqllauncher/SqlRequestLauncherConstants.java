@@ -42,4 +42,7 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("Query Results")
     String queryResultsTitle();
+
+    @DefaultMessage("Query Error")
+    String queryErrorTitle();
 }
