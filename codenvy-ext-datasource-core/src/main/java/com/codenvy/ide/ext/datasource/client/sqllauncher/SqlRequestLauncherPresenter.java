@@ -411,7 +411,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private void appendUpdateResult(final RequestResultDTO result) {
-        this.view.appendResult(new Label(this.constants.updateCountMessage(result.getUpdateCount())));
+        SafeHtml headerHtml = buildResultTableHeader(result.getOriginRequest(), null, null);
+        InfoHeader infoHeader = new InfoHeader(headerHtml);
+        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
+        this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
     @Override
