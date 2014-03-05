@@ -254,7 +254,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void executeRequested(final String request) {
+    public void executeRequested() {
         Log.info(SqlRequestLauncherPresenter.class, "Execution requested.");
         if (this.selectedDatasourceId == null) {
             Window.alert("No datasource selected");

@@ -215,7 +215,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
      */
     @UiHandler("executeButton")
     void handleExecuteClick(final ClickEvent event) {
-        getDelegate().executeRequested("");
+        getDelegate().executeRequested();
     }
 
     @UiHandler("datasourceList")

@@ -54,7 +54,7 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
         void resultLimitChanged(String newResultLimitString);
 
-        void executeRequested(String request);
+        void executeRequested();
 
         void executionModeChanged(MultipleRequestExecutionMode oneByOne);
     }
