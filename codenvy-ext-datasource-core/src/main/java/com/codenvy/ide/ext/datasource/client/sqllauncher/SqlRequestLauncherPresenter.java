@@ -395,7 +395,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryResultsTitle()));
         builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
         if (link != null || text != null) {
-            builder.append(TEMPLATE.hyperlink(UriUtils.fromString(link), text));
+            builder.append(TEMPLATE.hyperlink(cellTableResources.cellTableStyle().csvButton(), UriUtils.fromString(link), text));
         }
 
         return builder.toSafeHtml();
@@ -421,8 +421,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @author "Mickaël Leduque"
      */
     interface HeaderTemplate extends SafeHtmlTemplates {
-        @Template("<a target=\"_blank\" href=\"{0}\">{1}</a>")
-        SafeHtml hyperlink(SafeUri link, String text);
+        @Template("<a class='{0}' target=\"_blank\" href=\"{1}\">{2}</a>")
+        SafeHtml hyperlink(String className, SafeUri link, String text);
 
         @Template("<span class='{0}'>{1}</span>")
         SafeHtml queryReminder(String className, String query);
