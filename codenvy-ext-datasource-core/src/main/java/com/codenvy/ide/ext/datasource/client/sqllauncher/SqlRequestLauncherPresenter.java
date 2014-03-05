@@ -401,6 +401,14 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         return builder.toSafeHtml();
     }
 
+    private SafeHtml buildErrorHeader(final String originRequest) {
+        SafeHtmlBuilder builder = new SafeHtmlBuilder();
+        builder.append(TEMPLATE.infoHeaderTitle(cellTableResources.cellTableStyle().infoHeaderTitle(), constants.queryErrorTitle()));
+        builder.append(TEMPLATE.queryReminder(cellTableResources.cellTableStyle().queryReminder(), originRequest));
+
+        return builder.toSafeHtml();
+    }
+
     private void appendUpdateResult(final RequestResultDTO result) {
         this.view.appendResult(new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
