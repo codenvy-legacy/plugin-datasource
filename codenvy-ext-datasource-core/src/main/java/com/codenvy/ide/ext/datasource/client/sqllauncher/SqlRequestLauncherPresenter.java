@@ -373,10 +373,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         SafeHtml headerHtml = buildResultTableHeader(result.getOriginRequest(),
                                                      this.datasourceClientService.buildCsvExportUrl(result),
                                                      constants.exportCsvLabel());
-        resultTable.setHeaderBuilder(new ResultHeaderBuilder(resultTable,
-                                                             headerHtml,
-                                                             result.getHeaderLine().size(),
-                                                             cellTableResources.cellTableStyle().infoHeader()));
+        InfoHeader infoHeader = new InfoHeader(headerHtml);
+        infoHeader.setStyleName(cellTableResources.cellTableStyle().infoHeader());
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
@@ -386,7 +384,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
-        this.view.appendResult(resultTable);
+        this.view.appendResult(infoHeader, resultTable);
 
     }
 
