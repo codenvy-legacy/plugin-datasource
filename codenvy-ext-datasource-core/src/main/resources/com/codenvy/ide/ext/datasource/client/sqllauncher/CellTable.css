@@ -1,6 +1,5 @@
 @def selectionBorderWidth 2px;
 .cellTableWidget {
- 
 }
 
 .cellTableFirstColumn {
@@ -30,7 +29,6 @@
   text-shadow: none;
   font-weight: normal;
   font-size: fontSize;
-  overflow: hidden;
 }
 
 .cellTableCell {
@@ -38,7 +36,13 @@
   overflow: hidden;
   font-weight: normal;
   font-size: fontSize;
-  text-overflow : ellipsis;
+}
+
+.cellTableHeader,.cellTableCell {
+  max-width: 190px;
+  word-wrap: normal;
+  overflow:hidden;
+  white-space:nowrap;
 }
 
 .cellTableFirstColumnFooter {
