@@ -92,9 +92,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final DatasourceClientService             datasourceClientService;
     private final NotificationManager                 notificationManager;
     private final DatasourceManager                   datasourceManager;
-    protected final DatabaseInfoStore                 databaseInfoStore;
+    private final DatabaseInfoStore                   databaseInfoStore;
 
-    protected EditorDatasourceOracle                  editorDatasourceOracle;
+    private final EditorDatasourceOracle              editorDatasourceOracle;
     private final CellTableResources                  cellTableResources;
     private final DatasourceUiResources               datasourceUiResources;
 
