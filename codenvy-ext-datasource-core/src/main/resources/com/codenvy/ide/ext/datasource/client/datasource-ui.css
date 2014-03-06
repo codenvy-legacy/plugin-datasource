@@ -105,6 +105,7 @@
   padding-right: 2em;
   white-space: nowrap;
   width: 50em;
+  line-height: 2em;
 }
 
 .resultHeader-csvButton {
@@ -114,6 +115,7 @@
   padding-right: 0.8em;
   margin-right: 3em;
   height: 1.6em;
+  margin-top: 0.2em;
 }
 
 .resultHeader-infoHeaderTitle {
