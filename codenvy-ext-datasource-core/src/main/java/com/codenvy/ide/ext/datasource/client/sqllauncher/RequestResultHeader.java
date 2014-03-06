@@ -1,6 +1,6 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.codenvy.ide.ext.datasource.client.sqllauncher.ResultHeaderResources.CellTableStyle;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.ResultHeaderResources.ResultHeaderStyle;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,9 +25,9 @@ public class RequestResultHeader extends DockLayoutPanel {
     private Widget                      infoHeaderTitle;
     private Widget                      queryReminder;
     private Button                      exportButton;
-    private final CellTableStyle        style;
+    private final ResultHeaderStyle        style;
 
-    public RequestResultHeader(final CellTableStyle style) {
+    public RequestResultHeader(final ResultHeaderStyle style) {
         super(Unit.PX);
         this.style = style;
         setStyleName(style.infoHeader());

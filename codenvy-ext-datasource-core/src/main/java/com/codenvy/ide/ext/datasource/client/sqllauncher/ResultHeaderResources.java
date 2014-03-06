@@ -5,7 +5,7 @@ import com.google.gwt.resources.client.CssResource;
 
 public interface ResultHeaderResources extends ClientBundle {
 
-    public interface CellTableStyle extends CssResource {
+    public interface ResultHeaderStyle extends CssResource {
 
         String infoHeader();
 
@@ -17,5 +17,5 @@ public interface ResultHeaderResources extends ClientBundle {
     }
 
     @Source({"CellTable.css", "com/codenvy/ide/api/ui/style.css"})
-    CellTableStyle cellTableStyle();
+    ResultHeaderStyle cellTableStyle();
 }
