@@ -91,7 +91,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     protected final DatabaseInfoStore                 databaseInfoStore;
 
     protected EditorDatasourceOracle                  editorDatasourceOracle;
-    private final CellTableResources                  cellTableResources;
+    private final ResultHeaderResources                  cellTableResources;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -106,7 +106,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull EventBus eventBus,
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent,
-                                       final @NotNull CellTableResources cellTableResources) {
+                                       final @NotNull ResultHeaderResources cellTableResources) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;

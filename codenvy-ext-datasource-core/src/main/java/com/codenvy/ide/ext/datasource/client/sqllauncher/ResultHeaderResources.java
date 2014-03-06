@@ -2,7 +2,7 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.google.gwt.user.cellview.client.CellTable;
 
-public interface CellTableResources extends CellTable.Resources {
+public interface ResultHeaderResources extends CellTable.Resources {
 
     public interface CellTableStyle extends CellTable.Style {
 
