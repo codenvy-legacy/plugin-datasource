@@ -79,15 +79,13 @@ public class DatasourceExtension {
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
+
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
         // create de "Datasource" menu in menubar and insert it
-        DefaultActionGroup mainMenu = (DefaultActionGroup)actionManager
-                                                                       .getAction(GROUP_MAIN_MENU);
-        DefaultActionGroup defaultDatasourceMainGroup = new DefaultActionGroup(
-                                                                               "Datasource", true, actionManager);
-        actionManager.registerAction(DS_GROUP_MAIN_MENU,
-                                     defaultDatasourceMainGroup);
+        DefaultActionGroup mainMenu = (DefaultActionGroup)actionManager.getAction(GROUP_MAIN_MENU);
+        DefaultActionGroup defaultDatasourceMainGroup = new DefaultActionGroup("Datasource", true, actionManager);
+        actionManager.registerAction(DS_GROUP_MAIN_MENU, defaultDatasourceMainGroup);
         Constraints beforeWindow = new Constraints(BEFORE, GROUP_WINDOW);
         mainMenu.add(defaultDatasourceMainGroup, beforeWindow);
 
@@ -113,8 +111,8 @@ public class DatasourceExtension {
         // Add a new mysql connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
-        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(), "com.mysql.jdbc.Driver",
-                                mysqlWizardPages);
+        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(),
+                                "com.mysql.jdbc.Driver", mysqlWizardPages);
 
         // add a new oracle connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
