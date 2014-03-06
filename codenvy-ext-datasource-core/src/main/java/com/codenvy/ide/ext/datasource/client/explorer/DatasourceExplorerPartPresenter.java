@@ -25,7 +25,6 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
-import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
@@ -66,7 +65,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     private final DtoFactory                    dtoFactory;
     private final NotificationManager           notificationManager;
     private final DatasourceManager             datasourceManager;
-    private final PreferencesManager            preferencesManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
     private final DatasourceExplorerConstants   constants;
     private final MetadataNotificationConstants notificationConstants;
@@ -88,7 +86,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            @NotNull final DtoFactory dtoFactory,
                                            @NotNull final NotificationManager notificationManager,
                                            @NotNull final DatasourceManager datasourceManager,
-                                           @NotNull final PreferencesManager preferencesManager,
                                            @NotNull final DataEntityPropertiesPresenter propertiesPresenter,
                                            @NotNull final DatasourceExplorerConstants constants,
                                            @NotNull final MetadataNotificationConstants notificationConstants,
@@ -99,7 +96,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
-        this.preferencesManager = preferencesManager;
         this.propertiesPresenter = propertiesPresenter;
         this.constants = constants;
         this.notificationConstants = notificationConstants;
