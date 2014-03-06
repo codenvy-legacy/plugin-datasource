@@ -1,10 +1,11 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 
-public interface ResultHeaderResources extends CellTable.Resources {
+public interface ResultHeaderResources extends ClientBundle {
 
-    public interface CellTableStyle extends CellTable.Style {
+    public interface CellTableStyle extends CssResource {
 
         String infoHeader();
 
