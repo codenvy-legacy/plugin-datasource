@@ -20,6 +20,7 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.api.user.shared.dto.Profile;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
@@ -35,7 +36,6 @@ import com.codenvy.ide.rest.StringUnmarshaller;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
-
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Window;
 
@@ -119,10 +119,10 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         Log.info(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
         final Notification requestNotification = new Notification("Persisting datasources...",
                                                                   Notification.Status.PROGRESS);
-        this.datasourceManager.persist(new AsyncCallback<Void>() {
+        this.datasourceManager.persist(new AsyncCallback<Profile>() {
 
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(Profile result) {
                 Log.info(AbstractNewDatasourceConnectorPage.class, "Datasources persisted.");
                 requestNotification.setMessage("Datasources saved");
                 requestNotification.setStatus(Notification.Status.FINISHED);

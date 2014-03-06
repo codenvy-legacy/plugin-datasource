@@ -3,6 +3,7 @@ package com.codenvy.ide.ext.datasource.client;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.codenvy.api.user.shared.dto.Profile;
 import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
@@ -53,7 +54,7 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
     }
 
     @Override
-    public void persist(final AsyncCallback<Void> callback) {
+    public void persist(final AsyncCallback<Profile> callback) {
         this.preferencesManager.flushPreferences(callback);
     }
 
