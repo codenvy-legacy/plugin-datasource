@@ -25,6 +25,8 @@ import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.action.Constraints;
 import com.codenvy.ide.api.ui.action.DefaultActionGroup;
+import com.codenvy.ide.api.ui.keybinding.KeyBindingAgent;
+import com.codenvy.ide.api.ui.keybinding.KeyBuilder;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
@@ -40,6 +42,9 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle.OracleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.ExecuteSqlAction;
+import com.codenvy.ide.util.input.CharCodeWithModifiers;
+import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -51,8 +56,10 @@ import com.google.inject.Singleton;
 @Extension(title = "Datasource Extension", version = "1.0.0")
 public class DatasourceExtension {
 
-    public static boolean SHOW_ITEM          = true;
-    public static String  DS_GROUP_MAIN_MENU = "DatasourceMainMenu";
+    public static boolean SHOW_ITEM                  = true;
+    public static String  DS_GROUP_MAIN_MENU         = "DatasourceMainMenu";
+
+    private static String DS_ACTION_SHORTCUT_EXECUTE = "DatasourceActionExecute";
 
     @Inject
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
@@ -67,7 +74,9 @@ public class DatasourceExtension {
                                Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
-                               AvailableJdbcDriversService availableJdbcDrivers) {
+                               AvailableJdbcDriversService availableJdbcDrivers,
+                               ExecuteSqlAction executeSqlAction,
+                               KeyBindingAgent keyBindingAgent) {
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
 
         // create de "Datasource" menu in menubar and insert it
@@ -115,6 +124,10 @@ public class DatasourceExtension {
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
         connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "MsSqlServer", resources.getSqlServerLogo(),
                                 "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
-    }
 
+        // Add execute shortcut
+        actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);
+        final CharCodeWithModifiers key = new KeyBuilder().action().charCode(KeyCodeMap.ENTER).build();
+        keyBindingAgent.getGlobal().addKey(key, DS_ACTION_SHORTCUT_EXECUTE);
+    }
 }
