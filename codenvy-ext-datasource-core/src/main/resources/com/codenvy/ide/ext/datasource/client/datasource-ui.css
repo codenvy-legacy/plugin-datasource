@@ -91,3 +91,34 @@
 .requestLauncher-selectDatasourceLabel {
 }
 
+.infoHeader {
+  background: windowHeaderBackground;
+  color: editorDefaultFontColor;
+  height:2em;
+}
+
+.queryReminder {
+  font-weight: normal;
+  font-size: fontSize;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 2em;
+  white-space: nowrap;
+  width: 50em;
+}
+
+.csvButton {
+  font-weight: bold;
+  font-size: fontSize;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  margin-right: 3em;
+  height: 1.6em;
+}
+
+.infoHeaderTitle {
+  font-weight: bold;
+  font-size: fontSize;
+  margin-right: 30px;
+  line-height: 2em;
+}

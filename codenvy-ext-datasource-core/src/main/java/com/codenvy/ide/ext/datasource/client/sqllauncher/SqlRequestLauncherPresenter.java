@@ -33,6 +33,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
@@ -93,7 +94,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     protected EditorDatasourceOracle                  editorDatasourceOracle;
     private final CellTableResources                  cellTableResources;
-    private final ResultHeaderResources               resultHeaderResources;
+    private final DatasourceUiResources               datasourceUiResources;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -109,7 +110,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent,
                                        final @NotNull CellTableResources cellTableResources,
-                                       final @NotNull ResultHeaderResources resultHeaderResources) {
+                                       final @NotNull DatasourceUiResources datasourceUiResources) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -123,7 +124,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
         this.cellTableResources = cellTableResources;
-        this.resultHeaderResources = resultHeaderResources;
+        this.datasourceUiResources = datasourceUiResources;
 
         setupResultLimit(preferencesManager);
         setupExecutionMode(preferencesManager);
@@ -389,7 +390,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private RequestResultHeader buildResultHeader(final String originRequest, final String link, final String text) {
-        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.resultHeaderStyle());
+        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS());
         result.setInfoHeaderTitle(constants.queryResultsTitle());
         result.setRequestReminder(originRequest);
         if (link != null || text != null) {
@@ -399,7 +400,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private RequestResultHeader buildErrorHeader(final String originRequest) {
-        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.resultHeaderStyle());
+        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS());
         result.setInfoHeaderTitle(constants.queryErrorTitle());
         result.setRequestReminder(originRequest);
 
