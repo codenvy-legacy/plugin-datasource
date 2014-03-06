@@ -181,6 +181,15 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         }
     }
 
+    public String getSelectedId() {
+        int index = this.datasourceList.getSelectedIndex();
+        if (index != -1) {
+            return this.datasourceList.getValue(index);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void setExecutionMode(final MultipleRequestExecutionMode executionMode) {
         String searchValue = null;
@@ -224,7 +233,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     @UiHandler("datasourceList")
     void handleDatasourceSelection(final ChangeEvent event) {
-        getDelegate().datasourceChanged(datasourceList.getValue(datasourceList.getSelectedIndex()));
+        getDelegate().datasourceChanged(getSelectedId());
     }
 
     @UiHandler("resultLimitInput")
