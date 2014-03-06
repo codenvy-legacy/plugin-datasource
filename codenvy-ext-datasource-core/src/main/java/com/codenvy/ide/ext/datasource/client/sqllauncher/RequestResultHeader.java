@@ -20,6 +20,8 @@ public class RequestResultHeader extends DockLayoutPanel {
     private static final int            INFO_HEADER_WIDTH   = 150;
     private static final int            EXPORT_BUTTON_WIDTH = 70;
 
+    private static int                  TRUNCATE_LIMIT      = 150;
+
     private Widget                      infoHeaderTitle;
     private Widget                      queryReminder;
     private Button                      exportButton;
@@ -37,7 +39,9 @@ public class RequestResultHeader extends DockLayoutPanel {
     }
 
     public RequestResultHeader setRequestReminder(final String query) {
-        final String queryPart = query.substring(0, 150); // limit size of displayed query - just a bit over overflow
+        // limit size of displayed query - just a bit over display overflow
+        final String queryPart = query.substring(0, Math.min(query.length(), TRUNCATE_LIMIT));
+
         this.queryReminder = new HTML(TEMPLATE.queryReminder(style.queryReminder(), queryPart));
         return this;
     }
