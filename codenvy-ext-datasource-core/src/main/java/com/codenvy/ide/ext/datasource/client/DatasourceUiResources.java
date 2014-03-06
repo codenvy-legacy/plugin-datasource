@@ -73,12 +73,16 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("requestLauncher-selectDatasourceLabel")
         String requestLauncherSelectDatasourceLabel();
 
+        @ClassName("resultHeader-infoHeader")
         String infoHeader();
 
+        @ClassName("resultHeader-queryReminder")
         String queryReminder();
 
+        @ClassName("resultHeader-csvButton")
         String csvButton();
 
+        @ClassName("resultHeader-infoHeaderTitle")
         String infoHeaderTitle();
     }
 }

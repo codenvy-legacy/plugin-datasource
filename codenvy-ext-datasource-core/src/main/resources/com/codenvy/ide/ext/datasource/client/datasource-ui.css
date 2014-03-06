@@ -91,13 +91,13 @@
 .requestLauncher-selectDatasourceLabel {
 }
 
-.infoHeader {
+.resultHeader-infoHeader {
   background: windowHeaderBackground;
   color: editorDefaultFontColor;
   height:2em;
 }
 
-.queryReminder {
+.resultHeader-queryReminder {
   font-weight: normal;
   font-size: fontSize;
   text-overflow: ellipsis;
@@ -107,7 +107,7 @@
   width: 50em;
 }
 
-.csvButton {
+.resultHeader-csvButton {
   font-weight: bold;
   font-size: fontSize;
   padding-left: 0.8em;
@@ -116,7 +116,7 @@
   height: 1.6em;
 }
 
-.infoHeaderTitle {
+.resultHeader-infoHeaderTitle {
   font-weight: bold;
   font-size: fontSize;
   margin-right: 30px;
