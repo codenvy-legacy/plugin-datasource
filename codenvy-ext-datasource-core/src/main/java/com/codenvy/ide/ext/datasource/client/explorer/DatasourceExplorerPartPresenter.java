@@ -60,17 +60,17 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                                                   DatasourceExplorerView.ActionDelegate,
                                                                   DatasourceExplorerPart,
                                                                   DatasourceCreatedHandler {
-    protected DatasourceExplorerView            view;
-    protected EventBus                          eventBus;
-    protected DatasourceClientService           service;
-    protected DtoFactory                        dtoFactory;
-    protected NotificationManager               notificationManager;
-    protected DatasourceManager                 datasourceManager;
-    protected PreferencesManager                preferencesManager;
+    private final DatasourceExplorerView        view;
+    private final EventBus                      eventBus;
+    private final DatasourceClientService       service;
+    private final DtoFactory                    dtoFactory;
+    private final NotificationManager           notificationManager;
+    private final DatasourceManager             datasourceManager;
+    private final PreferencesManager            preferencesManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
     private final DatasourceExplorerConstants   constants;
     private final MetadataNotificationConstants notificationConstants;
-    protected DatabaseInfoStore                 databaseInfoStore;
+    private final DatabaseInfoStore             databaseInfoStore;
 
     /**
      * Instantiates the ProjectExplorer Presenter
