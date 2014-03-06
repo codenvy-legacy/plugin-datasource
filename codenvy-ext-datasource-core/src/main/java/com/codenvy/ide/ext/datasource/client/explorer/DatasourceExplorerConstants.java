@@ -9,15 +9,6 @@ public interface DatasourceExplorerConstants extends Messages {
     @DefaultMessage("Explore")
     String exploreButtonLabel();
 
-    @DefaultMessage("Fetching database metadata...")
-    String notificationFetchStart();
-
-    @DefaultMessage("Succesfully fetched database metadata")
-    String notificationFetchSuccess();
-
-    @DefaultMessage("Failed fetching database metadata")
-    String notificationFetchFailure();
-
     @DefaultMessage("Datasource Explorer")
     String datasourceExplorerTitle();
 }

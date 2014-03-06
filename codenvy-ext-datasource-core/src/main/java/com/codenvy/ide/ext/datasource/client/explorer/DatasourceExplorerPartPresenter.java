@@ -31,6 +31,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
@@ -68,6 +69,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     protected PreferencesManager                preferencesManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
     private final DatasourceExplorerConstants   constants;
+    private final MetadataNotificationConstants notificationConstants;
     protected DatabaseInfoStore                 databaseInfoStore;
 
     /**
@@ -89,6 +91,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                            @NotNull final PreferencesManager preferencesManager,
                                            @NotNull final DataEntityPropertiesPresenter propertiesPresenter,
                                            @NotNull final DatasourceExplorerConstants constants,
+                                           @NotNull final MetadataNotificationConstants notificationConstants,
                                            @NotNull final DatabaseInfoStore databaseInfoStore) {
         this.view = view;
         this.eventBus = eventBus;
@@ -99,6 +102,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.preferencesManager = preferencesManager;
         this.propertiesPresenter = propertiesPresenter;
         this.constants = constants;
+        this.notificationConstants = notificationConstants;
         this.databaseInfoStore = databaseInfoStore;
 
         this.view.setTitle(constants.datasourceExplorerTitle());
@@ -168,7 +172,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         try {
             DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
 
-            final Notification fetchDatabaseNotification = new Notification(constants.notificationFetchStart(),
+            final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                             Notification.Status.PROGRESS);
             notificationManager.showNotification(fetchDatabaseNotification);
             service.fetchDatabaseInfo(datasourceObject,
@@ -177,7 +181,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           protected void onSuccess(String result) {
                                               DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                                                   DatabaseDTO.class);
-                                              fetchDatabaseNotification.setMessage(constants.notificationFetchSuccess());
+                                              fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                               view.setItems(database);
                                               eventBus.fireEvent(new DatabaseInfoReceivedEvent(database));
@@ -187,7 +191,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                           @Override
                                           protected void onFailure(Throwable exception) {
                                               fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                              notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
+                                              notificationManager.showNotification(new Notification(
+                                                                                                    notificationConstants.notificationFetchFailure(),
                                                                                                     Type.ERROR));
                                               // clean up current database
                                               eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
@@ -198,7 +203,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         } catch (RequestException e) {
             Log.error(DatasourceExplorerPartPresenter.class,
                       "Exception on database info fetch : " + e.getMessage());
-            notificationManager.showNotification(new Notification(constants.notificationFetchFailure(),
+            notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
                                                                   Type.ERROR));
         }
     }
