@@ -19,10 +19,14 @@ package com.codenvy.ide.ext.datasource.client;
 
 import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.resources.FileType;
 import com.codenvy.ide.api.resources.ResourceProvider;
+import com.codenvy.ide.api.ui.IconRegistry;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.wizard.newresource.NewResourceAgent;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
@@ -56,7 +60,8 @@ public class SqlEditorExtension {
                               final EditorRegistry editorRegistry,
                               final SqlLauncherEditorProvider sqlEditorProvider,
                               final NewResourceAgent newResourceAgent,
-                              final SqlResourceProvider sqlResourceProvider) {
+                              final SqlResourceProvider sqlResourceProvider,
+                              final IconRegistry iconRegistry) {
 
         Log.info(SqlEditorExtension.class, "Initialization of SQL editor extension.");
         // inject sql parser
@@ -68,6 +73,11 @@ public class SqlEditorExtension {
         resourceProvider.registerFileType(sqlFile);
         editorRegistry.register(sqlFile, sqlEditorProvider);
         newResourceAgent.register(sqlResourceProvider);
+
+        // register the sql file icon
+        Map<String, String> icons = new HashMap<String, String>();
+        icons.put("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png");
+        iconRegistry.registerIcons(icons);
     }
 
 }

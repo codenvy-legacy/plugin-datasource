@@ -1,5 +1,6 @@
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
+import com.codenvy.ide.api.ui.IconRegistry;
 import com.codenvy.ide.api.ui.wizard.newresource.NewResourceProvider;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.resources.model.File;
@@ -15,10 +16,11 @@ public class SqlResourceProvider extends NewResourceProvider {
 
     @Inject
     public SqlResourceProvider(final SqlEditorConstants constants,
-                               final SqlEditorResources resources) {
+                               final SqlEditorResources resources,
+                               final IconRegistry iconRegistry) {
         super(NEW_SQL_PROVIDER_ID,
               constants.newSqlWizardTitle(),
-              resources.sqlFile(),
+              iconRegistry.getIcon("default.sqlfile.icon"),
               SqlEditorExtension.SQL_FILE_EXTENSION);
     }
 
