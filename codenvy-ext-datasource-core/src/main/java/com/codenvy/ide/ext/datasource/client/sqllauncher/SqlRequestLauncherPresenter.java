@@ -34,6 +34,7 @@ import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
@@ -80,6 +81,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final SqlRequestLauncherView              view;
     /** The i18n-able constants. */
     private final SqlRequestLauncherConstants         constants;
+    private final MetadataNotificationConstants       notificationConstants;
     /** The DTO factory. */
     private final DtoFactory                          dtoFactory;
 
@@ -99,6 +101,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
+                                       final @NotNull MetadataNotificationConstants notificationConstants,
                                        final @NotNull PreferencesManager preferencesManager,
                                        final @NotNull SqlEditorProvider sqlEditorProvider,
                                        final @NotNull DatasourceClientService service,
@@ -118,6 +121,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
+        this.notificationConstants = notificationConstants;
         this.dtoFactory = dtoFactory;
 
         this.datasourceClientService = service;
@@ -190,7 +194,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(newDataSourceId);
         if (dsMeta == null) {
             try {
-                final Notification fetchDatabaseNotification = new Notification("Fetching database metadata ...",
+                final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                                 Notification.Status.PROGRESS);
                 notificationManager.showNotification(fetchDatabaseNotification);
                 datasourceClientService.fetchDatabaseInfo(datasourceManager.getByName(newDataSourceId),
@@ -199,7 +203,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                               protected void onSuccess(String result) {
                                                                   DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                                                                       DatabaseDTO.class);
-                                                                  fetchDatabaseNotification.setMessage("Succesfully fetched database metadata");
+                                                                  fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
                                                                   fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                                                   notificationManager.showNotification(fetchDatabaseNotification);
                                                                   databaseInfoStore.setDatabaseInfo(newDataSourceId, database);
@@ -209,7 +213,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                               protected void onFailure(Throwable exception) {
                                                                   fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                                                                   notificationManager.showNotification(new Notification(
-                                                                                                                        "Failed fetching database metadatas",
+                                                                                                                        notificationConstants.notificationFetchFailure(),
                                                                                                                         Type.ERROR));
                                                               }
                                                           }
@@ -218,7 +222,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
             } catch (RequestException e) {
                 Log.error(DatasourceExplorerPartPresenter.class,
                           "Exception on database info fetch : " + e.getMessage());
-                notificationManager.showNotification(new Notification("Failed fetching database metadatas",
+                notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
                                                                       Type.ERROR));
             }
         }
