@@ -32,6 +32,7 @@ import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
+import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPagePresenter;
@@ -70,6 +71,7 @@ public class DatasourceExtension {
                                @NewDatasourceWizardQualifier DefaultWizard wizard,
                                NewDatasourceConnectorAgent connectorAgent,
                                DatasourceUiResources resources,
+                               CellTableResources celltableResources,
                                Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
                                Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
@@ -100,6 +102,7 @@ public class DatasourceExtension {
 
         // inject CSS
         resources.datasourceUiCSS().ensureInjected();
+        celltableResources.cellTableStyle().ensureInjected();
 
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
