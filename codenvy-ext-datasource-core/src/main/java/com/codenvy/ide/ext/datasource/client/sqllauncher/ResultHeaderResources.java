@@ -17,5 +17,5 @@ public interface ResultHeaderResources extends ClientBundle {
     }
 
     @Source({"CellTable.css", "com/codenvy/ide/api/ui/style.css"})
-    ResultHeaderStyle cellTableStyle();
+    ResultHeaderStyle resultHeaderStyle();
 }

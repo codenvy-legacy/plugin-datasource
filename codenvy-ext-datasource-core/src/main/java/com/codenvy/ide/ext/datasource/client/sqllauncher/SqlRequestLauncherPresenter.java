@@ -389,7 +389,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private RequestResultHeader buildResultHeader(final String originRequest, final String link, final String text) {
-        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.cellTableStyle());
+        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.resultHeaderStyle());
         result.setInfoHeaderTitle(constants.queryResultsTitle());
         result.setRequestReminder(originRequest);
         if (link != null || text != null) {
@@ -399,7 +399,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     private RequestResultHeader buildErrorHeader(final String originRequest) {
-        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.cellTableStyle());
+        final RequestResultHeader result = new RequestResultHeader(this.resultHeaderResources.resultHeaderStyle());
         result.setInfoHeaderTitle(constants.queryErrorTitle());
         result.setRequestReminder(originRequest);
 
