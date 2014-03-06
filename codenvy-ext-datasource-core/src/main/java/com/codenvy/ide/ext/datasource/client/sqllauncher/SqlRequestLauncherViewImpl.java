@@ -179,6 +179,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
                 getDelegate().datasourceChanged(this.datasourceList.getValue(0));
             }
         }
+        getDelegate().datasourceChanged(getSelectedId());
     }
 
     public String getSelectedId() {
