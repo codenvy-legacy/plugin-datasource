@@ -21,15 +21,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditorDatasourceOracleImpl implements EditorDatasourceOracle {
-    Map<String, String> fileDatasourcesMap = new HashMap<String, String>();
+    private Map<String, String> fileDatasourcesMap;
 
     @Override
-    public String getSelectedDatasourceId(String editorInputFileId) {
+    public String getSelectedDatasourceId(final String editorInputFileId) {
+        if (this.fileDatasourcesMap == null) {
+            return null;
+        }
         return fileDatasourcesMap.get(editorInputFileId);
     }
 
     @Override
-    public void setSelectedDatasourceId(String editorInputFileId, String datasourceId) {
+    public void setSelectedDatasourceId(final String editorInputFileId, final String datasourceId) {
+        if (this.fileDatasourcesMap == null) {
+            this.fileDatasourcesMap = new HashMap<String, String>();
+        }
         fileDatasourcesMap.put(editorInputFileId, datasourceId);
     }
 }
