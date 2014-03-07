@@ -127,15 +127,15 @@ public class DatasourceService {
     @Path("drivers")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public String isDatabaseDriverAvailable() throws Exception {
-        Enumeration<Driver> loadedDrivers = DriverManager.getDrivers();
-        List<String> drivers = new ArrayList<>();
+    public String getAvailableDatabaseDrivers() throws Exception {
+        final Enumeration<Driver> loadedDrivers = DriverManager.getDrivers();
+        final List<String> drivers = new ArrayList<>();
         while (loadedDrivers.hasMoreElements()) {
             Driver driver = loadedDrivers.nextElement();
             drivers.add(driver.getClass().getCanonicalName());
         }
-        DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
-        String msg = DtoFactory.getInstance().toJson(driversDTO);
+        final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
+        final String msg = DtoFactory.getInstance().toJson(driversDTO);
         LOG.info(msg);
         return msg;
     }
@@ -318,14 +318,14 @@ public class DatasourceService {
 
         Database database = null;
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
-           if (connection != null && !connection.equals("")){
-               return("Connection Succeeded !");
-           }
-            else{
-               return("Connection Failed !");
-           }
-        }catch (SQLException e) {
-            return("Connection Failed: " + e.getLocalizedMessage());
+            if (connection != null && !connection.equals("")) {
+                return ("Connection Succeeded !");
+            }
+            else {
+                return ("Connection Failed !");
+            }
+        } catch (SQLException e) {
+            return ("Connection Failed: " + e.getLocalizedMessage());
         }
     }
 }
