@@ -65,18 +65,6 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
 
     @Override
     public void focusComponent() {
-        dbConnectors = connectorAgent.getConnectors();
-        view.setConnectors(dbConnectors);
-
-        List<String> drivers = jdbcDriversService.getDrivers();
-        updateAvailableDatabase(drivers);
-
-        eventBus.addHandler(JdbcDriversFetchedEvent.getType(), new JdbcDriversFetchedEventHandler() {
-            @Override
-            public void onJdbcDriversFetched(List<String> drivers) {
-                updateAvailableDatabase(drivers);
-            }
-        });
     }
 
     protected void updateAvailableDatabase(List<String> drivers) {
@@ -101,6 +89,19 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     @Override
     public void go(AcceptsOneWidget container) {
         container.setWidget(view);
+
+        dbConnectors = connectorAgent.getConnectors();
+        view.setConnectors(dbConnectors);
+
+        List<String> drivers = jdbcDriversService.getDrivers();
+        updateAvailableDatabase(drivers);
+
+        eventBus.addHandler(JdbcDriversFetchedEvent.getType(), new JdbcDriversFetchedEventHandler() {
+            @Override
+            public void onJdbcDriversFetched(List<String> drivers) {
+                updateAvailableDatabase(drivers);
+            }
+        });
     }
 
     @Override
