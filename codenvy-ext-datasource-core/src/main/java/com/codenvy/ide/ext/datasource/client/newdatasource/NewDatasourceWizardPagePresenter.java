@@ -41,8 +41,9 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     public NewDatasourceWizardPagePresenter(NewDatasourceWizardPageView view,
                                             NewDatasourceConnectorAgent connectorAgent,
                                             AvailableJdbcDriversService jdbcDriversService,
-                                            EventBus eventBus) {
-        super("New Datasource", null);
+                                            EventBus eventBus,
+                                            NewDatasourceWizardMessages messages) {
+        super(messages.wizardTitle(), null);
         this.view = view;
         this.connectorAgent = connectorAgent;
         this.jdbcDriversService = jdbcDriversService;

@@ -22,9 +22,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPagePresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwt.test.GwtModule;
@@ -37,16 +39,17 @@ public class TestNewDatasourceWizardPagePresenter extends GwtTestWithMockito {
     @Mock
     NewDatasourceConnectorAgent      connectorAgent;
     @Mock
-    EventBus eventbus;
+    EventBus                         eventbus;
     @Mock
     AvailableJdbcDriversService      jdbcDrivers;
-    
-    
+
+
     NewDatasourceWizardPagePresenter presenter;
 
     @Before
     public void init() {
-        presenter = new NewDatasourceWizardPagePresenter(view, connectorAgent, jdbcDrivers, eventbus);
+        NewDatasourceWizardMessages messages = GWT.<NewDatasourceWizardMessages> create(NewDatasourceWizardMessages.class);
+        presenter = new NewDatasourceWizardPagePresenter(view, connectorAgent, jdbcDrivers, eventbus, messages);
     }
 
     @Test
