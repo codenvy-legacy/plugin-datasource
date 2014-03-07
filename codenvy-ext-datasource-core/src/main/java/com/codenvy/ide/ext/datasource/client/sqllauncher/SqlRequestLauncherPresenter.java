@@ -423,4 +423,12 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     public void executionModeChanged(final MultipleRequestExecutionMode mode) {
         this.executionMode = mode;
     }
+
+    @Override
+    public boolean onClose() {
+        boolean parentResult = super.onClose();
+        final String editorFileId = getEditorInput().getFile().getId();
+        this.editorDatasourceOracle.forgetEditor(editorFileId);
+        return parentResult;
+    }
 }
