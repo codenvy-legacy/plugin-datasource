@@ -35,16 +35,16 @@ import com.codenvy.ide.texteditor.api.parser.Parser;
 
 public class SqlEditorConfiguration extends TextEditorConfiguration {
 
-    protected SqlCodeAssistProcessor    codeAssistProcessor;
-    protected SqlEditorResources        resource;
-    protected DatabaseInfoOracle        databaseInfoOracle;
-    protected ReadableContentTextEditor textEditor;
-    protected EditorDatasourceOracle    editorDatasourceOracle;
+    private SqlCodeAssistProcessor          codeAssistProcessor;
+    private final SqlEditorResources        resource;
+    private final DatabaseInfoOracle        databaseInfoOracle;
+    private final ReadableContentTextEditor textEditor;
+    private final EditorDatasourceOracle    editorDatasourceOracle;
 
-    public SqlEditorConfiguration(ReadableContentTextEditor textEditor,
-                                  SqlEditorResources resource,
-                                  DatabaseInfoOracle databaseInfoOracle,
-                                  EditorDatasourceOracle editorDatasourceOracle) {
+    public SqlEditorConfiguration(@NotNull final ReadableContentTextEditor textEditor,
+                                  @NotNull final SqlEditorResources resource,
+                                  @NotNull final DatabaseInfoOracle databaseInfoOracle,
+                                  @NotNull final EditorDatasourceOracle editorDatasourceOracle) {
         this.textEditor = textEditor;
         this.resource = resource;
         this.databaseInfoOracle = databaseInfoOracle;
@@ -52,14 +52,14 @@ public class SqlEditorConfiguration extends TextEditorConfiguration {
     }
 
     @Override
-    public Parser getParser(@NotNull final TextEditorPartView view) {
+    public Parser getParser(final TextEditorPartView view) {
         CmParser parser = getParserForMime(SqlEditorExtension.GENERIC_SQL_MIME_TYPE);
         parser.setNameAndFactory("sql", new BasicTokenFactory());
         return parser;
     }
 
     @Override
-    public StringMap<CodeAssistProcessor> getContentAssistantProcessors(final @NotNull TextEditorPartView view) {
+    public StringMap<CodeAssistProcessor> getContentAssistantProcessors(final TextEditorPartView view) {
         StringMap<CodeAssistProcessor> map = Collections.createStringMap();
         map.put(Document.DEFAULT_CONTENT_TYPE, getOrCreateCodeAssistProcessor());
         return map;

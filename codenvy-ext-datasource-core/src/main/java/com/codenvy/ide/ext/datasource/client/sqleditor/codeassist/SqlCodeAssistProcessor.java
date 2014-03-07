@@ -40,22 +40,22 @@ import com.google.gwt.regexp.shared.RegExp;
 
 public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
-    private SqlEditorResources          resources;
-    protected DatabaseInfoOracle        databaseInfoOracle;
-    protected ReadableContentTextEditor textEditor;
-    protected EditorDatasourceOracle    editorDatasourceOracle;
+    private final SqlEditorResources        resources;
+    private final DatabaseInfoOracle        databaseInfoOracle;
+    private final ReadableContentTextEditor textEditor;
+    private final EditorDatasourceOracle    editorDatasourceOracle;
 
-    protected final static RegExp       TABLE_REGEXP_PATTERN               =
-                                                                             RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
-    protected final static int          TABLE_REGEXP_GROUP                 = 6;
-    protected final static RegExp       COLUMN_REGEXP_PATTERN              =
-                                                                             RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)"
-                                                                                                + "\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)"
-                                                                                                + "((where\\s+(.*\\s+)*|\\()(\\w*\\.*\\w*\\.*\\w+,?\\s+)*|set\\s+((.+\\s*)+,\\s*)*)(\\w*\\.*\\w*\\.*\\w*)$"
-                                                                                            , "gm");
-    protected final static int          COLUMN_REGEXP_GROUP                = 17;
-    protected final static int          TABLE_IN_COLUMN_REGEXP_GROUP       = 7;
-    protected final static int          PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 5;
+    private final static RegExp             TABLE_REGEXP_PATTERN               =
+                                                                                 RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
+    private final static int                TABLE_REGEXP_GROUP                 = 6;
+    private final static RegExp             COLUMN_REGEXP_PATTERN              =
+                                                                                 RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)"
+                                                                                                    + "\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)"
+                                                                                                    + "((where\\s+(.*\\s+)*|\\()(\\w*\\.*\\w*\\.*\\w+,?\\s+)*|set\\s+((.+\\s*)+,\\s*)*)(\\w*\\.*\\w*\\.*\\w*)$"
+                                                                                                , "gm");
+    private final static int                COLUMN_REGEXP_GROUP                = 17;
+    private final static int                TABLE_IN_COLUMN_REGEXP_GROUP       = 7;
+    private final static int                PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 5;
 
     public SqlCodeAssistProcessor(ReadableContentTextEditor textEditor,
                                   SqlEditorResources resources,

@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorProvider;
 import com.codenvy.ide.api.notification.NotificationManager;
@@ -34,19 +36,19 @@ public class SqlEditorProvider implements EditorProvider {
 
     private final NotificationManager                 notificationManager;
 
-    protected SqlEditorResources                      resource;
+    private final SqlEditorResources                  resource;
 
-    protected DatabaseInfoOracle                      databaseInfoOracle;
+    private final DatabaseInfoOracle                  databaseInfoOracle;
 
-    protected EditorDatasourceOracle                  editorDatasourceOracle;
+    private final EditorDatasourceOracle              editorDatasourceOracle;
 
     @Inject
-    public SqlEditorProvider(final DocumentProvider documentProvider,
-                             final Provider<ReadableContentTextEditor> editorProvider,
-                             final NotificationManager notificationManager,
-                             final DatabaseInfoOracle databaseInfoOracle,
-                             final EditorDatasourceOracle editorDatasourceOracle,
-                             final SqlEditorResources resource) {
+    public SqlEditorProvider(@NotNull final DocumentProvider documentProvider,
+                             @NotNull final Provider<ReadableContentTextEditor> editorProvider,
+                             @NotNull final NotificationManager notificationManager,
+                             @NotNull final DatabaseInfoOracle databaseInfoOracle,
+                             @NotNull final EditorDatasourceOracle editorDatasourceOracle,
+                             @NotNull final SqlEditorResources resource) {
         this.documentProvider = documentProvider;
         this.editorProvider = editorProvider;
         this.notificationManager = notificationManager;
