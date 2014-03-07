@@ -17,10 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
-import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEventHandler;
@@ -31,11 +31,11 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class NewDatasourceWizardPagePresenter extends AbstractWizardPage implements NewDatasourceWizardPageView.ActionDelegate {
-    protected NewDatasourceWizardPageView   view;
-    protected NewDatasourceConnectorAgent   connectorAgent;
-    protected Array<NewDatasourceConnector> dbConnectors;
-    protected AvailableJdbcDriversService   jdbcDriversService;
-    protected EventBus                      eventBus;
+    protected NewDatasourceWizardPageView        view;
+    protected NewDatasourceConnectorAgent        connectorAgent;
+    protected Collection<NewDatasourceConnector> dbConnectors;
+    protected AvailableJdbcDriversService        jdbcDriversService;
+    protected EventBus                           eventBus;
 
     @Inject
     public NewDatasourceWizardPagePresenter(NewDatasourceWizardPageView view,
@@ -72,11 +72,10 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
         if (drivers == null) {
             return;
         }
-        for (int i = 0; i < dbConnectors.size(); i++) {
-            NewDatasourceConnector connector = dbConnectors.get(i);
 
+        for (final NewDatasourceConnector connector : dbConnectors) {
             if (drivers.contains(connector.getJdbcClassName())) {
-                view.enableDbTypeButton(i);
+                view.enableDbTypeButton(connector.getId());
             }
         }
     }
@@ -105,12 +104,20 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     }
 
     @Override
-    public void onConnectorSelected(int id) {
-        NewDatasourceConnector connector = dbConnectors.get(id);
-        wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
+    public void onConnectorSelected(String id) {
+        NewDatasourceConnector connector = null;
+        for (final NewDatasourceConnector item : dbConnectors) {
+            if (item.getId().equals(id)) {
+                connector = item;
+                break;
+            }
+        }
+        if (connector != null) {
+            wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
 
-        view.selectConnector(id);
-        delegate.updateControls();
+            view.selectConnector(id);
+            delegate.updateControls();
+        }
     }
 
     @Override

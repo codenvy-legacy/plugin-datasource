@@ -17,13 +17,15 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
+import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
@@ -32,38 +34,44 @@ import com.google.inject.Provider;
 
 public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAgent {
 
-    protected DefaultWizard                        datasourceWizard;
+    private final DefaultWizard                     datasourceWizard;
 
-    protected final StringMap<NewDatasourceConnector> registeredConnectors;
+    private final SortedSet<NewDatasourceConnector> registeredConnectors;
 
     @Inject
-    public NewDatasourceConnectorAgentImpl(@NewDatasourceWizardQualifier DefaultWizard datasourceWizard) {
+    public NewDatasourceConnectorAgentImpl(final @NewDatasourceWizardQualifier DefaultWizard datasourceWizard) {
         this.datasourceWizard = datasourceWizard;
-        registeredConnectors = Collections.createStringMap();
+        registeredConnectors = new TreeSet<NewDatasourceConnector>();
+    }
+
+    @Override
+    public void register(final NewDatasourceConnector connector) {
+        if (registeredConnectors.contains(connector)) {
+            // TODO this shouldn't happen: notification error instead of the alert ?
+            Window.alert("Datasource connector with " + connector.getId() + " id already exists");
+            return;
+        }
+
+        registeredConnectors.add(connector);
+        for (Provider< ? extends AbstractNewDatasourceConnectorPage> provider : connector.getWizardPages().asIterable()) {
+            datasourceWizard.addPage(provider);
+        }
     }
 
     @Override
     public void register(@NotNull String id,
+                         int priority,
                          @NotNull String title,
                          @Nullable ImageResource image,
                          @NotNull String jdbcClassName,
                          @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
-        if (registeredConnectors.containsKey(id)) {
-            // TODO this shouldn't happen: notification error instead of the alert ?
-            Window.alert("Datasource connector with " + id + " id already exists");
-            return;
-        }
-        NewDatasourceConnector connector = new NewDatasourceConnector(id, title, image, jdbcClassName);
-        registeredConnectors.put(id, connector);
-        for (Provider< ? extends AbstractNewDatasourceConnectorPage> provider : wizardPages.asIterable()) {
-            datasourceWizard.addPage(provider);
-        }
 
+        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, jdbcClassName, wizardPages);
+        register(connector);
     }
 
     @Override
-    public Array<NewDatasourceConnector> getConnectors() {
-        return registeredConnectors.getValues();
+    public Collection<NewDatasourceConnector> getConnectors() {
+        return registeredConnectors;
     }
-
 }

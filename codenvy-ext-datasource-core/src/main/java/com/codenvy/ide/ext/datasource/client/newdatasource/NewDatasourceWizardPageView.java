@@ -17,8 +17,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
+import java.util.Collection;
+
 import com.codenvy.ide.api.mvp.View;
-import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.inject.ImplementedBy;
 
@@ -32,18 +33,19 @@ public interface NewDatasourceWizardPageView extends View<NewDatasourceWizardPag
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
-        void onConnectorSelected(int id);
+        void onConnectorSelected(String id);
 
         void onDatasourceNameModified(String datasourceName);
     }
 
-    void setConnectors(Array<NewDatasourceConnector> connectors);
+    void setConnectors(Collection<NewDatasourceConnector> connectors);
 
     String getDatasourceName();
 
-    void selectConnector(int buttonIndex);
+    void selectConnector(String id);
 
-    void enableDbTypeButton(int buttonIndex);
+    void enableDbTypeButton(String... id);
 
     void disableAllDbTypeButton();
+
 }

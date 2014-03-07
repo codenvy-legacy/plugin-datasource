@@ -17,10 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -51,15 +51,14 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     }
 
     @UiField
-    TextBox                       datasourceName;
+    TextBox                      datasourceName;
     @UiField
-    SimplePanel                   databasePanel;
+    SimplePanel                  databasePanel;
 
-    protected Array<ToggleButton> connectorButtons;
+    protected List<ToggleButton> connectorButtons;
+    protected List<String>       connectorIds;
 
-    protected ActionDelegate      delegate;
-
-    protected List<String>        drivers;
+    protected ActionDelegate     delegate;
 
 
     @Inject
@@ -68,16 +67,17 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     }
 
     @Override
-    public void setConnectors(Array<NewDatasourceConnector> connectors) {
-        connectorButtons = Collections.createArray();
+    public void setConnectors(Collection<NewDatasourceConnector> connectors) {
+        connectorButtons = new ArrayList<ToggleButton>(connectors.size());
+        connectorIds = new ArrayList<String>(connectors.size());
 
         Grid grid = new Grid(2, connectors.size());
         databasePanel.setWidget(grid);
         HTMLTable.CellFormatter formatter = grid.getCellFormatter();
 
         // create button for each paas
-        for (int i = 0; i < connectors.size(); i++) {
-            NewDatasourceConnector connector = connectors.get(i);
+        int i = 0;
+        for (final NewDatasourceConnector connector : connectors) {
 
             ImageResource icon = connector.getImage();
             final ToggleButton btn;
@@ -88,10 +88,9 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
             }
             btn.setSize("48px", "48px");
 
-            final int id = i;
             btn.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent event) {
-                    delegate.onConnectorSelected(id);
+                    delegate.onConnectorSelected(connector.getId());
                 }
             });
             grid.setWidget(0, i, btn);
@@ -102,6 +101,9 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
             formatter.setHorizontalAlignment(1, i, HasHorizontalAlignment.ALIGN_CENTER);
 
             connectorButtons.add(btn);
+            connectorIds.add(connector.getId());
+
+            i++;
         }
     }
 
@@ -116,23 +118,31 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     }
 
     @Override
-    public void selectConnector(int id) {
+    public void selectConnector(final String id) {
         for (int i = 0; i < connectorButtons.size(); i++) {
-            ToggleButton button = connectorButtons.get(i);
-            button.setDown(i == id);
+            final String connectorId = this.connectorIds.get(i);
+            final ToggleButton button = connectorButtons.get(i);
+            button.setDown(connectorId.equals(id));
         }
     }
 
     @Override
-    public void enableDbTypeButton(int index) {
-        ToggleButton button = connectorButtons.get(index);
-        button.setEnabled(true);
+    public void enableDbTypeButton(final String... ids) {
+        for (int i = 0; i < connectorButtons.size(); i++) {
+            final String connectorId = this.connectorIds.get(i);
+            final ToggleButton button = connectorButtons.get(i);
+            for (String id : ids) {
+                if (connectorId.equals(id)) {
+                    button.setEnabled(true);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public void disableAllDbTypeButton() {
-        for (int i = 0; i < connectorButtons.size(); i++) {
-            ToggleButton button = connectorButtons.get(i);
+        for (ToggleButton button : connectorButtons) {
             button.setEnabled(false);
         }
     }

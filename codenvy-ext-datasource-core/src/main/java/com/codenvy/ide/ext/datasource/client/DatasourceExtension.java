@@ -102,29 +102,40 @@ public class DatasourceExtension {
         resources.datasourceUiCSS().ensureInjected();
         celltableResources.cellTableStyle().ensureInjected();
 
+        // counter to add different priorities to all connectors - to increment after each #register(NewDatasourceConnector)
+        int connectorCounter = 0;
+
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
-        connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, "PostgreSQL", resources.getPostgreSqlLogo(),
-                                "org.postgresql.Driver", pgWizardPages);
+        connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, connectorCounter, "PostgreSQL",
+                                resources.getPostgreSqlLogo(), "org.postgresql.Driver", pgWizardPages);
+
+        connectorCounter++;
 
         // Add a new mysql connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
-        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, "MySQL", resources.getMySqlLogo(),
-                                "com.mysql.jdbc.Driver", mysqlWizardPages);
+        connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, connectorCounter, "MySQL",
+                                resources.getMySqlLogo(), "com.mysql.jdbc.Driver", mysqlWizardPages);
+
+        connectorCounter++;
 
         // add a new oracle connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
         oracleWizardPages.add(oracleConnectorPageProvider);
-        connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, "Oracle", resources.getOracleLogo(),
-                                "oracle.jdbc.OracleDriver", oracleWizardPages);
+        connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, connectorCounter,
+                                "Oracle", resources.getOracleLogo(), "oracle.jdbc.OracleDriver", oracleWizardPages);
+
+        connectorCounter++;
 
         // add a new SQLserver connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
-        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, "MsSqlServer", resources.getSqlServerLogo(),
-                                "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+        connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, connectorCounter,
+                                "MsSqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+
+        connectorCounter++;
 
         // Add execute shortcut
         actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);

@@ -17,6 +17,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
+import java.util.Collection;
+
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -30,11 +32,13 @@ import com.google.inject.Provider;
 public interface NewDatasourceConnectorAgent {
 
     void register(@NotNull String id,
+                  int priority,
                   @NotNull String title,
                   @Nullable ImageResource image,
                   @NotNull String jdbcClassName,
                   @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages);
 
-    Array<NewDatasourceConnector> getConnectors();
+    void register(NewDatasourceConnector connector);
 
+    Collection<NewDatasourceConnector> getConnectors();
 }
