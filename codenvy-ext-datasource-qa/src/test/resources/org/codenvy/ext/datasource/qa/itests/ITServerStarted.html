@@ -1,0 +1,24 @@
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<body>
+<div class="md">
+
+#Datasource plugin tomcat startup
+
+> Just test that the server has been started properly
+> and check that one of the codenvy datasource plugin UI item is present.
+
+## Given
+- Server url:  <span c:set="#url">http://localhost:8080</span>
+
+## When
+- The user <span c:assertEquals="access(#url)">access</span> the server url.
+
+## Then
+Then the <span c:assertEquals="displayDatasourceExplorerTab()">Datasource Explorer</span> tab is displayed
+
+</div>
+<script type="text/javascript" src="../../../../../../scripts/jquery-1.9.0.min.js"> </script>
+<script type="text/javascript" src="../../../../../../scripts/Markdown.Converter.js"> </script>
+<script type="text/javascript" src="../../../../../../scripts/Markdown.ClassConvert.js"> </script>
+</body>
+</html>

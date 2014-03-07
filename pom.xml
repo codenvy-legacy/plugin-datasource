@@ -18,6 +18,7 @@
         <module>codenvy-ext-datasource-api-war</module>
         <module>codenvy-ext-datasource-application-war</module>
         <module>codenvy-ext-datasource-packaging-standalone-tomcat</module>
+        <module>codenvy-ext-datasource-qa</module>
     </modules>
     <distributionManagement>
         <repository>
@@ -215,6 +216,24 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.concordion</groupId>
+                <artifactId>concordion</artifactId>
+                <version>1.4.4</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.concordion</groupId>
+                <artifactId>concordion-extensions</artifactId>
+                <version>1.1.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-phantom-driver</artifactId>
+                <version>1.1.0.Final</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
