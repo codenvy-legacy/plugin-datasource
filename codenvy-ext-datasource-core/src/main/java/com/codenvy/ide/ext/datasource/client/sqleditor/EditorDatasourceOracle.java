@@ -22,4 +22,6 @@ public interface EditorDatasourceOracle {
     String getSelectedDatasourceId(String editorInputFileId);
 
     void setSelectedDatasourceId(String editorInputFileId, String datasourceId);
+
+    void forgetEditor(String editorInputFileId);
 }

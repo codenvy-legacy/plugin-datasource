@@ -38,4 +38,11 @@ public class EditorDatasourceOracleImpl implements EditorDatasourceOracle {
         }
         fileDatasourcesMap.put(editorInputFileId, datasourceId);
     }
+
+    @Override
+    public void forgetEditor(final String editorInputFileId) {
+        if (this.fileDatasourcesMap != null) {
+            this.fileDatasourcesMap.remove(editorInputFileId);
+        }
+    }
 }
