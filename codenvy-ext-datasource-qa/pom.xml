@@ -9,7 +9,7 @@
     <artifactId>codenvy-ext-datasource-qa</artifactId>
     <name>codenvy-ext-datasource-qa</name>
     <properties>
-        <codenvy.ide.bin>${project.build.directory}/../../codenvy-ext-datasource-packaging-standalone-tomcat/target/tomcat-ide/bin</codenvy.ide.bin>
+        <codenvy.ide.path>${project.build.directory}/../../codenvy-ext-datasource-packaging-standalone-tomcat/target/tomcat-ide</codenvy.ide.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -67,8 +67,12 @@
                                 </goals>
                                 <configuration>
                                     <target>
+                                        <replace file="${codenvy.ide.path}/bin/setenv.sh" token="8080" value="8280" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8080" value="8280" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8009" value="8209" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8005" value="8205" />
                                         <exec executable="sh" spawn="false">
-                                            <arg value="${codenvy.ide.bin}/codenvy.sh" />
+                                            <arg value="${codenvy.ide.path}/bin/codenvy.sh" />
                                             <arg value="start" />
                                         </exec>
                                     </target>
@@ -83,9 +87,13 @@
                                 <configuration>
                                     <target>
                                         <exec executable="sh" spawn="false">
-                                            <arg value="${codenvy.ide.bin}/codenvy.sh" />
+                                            <arg value="${codenvy.ide.path}/bin/codenvy.sh" />
                                             <arg value="stop" />
                                         </exec>
+                                        <replace file="${codenvy.ide.path}/bin/setenv.sh" token="8280" value="8080" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8280" value="8080" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8209" value="8009" />
+                                        <replace file="${codenvy.ide.path}/conf/server.xml" token="8205" value="8005" />
                                     </target>
                                 </configuration>
                             </execution>
