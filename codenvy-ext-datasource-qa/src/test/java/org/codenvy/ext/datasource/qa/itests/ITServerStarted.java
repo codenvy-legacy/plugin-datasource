@@ -61,6 +61,13 @@ public class ITServerStarted {
                                                                      By.xpath("//div[@id='codenvyIdeWorkspaceViewImpl']/div[2]/div/div[5]/div/div[2]/div/div[2]/div/div[3]/div/div[2]/span")
                                                                      )).getText();
     }
+    
+    public String displayDatasourceMenu() {
+        return new WebDriverWait(driver, 10)
+                                            .until(ExpectedConditions.presenceOfElementLocated(
+                                                                     By.xpath("//div[@id='codenvyIdeWorkspaceViewImpl']/div[2]/div/div[2]/div/div[3]/div/div/table/tbody/tr/td[4]")
+                                                                     )).getText();
+    }
 
     @After
     public void stop() {
