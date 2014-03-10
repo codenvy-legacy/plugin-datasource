@@ -123,12 +123,6 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>com.codenvy.organization</groupId>
-            <artifactId>codenvy-organization-packaging-api-war</artifactId>
-            <version>${com.codenvy.organization.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>${jsch.version}</version>
@@ -454,7 +448,6 @@
                                 </war>
                                 <copy file="${project.build.directory}/packager-conf/war/exo-ide-git-server-${org.exoplatform.ide.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/git.war" />
                                 <copy file="${project.build.directory}/packager-conf/war/codenvy-ext-datasource-api-war-${project.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/api.war" />
-                                <copy file="${project.build.directory}/packager-conf/war/codenvy-organization-packaging-api-war-${com.codenvy.organization.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/userdb.war" />
                                 <unzip dest="${project.build.directory}/tomcat-ide" src="${project.build.directory}/repo.zip" />
                                 <chmod dir="${project.build.directory}/tomcat-ide" includes="*.sh" perm="+x" />
                             </target>
