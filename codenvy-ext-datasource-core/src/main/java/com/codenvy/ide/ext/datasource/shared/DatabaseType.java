@@ -8,5 +8,7 @@ public enum DatabaseType {
 
     ORACLE,
 
-    JTDS
+    JTDS,
+
+    NUODB
 }
