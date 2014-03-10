@@ -66,6 +66,12 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-datasource-packaging-standalone-tomcat</artifactId>
+                <version>${codenvy.datasource.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-debugger-java</artifactId>
                 <version>${codenvy.version}</version>
                 <exclusions>

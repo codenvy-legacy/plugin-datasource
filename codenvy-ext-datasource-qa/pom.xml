@@ -9,7 +9,7 @@
     <artifactId>codenvy-ext-datasource-qa</artifactId>
     <name>codenvy-ext-datasource-qa</name>
     <properties>
-        <codenvy.ide.path>${project.build.directory}/../../codenvy-ext-datasource-packaging-standalone-tomcat/target/tomcat-ide</codenvy.ide.path>
+        <codenvy.ide.path>${project.build.directory}/tomcat-ide</codenvy.ide.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -35,6 +35,30 @@
             <id>itests</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.codenvy.ide</groupId>
+                                            <artifactId>codenvy-ext-datasource-packaging-standalone-tomcat</artifactId>
+                                            <type>zip</type>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${codenvy.ide.path}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>2.12.2</version>
