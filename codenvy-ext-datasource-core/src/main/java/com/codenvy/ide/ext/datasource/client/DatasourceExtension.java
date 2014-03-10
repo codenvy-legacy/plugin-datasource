@@ -41,6 +41,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNew
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb.NuoDBDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle.OracleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.ExecuteSqlAction;
@@ -76,6 +77,7 @@ public class DatasourceExtension {
                                Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
+                               Provider<NuoDBDatasourceConnectorPage> nuodbConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
@@ -134,6 +136,14 @@ public class DatasourceExtension {
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
         connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, connectorCounter,
                                 "MsSqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+
+        connectorCounter++;
+
+        // add a new NuoDB connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> nuoDBWizardPages = Collections.createArray();
+        nuoDBWizardPages.add(nuodbConnectorPageProvider);
+        connectorAgent.register(NuoDBDatasourceConnectorPage.NUODB_DB_ID, connectorCounter,
+                                "NuoDB", null, "com.nuodb.jdbc.Driver", nuoDBWizardPages);
 
         connectorCounter++;
 
