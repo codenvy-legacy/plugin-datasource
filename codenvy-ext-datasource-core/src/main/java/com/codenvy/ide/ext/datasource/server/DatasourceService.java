@@ -118,6 +118,12 @@ public class DatasourceService {
             LOG.info("JTDS driver not present");
             LOG.debug("JTDS driver not present", e);
         }
+        try {
+            Class.forName("com.nuodb.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            LOG.info("NuoDB driver not present");
+            LOG.debug("NuoDB driver not present", e);
+        }
     }
 
     @Inject
