@@ -286,9 +286,4 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>nonFreeJDBC</id>
-        </profile>
-    </profiles>
 </project>

@@ -247,27 +247,6 @@
                                     <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
                                     <destFileName>logback-classic.jar</destFileName>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.postgresql</groupId>
-                                    <artifactId>postgresql</artifactId>
-                                    <version>${postgresql-driver.version}</version>
-                                    <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
-                                    <destFileName>postgresql-${postgresql-driver.version}.jar</destFileName>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>mysql</groupId>
-                                    <artifactId>mysql-connector-java</artifactId>
-                                    <version>${mysql-driver.version}</version>
-                                    <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
-                                    <destFileName>mysql-connector-java-${mysql-driver.version}.jar</destFileName>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>net.sourceforge.jtds</groupId>
-                                    <artifactId>jtds</artifactId>
-                                    <version>${jtds-driver.version}</version>
-                                    <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
-                                    <destFileName>jtds-${jtds-driver.version}.jar</destFileName>
-                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -445,7 +424,7 @@
                                     <fileset dir="${basedir}/src/main/resources/tomcat" />
                                 </copy>
                                 <chmod dir="${project.build.directory}/tomcat-ide/bin" includes="**/*.sh" perm="+x" />
-                                <move file="${project.build.directory}/tomcat-ide/bin/catalina.sh" tofile="${project.build.directory}/tomcat-ide/bin/codenvy.sh"/>
+                                <move file="${project.build.directory}/tomcat-ide/bin/catalina.sh" tofile="${project.build.directory}/tomcat-ide/bin/codenvy.sh" />
                                 <!-- Copy resources to re-build Codenvy IDE with 3rd-party extensions. -->
                                 <copy overwrite="true" todir="${project.build.directory}/tomcat-ide/sdk-resources">
                                     <fileset dir="${project.build.directory}/../../codenvy-ext-datasource-application-war" includes="src/**, pom.xml" />
@@ -493,7 +472,12 @@
     </build>
     <profiles>
         <profile>
-            <id>nonFreeJDBC</id>
+            <id>postgres-jdbc</id>
+            <activation>
+                <property>
+                    <name>!disablePostgres</name>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -501,7 +485,92 @@
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>copy-tomcat-nonfree-jdbc-libs</id>
+                                <id>copy-tomcat-postgres-jdbc-libs</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.postgresql</groupId>
+                                            <artifactId>postgresql</artifactId>
+                                            <version>${postgresql-driver.version}</version>
+                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                            <destFileName>postgresql-${postgresql-driver.version}.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>jtds-jdbc</id>
+            <activation>
+                <property>
+                    <name>!disableJtds</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-tomcat-jtds-jdbc-libs</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>net.sourceforge.jtds</groupId>
+                                            <artifactId>jtds</artifactId>
+                                            <version>${jtds-driver.version}</version>
+                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                            <destFileName>jtds-${jtds-driver.version}.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>net.sourceforge.jtds</groupId>
+                    <artifactId>jtds</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>oracle-jdbc</id>
+            <activation>
+                <property>
+                    <name>enableOracle</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-tomcat-oracle-jdbc-libs</id>
                                 <phase>process-resources</phase>
                                 <goals>
                                     <goal>copy</goal>
@@ -522,6 +591,54 @@
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <dependency>
+                    <groupId>com.oracle</groupId>
+                    <artifactId>ojdbc6</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>mysql-jdbc</id>
+            <activation>
+                <property>
+                    <name>!disableMysql</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-tomcat-mysql-jdbc-libs</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>mysql</groupId>
+                                            <artifactId>mysql-connector-java</artifactId>
+                                            <version>${mysql-driver.version}</version>
+                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                            <destFileName>mysql-connector-java-${mysql-driver.version}.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
