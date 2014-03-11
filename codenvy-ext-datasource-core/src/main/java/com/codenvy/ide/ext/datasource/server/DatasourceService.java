@@ -95,6 +95,8 @@ public class DatasourceService {
 
     private final SqlRequestService sqlRequestService;
 
+    private final DriverMapping     driverMapping;
+
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -130,9 +132,11 @@ public class DatasourceService {
 
     @Inject
     public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder,
-                             final SqlRequestService sqlRequestService) {
+                             final SqlRequestService sqlRequestService,
+                             final DriverMapping driverMapping) {
         this.jdbcUrlBuilder = jdbcUrlBuilder;
         this.sqlRequestService = sqlRequestService;
+        this.driverMapping = driverMapping;
     }
 
     @Path(ServicePaths.DATABASE_TYPES_PATH)
