@@ -28,6 +28,7 @@ public class DatasourceServiceModule extends AbstractModule {
         bind(DatasourceService.class);
         bind(JdbcUrlBuilder.class);
         bind(SqlRequestService.class);
+        bind(DriverMapping.class).to(DriverMappingImpl.class);
     }
 
 }
