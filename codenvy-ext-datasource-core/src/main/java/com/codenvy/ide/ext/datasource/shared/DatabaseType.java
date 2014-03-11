@@ -29,5 +29,7 @@ public enum DatabaseType {
 
     NUODB,
 
-    GOOGLECLOUDSQL
+    GOOGLECLOUDSQL,
+
+    DRIZZLE
 }
