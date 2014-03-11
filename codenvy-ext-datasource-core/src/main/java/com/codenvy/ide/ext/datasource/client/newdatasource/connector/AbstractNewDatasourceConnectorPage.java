@@ -34,6 +34,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMe
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
@@ -41,6 +42,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
 public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage implements
@@ -77,6 +79,12 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         this.messages = messages;
     }
 
+    @Override
+    public void go(final AcceptsOneWidget container) {
+        container.setWidget(getView());
+        getView().setPort(getDefaultPort());
+    }
+
     public JdbcDatasourceConnectorView getView() {
         return view;
     }
@@ -86,7 +94,18 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
      * 
      * @return the database
      */
-    protected abstract DatabaseConfigurationDTO getConfiguredDatabase();
+    protected DatabaseConfigurationDTO getConfiguredDatabase() {
+        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
+        DatabaseConfigurationDTO result =
+                                          dtoFactory.createDto(DatabaseConfigurationDTO.class)
+                                                    .withDatabaseName(getView().getDatabaseName())
+                                                    .withHostname(getView().getHostname()).withPort(getView().getPort())
+                                                    .withUsername(getView().getUsername())
+                                                    .withPassword(getView().getPassword())
+                                                    .withDatabaseType(getDatabaseType())
+                                                    .withDatasourceId(datasourceId);
+        return result;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -191,4 +210,8 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
             connectingNotification.setStatus(Notification.Status.FINISHED);
         }
     }
+
+    public abstract Integer getDefaultPort();
+
+    public abstract DatabaseType getDatabaseType();
 }

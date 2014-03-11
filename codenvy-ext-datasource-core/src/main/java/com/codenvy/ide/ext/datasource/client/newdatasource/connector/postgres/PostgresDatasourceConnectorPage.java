@@ -22,13 +22,10 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
-import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -39,7 +36,6 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
     public static final String PG_DB_ID           = "postgres";
     private static final int   DEFAULT_PORT_PGSQL = 5432;
 
-    private final DtoFactory   dtoFactory;
 
     @Inject
     public PostgresDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
@@ -52,29 +48,16 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                            final NewDatasourceWizardMessages messages) {
         super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages);
-        this.dtoFactory = dtoFactory;
     }
-
 
     @Override
-    public void go(final AcceptsOneWidget container) {
-        container.setWidget(getView());
-        getView().setPort(DEFAULT_PORT_PGSQL);
+    public Integer getDefaultPort() {
+        return DEFAULT_PORT_PGSQL;
     }
 
-
-    protected DatabaseConfigurationDTO getConfiguredDatabase() {
-        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
-        DatabaseConfigurationDTO result =
-                                          dtoFactory.createDto(DatabaseConfigurationDTO.class)
-                                                    .withDatabaseName(getView().getDatabaseName())
-                                                    .withHostname(getView().getHostname()).withPort(getView().getPort())
-                                                    .withUsername(getView().getUsername())
-                                                    .withPassword(getView().getPassword())
-                                                    .withDatabaseType(DatabaseType.POSTGRES)
-                                                    .withDatasourceId(datasourceId);
-        return result;
+    @Override
+    public DatabaseType getDatabaseType() {
+        return DatabaseType.POSTGRES;
     }
-
 
 }
