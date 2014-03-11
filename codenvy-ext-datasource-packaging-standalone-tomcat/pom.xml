@@ -82,6 +82,12 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
+            <artifactId>empty-extension</artifactId>
+            <version>${codenvy.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.ide</groupId>
             <artifactId>gin-tutorial</artifactId>
             <version>${codenvy.version}</version>
             <type>zip</type>
@@ -89,6 +95,12 @@
         <dependency>
             <groupId>com.codenvy.ide</groupId>
             <artifactId>gist-extension</artifactId>
+            <version>${codenvy.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.ide</groupId>
+            <artifactId>helloworld-extension</artifactId>
             <version>${codenvy.version}</version>
             <type>jar</type>
         </dependency>
@@ -126,22 +138,6 @@
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>${jsch.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-            <version>${jgit.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit.http.server</artifactId>
-            <version>${jgit.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.exoplatform.ide</groupId>
-            <artifactId>exo-ide-git-server</artifactId>
-            <version>${org.exoplatform.ide.version}</version>
-            <type>war</type>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -357,6 +353,24 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>com.codenvy.ide</groupId>
+                                    <artifactId>empty-extension</artifactId>
+                                    <type>zip</type>
+                                    <version>${codenvy.version}</version>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/packager-conf/zip/tutorials</outputDirectory>
+                                    <destFileName>empty-extension.zip</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.codenvy.ide</groupId>
+                                    <artifactId>helloworld-extension</artifactId>
+                                    <type>zip</type>
+                                    <version>${codenvy.version}</version>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/packager-conf/zip/tutorials</outputDirectory>
+                                    <destFileName>helloworld-extension.zip</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.codenvy.ide</groupId>
                                     <artifactId>wysiwyg-editor-tutorial</artifactId>
                                     <type>zip</type>
                                     <version>${codenvy.version}</version>
@@ -446,7 +460,6 @@
                                 <war destfile="${project.build.directory}/tomcat-ide/webapps/ide.war" needxmlfile="false">
                                     <fileset dir="${project.build.directory}/packager-conf/war/ide" />
                                 </war>
-                                <copy file="${project.build.directory}/packager-conf/war/exo-ide-git-server-${org.exoplatform.ide.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/git.war" />
                                 <copy file="${project.build.directory}/packager-conf/war/codenvy-ext-datasource-api-war-${project.version}.war" overwrite="true" tofile="${project.build.directory}/tomcat-ide/webapps/api.war" />
                                 <unzip dest="${project.build.directory}/tomcat-ide" src="${project.build.directory}/repo.zip" />
                                 <chmod dir="${project.build.directory}/tomcat-ide" includes="*.sh" perm="+x" />
