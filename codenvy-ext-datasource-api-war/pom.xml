@@ -29,8 +29,8 @@
     <packaging>war</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-api-war</artifactId>
+            <groupId>com.codenvy.sdk</groupId>
+            <artifactId>assembly-platform-api</artifactId>
             <type>war</type>
         </dependency>
         <dependency>
