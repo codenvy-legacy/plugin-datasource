@@ -17,17 +17,18 @@
  */
 package com.codenvy.ide.ext.datasource.client.events;
 
-import java.util.List;
+import java.util.Collection;
 
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.gwt.event.shared.GwtEvent;
 
 public class JdbcDriversFetchedEvent extends GwtEvent<JdbcDriversFetchedEventHandler> {
 
     private static Type<JdbcDriversFetchedEventHandler> TYPE;
 
-    protected List<String>                              drivers;
+    protected Collection<DatabaseType>                  drivers;
 
-    public JdbcDriversFetchedEvent(List<String> drivers) {
+    public JdbcDriversFetchedEvent(final Collection<DatabaseType> drivers) {
         this.drivers = drivers;
     }
 

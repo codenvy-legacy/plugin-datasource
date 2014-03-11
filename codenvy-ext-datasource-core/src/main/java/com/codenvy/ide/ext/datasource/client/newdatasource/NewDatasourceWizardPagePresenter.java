@@ -18,7 +18,6 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
@@ -26,6 +25,7 @@ import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEventHandler;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -67,14 +67,14 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     public void focusComponent() {
     }
 
-    protected void updateAvailableDatabase(List<String> drivers) {
+    protected void updateAvailableDatabase(final Collection<DatabaseType> drivers) {
         view.disableAllDbTypeButton();
         if (drivers == null) {
             return;
         }
 
         for (final NewDatasourceConnector connector : dbConnectors) {
-            if (drivers.contains(connector.getJdbcClassName())) {
+            if (drivers.contains(connector.getDatabaseType())) {
                 view.enableDbTypeButton(connector.getId());
             }
         }
@@ -92,12 +92,12 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
         dbConnectors = connectorAgent.getConnectors();
         view.setConnectors(dbConnectors);
 
-        List<String> drivers = jdbcDriversService.getDrivers();
+        final Collection<DatabaseType> drivers = jdbcDriversService.getDrivers();
         updateAvailableDatabase(drivers);
 
         eventBus.addHandler(JdbcDriversFetchedEvent.getType(), new JdbcDriversFetchedEventHandler() {
             @Override
-            public void onJdbcDriversFetched(List<String> drivers) {
+            public void onJdbcDriversFetched(final Collection<DatabaseType> drivers) {
                 updateAvailableDatabase(drivers);
             }
         });

@@ -45,6 +45,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb.NuoDB
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle.OracleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.ExecuteSqlAction;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.util.input.CharCodeWithModifiers;
 import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
@@ -111,7 +112,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
         connectorAgent.register(PostgresDatasourceConnectorPage.PG_DB_ID, connectorCounter, "PostgreSQL",
-                                resources.getPostgreSqlLogo(), "org.postgresql.Driver", pgWizardPages);
+                                resources.getPostgreSqlLogo(), DatabaseType.POSTGRES, pgWizardPages);
 
         connectorCounter++;
 
@@ -119,7 +120,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
         connectorAgent.register(MysqlDatasourceConnectorPage.MYSQL_DB_ID, connectorCounter, "MySQL",
-                                resources.getMySqlLogo(), "com.mysql.jdbc.Driver", mysqlWizardPages);
+                                resources.getMySqlLogo(), DatabaseType.MYSQL, mysqlWizardPages);
 
         connectorCounter++;
 
@@ -127,7 +128,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
         oracleWizardPages.add(oracleConnectorPageProvider);
         connectorAgent.register(OracleDatasourceConnectorPage.ORACLE_DB_ID, connectorCounter,
-                                "Oracle", resources.getOracleLogo(), "oracle.jdbc.OracleDriver", oracleWizardPages);
+                                "Oracle", resources.getOracleLogo(), DatabaseType.ORACLE, oracleWizardPages);
 
         connectorCounter++;
 
@@ -135,7 +136,8 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
         connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, connectorCounter,
-                                "MsSqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages);
+
+                                "MsSqlServer", resources.getSqlServerLogo(), DatabaseType.JTDS, sqlServerWizardPages);
 
         connectorCounter++;
 
@@ -143,7 +145,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> nuoDBWizardPages = Collections.createArray();
         nuoDBWizardPages.add(nuodbConnectorPageProvider);
         connectorAgent.register(NuoDBDatasourceConnectorPage.NUODB_DB_ID, connectorCounter,
-                                "NuoDB", resources.getNuoDBLogo(), "com.nuodb.jdbc.Driver", nuoDBWizardPages);
+                                "NuoDB", resources.getNuoDBLogo(), DatabaseType.NUODB, nuoDBWizardPages);
 
         connectorCounter++;
 

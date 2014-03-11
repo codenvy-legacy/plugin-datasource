@@ -17,13 +17,14 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DriversDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
@@ -33,7 +34,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class AvailableJdbcDriversServiceRestImpl implements AvailableJdbcDriversService {
 
-    List<String>                      drivers;
+    Collection<DatabaseType>          drivers;
     protected DatasourceClientService datasourceClientService;
     protected DtoFactory              dtoFactory;
     protected NotificationManager     notificationManager;
@@ -56,7 +57,7 @@ public class AvailableJdbcDriversServiceRestImpl implements AvailableJdbcDrivers
                 @Override
                 protected void onSuccess(String result) {
                     DriversDTO driversDto = dtoFactory.createDtoFromJson(result, DriversDTO.class);
-                    drivers = driversDto.getDrivers();
+                    drivers = driversDto.getSupportedDatabaseTypes();
                     eventBus.fireEvent(new JdbcDriversFetchedEvent(drivers));
                 }
 
@@ -73,7 +74,7 @@ public class AvailableJdbcDriversServiceRestImpl implements AvailableJdbcDrivers
     }
 
     @Override
-    public List<String> getDrivers() {
+    public Collection<DatabaseType> getDrivers() {
         return drivers;
     }
 

@@ -18,6 +18,7 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Provider;
 
@@ -28,20 +29,20 @@ public class NewDatasourceConnector implements Comparable<NewDatasourceConnector
     private final String                                                         id;
     private final String                                                         title;
     private final ImageResource                                                  image;
-    private final String                                                         jdbcClassName;
+    private final DatabaseType                                                   databaseType;
     private final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages;
 
     public NewDatasourceConnector(final String connectorId,
                                   final int priority,
                                   final String title,
                                   final ImageResource logo,
-                                  final String jdbcClassName,
+                                  final DatabaseType databaseType,
                                   final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
         this.id = connectorId;
         this.priority = priority;
         this.title = title;
         this.image = logo;
-        this.jdbcClassName = jdbcClassName;
+        this.databaseType = databaseType;
         this.wizardPages = wizardPages;
     }
 
@@ -57,8 +58,8 @@ public class NewDatasourceConnector implements Comparable<NewDatasourceConnector
         return image;
     }
 
-    public String getJdbcClassName() {
-        return jdbcClassName;
+    public DatabaseType getDatabaseType() {
+        return this.databaseType;
     }
 
     public Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> getWizardPages() {

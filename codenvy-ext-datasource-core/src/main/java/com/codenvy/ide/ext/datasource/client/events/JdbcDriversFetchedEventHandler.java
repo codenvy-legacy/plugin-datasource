@@ -17,12 +17,13 @@
  */
 package com.codenvy.ide.ext.datasource.client.events;
 
-import java.util.List;
+import java.util.Collection;
 
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.gwt.event.shared.EventHandler;
 
 public interface JdbcDriversFetchedEventHandler extends EventHandler {
 
-    void onJdbcDriversFetched(List<String> drivers);
+    void onJdbcDriversFetched(Collection<DatabaseType> drivers);
 
 }

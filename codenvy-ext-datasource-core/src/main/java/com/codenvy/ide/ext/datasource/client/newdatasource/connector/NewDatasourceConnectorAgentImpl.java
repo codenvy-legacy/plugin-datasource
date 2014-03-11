@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
@@ -63,10 +64,10 @@ public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAg
                          int priority,
                          @NotNull String title,
                          @Nullable ImageResource image,
-                         @NotNull String jdbcClassName,
+                         @NotNull DatabaseType databaseType,
                          @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
 
-        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, jdbcClassName, wizardPages);
+        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, databaseType, wizardPages);
         register(connector);
     }
 

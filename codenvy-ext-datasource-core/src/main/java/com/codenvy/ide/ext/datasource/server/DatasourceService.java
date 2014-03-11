@@ -30,8 +30,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -66,6 +68,7 @@ import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DriversDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
@@ -144,12 +147,15 @@ public class DatasourceService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String getAvailableDatabaseDrivers() throws Exception {
         final Enumeration<Driver> loadedDrivers = DriverManager.getDrivers();
-        final List<String> drivers = new ArrayList<>();
+        final Set<DatabaseType> supportedDB = new HashSet<>();
         while (loadedDrivers.hasMoreElements()) {
-            Driver driver = loadedDrivers.nextElement();
-            drivers.add(driver.getClass().getCanonicalName());
+            final Driver driver = loadedDrivers.nextElement();
+            final String className = driver.getClass().getCanonicalName();
+            supportedDB.addAll(this.driverMapping.getSupportedDatabaseTypes(className));
         }
-        final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
+        final List<DatabaseType> supportedDBList = new ArrayList<DatabaseType>(supportedDB);
+
+        final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withSupportedDatabaseTypes(supportedDBList);
         final String msg = DtoFactory.getInstance().toJson(driversDTO);
         LOG.info(msg);
         return msg;

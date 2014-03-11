@@ -17,9 +17,10 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 
 public interface AvailableJdbcDriversService {
 
@@ -32,6 +33,6 @@ public interface AvailableJdbcDriversService {
     /**
      * get the list of JDBC drivers that has been fetched previously
      */
-    List<String> getDrivers();
+    Collection<DatabaseType> getDrivers();
 
 }

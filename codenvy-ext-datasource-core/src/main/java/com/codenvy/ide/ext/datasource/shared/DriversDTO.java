@@ -24,12 +24,11 @@ import com.codenvy.dto.shared.DTO;
 @DTO
 public interface DriversDTO {
 
-    void setDrivers(List<String> drivers);
+    void setSupportedDatabaseTypes(List<DatabaseType> supportedDatabaseTypes);
 
-    DriversDTO withDrivers(List<String> drivers);
+    DriversDTO withSupportedDatabaseTypes(List<DatabaseType> supportedDatabaseTypes);
 
-    List<String> getDrivers();
+    List<DatabaseType> getSupportedDatabaseTypes();
 
-    
-    
+
 }
