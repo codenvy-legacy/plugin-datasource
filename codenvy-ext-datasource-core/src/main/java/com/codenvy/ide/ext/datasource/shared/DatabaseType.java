@@ -10,5 +10,7 @@ public enum DatabaseType {
 
     JTDS,
 
-    NUODB
+    NUODB,
+
+    DRIZZLE
 }
