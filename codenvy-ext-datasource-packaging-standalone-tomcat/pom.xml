@@ -640,5 +640,48 @@
                 </dependency>
             </dependencies>
         </profile>
+                <profile>
+            <id>nuodb-jdbc</id>
+            <activation>
+                <property>
+                    <name>enableNuodb</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-tomcat-nuodb-jdbc-libs</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>com.nuodb.jdbc</groupId>
+                                            <artifactId>nuodb-jdbc</artifactId>
+                                            <version>${nuodb-driver.version}</version>
+                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                            <destFileName>nuodb-jdbc-${nuodb-driver.version}.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>com.nuodb.jdbc</groupId>
+                    <artifactId>nuodb-jdbc</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 </project>
