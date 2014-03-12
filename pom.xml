@@ -41,6 +41,7 @@
         <jtds-driver.version>1.2</jtds-driver.version>
         <mysql-driver.version>5.1.29</mysql-driver.version>
         <nuodb-driver.version>2.0.3</nuodb-driver.version>
+        <drizzle-driver.version>1.2</drizzle-driver.version>
         <opencsv.version>2.3</opencsv.version>
         <oracle-driver.version>11.2.0</oracle-driver.version>
         <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
@@ -210,6 +211,12 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql-driver.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.drizzle.jdbc</groupId>
+                <artifactId>drizzle-jdbc</artifactId>
+                <version>${drizzle-driver.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
