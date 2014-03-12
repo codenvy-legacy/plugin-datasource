@@ -95,11 +95,9 @@
 }
 
 .cellTableHoveredRow {
-  background: cellHoveredRow;
 }
 
 .cellTableHoveredRowCell {
-  border: selectionBorderWidth solid cellHoveredRow;
 }
 
 .cellTableKeyboardSelectedRow {
