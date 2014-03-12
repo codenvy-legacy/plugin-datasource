@@ -318,7 +318,7 @@ public class DatasourceService {
 
         Database database = null;
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
-            if (connection != null && !connection.equals("")) {
+            if (connection != null) {
                 return ("Connection Succeeded !");
             }
             else {
