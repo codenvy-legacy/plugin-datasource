@@ -316,7 +316,6 @@ public class DatasourceService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) throws Exception {
 
-        Database database = null;
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
             if (connection != null) {
                 return ("Connection Succeeded !");
