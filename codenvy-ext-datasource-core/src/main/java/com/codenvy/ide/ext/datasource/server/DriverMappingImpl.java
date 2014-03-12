@@ -3,6 +3,7 @@ package com.codenvy.ide.ext.datasource.server;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class DriverMappingImpl implements DriverMapping {
     public static final String                    ORACLE_JDBC_DRIVER_CLASSNAME   = "oracle.jdbc.driver.OracleDriver";
     public static final String                    JTDS_JDBC_DRIVER_CLASSNAME     = "net.sourceforge.jtds.jdbc.Driver";
     public static final String                    NUODB_JDBC_DRIVER_CLASSNAME    = "com.nuodb.jdbc.Driver";
+    public static final String                    DRIZZLE_JDBC_DRIVER_CLASSNAME  = "org.drizzle.jdbc.DrizzleDriver";
 
     static {
         try {
@@ -52,6 +54,12 @@ public class DriverMappingImpl implements DriverMapping {
             LOG.info("NuoDB driver not present");
             LOG.debug("NuoDB driver not present", e);
         }
+        try {
+            Class.forName(DRIZZLE_JDBC_DRIVER_CLASSNAME);
+        } catch (ClassNotFoundException e) {
+            LOG.info("Drizzle driver not present");
+            LOG.debug("Drizzle driver not present", e);
+        }
     }
 
     private final Map<String, Set<DatabaseType>>  driverSupports                 = new HashMap<>();
@@ -64,13 +72,17 @@ public class DriverMappingImpl implements DriverMapping {
         this.driverSupports.put(ORACLE_JDBC_DRIVER_CLASSNAME, Collections.singleton(DatabaseType.ORACLE));
         this.driverSupports.put(NUODB_JDBC_DRIVER_CLASSNAME, Collections.singleton(DatabaseType.NUODB));
 
+        Set<DatabaseType> drizzleSupports = new HashSet<>();
+        drizzleSupports.add(DatabaseType.MYSQL);
+        drizzleSupports.add(DatabaseType.DRIZZLE);
+        this.driverSupports.put(DRIZZLE_JDBC_DRIVER_CLASSNAME, drizzleSupports);
 
         this.driverPreferences.put(DatabaseType.POSTGRES, new String[]{POSTGRES_JDBC_DRIVER_CLASSNAME});
         this.driverPreferences.put(DatabaseType.ORACLE, new String[]{ORACLE_JDBC_DRIVER_CLASSNAME});
         this.driverPreferences.put(DatabaseType.JTDS, new String[]{JTDS_JDBC_DRIVER_CLASSNAME});
-        this.driverPreferences.put(DatabaseType.MYSQL, new String[]{MYSQL_JDBC_DRIVER_CLASSNAME});
+        this.driverPreferences.put(DatabaseType.MYSQL, new String[]{MYSQL_JDBC_DRIVER_CLASSNAME, DRIZZLE_JDBC_DRIVER_CLASSNAME});
         this.driverPreferences.put(DatabaseType.NUODB, new String[]{NUODB_JDBC_DRIVER_CLASSNAME});
-
+        this.driverPreferences.put(DatabaseType.DRIZZLE, new String[]{DRIZZLE_JDBC_DRIVER_CLASSNAME});
     }
 
     @Override
