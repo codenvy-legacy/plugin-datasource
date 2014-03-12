@@ -644,7 +644,7 @@
                 </dependency>
             </dependencies>
         </profile>
-                <profile>
+        <profile>
             <id>nuodb-jdbc</id>
             <activation>
                 <property>
@@ -684,6 +684,49 @@
                 <dependency>
                     <groupId>com.nuodb.jdbc</groupId>
                     <artifactId>nuodb-jdbc</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>drizzle-jdbc</id>
+            <activation>
+                <property>
+                    <name>enableDrizzle</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-tomcat-drizzle-jdbc-libs</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.drizzle.jdbc</groupId>
+                                            <artifactId>drizzle-jdbc</artifactId>
+                                            <version>${drizzle-driver.version}</version>
+                                            <outputDirectory>${project.build.directory}/tomcat-ide/lib</outputDirectory>
+                                            <destFileName>drizzle-jdbc-${drizzle-driver.version}.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.drizzle.jdbc</groupId>
+                    <artifactId>drizzle-jdbc</artifactId>
                 </dependency>
             </dependencies>
         </profile>
