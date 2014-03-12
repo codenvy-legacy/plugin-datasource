@@ -100,39 +100,6 @@ public class DatasourceService {
 
     private final DriverMapping     driverMapping;
 
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            LOG.info("postgresql driver not present");
-            LOG.debug("postgresql driver not present", e);
-        }
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            LOG.info("MySQL driver not present");
-            LOG.debug("MySQL driver not present", e);
-        }
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-        } catch (ClassNotFoundException e) {
-            LOG.info("Oracle driver not present");
-            LOG.debug("Oracle driver not present", e);
-        }
-        try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            LOG.info("JTDS driver not present");
-            LOG.debug("JTDS driver not present", e);
-        }
-        try {
-            Class.forName("com.nuodb.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            LOG.info("NuoDB driver not present");
-            LOG.debug("NuoDB driver not present", e);
-        }
-    }
-
     @Inject
     public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder,
                              final SqlRequestService sqlRequestService,
