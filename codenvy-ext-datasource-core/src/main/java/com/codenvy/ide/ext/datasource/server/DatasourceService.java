@@ -82,6 +82,7 @@ import com.google.inject.Inject;
 
 @Path("{ws-name}/" + ServicePaths.BASE_DATASOURCE_PATH)
 public class DatasourceService {
+
     private static final Logger     LOG                          = LoggerFactory.getLogger(DatasourceService.class);
 
     public final static String      TEXT_CSV                     = "text/csv";
