@@ -12,6 +12,7 @@ public class JdbcUrlBuilder {
     private static final String URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
     private static final String URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_DRIZZLE  = "jdbc:drizzle://{0}:{1}/{2}";
 
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
@@ -29,6 +30,8 @@ public class JdbcUrlBuilder {
                 return getJTDSJdbcUrl(configuration);
             case NUODB:
                 return getNuoDBJdbcUrl(configuration);
+            case DRIZZLE:
+                return getDrizzleJdbcUrl(configuration);
             default:
                 throw new DatabaseDefinitionException("Unknown database type "
                                                       + configuration.getDatabaseType()
@@ -71,6 +74,14 @@ public class JdbcUrlBuilder {
 
     private String getNuoDBJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_NUODB,
+                                          configuration.getHostname(),
+                                          Integer.toString(configuration.getPort()),
+                                          configuration.getDatabaseName());
+        return url;
+    }
+
+    private String getDrizzleJdbcUrl(final DatabaseConfigurationDTO configuration) {
+        String url = MessageFormat.format(URL_TEMPLATE_DRIZZLE,
                                           configuration.getHostname(),
                                           Integer.toString(configuration.getPort()),
                                           configuration.getDatabaseName());
