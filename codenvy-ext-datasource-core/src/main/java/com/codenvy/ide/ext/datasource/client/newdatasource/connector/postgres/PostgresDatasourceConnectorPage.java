@@ -23,6 +23,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
@@ -47,8 +48,10 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                            final DatasourceManager datasourceManager,
                                            final EventBus eventBus,
                                            final DatasourceClientService service,
-                                           final DatasourceUiResources resources) {
-        super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager);
+                                           final DatasourceUiResources resources,
+                                           final NewDatasourceWizardMessages messages) {
+        super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
+              dtoFactory, messages);
         this.dtoFactory = dtoFactory;
     }
 

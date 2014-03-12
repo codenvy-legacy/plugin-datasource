@@ -25,29 +25,35 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
+import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
+import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
+import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
-import com.codenvy.ide.util.loging.Log;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
+import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.user.client.Window;
 
 public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage implements
-             JdbcDatasourceConnectorView.ActionDelegate {
+                                                                                   JdbcDatasourceConnectorView.ActionDelegate {
 
-    private JdbcDatasourceConnectorView      view;
-    private String                           datasourceId;
-    private DatasourceManager                datasourceManager;
-    private EventBus                         eventBus;
-    private DatasourceClientService          service;
-    private NotificationManager              notificationManager;
+    private final JdbcDatasourceConnectorView view;
+    private final String                      datasourceId;
+    private final DatasourceManager           datasourceManager;
+    private final EventBus                    eventBus;
+    private final DatasourceClientService     service;
+    private final NotificationManager         notificationManager;
+    private final DtoFactory                  dtoFactory;
+    private final NewDatasourceWizardMessages messages;
 
     public AbstractNewDatasourceConnectorPage(@Nullable final JdbcDatasourceConnectorView view,
                                               @Nullable final String caption,
@@ -56,7 +62,9 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
                                               @NotNull final DatasourceManager datasourceManager,
                                               @NotNull final EventBus eventBus,
                                               @NotNull final DatasourceClientService service,
-                                              @NotNull final NotificationManager notificationManager) {
+                                              @NotNull final NotificationManager notificationManager,
+                                              @NotNull final DtoFactory dtoFactory,
+                                              @NotNull final NewDatasourceWizardMessages messages) {
         super(caption, image);
         view.setDelegate(this);
         this.datasourceId = datasourceId;
@@ -65,6 +73,8 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         this.service = service;
         this.view = view;
         this.notificationManager = notificationManager;
+        this.dtoFactory = dtoFactory;
+        this.messages = messages;
     }
 
     public JdbcDatasourceConnectorView getView() {
@@ -144,28 +154,41 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     @Override
     public void onClickTestConnectionButton() {
         DatabaseConfigurationDTO configuration = getConfiguredDatabase();
+
+        final Notification connectingNotification = new Notification(messages.startConnectionTest(),
+                                                                     Notification.Status.PROGRESS);
+        this.notificationManager.showNotification(connectingNotification);
+
         try {
-            final Notification connectingNotification = new Notification("Establishing Database Connection...",
-                    Notification.Status.PROGRESS);
-            notificationManager.showNotification(connectingNotification);
-            service.testDatabaseConnectivity(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+            this.service.testDatabaseConnectivity(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
                 @Override
                 protected void onSuccess(String result) {
-                    Window.alert(result);
-                    connectingNotification.setMessage("Succesfully connected to database");
-                    connectingNotification.setStatus(Notification.Status.FINISHED);
+                    final ConnectionTestResultDTO testResult = dtoFactory.createDtoFromJson(result, ConnectionTestResultDTO.class);
+                    if (Status.SUCCESS.equals(testResult.getTestResult())) {
+                        Window.alert(messages.connectionTestSuccessMessage());
+                        connectingNotification.setMessage(messages.connectionTestSuccessNotification());
+                        connectingNotification.setStatus(Notification.Status.FINISHED);
+                    } else {
+                        Window.alert(messages.connectionTestFailureSuccessMessage() + " " + testResult.getFailureMessage());
+                        connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
+                        connectingNotification.setStatus(Notification.Status.FINISHED);
+                    }
                 }
 
                 @Override
-                protected void onFailure(Throwable exception) {
+                protected void onFailure(final Throwable exception) {
+                    Window.alert(messages.connectionTestFailureSuccessMessage());
+                    connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
                     connectingNotification.setStatus(Notification.Status.FINISHED);
                 }
             }
 
-            );
-        } catch (RequestException e) {
+                        );
+        } catch (final RequestException e) {
             Log.info(AbstractNewDatasourceConnectorPage.class, e.getMessage());
-
+            Window.alert(messages.connectionTestFailureSuccessMessage());
+            connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
+            connectingNotification.setStatus(Notification.Status.FINISHED);
         }
     }
 }

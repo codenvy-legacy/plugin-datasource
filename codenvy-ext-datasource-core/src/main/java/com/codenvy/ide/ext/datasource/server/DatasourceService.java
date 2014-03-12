@@ -61,6 +61,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
+import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
+import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DriversDTO;
@@ -316,15 +318,18 @@ public class DatasourceService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) throws Exception {
 
+        final ConnectionTestResultDTO testResult = DtoFactory.getInstance().createDto(ConnectionTestResultDTO.class);
+
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
             if (connection != null) {
-                return ("Connection Succeeded !");
+                testResult.setTestResult(Status.SUCCESS);
+            } else {
+                testResult.setTestResult(Status.FAILURE);
+                // no message
             }
-            else {
-                return ("Connection Failed !");
-            }
-        } catch (SQLException e) {
-            return ("Connection Failed: " + e.getLocalizedMessage());
+        } catch (final SQLException e) {
+            testResult.withTestResult(Status.FAILURE).withFailureMessage(e.getLocalizedMessage());
         }
+        return DtoFactory.getInstance().toJson(testResult);
     }
 }
