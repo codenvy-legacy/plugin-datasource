@@ -67,6 +67,7 @@ import com.codenvy.ide.ext.datasource.shared.DriversDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
+import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
@@ -76,7 +77,7 @@ import com.google.common.base.Charsets;
 import com.google.common.net.HttpHeaders;
 import com.google.inject.Inject;
 
-@Path("{ws-name}/datasource")
+@Path("{ws-name}/" + ServicePaths.BASE_DATASOURCE_PATH)
 public class DatasourceService {
     private static final Logger     LOG                          = LoggerFactory.getLogger(DatasourceService.class);
 
@@ -124,7 +125,7 @@ public class DatasourceService {
         this.sqlRequestService = sqlRequestService;
     }
 
-    @Path("drivers")
+    @Path(ServicePaths.DATABASE_TYPES_PATH)
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String getAvailableDatabaseDrivers() throws Exception {
@@ -140,8 +141,7 @@ public class DatasourceService {
         return msg;
     }
 
-
-    @Path("database")
+    @Path(ServicePaths.DATABASE_METADATA_PATH)
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String getDatabase(final DatabaseConfigurationDTO databaseConfig) throws Exception {
@@ -226,7 +226,7 @@ public class DatasourceService {
     }
 
 
-    @Path("executeSqlRequest")
+    @Path(ServicePaths.EXECUTE_SQL_REQUEST_PATH)
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
@@ -244,7 +244,7 @@ public class DatasourceService {
         return json;
     }
 
-    @Path("csv/{data}")
+    @Path(ServicePaths.RESULT_CSV_PATH + "/{data}")
     @GET
     @Produces({TEXT_CSV + TEXT_CSV_CHARSET_UTF8_OPTION + TEXT_CSV_HEADER_OPTION, MediaType.TEXT_PLAIN})
     public Response exportAsCSV(@PathParam("data") final String encodedRequestResult) {
@@ -311,7 +311,7 @@ public class DatasourceService {
     }
 
 
-    @Path("testDatabaseConnectivity")
+    @Path(ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH)
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) throws Exception {

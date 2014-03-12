@@ -27,6 +27,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
+import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -80,15 +81,15 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                                  .withPort(port)
                                                  .withUsername(username)
                                                  .withPassword(password);
-        String url = restServiceContext + "/datasource/database";
-        AsyncRequest.build(RequestBuilder.POST, url, true).data(dtoFactory.toJson(dto)).header(CONTENTTYPE, APPLICATION_JSON)
-                    .header(ACCEPT, APPLICATION_JSON).send(asyncRequestCallback);
+        fetchDatabaseInfo(dto, asyncRequestCallback);
     }
 
     @Override
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = restServiceContext + "/datasource/database";
+        String url =
+                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.DATABASE_METADATA_PATH,
+                               null);
         AsyncRequest.build(RequestBuilder.POST, url, true)
                     .data(dtoFactory.toJson(configuration))
                     .header(CONTENTTYPE, APPLICATION_JSON)
@@ -103,7 +104,9 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final MultipleRequestExecutionMode execMode,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
-        String url = restServiceContext + "/datasource/executeSqlRequest";
+        String url =
+                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.EXECUTE_SQL_REQUEST_PATH,
+                               null);
         RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
                                                             .withDatabase(configuration)
                                                             .withResultLimit(resultLimit)
@@ -118,7 +121,9 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
 
     @Override
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = restServiceContext + "/datasource/drivers";
+        String url =
+                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.DATABASE_TYPES_PATH,
+                               null);
         AsyncRequest.build(RequestBuilder.GET, url, true)
                     .header(ACCEPT, APPLICATION_JSON)
                     .send(asyncRequestCallback);
@@ -133,13 +138,15 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     public String buildCsvExportUrl(final RequestResultDTO requestResult) {
         // the dto is converted to json then uri-escaped
         final String jsonParameter = dtoFactory.toJson(requestResult);
-        final String result = this.restServiceContext + "/datasource/csv/" + URL.encode(jsonParameter);
-        return result;
+        return formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.RESULT_CSV_PATH,
+                         URL.encode(jsonParameter));
     }
 
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = restServiceContext + "/datasource/testDatabaseConnectivity";
+        String url =
+                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH,
+                               null);
         AsyncRequest.build(RequestBuilder.POST, url, true)
                     .data(dtoFactory.toJson(configuration))
                     .header(CONTENTTYPE, APPLICATION_JSON)
@@ -147,5 +154,16 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                     .send(asyncRequestCallback);
     }
 
+    private String formatUrl(final String context, final String root, final String service, final String param) {
+        StringBuilder sb = new StringBuilder(context).append("/")
+                                                     .append(root)
+                                                     .append("/")
+                                                     .append(service);
+        if (param != null) {
+            sb.append('/')
+              .append(param);
+        }
+        return sb.toString();
+    }
 
 }
