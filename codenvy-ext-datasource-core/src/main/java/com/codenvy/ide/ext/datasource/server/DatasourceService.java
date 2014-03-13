@@ -43,6 +43,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -306,14 +307,15 @@ public class DatasourceService {
     }
 
     private Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
-        Driver[] drivers = Collections.list(DriverManager.getDrivers()).toArray(new Driver[0]);
+        if (LOG.isInfoEnabled()) {
+            Driver[] drivers = Collections.list(DriverManager.getDrivers()).toArray(new Driver[0]);
+            LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
+        }
 
 
-        LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
-        Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
-                                                            configuration.getUsername(),
-                                                            configuration.getPassword());
-
+        final Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
+                                                                  configuration.getUsername(),
+                                                                  configuration.getPassword());
 
         return connection;
     }
@@ -334,6 +336,8 @@ public class DatasourceService {
                 // no message
             }
         } catch (final SQLException e) {
+            LOG.info("Connection test failed ; error messages : {} | {}", e.getMessage());
+            LOG.debug("Connection test failed ; exception : {}", ExceptionUtils.getStackTrace(e));
             testResult.withTestResult(Status.FAILURE).withFailureMessage(e.getLocalizedMessage());
         }
         return DtoFactory.getInstance().toJson(testResult);
