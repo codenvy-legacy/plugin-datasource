@@ -3,7 +3,46 @@ Datasource-Plug-In
 
 Datassource plug-In for IDE3
 
-How to add Oracle JDBC Driver in your Maven local Repository:
+Bundled JDBC drivers
+--------------------
+
+The datasource plugin relies on JDBC driver.
+Some JDBC drivers can't be bundled with the tomcat instance that is packaged by the codenvy-ext-datasource-packaging-standalone
+module.
+
+The following drivers are bundled by default :
+
+- postgres
+- jtds (for MS SQLServer)
+- mysql
+
+Is the other drivers are needed, you must either :
+
+- be manually added to the packaged tomcat, inside the tomcat-ide/lib directory
+- force their inclusion by activating the relevant profile at compilation
+
+To force the bundling at compilation the driver must be present in you maven local repository or be available in a
+repository where your maven installation can find it.
+
+Available JDBC profiles
+-----------------------
+
+At the moment, the followind JDBC profiles are available :
+
+- postgres ; enabled by default ; can be disabled with -DdisablePostgres at compile time
+- jtds ; enabled by default ; can be disabled with -DdisableJtds at compile time
+- mysql ; enabled by default ; can be disabled with -DdisableMysql at compile time
+
+- oracle ; disabled by default ; can be enabled with -DenableOracle at compile time
+- nuodb ; disabled by default ; can be enabled with -DenableNuodb at compile time
+
+For example, you can create a tomcat ide instance with the following maven command :
+
+```
+    mvn clean install -DenableOracle
+```
+
+How to add Oracle JDBC Driver in your Maven local repository:
 -------------------------------------------------------------
 
 1. Get the appropriate oracle JDBC Driver: 2 ways:
@@ -13,45 +52,21 @@ http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769
   - Get it from Oracle database installed folder, for example, `{ORACLE_HOME}\jdbc\lib\ojdbc6.jar`
 
 
-2. Install It:
+2. Install it:
 To install your Oracle jdbc driver, issue following command :
 
 
-        mvn install:install-file -Dfile={Path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
+        mvn install:install-file -Dfile={path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 
-
-3. pom.xml:
-You reference it by declares following Oracle details in your pom.xml.
-
-		<!-- ORACLE database driver -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0</version>
-		</dependency>
  
  
-How to add SQL server JDBC Driver in your Maven local Repository:
------------------------------------------------------------------
+How to add the NuoDB Driver in your maven local repository:
+----------------------------------------------------------
 
-1. Download the driver JAR from: 
-http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11774
+1. Retrieve the driver jar from a NuoDB installation. it should be in jar/nuodbjdbc.jar.
 
-2. Unpack the file
+2. Install it :
 
-3. Install the jar: 
-
-
-        mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar
-
-
-4. Add dependency to the pom.xml:
-
-	
-        <!-- SQL server database driver -->
-        <dependency>
-          <groupId>com.microsoft.sqlserver</groupId>
-          <artifactId>sqljdbc4</artifactId>
-          <version>4.0</version>
-        </dependency>
-
+```
+        mvn install:install-file -Dfile={path/to/your/nuodbjdbc.jar} -DgroupId=com.nuodb.jdbc -DartifactId=nuodb-jdbc -Dversion=2.0.3 -Dpackaging=jar
+```
