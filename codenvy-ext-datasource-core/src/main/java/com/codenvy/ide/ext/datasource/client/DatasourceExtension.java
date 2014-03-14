@@ -143,7 +143,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> nuoDBWizardPages = Collections.createArray();
         nuoDBWizardPages.add(nuodbConnectorPageProvider);
         connectorAgent.register(NuoDBDatasourceConnectorPage.NUODB_DB_ID, connectorCounter,
-                                "NuoDB", null, "com.nuodb.jdbc.Driver", nuoDBWizardPages);
+                                "NuoDB", resources.getNuoDBLogo(), "com.nuodb.jdbc.Driver", nuoDBWizardPages);
 
         connectorCounter++;
 
