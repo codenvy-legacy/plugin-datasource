@@ -40,6 +40,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQu
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.cloud.sql.GoogleCloudSqlConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.drizzle.DrizzleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb.NuoDBDatasourceConnectorPage;
@@ -80,6 +81,7 @@ public class DatasourceExtension {
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
                                Provider<NuoDBDatasourceConnectorPage> nuodbConnectorPageProvider,
                                Provider<GoogleCloudSqlConnectorPage> googleCloudSqlConnectorPageProvider,
+                               Provider<DrizzleDatasourceConnectorPage> drizzleConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
@@ -157,6 +159,13 @@ public class DatasourceExtension {
 
         connectorCounter++;
 
+        // add a new Drizzle connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> drizzleDBWizardPages = Collections.createArray();
+        drizzleDBWizardPages.add(drizzleConnectorPageProvider);
+        connectorAgent.register(DrizzleDatasourceConnectorPage.DRIZZLE_DB_ID, connectorCounter,
+                                "Drizzle", null, "org.drizzle.jdbc.DrizzleDriver", drizzleDBWizardPages);
+
+        connectorCounter++;
 
         // Add execute shortcut
         actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);
