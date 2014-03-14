@@ -161,9 +161,9 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     protected Array<SqlCodeCompletionProposal> findTableAutocompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> array = Collections.createArray();
         String linePrefix = query.getLastQueryPrefix();
-        linePrefix = linePrefix.toLowerCase();
+        String linePrefixLowerCase = linePrefix.toLowerCase();
 
-        MatchResult matcher = TABLE_REGEXP_PATTERN.exec(linePrefix);
+        MatchResult matcher = TABLE_REGEXP_PATTERN.exec(linePrefixLowerCase);
         if (matcher != null) {
             String tablePrefix = matcher.getGroup(TABLE_REGEXP_GROUP);
             String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - tablePrefix.length());
@@ -189,9 +189,9 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     protected Array<SqlCodeCompletionProposal> findColumnAutocompletions(SqlCodeQuery query) {
         Array<SqlCodeCompletionProposal> array = Collections.createArray();
         String linePrefix = query.getLastQueryPrefix();
-        linePrefix = linePrefix.toLowerCase();
+        String linePrefixLowerCase = linePrefix.toLowerCase();
 
-        MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
+        MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefixLowerCase);
         List<String> selectedTables = new ArrayList<String>();
         boolean isSelectStatement = false;
 
@@ -211,7 +211,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                 selectedTables.add(prevSelectedTable);
             }
 
-            matcher = COLUMN_REGEXP_PATTERN.exec(linePrefix);
+            matcher = COLUMN_REGEXP_PATTERN.exec(linePrefixLowerCase);
         }
 
         String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - columnPrefix.length());

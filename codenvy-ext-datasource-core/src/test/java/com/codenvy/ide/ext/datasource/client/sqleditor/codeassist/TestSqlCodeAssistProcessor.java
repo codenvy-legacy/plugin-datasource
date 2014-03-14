@@ -99,14 +99,16 @@ public class TestSqlCodeAssistProcessor {
         testTableCompletion("Select * from ", "for number of results for table autocompletion, we expect ", 4);
     }
 
-    protected void testTableCompletion(String queryPrefix, String assertMessage, int expectedResultsCount) {
+    protected Array<SqlCodeCompletionProposal> testTableCompletion(String queryPrefix, String assertMessage, int expectedResultsCount) {
         Array<SqlCodeCompletionProposal> results = codeAssistProcessor.findTableAutocompletions(new SqlCodeQuery(queryPrefix));
         assertEquals(assertMessage, expectedResultsCount, results.size());
+        return results;
     }
 
     @Test
     public void completeTableForFirstLetterSelectFrom() {
-        testTableCompletion("Select * from t", "for number of results for table autocompletion starting with t, we expect ", 1);
+        Array<SqlCodeCompletionProposal> result = testTableCompletion("Select * from t", "for number of results for table autocompletion starting with t, we expect ", 1);
+        assertEquals("result completion should be","Select * from public.table", result.get(0).replacementString);
     }
 
     @Test
