@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 
-public class DriverManagerImpl implements DriverManager {
+public class DriverRegistryImpl implements DriverRegistry {
 
     private final Set<JdbcDriver> drivers                 = new HashSet<>();
 

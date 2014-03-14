@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 public class DriverInitializer {
 
     @Inject
-    public DriverInitializer(final DriverManager driverManager,
+    public DriverInitializer(final DriverRegistry driverManager,
                              final DriverAffinityManager driverAffinityManager) {
         PostgresJdbcDriver postgresJdbcDriver = new PostgresJdbcDriver();
         OracleJdbcDriver oracleJdbcDriver = new OracleJdbcDriver();
