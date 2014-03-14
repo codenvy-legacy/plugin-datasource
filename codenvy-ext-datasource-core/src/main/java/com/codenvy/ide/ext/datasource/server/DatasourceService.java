@@ -22,13 +22,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,6 +59,8 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import com.codenvy.dto.server.DtoFactory;
+import com.codenvy.ide.ext.datasource.server.drivers.DriverRegistry;
+import com.codenvy.ide.ext.datasource.server.drivers.JdbcDriver;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
@@ -100,26 +98,28 @@ public class DatasourceService {
 
     private final DriverMapping     driverMapping;
 
+    private final DriverRegistry    driverManager;
+
     @Inject
     public DatasourceService(final JdbcUrlBuilder jdbcUrlBuilder,
                              final SqlRequestService sqlRequestService,
-                             final DriverMapping driverMapping) {
+                             final DriverMapping driverMapping,
+                             final DriverRegistry driverManager) {
         this.jdbcUrlBuilder = jdbcUrlBuilder;
         this.sqlRequestService = sqlRequestService;
         this.driverMapping = driverMapping;
+        this.driverManager = driverManager;
     }
 
     @Path(ServicePaths.DATABASE_TYPES_PATH)
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String getAvailableDatabaseDrivers() throws Exception {
-        final Enumeration<Driver> loadedDrivers = DriverManager.getDrivers();
         final Set<DatabaseType> supportedDB = new HashSet<>();
-        while (loadedDrivers.hasMoreElements()) {
-            final Driver driver = loadedDrivers.nextElement();
-            final String className = driver.getClass().getCanonicalName();
-            supportedDB.addAll(this.driverMapping.getSupportedDatabaseTypes(className));
+        for (JdbcDriver driver : this.driverManager) {
+            supportedDB.addAll(driver.getSupportedDatabaseTypes());
         }
+
         final List<DatabaseType> supportedDBList = new ArrayList<DatabaseType>(supportedDB);
 
         final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withSupportedDatabaseTypes(supportedDBList);
@@ -285,19 +285,21 @@ public class DatasourceService {
     }
 
     private Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
-        if (LOG.isInfoEnabled()) {
-            Driver[] drivers = Collections.list(DriverManager.getDrivers()).toArray(new Driver[0]);
-            LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
+        LOG.info("Available jdbc drivers : {}", this.driverManager);
+
+        final JdbcDriver driver = this.driverMapping.getFirstCompatibleDriver(configuration.getDatabaseType());
+        if (driver == null) {
+            return null;
         }
 
+        final String jdbcUri = driver.getJdbcURIForDatasource(configuration);
 
-        final Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
+        final Connection connection = DriverManager.getConnection(jdbcUri,
                                                                   configuration.getUsername(),
                                                                   configuration.getPassword());
 
         return connection;
     }
-
 
     @Path(ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH)
     @POST
