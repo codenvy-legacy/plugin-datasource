@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 
 public class DriverManagerImpl implements DriverManager {
@@ -37,5 +39,12 @@ public class DriverManagerImpl implements DriverManager {
             }
         }
         return this.supportedDatatypesCache;
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("drivers", drivers);
+        return builder.toString();
     }
 }
