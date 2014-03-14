@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 
-public interface DriverManager {
+public interface DriverManager extends Iterable<JdbcDriver> {
 
     void registerDriver(JdbcDriver driver);
 
