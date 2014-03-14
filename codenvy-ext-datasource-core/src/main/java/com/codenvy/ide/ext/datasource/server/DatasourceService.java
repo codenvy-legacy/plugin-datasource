@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -84,7 +85,6 @@ public class DatasourceService {
     public final static String      TEXT_CSV_HEADER_OPTION       = "; header=present";
     public final static String      TEXT_CSV_NO_HEADER_OPTION    = "; header=absent";
     public final static String      TEXT_CSV_CHARSET_UTF8_OPTION = "; charset=utf8";
-    public final static MediaType   TEXT_CSV_TYPE                = new MediaType("text", "csv");
 
     private final JdbcUrlBuilder    jdbcUrlBuilder;
 
@@ -302,9 +302,19 @@ public class DatasourceService {
 
 
         LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
+
+        Properties info = new Properties();
+        info.setProperty("user", configuration.getUsername());
+        info.setProperty("password", configuration.getPassword());
+        if (configuration.getUseSSL() != null) {
+            info.setProperty("useSSL", configuration.getUseSSL().toString());
+        }
+        if (configuration.getVerifyServerCertificate() != null) {
+            info.setProperty("verifyServerCertificate", configuration.getVerifyServerCertificate().toString());
+        }
+
         Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
-                                                            configuration.getUsername(),
-                                                            configuration.getPassword());
+                                                            info);
 
 
         return connection;

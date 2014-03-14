@@ -36,6 +36,13 @@ public interface DatabaseConfigurationDTO {
 
     DatabaseType getDatabaseType();
 
+    Boolean getUseSSL();
+
+    Boolean getVerifyServerCertificate();
+
+    Boolean getRequireSSL();
+    
+    String getServerSslCert();
 
     DatabaseConfigurationDTO withDatasourceId(String type);
 
@@ -51,6 +58,11 @@ public interface DatabaseConfigurationDTO {
 
     DatabaseConfigurationDTO withDatabaseType(DatabaseType type);
 
+    DatabaseConfigurationDTO withUseSSL(boolean useSSL);
+
+    DatabaseConfigurationDTO withVerifyServerCertificate(boolean verifyServerCertificate);
+
+    DatabaseConfigurationDTO withRequireSSL(boolean requireSSL);
 
     void setDatasourceId(String id);
 
@@ -65,5 +77,12 @@ public interface DatabaseConfigurationDTO {
     void setPassword(String password);
 
     void setDatabaseType(DatabaseType type);
+
+    void setUseSSL(boolean useSSL);
+
+    void setVerifyServerCertificate(boolean verifyServerCertificate);
+
+    void setRequireSSL(boolean requireSSL);
+
 
 }
