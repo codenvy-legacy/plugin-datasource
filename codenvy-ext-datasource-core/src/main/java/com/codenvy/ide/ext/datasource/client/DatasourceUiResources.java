@@ -26,6 +26,9 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("oracle.png")
     ImageResource getOracleLogo();
 
+    @Source("NuoDB.png")
+    ImageResource getNuoDBLogo();
+
     @Source("refresh.png")
     ImageResource getRefreshIcon();
 
