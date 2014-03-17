@@ -21,28 +21,58 @@ import com.codenvy.ide.api.mvp.View;
 import com.google.inject.ImplementedBy;
 
 /**
- * The view of {@link com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage}.
- * 
- * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
+ * The view of datasource wizard connectors.
  */
 @ImplementedBy(JdbcDatasourceConnectorViewImpl.class)
 public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnectorView.ActionDelegate> {
 
     /** Required for delegating functions in view. */
-    public interface ActionDelegate  {
+    public interface ActionDelegate {
+        /** Action launched when asked to test the configured connection. */
         void onClickTestConnectionButton();
     }
 
+    /**
+     * Returns the database name (the SQL exiting database).
+     * 
+     * @return the database name
+     */
     String getDatabaseName();
 
+    /**
+     * Returns the database server host.
+     * 
+     * @return the server host
+     */
     String getHostname();
 
+
+    /**
+     * Returns the database server port.
+     * 
+     * @return the server port
+     */
     int getPort();
 
+    /**
+     * Returns the configured username used for the connection.
+     * 
+     * @return the username
+     */
     String getUsername();
 
+    /**
+     * Returns the configured password used for the connection.
+     * 
+     * @return the password
+     */
     String getPassword();
 
+    /**
+     * Sets the port in the displayed configuration.
+     * 
+     * @param port the new value
+     */
     void setPort(int port);
 
 }
