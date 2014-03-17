@@ -45,19 +45,20 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
-public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage implements
-                                                                                   JdbcDatasourceConnectorView.ActionDelegate {
+public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardPage
+                                                                                   implements
+                                                                                   AbstractNewDatasourceConnectorView.ActionDelegate {
 
-    private final JdbcDatasourceConnectorView view;
-    private final String                      datasourceId;
-    private final DatasourceManager           datasourceManager;
-    private final EventBus                    eventBus;
-    private final DatasourceClientService     service;
-    private final NotificationManager         notificationManager;
-    private final DtoFactory                  dtoFactory;
-    private final NewDatasourceWizardMessages messages;
+    private final AbstractNewDatasourceConnectorView view;
+    private final String                             datasourceId;
+    private final DatasourceManager                  datasourceManager;
+    private final EventBus                           eventBus;
+    private final DatasourceClientService            service;
+    private final NotificationManager                notificationManager;
+    private final DtoFactory                         dtoFactory;
+    private final NewDatasourceWizardMessages        messages;
 
-    public AbstractNewDatasourceConnectorPage(@Nullable final JdbcDatasourceConnectorView view,
+    public AbstractNewDatasourceConnectorPage(@Nullable final AbstractNewDatasourceConnectorView view,
                                               @Nullable final String caption,
                                               @Nullable final ImageResource image,
                                               @NotNull final String datasourceId,
@@ -82,10 +83,9 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
-        getView().setPort(getDefaultPort());
     }
 
-    public JdbcDatasourceConnectorView getView() {
+    public AbstractNewDatasourceConnectorView getView() {
         return view;
     }
 
@@ -99,39 +99,31 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         DatabaseConfigurationDTO result =
                                           dtoFactory.createDto(DatabaseConfigurationDTO.class)
                                                     .withDatabaseName(getView().getDatabaseName())
-                                                    .withHostname(getView().getHostname()).withPort(getView().getPort())
-                                                    .withUsername(getView().getUsername())
-                                                    .withPassword(getView().getPassword())
                                                     .withDatabaseType(getDatabaseType())
                                                     .withDatasourceId(datasourceId);
         return result;
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getNotice() {
         return null;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean isCompleted() {
         return true;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void focusComponent() {
         // do nothing
     }
 
-    /** {@inheritDoc} */
     @Override
     public void removeOptions() {
         // do nothing
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean inContext() {
         NewDatasourceConnector datasourceConnector = wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR);

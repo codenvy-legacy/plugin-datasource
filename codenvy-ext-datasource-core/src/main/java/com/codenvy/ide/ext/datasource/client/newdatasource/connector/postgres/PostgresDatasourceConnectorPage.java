@@ -23,22 +23,20 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
-                                                                                       implements
-                                                                                       JdbcDatasourceConnectorView.ActionDelegate {
+public class PostgresDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String PG_DB_ID           = "postgres";
     private static final int   DEFAULT_PORT_PGSQL = 5432;
 
 
     @Inject
-    public PostgresDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
+    public PostgresDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                            final NotificationManager notificationManager,
                                            final DtoFactory dtoFactory,
                                            final DatasourceManager datasourceManager,
@@ -47,17 +45,7 @@ public class PostgresDatasourceConnectorPage extends AbstractNewDatasourceConnec
                                            final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
         super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages);
-    }
-
-    @Override
-    public Integer getDefaultPort() {
-        return DEFAULT_PORT_PGSQL;
-    }
-
-    @Override
-    public DatabaseType getDatabaseType() {
-        return DatabaseType.POSTGRES;
+              dtoFactory, messages, DEFAULT_PORT_PGSQL, DatabaseType.POSTGRES);
     }
 
 }

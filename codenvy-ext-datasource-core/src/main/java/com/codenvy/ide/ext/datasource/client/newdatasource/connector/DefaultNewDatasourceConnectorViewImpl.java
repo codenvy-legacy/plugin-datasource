@@ -28,44 +28,40 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-/**
- * The implementation of {@link JdbcDatasourceConnectorView}.
- * 
- * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
- */
-public class JdbcDatasourceConnectorViewImpl extends Composite implements JdbcDatasourceConnectorView {
-    interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, JdbcDatasourceConnectorViewImpl> {
+
+public class DefaultNewDatasourceConnectorViewImpl extends Composite
+                                                                    implements DefaultNewDatasourceConnectorView {
+    interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, DefaultNewDatasourceConnectorViewImpl> {
     }
 
     @UiField
-    TextBox                  hostField;
+    TextBox                hostField;
 
     @UiField
-    TextBox                  portField;
+    TextBox                portField;
 
     @UiField
-    TextBox                  dbName;
+    TextBox                dbName;
 
     @UiField
-    TextBox                  usernameField;
+    TextBox                usernameField;
 
     @UiField
-    PasswordTextBox          passwordField;
+    PasswordTextBox        passwordField;
 
     @UiField
-    Button                   testConnectionButton;
+    Button                 testConnectionButton;
 
-    protected ActionDelegate delegate;
+    private ActionDelegate delegate;
 
 
     @Inject
-    public JdbcDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
+    public DefaultNewDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
     }
 
-    @Override
-    public void setDelegate(ActionDelegate delegate) {
+    public void setDelegate(DefaultNewDatasourceConnectorView.ActionDelegate delegate) {
         this.delegate = delegate;
     }
 

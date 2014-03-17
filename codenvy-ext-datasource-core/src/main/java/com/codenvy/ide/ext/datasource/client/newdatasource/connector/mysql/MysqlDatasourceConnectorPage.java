@@ -6,8 +6,8 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -15,15 +15,14 @@ import com.google.web.bindery.event.shared.EventBus;
 /**
  * Created by Wafa on 20/01/14.
  */
-public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
-                                                                                    implements JdbcDatasourceConnectorView.ActionDelegate {
+public class MysqlDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String MYSQL_DB_ID        = "mysql";
     private static final int   DEFAULT_PORT_MYSQL = 3306;
 
 
     @Inject
-    public MysqlDatasourceConnectorPage(final JdbcDatasourceConnectorView view,
+    public MysqlDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                         final NotificationManager notificationManager,
                                         final DtoFactory dtoFactory,
                                         final DatasourceManager datasourceManager,
@@ -32,18 +31,6 @@ public class MysqlDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
         super(view, "mySQL", resources.getMySqlLogo(), MYSQL_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages);
+              notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
     }
-
-    @Override
-    public Integer getDefaultPort() {
-        return DEFAULT_PORT_MYSQL;
-    }
-
-    @Override
-    public DatabaseType getDatabaseType() {
-        return DatabaseType.MYSQL;
-    }
-
-
 }

@@ -18,13 +18,11 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.api.mvp.View;
-import com.google.inject.ImplementedBy;
 
 /**
  * The view of datasource wizard connectors.
  */
-@ImplementedBy(JdbcDatasourceConnectorViewImpl.class)
-public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnectorView.ActionDelegate> {
+public interface AbstractNewDatasourceConnectorView extends View<AbstractNewDatasourceConnectorView.ActionDelegate> {
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
@@ -38,41 +36,5 @@ public interface JdbcDatasourceConnectorView extends View<JdbcDatasourceConnecto
      * @return the database name
      */
     String getDatabaseName();
-
-    /**
-     * Returns the database server host.
-     * 
-     * @return the server host
-     */
-    String getHostname();
-
-
-    /**
-     * Returns the database server port.
-     * 
-     * @return the server port
-     */
-    int getPort();
-
-    /**
-     * Returns the configured username used for the connection.
-     * 
-     * @return the username
-     */
-    String getUsername();
-
-    /**
-     * Returns the configured password used for the connection.
-     * 
-     * @return the password
-     */
-    String getPassword();
-
-    /**
-     * Sets the port in the displayed configuration.
-     * 
-     * @param port the new value
-     */
-    void setPort(int port);
 
 }

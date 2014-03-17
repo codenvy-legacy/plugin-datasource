@@ -38,8 +38,8 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardProvider;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.JdbcDatasourceConnectorViewImpl;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
@@ -68,7 +68,7 @@ public class DatasourceGinModule extends AbstractGinModule {
                                  .in(Singleton.class);
         bind(NewDatasourceConnectorAgent.class).to(NewDatasourceConnectorAgentImpl.class).in(Singleton.class);
         bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
-        bind(JdbcDatasourceConnectorView.class).to(JdbcDatasourceConnectorViewImpl.class);
+        bind(DefaultNewDatasourceConnectorView.class).to(DefaultNewDatasourceConnectorViewImpl.class);
 
         bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
 
