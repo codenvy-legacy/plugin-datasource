@@ -94,15 +94,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
      * 
      * @return the database
      */
-    protected DatabaseConfigurationDTO getConfiguredDatabase() {
-        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
-        DatabaseConfigurationDTO result =
-                                          dtoFactory.createDto(DatabaseConfigurationDTO.class)
-                                                    .withDatabaseName(getView().getDatabaseName())
-                                                    .withDatabaseType(getDatabaseType())
-                                                    .withDatasourceId(datasourceId);
-        return result;
-    }
+    protected abstract DatabaseConfigurationDTO getConfiguredDatabase();
 
     @Override
     public String getNotice() {

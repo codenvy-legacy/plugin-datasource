@@ -24,9 +24,11 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
+import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -35,6 +37,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
 
     private final int          defaultPort;
     private final DatabaseType databaseType;
+    private final DtoFactory   dtoFactory;
 
     public DefaultNewDatasourceConnectorPage(@Nullable final DefaultNewDatasourceConnectorView view,
                                              @Nullable final String caption,
@@ -51,6 +54,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         super(view, caption, image, datasourceId, datasourceManager, eventBus, service, notificationManager, dtoFactory, messages);
         this.defaultPort = defaultPort;
         this.databaseType = databaseType;
+        this.dtoFactory = dtoFactory;
     }
 
     @Override
@@ -69,10 +73,14 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
      * @return the database
      */
     protected DatabaseConfigurationDTO getConfiguredDatabase() {
-        final DatabaseConfigurationDTO result = super.getConfiguredDatabase();
-        result.withHostname(getView().getHostname())
-              .withPort(getView().getPort())
-              .withUsername(getView().getUsername())
+        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
+        DefaultDatasourceDefinitionDTO result = dtoFactory.createDto(DefaultDatasourceDefinitionDTO.class)
+                                                          .withDatabaseName(getView().getDatabaseName())
+                                                          .withDatabaseType(getDatabaseType())
+                                                          .withDatasourceId(datasourceId)
+                                                          .withHostName(getView().getHostname())
+                                                          .withPort(getView().getPort());
+        result.withUsername(getView().getUsername())
               .withPassword(getView().getPassword());
         return result;
     }

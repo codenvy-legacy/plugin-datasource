@@ -41,20 +41,6 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
     int getPort();
 
     /**
-     * Returns the configured username used for the connection.
-     * 
-     * @return the username
-     */
-    String getUsername();
-
-    /**
-     * Returns the configured password used for the connection.
-     * 
-     * @return the password
-     */
-    String getPassword();
-
-    /**
      * Sets the port in the displayed configuration.
      * 
      * @param port the new value

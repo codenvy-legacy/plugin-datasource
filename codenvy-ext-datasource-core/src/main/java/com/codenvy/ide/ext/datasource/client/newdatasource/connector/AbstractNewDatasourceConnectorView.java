@@ -37,4 +37,17 @@ public interface AbstractNewDatasourceConnectorView extends View<AbstractNewData
      */
     String getDatabaseName();
 
+    /**
+     * Returns the configured username used for the connection.
+     * 
+     * @return the username
+     */
+    String getUsername();
+
+    /**
+     * Returns the configured password used for the connection.
+     * 
+     * @return the password
+     */
+    String getPassword();
 }
