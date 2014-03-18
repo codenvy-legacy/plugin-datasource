@@ -1,21 +1,6 @@
-/*
- * CODENVY CONFIDENTIAL
- * __________________
- *
- * [2013] - [2014] Codenvy, S.A.
- * All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains
- * the property of Codenvy S.A. and its suppliers,
- * if any.  The intellectual and technical concepts contained
- * herein are proprietary to Codenvy S.A.
- * and its suppliers and may be covered by U.S. and Foreign Patents,
- * patents in process, and are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Codenvy S.A..
- */
 package com.codenvy.ide.ext.datasource.shared;
+
+import java.util.List;
 
 import com.codenvy.dto.shared.DTO;
 
@@ -24,46 +9,52 @@ public interface DatabaseConfigurationDTO {
 
     String getDatasourceId();
 
-    String getHostname();
-
-    int getPort();
-
-    String getDatabaseName();
-
-    String getUsername();
-
-    String getPassword();
-
-    DatabaseType getDatabaseType();
-
+    void setDatasourceId(String id);
 
     DatabaseConfigurationDTO withDatasourceId(String type);
 
+
+    String getDatabaseName();
+
+    void setDatabaseName(String databaseName);
+
     DatabaseConfigurationDTO withDatabaseName(String databaseName);
 
-    DatabaseConfigurationDTO withHostname(String hostname);
 
-    DatabaseConfigurationDTO withPort(int port);
+    DatabaseType getDatabaseType();
 
-    DatabaseConfigurationDTO withUsername(String username);
-
-    DatabaseConfigurationDTO withPassword(String password);
+    void setDatabaseType(DatabaseType type);
 
     DatabaseConfigurationDTO withDatabaseType(DatabaseType type);
 
 
-    void setDatasourceId(String id);
+    String getUsername();
 
-    void setDatabaseName(String databaseName);
-
-    void setHostname(String hostname);
-
-    void setPort(int port);
+    DatabaseConfigurationDTO withUsername(String username);
 
     void setUsername(String username);
 
+
+    String getPassword();
+
     void setPassword(String password);
 
-    void setDatabaseType(DatabaseType type);
+    DatabaseConfigurationDTO withPassword(String password);
+
+
+    /* should be in child classes */
+    String getHostName();
+
+    int getPort();
+
+
+    void setHostName(String hostname);
+
+    void setPort(int port);
+
+
+    List<NuoDBBrokerDTO> getBrokers();
+
+    void setBrokers(List<NuoDBBrokerDTO> brokers);
 
 }

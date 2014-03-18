@@ -28,6 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
+import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
 
 /**
  * Test the datasource service getDatabase() method that is used to retrieve a database catalog information. Tests are ignored as they needs
@@ -36,14 +37,14 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 @RunWith(MockitoJUnitRunner.class)
 public class TestDatasourceServiceDatabaseDTO {
     @Mock
-    protected DatabaseConfigurationDTO databaseConfig;
+    protected DefaultDatasourceDefinitionDTO databaseConfig;
 
     @Ignore
     @Test
     public void testPostgresDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.POSTGRES);
         when(databaseConfig.getDatabaseName()).thenReturn("wafa");
-        when(databaseConfig.getHostname()).thenReturn("localhost");
+        when(databaseConfig.getHostName()).thenReturn("localhost");
         when(databaseConfig.getPort()).thenReturn(5432);
         when(databaseConfig.getUsername()).thenReturn("postgres");
         when(databaseConfig.getPassword()).thenReturn("nuxeospirit");
@@ -64,7 +65,7 @@ public class TestDatasourceServiceDatabaseDTO {
     public void testMySqlDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.MYSQL);
         when(databaseConfig.getDatabaseName()).thenReturn("aucoffre_db");
-        when(databaseConfig.getHostname()).thenReturn("localhost");
+        when(databaseConfig.getHostName()).thenReturn("localhost");
         when(databaseConfig.getPort()).thenReturn(3306);
         when(databaseConfig.getUsername()).thenReturn("root");
         when(databaseConfig.getPassword()).thenReturn("selucreh");
@@ -80,7 +81,7 @@ public class TestDatasourceServiceDatabaseDTO {
     public void testOracleDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.ORACLE);
         when(databaseConfig.getDatabaseName()).thenReturn("xe");
-        when(databaseConfig.getHostname()).thenReturn("192.168.86.191");
+        when(databaseConfig.getHostName()).thenReturn("192.168.86.191");
         when(databaseConfig.getPort()).thenReturn(1521);
         when(databaseConfig.getUsername()).thenReturn("admin");
         when(databaseConfig.getPassword()).thenReturn("admin");
@@ -96,7 +97,7 @@ public class TestDatasourceServiceDatabaseDTO {
     public void testSqlserverDTOgeneration() throws Exception {
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.JTDS);
         when(databaseConfig.getDatabaseName()).thenReturn("master");
-        when(databaseConfig.getHostname()).thenReturn("192.168.56.101");
+        when(databaseConfig.getHostName()).thenReturn("192.168.56.101");
         when(databaseConfig.getPort()).thenReturn(1433);
         when(databaseConfig.getUsername()).thenReturn("sa");
         when(databaseConfig.getPassword()).thenReturn("admin");

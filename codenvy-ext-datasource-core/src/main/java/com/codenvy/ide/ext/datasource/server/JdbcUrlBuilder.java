@@ -3,6 +3,7 @@ package com.codenvy.ide.ext.datasource.server;
 import java.text.MessageFormat;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.NuoDBBrokerDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 
 public class JdbcUrlBuilder {
@@ -11,7 +12,7 @@ public class JdbcUrlBuilder {
     private static final String URL_TEMPLATE_MYSQL    = "jdbc:mysql://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
     private static final String URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
 
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
@@ -39,7 +40,7 @@ public class JdbcUrlBuilder {
 
     private String getPostgresJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_POSTGRES,
-                                          configuration.getHostname(),
+                                          configuration.getHostName(),
                                           Integer.toString(configuration.getPort()),
                                           configuration.getDatabaseName());
         return url;
@@ -47,7 +48,7 @@ public class JdbcUrlBuilder {
 
     private String getMySQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_MYSQL,
-                                          configuration.getHostname(),
+                                          configuration.getHostName(),
                                           Integer.toString(configuration.getPort()),
                                           configuration.getDatabaseName());
         return url;
@@ -55,7 +56,7 @@ public class JdbcUrlBuilder {
 
     private String getOracleJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_ORACLE,
-                                          configuration.getHostname(),
+                                          configuration.getHostName(),
                                           Integer.toString(configuration.getPort()),
                                           configuration.getDatabaseName());
         return url;
@@ -63,16 +64,30 @@ public class JdbcUrlBuilder {
 
     private String getJTDSJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_JTDS,
-                                          configuration.getHostname(),
+                                          configuration.getHostName(),
                                           Integer.toString(configuration.getPort()),
                                           configuration.getDatabaseName());
         return url;
     }
 
-    private String getNuoDBJdbcUrl(final DatabaseConfigurationDTO configuration) {
+    private String getNuoDBJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
+        if (configuration.getBrokers() == null || configuration.getBrokers().isEmpty()) {
+            throw new DatabaseDefinitionException("no brokers configured");
+        }
+        StringBuilder hostPart = new StringBuilder();
+        boolean first = true;
+        for (final NuoDBBrokerDTO brokerConf : configuration.getBrokers()) {
+            if (first) {
+                first = false;
+            } else {
+                hostPart.append(",");
+            }
+            hostPart.append(brokerConf.getHostName())
+                    .append(":")
+                    .append(brokerConf.getPort());
+        }
         String url = MessageFormat.format(URL_TEMPLATE_NUODB,
-                                          configuration.getHostname(),
-                                          Integer.toString(configuration.getPort()),
+                                          hostPart.toString(),
                                           configuration.getDatabaseName());
         return url;
     }

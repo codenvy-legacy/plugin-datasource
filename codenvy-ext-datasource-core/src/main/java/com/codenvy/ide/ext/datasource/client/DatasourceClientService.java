@@ -27,13 +27,6 @@ import com.google.gwt.http.client.RequestException;
 
 public interface DatasourceClientService {
 
-    void fetchDatabaseInfo(@NotNull String databaseName,
-                           @NotNull String hostname,
-                           @NotNull int port,
-                           @NotNull String username,
-                           @NotNull String password,
-                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
-
     void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,
                            @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 

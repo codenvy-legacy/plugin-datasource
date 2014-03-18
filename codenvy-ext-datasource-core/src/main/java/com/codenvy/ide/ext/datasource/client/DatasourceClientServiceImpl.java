@@ -68,23 +68,6 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     }
 
     @Override
-    public void fetchDatabaseInfo(@NotNull String databaseName,
-                                  @NotNull String hostname,
-                                  @NotNull int port,
-                                  @NotNull String username,
-                                  @NotNull String password,
-                                  @NotNull AsyncRequestCallback<String> asyncRequestCallback
-        ) throws RequestException {
-        DatabaseConfigurationDTO dto = dtoFactory.createDto(DatabaseConfigurationDTO.class)
-                                                 .withDatabaseName(databaseName)
-                                                 .withHostname(hostname)
-                                                 .withPort(port)
-                                                 .withUsername(username)
-                                                 .withPassword(password);
-        fetchDatabaseInfo(dto, asyncRequestCallback);
-    }
-
-    @Override
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url =
