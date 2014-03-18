@@ -17,7 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.properties;
 
-import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
+import com.codenvy.ide.ext.datasource.client.common.CellTableResourcesNoAlt;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -51,7 +51,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     @Inject
     public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder,
-                                        final CellTableResources cellTableResources) {
+                                        final CellTableResourcesNoAlt cellTableResources) {
         this.propertiesDisplay = new CellTable<Property>(15, cellTableResources);
         propertiesDisplay.addColumn(new TextColumn<Property>() {
 
