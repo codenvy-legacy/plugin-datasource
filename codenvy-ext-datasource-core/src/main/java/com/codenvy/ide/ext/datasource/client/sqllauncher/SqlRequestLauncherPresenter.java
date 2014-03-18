@@ -55,15 +55,20 @@ import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.safehtml.shared.UriUtils;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
+
 
 public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableContentTextEditor> implements
                                                                                                  SqlRequestLauncherView.ActionDelegate,
@@ -373,7 +378,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private void appendSelectResult(final RequestResultDTO result) {
 
-        CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
+        final CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
         final RequestResultHeader infoHeader = buildResultHeader(result.getOriginRequest(),
                                                                  this.datasourceClientService.buildCsvExportUrl(result),
@@ -385,6 +390,17 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                   new AlignableColumnHeader(headerEntry, ALIGN_LEFT));
             i++;
         }
+
+
+        resultTable.addCellPreviewHandler(new CellPreviewEvent.Handler<List<String>>() {
+            @Override
+            public void onCellPreview(CellPreviewEvent<List<String>> event) {
+                if ("click".equals(event.getNativeEvent().getType())) {
+                    TableCellElement cellElement = resultTable.getRowElement(event.getIndex()).getCells().getItem(event.getColumn());
+                    cellElement.setTitle(cellElement.getInnerText());
+                }
+            }
+        });
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
         this.view.appendResult(infoHeader, resultTable);
