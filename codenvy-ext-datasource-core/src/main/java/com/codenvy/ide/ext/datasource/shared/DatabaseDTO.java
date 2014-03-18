@@ -21,6 +21,9 @@ import java.util.Map;
 
 import com.codenvy.dto.shared.DTO;
 
+/**
+ * Describe a database structure: basic informations, schemas, tables and columns.
+ */
 @DTO
 public interface DatabaseDTO extends DatabaseMetadataEntityDTO {
 
