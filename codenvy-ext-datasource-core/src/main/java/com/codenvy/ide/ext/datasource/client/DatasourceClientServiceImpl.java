@@ -37,7 +37,6 @@ import com.codenvy.ide.util.Utils;
 import com.codenvy.ide.websocket.MessageBus;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.URL;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -125,11 +124,12 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     }
 
     @Override
-    public String buildCsvExportUrl(final RequestResultDTO requestResult) {
-        // the dto is converted to json then uri-escaped
-        final String jsonParameter = dtoFactory.toJson(requestResult);
-        return formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.RESULT_CSV_PATH,
-                         URL.encode(jsonParameter));
+    public void exportAsCsv(final RequestResultDTO requestResult,
+                            final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
+                               ServicePaths.RESULT_CSV_PATH, null);
+        AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestResult, true);
+        postRequest.send(asyncRequestCallback);
     }
 
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,

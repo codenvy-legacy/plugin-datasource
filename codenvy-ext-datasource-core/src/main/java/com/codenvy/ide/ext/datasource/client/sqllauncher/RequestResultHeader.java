@@ -1,14 +1,13 @@
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources.DatasourceUiStyle;
+import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeUri;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -26,10 +25,13 @@ public class RequestResultHeader extends DockLayoutPanel {
     private Widget                      queryReminder;
     private Button                      exportButton;
     private final DatasourceUiStyle     style;
+    private final RequestResultDelegate delegate;
 
-    public RequestResultHeader(final DatasourceUiStyle style) {
+    public RequestResultHeader(final DatasourceUiStyle style,
+                               final RequestResultDelegate delegate) {
         super(Unit.PX);
         this.style = style;
+        this.delegate = delegate;
         setStyleName(style.infoHeader());
     }
 
@@ -46,14 +48,14 @@ public class RequestResultHeader extends DockLayoutPanel {
         return this;
     }
 
-    public RequestResultHeader setExportButton(final SafeUri link, final String text) {
+    public RequestResultHeader withExportButton(final RequestResultDTO requestResult, final String text) {
         this.exportButton = new Button(text);
         this.exportButton.setStyleName(style.csvButton());
         this.exportButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
-                Window.open(link.asString(), "_blank", "");
+                delegate.triggerCsvExport(requestResult);
             }
         });
         return this;
@@ -76,5 +78,19 @@ public class RequestResultHeader extends DockLayoutPanel {
 
         @Template("<span class='{0}'>{1}</span>")
         SafeHtml infoHeaderTitle(String className, String label);
+    }
+
+    /**
+     * Interface for the control delegate for the RequestResultHeader actions.
+     * 
+     * @author "Mickaël Leduque"
+     */
+    public interface RequestResultDelegate {
+        /**
+         * Causes the given request result to be converted to CSV and sent to user.
+         * 
+         * @param requestResult the request result
+         */
+        void triggerCsvExport(RequestResultDTO requestResult);
     }
 }

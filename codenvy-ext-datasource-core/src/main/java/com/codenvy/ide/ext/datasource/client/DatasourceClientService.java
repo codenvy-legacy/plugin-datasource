@@ -40,7 +40,8 @@ public interface DatasourceClientService {
 
     String getRestServiceContext();
 
-    String buildCsvExportUrl(RequestResultDTO requestResult);
+    void exportAsCsv(final RequestResultDTO requestResult,
+                     final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
     void testDatabaseConnectivity(@NotNull DatabaseConfigurationDTO configuration,
                                   @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;

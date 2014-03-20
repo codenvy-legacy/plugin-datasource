@@ -18,9 +18,8 @@
 package com.codenvy.ide.ext.datasource.server;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -36,12 +35,10 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -76,8 +73,6 @@ import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionExcepti
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
-import com.google.common.base.Charsets;
-import com.google.common.net.HttpHeaders;
 import com.google.inject.Inject;
 
 @Path("{ws-name}/" + ServicePaths.BASE_DATASOURCE_PATH)
@@ -254,21 +249,10 @@ public class DatasourceService {
         return json;
     }
 
-    @Path(ServicePaths.RESULT_CSV_PATH + "/{data}")
-    @GET
-    @Produces({TEXT_CSV + TEXT_CSV_CHARSET_UTF8_OPTION + TEXT_CSV_HEADER_OPTION, MediaType.TEXT_PLAIN})
-    public Response exportAsCSV(@PathParam("data") final String encodedRequestResult) {
-        if (encodedRequestResult == null) {
-            throw new IllegalArgumentException("Missing data parameter for exportAsCSV");
-        }
-        String jsonRequestResult;
-        try {
-            jsonRequestResult = URLDecoder.decode(encodedRequestResult, Charsets.UTF_8.name());
-        } catch (final UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Incorrect encoding in parameter string " + e.getMessage());
-        }
-        final RequestResultDTO requestResult = DtoFactory.getInstance().createDtoFromJson(jsonRequestResult,
-                                                                                          RequestResultDTO.class);
+    @Path(ServicePaths.RESULT_CSV_PATH)
+    @POST
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String exportAsCSV(final RequestResultDTO requestResult) {
         if (requestResult == null) {
             throw new IllegalArgumentException("The parameter doesn't contain a result request");
         }
@@ -276,11 +260,12 @@ public class DatasourceService {
             throw new IllegalArgumentException("Only request results for select can be converted to CSV");
         }
 
-        final ResponseBuilder response = Response.ok();
-        response.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.csv");
-        response.entity(convertDataToCsv(requestResult, true));
 
-        return response.build();
+        String csvResult = convertDataToCsv(requestResult, true);
+
+        byte[] byteResult = csvResult.getBytes(StandardCharsets.UTF_8);
+        String encodedResult = Base64.encodeBase64String(byteResult);
+        return encodedResult;
     }
 
     private String convertDataToCsv(final RequestResultDTO requestResult, boolean withHeader) {

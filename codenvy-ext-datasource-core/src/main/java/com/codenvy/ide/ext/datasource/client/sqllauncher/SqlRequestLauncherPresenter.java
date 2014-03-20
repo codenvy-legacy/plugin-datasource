@@ -44,6 +44,7 @@ import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader.RequestResultDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
@@ -57,7 +58,7 @@ import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.safehtml.shared.UriUtils;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -70,7 +71,8 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableContentTextEditor> implements
                                                                                                  SqlRequestLauncherView.ActionDelegate,
-                                                                                                 DatasourceCreatedHandler {
+                                                                                                 DatasourceCreatedHandler,
+                                                                                                 RequestResultDelegate {
 
     /** Preference property name for default result limit. */
     private static final String                       PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
@@ -260,10 +262,20 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
     }
 
+    /**
+     * Return the selected content of the editor zone.
+     * 
+     * @return the selected content
+     */
     private String getSelectedText() {
         return getEditor().getSelectedContent();
     }
 
+    /**
+     * Return the whole content of the editor zone.
+     * 
+     * @return the content of the editor
+     */
     private String getEditorContent() {
         return getEditor().getEditorContent();
     }
@@ -338,6 +350,11 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.view.appendResult(messageLabel);
     }
 
+    /**
+     * Update the result zone to display the last SQL execution result.
+     * 
+     * @param resultDto the result data
+     */
     protected void updateResultDisplay(final RequestResultGroupDTO resultDto) {
         Log.info(SqlRequestLauncherPresenter.class,
                  "Printing request results. (" + resultDto.getResults().size() + " individual results).");
@@ -367,6 +384,11 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
     }
 
+    /**
+     * Append a result for an failed request to the result zone.
+     * 
+     * @param result the result data
+     */
     private void appendErrorReport(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = buildErrorHeader(result.getOriginRequest());
         this.view.appendResult(infoHeader, new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
@@ -374,13 +396,16 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                      + result.getSqlExecutionError().getErrorMessage()));
     }
 
+    /**
+     * Append a result for an select request to the result zone.
+     * 
+     * @param result the result data
+     */
     private void appendSelectResult(final RequestResultDTO result) {
 
         final CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
 
-        final RequestResultHeader infoHeader = buildResultHeader(result.getOriginRequest(),
-                                                                 this.datasourceClientService.buildCsvExportUrl(result),
-                                                                 constants.exportCsvLabel());
+        final RequestResultHeader infoHeader = buildResultHeader(result, constants.exportCsvLabel());
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
@@ -405,23 +430,40 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     }
 
+    /**
+     * Append a result for an update request to the result zone.
+     * 
+     * @param result the result data
+     */
     private void appendUpdateResult(final RequestResultDTO result) {
-        final RequestResultHeader infoHeader = buildResultHeader(result.getOriginRequest(), null, null);
+        final RequestResultHeader infoHeader = buildResultHeader(result, null);
         this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
-    private RequestResultHeader buildResultHeader(final String originRequest, final String link, final String text) {
-        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS());
+    /**
+     * Creates a result header for SQL requests result that succeeded.
+     * 
+     * @param originRequest the SQL request
+     * @return a result header
+     */
+    private RequestResultHeader buildResultHeader(final RequestResultDTO requestResult, final String text) {
+        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
         result.setInfoHeaderTitle(constants.queryResultsTitle());
-        result.setRequestReminder(originRequest);
-        if (link != null || text != null) {
-            result.setExportButton(UriUtils.fromString(link), text);
+        result.setRequestReminder(requestResult.getOriginRequest());
+        if (text != null) {
+            result.withExportButton(requestResult, text);
         }
         return result.prepare();
     }
 
+    /**
+     * Creates a result header for SQL requests result that failed.
+     * 
+     * @param originRequest the SQL request
+     * @return a result header
+     */
     private RequestResultHeader buildErrorHeader(final String originRequest) {
-        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS());
+        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
         result.setInfoHeaderTitle(constants.queryErrorTitle());
         result.setRequestReminder(originRequest);
 
@@ -444,5 +486,35 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         final String editorFileId = getEditorInput().getFile().getId();
         this.editorDatasourceOracle.forgetEditor(editorFileId);
         return parentResult;
+    }
+
+    @Override
+    public void triggerCsvExport(final RequestResultDTO requestResult) {
+        final Notification requestNotification = new Notification("Generating CSV export of results...",
+                                                                  Notification.Status.PROGRESS);
+        this.notificationManager.showNotification(requestNotification);
+        try {
+            this.datasourceClientService.exportAsCsv(requestResult, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+
+                @Override
+                protected void onSuccess(final String result) {
+                    Log.info(SqlRequestLauncherPresenter.class, "CSV export : success.");
+                    requestNotification.setStatus(Notification.Status.FINISHED);
+                    notificationManager.showNotification(new Notification("CSV export : success", Type.INFO));
+
+                    Window.open("data:text/csv;charset=utf8;base64," + URL.encode(result), "_blank", "");
+                }
+
+                @Override
+                protected void onFailure(final Throwable e) {
+                    Log.error(SqlRequestLauncherPresenter.class, "Exception on CSV export : " + e.getMessage());
+                    notificationManager.showNotification(new Notification("CSV export failure", Type.ERROR));
+                }
+            });
+        } catch (RequestException e) {
+            Log.error(SqlRequestLauncherPresenter.class, "Exception on CSV export : " + e.getMessage());
+            this.notificationManager.showNotification(new Notification("CSV export failure", Type.ERROR));
+        }
+
     }
 }
