@@ -55,7 +55,7 @@ public class RequestResultHeader extends DockLayoutPanel {
 
             @Override
             public void onClick(final ClickEvent event) {
-                delegate.triggerCsvExport(requestResult);
+                delegate.triggerCsvExport(requestResult, RequestResultHeader.this);
             }
         });
         return this;
@@ -90,7 +90,8 @@ public class RequestResultHeader extends DockLayoutPanel {
          * Causes the given request result to be converted to CSV and sent to user.
          * 
          * @param requestResult the request result
+         * @param target the header that triggered the action, to be updated on completion
          */
-        void triggerCsvExport(RequestResultDTO requestResult);
+        void triggerCsvExport(RequestResultDTO requestResult, RequestResultHeader target);
     }
 }

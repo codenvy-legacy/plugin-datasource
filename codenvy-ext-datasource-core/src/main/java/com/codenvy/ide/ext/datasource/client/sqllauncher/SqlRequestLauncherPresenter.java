@@ -489,7 +489,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void triggerCsvExport(final RequestResultDTO requestResult) {
+    public void triggerCsvExport(final RequestResultDTO requestResult, final RequestResultHeader origin) {
         final Notification requestNotification = new Notification("Generating CSV export of results...",
                                                                   Notification.Status.PROGRESS);
         this.notificationManager.showNotification(requestNotification);
