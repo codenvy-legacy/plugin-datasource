@@ -127,9 +127,8 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
 
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url =
-                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH,
-                               null);
+        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
+                               ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, null);
         AsyncRequest.build(RequestBuilder.POST, url, true)
                     .data(dtoFactory.toJson(configuration))
                     .header(CONTENTTYPE, APPLICATION_JSON)
