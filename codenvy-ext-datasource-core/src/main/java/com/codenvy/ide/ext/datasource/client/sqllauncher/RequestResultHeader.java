@@ -82,14 +82,42 @@ public class RequestResultHeader extends DockLayoutPanel {
         return this;
     }
 
+    /**
+     * Template for the different pieces of the header.
+     * 
+     * @author "Mickaël Leduque"
+     */
     interface HeaderTemplate extends SafeHtmlTemplates {
 
+        /**
+         * Template for the "query reminder" part of the result header. It shows the query that was made and gave this result.
+         * 
+         * @param className the CSS class name
+         * @param query the query string to display
+         * @return the html
+         */
         @Template("<div class='{0}'>{1}</div>")
         SafeHtml queryReminder(String className, String query);
 
+        /**
+         * Template for the header title part.
+         * 
+         * @param className the CSS class name
+         * @param label the title
+         * @return the html
+         */
         @Template("<span class='{0}'>{1}</span>")
         SafeHtml infoHeaderTitle(String className, String label);
 
+        /**
+         * Template for the header CSV link part.
+         * 
+         * @param className the CSS class name
+         * @param csvDataContent the Base64-encoded content to include in the data: URI
+         * @param label the label of the link
+         * @param filename the saved file name
+         * @return the html
+         */
         @Template("<a class='{0}' target='_blank' href='data:text/csv;charset=utf8;base64,{1}' download='{3}'>{2}</a>")
         SafeHtml csvExportLink(String className, String csvDataContent, String label, String filename);
     }
