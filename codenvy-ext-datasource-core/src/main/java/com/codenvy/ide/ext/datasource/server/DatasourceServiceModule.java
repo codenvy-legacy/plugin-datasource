@@ -15,6 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.server;
 
+import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
 import com.codenvy.inject.DynaModule;
 import com.google.inject.AbstractModule;
 
@@ -26,6 +27,7 @@ public class DatasourceServiceModule extends AbstractModule {
         bind(DatasourceService.class);
         bind(JdbcUrlBuilder.class);
         bind(SqlRequestService.class);
+        bind(SslKeyStoreService.class);
     }
 
 }

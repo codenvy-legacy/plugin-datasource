@@ -16,6 +16,7 @@
 package com.codenvy.ide.ext.datasource.client.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
@@ -48,8 +49,16 @@ import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherView;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherViewImpl;
+import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreClientService;
+import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreClientServiceImpl;
+import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerPresenter;
+import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerView;
+import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerViewImpl;
+import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogView;
+import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
+import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import com.google.inject.Singleton;
 
 @ExtensionGinModule
@@ -91,5 +100,13 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(Resources.class).in(Singleton.class);
         bind(com.codenvy.ide.Resources.class).to(Resources.class).in(Singleton.class);
+
+        // Add and bind ssl keystore manager preference page and views
+        GinMultibinder<PreferencesPagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencesPagePresenter.class);
+        prefBinder.addBinding().to(SslKeyStoreManagerPresenter.class);
+        bind(SslKeyStoreClientService.class).to(SslKeyStoreClientServiceImpl.class).in(Singleton.class);
+        bind(SslKeyStoreManagerView.class).to(SslKeyStoreManagerViewImpl.class).in(Singleton.class);
+        bind(UploadSslKeyDialogView.class).to(UploadSslKeyDialogViewImpl.class).in(Singleton.class);
+
     }
 }
