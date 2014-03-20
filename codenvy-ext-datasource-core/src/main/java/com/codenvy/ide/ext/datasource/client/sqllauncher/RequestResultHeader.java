@@ -15,6 +15,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Result header is displayed along (on top of) the results themselves. It shows information on the request and controls on the results.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class RequestResultHeader extends DockLayoutPanel {
 
     private static final HeaderTemplate TEMPLATE            = GWT.create(HeaderTemplate.class);
