@@ -56,9 +56,9 @@ import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -315,7 +315,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
                         @Override
                         protected void onFailure(final Throwable exception) {
-                            Log.info(SqlRequestLauncherPresenter.class, "SQL request failure.");
+                            Log.info(SqlRequestLauncherPresenter.class, "SQL request failure " + exception.getMessage());
+                            GWT.log("Full exception :", exception);
                             requestNotification.setStatus(Notification.Status.FINISHED);
                             notificationManager.showNotification(new Notification("SQL request failed",
                                                                                   Type.ERROR));
@@ -502,7 +503,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                     requestNotification.setStatus(Notification.Status.FINISHED);
                     notificationManager.showNotification(new Notification("CSV export : success", Type.INFO));
 
-                    Window.open("data:text/csv;charset=utf8;base64," + URL.encode(result), "_blank", "");
+                    origin.showCsvLink(result);
                 }
 
                 @Override
