@@ -119,6 +119,15 @@
   margin-top: 0.2em;
 }
 
+.resultHeader-csvLink {
+  font-weight: normal;
+  font-size: fontSize;
+  font-family: mainFontFamily;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 2em;
+}
+
 .resultHeader-infoHeaderTitle {
   font-weight: bold;
   font-size: fontSize;

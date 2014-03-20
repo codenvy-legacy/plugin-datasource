@@ -85,6 +85,9 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("resultHeader-csvButton")
         String csvButton();
 
+        @ClassName("resultHeader-csvLink")
+        String csvLink();
+
         @ClassName("resultHeader-infoHeaderTitle")
         String infoHeaderTitle();
     }

@@ -22,17 +22,18 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class RequestResultHeader extends DockLayoutPanel {
 
-    private static final HeaderTemplate TEMPLATE            = GWT.create(HeaderTemplate.class);
-    private static final int            INFO_HEADER_WIDTH   = 150;
-    private static final int            EXPORT_BUTTON_WIDTH = 70;
-    private static final int            CSV_LINK_WIDTH      = 70;
+    private static final String         DEFAULT_CSV_FILENAME = "data.csv";
+    private static final HeaderTemplate TEMPLATE             = GWT.create(HeaderTemplate.class);
+    private static final int            INFO_HEADER_WIDTH    = 150;
+    private static final int            EXPORT_BUTTON_WIDTH  = 70;
+    private static final int            CSV_LINK_WIDTH       = 90;
 
-    private static int                  TRUNCATE_LIMIT      = 150;
+    private static int                  TRUNCATE_LIMIT       = 150;
 
     private Widget                      infoHeaderTitle;
     private Widget                      queryReminder;
     private Button                      exportButton;
-    private final SimpleLayoutPanel     csvLinkPanel        = new SimpleLayoutPanel();
+    private final SimpleLayoutPanel     csvLinkPanel         = new SimpleLayoutPanel();
     private final DatasourceUiStyle     style;
     private final RequestResultDelegate delegate;
 
@@ -71,7 +72,7 @@ public class RequestResultHeader extends DockLayoutPanel {
     }
 
     public void showCsvLink(final String contentData) {
-        Anchor csvLink = new Anchor(TEMPLATE.csvExportLink("", contentData, "Download CSV", "data.csv"));
+        Anchor csvLink = new Anchor(TEMPLATE.csvExportLink(style.csvLink(), contentData, "Download CSV", DEFAULT_CSV_FILENAME));
         this.csvLinkPanel.setWidget(csvLink);
         setWidgetSize(this.csvLinkPanel, CSV_LINK_WIDTH);
     }
