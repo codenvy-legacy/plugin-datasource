@@ -31,6 +31,7 @@ import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.rest.AsyncRequestFactory;
 import com.codenvy.ide.ui.loader.Loader;
 import com.codenvy.ide.util.Utils;
 import com.codenvy.ide.websocket.MessageBus;
@@ -45,26 +46,32 @@ import com.google.web.bindery.event.shared.EventBus;
 @Singleton
 public class DatasourceClientServiceImpl implements DatasourceClientService {
 
-    private final Loader     loader;
-    private final String     wsName;
-    private final String     restServiceContext;
-    private final MessageBus wsMessageBus;
-    private final EventBus   eventBus;
-    private final DtoFactory dtoFactory;
+    private final Loader              loader;
+    private final String              wsName;
+    private final String              restServiceContext;
+    private final MessageBus          wsMessageBus;
+    private final EventBus            eventBus;
+    private final DtoFactory          dtoFactory;
+    private final AsyncRequestFactory asyncRequestFactory;
 
     /**
      * @param restContext rest context
      * @param loader loader to show on server request
      */
     @Inject
-    protected DatasourceClientServiceImpl(@Named("restContext") String restContext, Loader loader,
-                                          MessageBus wsMessageBus, EventBus eventBus, DtoFactory dtoFactory) {
+    protected DatasourceClientServiceImpl(final @Named("restContext") String restContext,
+                                          final Loader loader,
+                                          final MessageBus wsMessageBus,
+                                          final EventBus eventBus,
+                                          final DtoFactory dtoFactory,
+                                          final AsyncRequestFactory asyncRequestFactory) {
         this.loader = loader;
         this.wsName = '/' + Utils.getWorkspaceName();
         this.restServiceContext = restContext + wsName;
         this.wsMessageBus = wsMessageBus;
         this.eventBus = eventBus;
         this.dtoFactory = dtoFactory;
+        this.asyncRequestFactory = asyncRequestFactory;
     }
 
     @Override
