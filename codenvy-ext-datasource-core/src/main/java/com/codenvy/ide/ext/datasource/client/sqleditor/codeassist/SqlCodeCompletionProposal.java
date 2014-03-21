@@ -36,7 +36,9 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     protected String            name;
     protected String            replacementString;
     protected int               cursorPosition;
+    protected int               selectionLength = 0;
     protected InvocationContext invocationContext;
+
 
     public SqlCodeCompletionProposal(String name) {
         this(name, name, name.length());
@@ -46,6 +48,7 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
         this.name = name;
         this.replacementString = replacementString;
         this.cursorPosition = cursorPosition;
+
     }
 
     @Override
@@ -103,7 +106,7 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
             @Override
             public Region getSelection(Document document) {
                 return new RegionImpl(invocationContext.getOffset() + cursorPosition
-                                      - invocationContext.getQuery().getLastQueryPrefix().length(), 0);
+                                      - invocationContext.getQuery().getLastQueryPrefix().length(), selectionLength);
             }
         });
     }
@@ -131,4 +134,8 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     public void setCursorPosition(int cursorPosition) {
         this.cursorPosition = cursorPosition;
     }
+    public void setSelectionLength(int selectionLength) {
+        this.selectionLength = selectionLength;
+    }
+
 }

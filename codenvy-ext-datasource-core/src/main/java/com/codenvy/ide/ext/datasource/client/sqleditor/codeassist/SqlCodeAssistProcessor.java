@@ -27,10 +27,7 @@ import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
-import com.codenvy.ide.text.BadLocationException;
-import com.codenvy.ide.text.Document;
-import com.codenvy.ide.text.Position;
-import com.codenvy.ide.text.Region;
+import com.codenvy.ide.text.*;
 import com.codenvy.ide.texteditor.api.CodeAssistCallback;
 import com.codenvy.ide.texteditor.api.TextEditorPartView;
 import com.codenvy.ide.texteditor.api.codeassistant.CodeAssistProcessor;
@@ -89,7 +86,6 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
             return;
         }
         Array<SqlCodeCompletionProposal> completionProposals = findAutoCompletions(query);
-
         InvocationContext invocationContext = new InvocationContext(query, offset, resources, textEditorPartView);
         codeAssistCallback.proposalComputed(jsToArray(completionProposals, invocationContext));
     }
@@ -253,6 +249,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
             int nextTablePosition = proposal.getReplacementString().indexOf("aTable");
             if (nextTablePosition > 0) {
                 proposal.setCursorPosition(nextTablePosition);
+                proposal.setSelectionLength((6));
             }
         }
         return findAndFilterAutocompletions;
