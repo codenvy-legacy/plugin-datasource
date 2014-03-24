@@ -36,7 +36,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
-import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
+import com.codenvy.ide.ext.datasource.client.common.CellTableResourcesQueryResults;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
@@ -100,7 +100,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final DatabaseInfoStore                   databaseInfoStore;
 
     private final EditorDatasourceOracle              editorDatasourceOracle;
-    private final CellTableResources                  cellTableResources;
+    private final CellTableResourcesQueryResults      cellTableResources;
     private final DatasourceUiResources               datasourceUiResources;
 
     @Inject
@@ -117,7 +117,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull EventBus eventBus,
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent,
-                                       final @NotNull CellTableResources cellTableResources,
+                                       final @NotNull CellTableResourcesQueryResults cellTableResources,
                                        final @NotNull DatasourceUiResources datasourceUiResources) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
