@@ -37,6 +37,9 @@ public interface DatasourceUiResources extends ClientBundle {
 
     public interface DatasourceUiStyle extends CssResource {
 
+        @ClassName("formField-Label")
+        String formFieldLabel();
+
         @ClassName("explorer-datasourceList")
         String explorerDatasourceList();
 

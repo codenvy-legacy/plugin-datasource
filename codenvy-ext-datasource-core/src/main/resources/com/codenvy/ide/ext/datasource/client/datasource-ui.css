@@ -1,4 +1,12 @@
 
+.formField-Label {
+    color: mainFontColor;
+    font-family: mainFontFamily;
+    font-size: boxFontSize;
+    font-weight: normal;
+    text-shadow: boxTextShadow;
+}
+
 .explorer-datasourceList {
     color: mainFontColor;
     background-color: partBackground;
