@@ -23,7 +23,7 @@
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
 
     <g:DockLayoutPanel unit="PX" ui:field="mainContainer">
-        <g:north size="50">
+        <g:north size="40">
             <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerTopPanel}">
                 <g:center>
                     <g:ListBox ui:field="datasourceListBox" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerDatasourceList}" />
