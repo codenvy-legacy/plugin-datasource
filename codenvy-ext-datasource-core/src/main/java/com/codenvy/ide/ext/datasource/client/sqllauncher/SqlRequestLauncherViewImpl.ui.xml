@@ -35,15 +35,15 @@
                     <g:ListBox ui:field="executionModeList" width="8em"
                         addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
                     <g:Label ui:field="executionModeLabel"
-                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
                     <g:TextBox ui:field="resultLimitInput" width="4em"
                         addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherTextBox}" />
                     <g:Label ui:field="resultLimitLabel"
-                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
                     <g:ListBox ui:field="datasourceList" width="9em"
                         addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
                     <g:Label ui:field="selectDatasourceLabel"
-                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
                 </g:FlowPanel>
             </g:east>
         </g:DockLayoutPanel>
