@@ -10,10 +10,10 @@ When working against codenvy-ide3 SNAPSHOT, if one of `codenvy-packaging-standal
 
 In codenvy-ide3 master:
 
-    git diff revision codenvy-application-war > revision.patch
-    git diff revision codenvy-packaging-standalone-tomcat >> revision.patch
-    sed -i 's/codenvy-application-war/codenvy-ext-datasource-application-war/g' revision.patch
-    sed -i 's/codenvy-packaging-standalone-tomcat/codenvy-ext-datasource-packaging-standalone-tomcat/g' revision.patch
+    git diff revision assembly-ide > revision.patch
+    git diff revision assembly-sdk >> revision.patch
+    sed -i 's/assembly-ide/codenvy-ext-datasource-application-war/g' revision.patch
+    sed -i 's/assembly-sdk/codenvy-ext-datasource-packaging-standalone-tomcat/g' revision.patch
 
 In codenvy-datasource-plugin:
 
