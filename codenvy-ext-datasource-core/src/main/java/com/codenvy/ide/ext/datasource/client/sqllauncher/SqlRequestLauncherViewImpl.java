@@ -19,7 +19,6 @@ package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
 import java.util.Collection;
 
-import com.codenvy.ide.Resources;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.common.SimpleView;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
@@ -98,11 +97,10 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
 
     @Inject
-    public SqlRequestLauncherViewImpl(final Resources resources,
-                                      final SqlRequestLauncherViewImplUiBinder uiBinder,
+    public SqlRequestLauncherViewImpl(final SqlRequestLauncherViewImplUiBinder uiBinder,
                                       final SqlRequestLauncherConstants constants,
                                       final DatasourceUiResources datasourceUiResources) {
-        super(resources);
+        super();
 
         this.datasourceUiResources = datasourceUiResources;
 
