@@ -23,7 +23,7 @@
     <parent>
         <artifactId>codenvy-ext-datasource-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M12-SNAPSHOT</version>
+        <version>3.0.0-M14-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-packaging-standalone-tomcat</artifactId>
     <packaging>pom</packaging>
