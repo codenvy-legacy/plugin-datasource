@@ -44,6 +44,9 @@ import com.google.inject.Singleton;
 
 import elemental.html.DragEvent;
 
+/**
+ * The datasource explorer view component.
+ */
 @Singleton
 public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
@@ -52,15 +55,19 @@ public class DatasourceExplorerViewImpl extends
     @UiField
     protected Panel                 mainContainer;
 
+    /** The explorer tree. */
     @UiField(provided = true)
     protected Tree<EntityTreeNode>  tree;
 
+    /** the dropdown to select the datasource to explroe. */
     @UiField
     protected ListBox               datasourceListBox;
 
+    /** The panel where we show the selected element properties. */
     @UiField
     protected SimplePanel           propertiesContainer;
 
+    /** the button to refresh the datasource metadata. */
     @UiField
     protected PushButton            refreshButton;
 
@@ -68,30 +75,16 @@ public class DatasourceExplorerViewImpl extends
     @UiField(provided = true)
     protected DatasourceUiResources datasourceUiResources;
 
-    @UiHandler("refreshButton")
-    public void onClick(ClickEvent event) {
-        delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
-    }
-
-    @UiHandler("datasourceListBox")
-    public void onDatasourceListChanged(ChangeEvent event) {
-        delegate.onSelectedDatasourceChanged(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
-    }
-
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
+                                      final DatabaseMetadataEntityDTORenderer renderer,
                                       final DatasourceExplorerViewUiBinder uiBinder,
                                       final DatasourceExplorerConstants constants,
                                       final DatasourceUiResources clientResource) {
         super(resources);
 
-
-        tree = Tree.create(resources,
-                           new DatabaseMetadataEntityDTODataAdapter(),
-                           DatabaseMetadataEntityDTORenderer.create(resources));
-
+        tree = Tree.create(resources, new DatabaseMetadataEntityDTODataAdapter(), renderer);
         this.datasourceUiResources = clientResource;
-
         uiBinder.createAndBindUi(this);
 
         this.refreshButton.getUpFace().setImage(new Image(clientResource.getRefreshIcon()));
@@ -121,7 +114,26 @@ public class DatasourceExplorerViewImpl extends
         return this.propertiesContainer;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Handler to react to clicks on the refresh button.
+     * 
+     * @param event the event
+     */
+    @UiHandler("refreshButton")
+    public void onClick(final ClickEvent event) {
+        delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+    }
+
+    /**
+     * Handler to react to value change in the datasource listbox.
+     * 
+     * @param event the event
+     */
+    @UiHandler("datasourceListBox")
+    public void onDatasourceListChanged(final ChangeEvent event) {
+        delegate.onSelectedDatasourceChanged(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+    }
+
     @Override
     public void setDelegate(final ActionDelegate delegate) {
         this.delegate = delegate;
@@ -168,6 +180,7 @@ public class DatasourceExplorerViewImpl extends
         });
     }
 
+    /** The binder interface for the datasource explorer view component. */
     interface DatasourceExplorerViewUiBinder extends UiBinder<Widget, DatasourceExplorerViewImpl> {
     }
 }

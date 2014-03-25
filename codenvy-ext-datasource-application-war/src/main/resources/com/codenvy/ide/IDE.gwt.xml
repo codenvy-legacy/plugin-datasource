@@ -71,4 +71,6 @@
             The file is used to determine JavaScript file to be loaded.
         -->
     <add-linker name="xsiframe"/>
+    
+    <set-configuration-property name="CssResource.style" value="pretty"/>
 </module>

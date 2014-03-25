@@ -24,107 +24,184 @@ import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ui.tree.NodeRenderer;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.dom.Elements;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
 
 import elemental.html.DivElement;
 import elemental.html.Element;
 import elemental.html.SpanElement;
 
+/**
+ * Node renderer for the datasource explorer tree.
+ */
 public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTreeNode> {
 
-    private final Css       css;
-    private final Resources res;
+    /** The tree CSS resource. */
+    private final Css css;
 
-    public static DatabaseMetadataEntityDTORenderer create(Resources res) {
-        return new DatabaseMetadataEntityDTORenderer(res);
+    @Inject
+    public DatabaseMetadataEntityDTORenderer(final Resources resources) {
+        this.css = resources.getCss();
+        resources.getCss().ensureInjected();
     }
 
-    public interface Css extends com.codenvy.ide.tree.FileTreeNodeRenderer.Css {
-
-        String schema();
-
-        String table();
-
-        String column();
-
+    @Override
+    public Element getNodeKeyTextContainer(final SpanElement treeNodeLabel) {
+        return (Element)treeNodeLabel.getChildNodes().item(1);
     }
 
-    public interface Resources extends com.codenvy.ide.Resources {
-        @Source({"DatabaseMetadataEntityDTORenderer.css", "com/codenvy/ide/tree/FileTreeNodeRenderer.css",
-                "com/codenvy/ide/common/constants.css", "com/codenvy/ide/api/ui/style.css"})
-        DatabaseMetadataEntityDTORenderer.Css getCss();
+    @Override
+    public SpanElement renderNodeContents(final EntityTreeNode data) {
+        String iconClassName = css.schemaIcon();
+        String labelClassName = css.schemaLabel();
 
-        @Source("schema.png")
-        ImageResource schema();
-
-        @Source("table.png")
-        ImageResource table();
-
-        @Source("column.png")
-        ImageResource column();
+        if (data.getData() instanceof TableDTO) {
+            iconClassName = css.tableIcon();
+            labelClassName = css.tableLabel();
+        } else if (data.getData() instanceof ColumnDTO) {
+            iconClassName = css.columnIcon();
+            labelClassName = css.columnLabel();
+        }
+        return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
     }
 
-    public DatabaseMetadataEntityDTORenderer(Resources resources) {
-        this.res = resources;
-        res.getCss().ensureInjected();
-        this.css = res.getCss();
+    @Override
+    public void updateNodeContents(final TreeNodeElement<EntityTreeNode> treeNode) {
+        if (treeNode.getData().getData() instanceof TableDTO) {
+            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            icon.setClassName(css.icon());
+            icon.addClassName(css.tableIcon());
+
+        } else if (treeNode.getData().getData() instanceof SchemaDTO) {
+            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            icon.setClassName(css.icon());
+            icon.addClassName(css.schemaIcon());
+        } else if (treeNode.getData().getData() instanceof ColumnDTO) {
+            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            icon.setClassName(css.icon());
+            icon.addClassName(css.columnIcon());
+        }
     }
 
-
-    public static SpanElement renderNodeContents(Css css, String name,
-                                                 String className, boolean renderIcon) {
+    /**
+     * Renders the tree node.
+     * 
+     * @param css the CSS resource for this tree
+     * @param label the node label
+     * @param iconClassName the class name for the icon
+     * @param renderIcon true to render the icon
+     * @param labelClassName the class name for the abel part
+     * @return the HTML element for the treer node
+     */
+    public static SpanElement renderNodeContents(final Css css, final String contents, final String iconClassName,
+                                                 final boolean renderIcon, final String labelClassName) {
 
         SpanElement root = Elements.createSpanElement(css.root());
         if (renderIcon) {
             DivElement icon = Elements.createDivElement(css.icon());
-            icon.addClassName(className);
+            icon.addClassName(iconClassName);
             root.appendChild(icon);
         }
 
         final Element label;
-        label = Elements.createSpanElement(css.label());
-        label.setTextContent(name);
+        label = Elements.createSpanElement(css.label(), labelClassName);
+        label.setTextContent(contents);
         root.appendChild(label);
 
         return root;
     }
 
-    @Override
-    public Element getNodeKeyTextContainer(SpanElement treeNodeLabel) {
-        return (Element)treeNodeLabel.getChildNodes().item(1);
+    /**
+     * The CSSResource interface for the datasource explorer tree.
+     */
+    public interface Css extends CssResource {
+
+        /**
+         * Returns the CSS class for schema icon.
+         * 
+         * @return class name
+         */
+        String schemaIcon();
+
+        /**
+         * Returns the CSS class for table icon.
+         * 
+         * @return class name
+         */
+        String tableIcon();
+
+        /**
+         * Returns the CSS class for column icon.
+         * 
+         * @return class name
+         */
+        String columnIcon();
+
+        /**
+         * Returns the CSS class for schema label.
+         * 
+         * @return class name
+         */
+        String schemaLabel();
+
+        /**
+         * Returns the CSS class for table label.
+         * 
+         * @return class name
+         */
+        String tableLabel();
+
+        /**
+         * Returns the CSS class for column label.
+         * 
+         * @return class name
+         */
+        String columnLabel();
+
+        /**
+         * Returns the CSS class for tree root.
+         * 
+         * @return class name
+         */
+        String root();
+
+        /**
+         * Returns the CSS class for tree icons.
+         * 
+         * @return class name
+         */
+        String icon();
+
+        /**
+         * Returns the CSS class for tree labels.
+         * 
+         * @return class name
+         */
+        String label();
+
     }
 
-    @Override
-    public SpanElement renderNodeContents(EntityTreeNode data) {
-        String className = css.schema();
+    /**
+     * The resource interface for the datasource explorer tree.
+     */
+    public interface Resources extends com.codenvy.ide.Resources {
 
-        if (data.getData() instanceof TableDTO) {
-            className = css.table();
-        } else if (data.getData() instanceof ColumnDTO) {
-            className = css.column();
-        }
-        return renderNodeContents(css, data.getData().getName(),
-                                  className, true);
+        /** Returns the CSS resource for the datasource explorer tree. */
+        @Source({"DatabaseMetadataEntityDTORenderer.css", "com/codenvy/ide/common/constants.css",
+                "com/codenvy/ide/api/ui/style.css"})
+        DatabaseMetadataEntityDTORenderer.Css getCss();
+
+        /** Returns the icon for schema nodes. */
+        @Source("schema.png")
+        ImageResource schema();
+
+        /** Returns the icon for table nodes. */
+        @Source("table.png")
+        ImageResource table();
+
+        /** Returns the icon for column nodes. */
+        @Source("column.png")
+        ImageResource column();
     }
-
-    @Override
-    public void updateNodeContents(
-                                   TreeNodeElement<EntityTreeNode> treeNode) {
-        if (treeNode.getData().getData() instanceof TableDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
-            icon.setClassName(css.icon());
-            icon.addClassName(css.table());
-
-        } else if (treeNode.getData().getData() instanceof SchemaDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
-            icon.setClassName(css.icon());
-            icon.addClassName(css.schema());
-        }
-        else if (treeNode.getData().getData() instanceof ColumnDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
-            icon.setClassName(css.icon());
-            icon.addClassName(css.column());
-        }
-    }
-
 }
