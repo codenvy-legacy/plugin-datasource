@@ -84,11 +84,6 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-extensions</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-git</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
