@@ -49,6 +49,9 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("explorer-refreshButton")
         String explorerRefreshButton();
 
+        @ClassName("requestLauncher-editorBar")
+        String requestLauncherEditorBar();
+
         @ClassName("requestLauncher-listBox")
         String requestLauncherListBox();
 
