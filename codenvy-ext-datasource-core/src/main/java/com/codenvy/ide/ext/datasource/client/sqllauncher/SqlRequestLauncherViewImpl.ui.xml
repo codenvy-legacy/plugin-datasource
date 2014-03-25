@@ -24,7 +24,7 @@
 
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
     <g:north size="35">
-        <g:DockLayoutPanel unit="PX">
+        <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherEditorBar}">
             <g:center>
                 <g:Button ui:field="executeButton"
                     addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherExecuteButton}" />
