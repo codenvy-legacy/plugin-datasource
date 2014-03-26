@@ -26,10 +26,16 @@ import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 public interface SslKeyStoreManagerView extends View<SslKeyStoreManagerView.ActionDelegate> {
     public interface ActionDelegate {
 
-        void onDeleteClicked(@NotNull SslKeyStoreEntry key);
+        void onClientKeyDeleteClicked(@NotNull SslKeyStoreEntry key);
 
-        void onUploadClicked();
+        void onClientKeyUploadClicked();
+        
+        void onServerCertDeleteClicked(@NotNull SslKeyStoreEntry key);
+
+        void onServerCertUploadClicked();
     }
 
-    void setKeys(@NotNull Array<SslKeyStoreEntry> keys);
+    void setClientKeys(@NotNull Array<SslKeyStoreEntry> keys);
+
+    void setServerCerts(Array<SslKeyStoreEntry> keys);
 }

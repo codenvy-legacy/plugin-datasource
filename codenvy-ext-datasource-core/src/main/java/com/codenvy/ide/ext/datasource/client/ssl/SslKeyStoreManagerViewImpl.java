@@ -52,10 +52,16 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
     private static SshKeyManagerViewImplUiBinder ourUiBinder = GWT.create(SshKeyManagerViewImplUiBinder.class);
 
     @UiField
-    Button                                       btnUpload;
+    Button                                       btnClientUpload;
+
+    @UiField
+    Button                                       btnServerUpload;
 
     @UiField(provided = true)
-    CellTable<SslKeyStoreEntry>                  keys;
+    CellTable<SslKeyStoreEntry>                  clientKeys;
+
+    @UiField(provided = true)
+    CellTable<SslKeyStoreEntry>                  serverCerts;
 
     @UiField(provided = true)
     final SslMessages                            locale;
@@ -66,23 +72,24 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
     protected SslKeyStoreManagerViewImpl(SslMessages locale, Resources res) {
         this.locale = locale;
         initSslKeyTable(res);
+        initSslCertTable(res);
         initWidget(ourUiBinder.createAndBindUi(this));
     }
 
     protected void initSslKeyTable(CellTable.Resources res) {
-        keys = new CellTable<SslKeyStoreEntry>(15, res);
-        addAliasColumn(keys, "Client keys");
-        addTypeColumn(keys, "");
-        Column<SslKeyStoreEntry, String> deleteColumn = addDeleteColumn(keys, "");
+        clientKeys = new CellTable<SslKeyStoreEntry>(15, res);
+        addAliasColumn(clientKeys, "Client keys");
+        addTypeColumn(clientKeys, "");
+        Column<SslKeyStoreEntry, String> deleteColumn = addDeleteColumn(clientKeys, "");
         // Creates handler on button clicked
         deleteColumn.setFieldUpdater(new FieldUpdater<SslKeyStoreEntry, String>() {
             @Override
             public void update(int index, SslKeyStoreEntry object, String value) {
-                delegate.onDeleteClicked(object);
+                delegate.onClientKeyDeleteClicked(object);
             }
         });
         // don't show loading indicator
-        keys.setLoadingIndicator(null);
+        clientKeys.setLoadingIndicator(null);
     }
 
     protected void addAliasColumn(CellTable<SslKeyStoreEntry> cellTable, String columnHeaderName) {
@@ -128,14 +135,40 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
         return deleteKeyColumn;
     }
 
+    protected void initSslCertTable(CellTable.Resources res) {
+        serverCerts = new CellTable<SslKeyStoreEntry>(15, res);
+        addAliasColumn(serverCerts, "Server trust certificates");
+        addTypeColumn(serverCerts, "");
+        Column<SslKeyStoreEntry, String> deleteColumn = addDeleteColumn(serverCerts, "");
+        // Creates handler on button clicked
+        deleteColumn.setFieldUpdater(new FieldUpdater<SslKeyStoreEntry, String>() {
+            @Override
+            public void update(int index, SslKeyStoreEntry object, String value) {
+                delegate.onServerCertDeleteClicked(object);
+            }
+        });
+        // don't show loading indicator
+        serverCerts.setLoadingIndicator(null);
+    }
+
     @Override
-    public void setKeys(@NotNull Array<SslKeyStoreEntry> keys) {
+    public void setClientKeys(@NotNull Array<SslKeyStoreEntry> keys) {
         // Wraps Array in java.util.List
         List<SslKeyStoreEntry> appList = new ArrayList<SslKeyStoreEntry>();
         for (int i = 0; i < keys.size(); i++) {
             appList.add(keys.get(i));
         }
-        this.keys.setRowData(appList);
+        this.clientKeys.setRowData(appList);
+    }
+
+    @Override
+    public void setServerCerts(@NotNull Array<SslKeyStoreEntry> keys) {
+        // Wraps Array in java.util.List
+        List<SslKeyStoreEntry> appList = new ArrayList<SslKeyStoreEntry>();
+        for (int i = 0; i < keys.size(); i++) {
+            appList.add(keys.get(i));
+        }
+        this.serverCerts.setRowData(appList);
     }
 
     @Override
@@ -143,9 +176,14 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
         this.delegate = delegate;
     }
 
-    @UiHandler("btnUpload")
+    @UiHandler("btnClientUpload")
     public void onUploadKeyButtonClicked(ClickEvent event) {
-        delegate.onUploadClicked();
+        delegate.onClientKeyUploadClicked();
+    }
+
+    @UiHandler("btnServerUpload")
+    public void onUploadCertButtonClicked(ClickEvent event) {
+        delegate.onServerCertUploadClicked();
     }
 
 }

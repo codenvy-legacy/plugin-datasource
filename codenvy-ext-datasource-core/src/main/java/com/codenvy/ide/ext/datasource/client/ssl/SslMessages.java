@@ -37,8 +37,11 @@ public interface SslMessages extends Messages {
     @DefaultMessage("Alias can not be empty")
     String aliasValidationError();
 
-    @DefaultMessage("Upload SSL Certificate")
-    String managerUploadButton();
+    @DefaultMessage("Upload Client SSL Private Key")
+    String uploadClientSslKey();
+    
+    @DefaultMessage("Upload Server SSL Trust Certificate")
+    String uploadServerSslCert();
 
     @DefaultMessage("SSL Keystore")
     String sslManagerTitle();

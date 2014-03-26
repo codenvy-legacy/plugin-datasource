@@ -47,17 +47,32 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
 
     /** {@inheritDoc} */
     @Override
-    public void getAllKeys(@NotNull AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
-        loader.setMessage("Retrieving SSL keys....");
+    public void getAllClientKeys(@NotNull AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
+        loader.setMessage("Retrieving SSL Client keys....");
         loader.show();
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore").send(callback);
     }
 
     @Override
-    public void deleteKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
-        loader.setMessage("Deleting SSL key entries for " + entry.getAlias());
+    public void getAllServerCerts(AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
+        loader.setMessage("Retrieving SSL Server certs....");
+        loader.show();
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore").send(callback);
+    }
+
+    @Override
+    public void deleteClientKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
+        loader.setMessage("Deleting SSL client key entries for " + entry.getAlias());
         loader.show();
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore/"
+                                             + URL.encode(entry.getAlias()) + "/remove").send(callback);
+    }
+
+    @Override
+    public void deleteServerCert(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
+        loader.setMessage("Deleting SSL server cert entries for " + entry.getAlias());
+        loader.show();
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore/"
                                              + URL.encode(entry.getAlias()) + "/remove").send(callback);
     }
 
@@ -65,4 +80,10 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
     public String getUploadClientKeyAction(String alias) {
         return baseUrl + "/ssl-keystore/keystore/add?alias=" + alias;
     }
+
+    @Override
+    public String getUploadServerCertAction(String alias) {
+        return baseUrl + "/ssl-keystore/truststore/add?alias=" + alias;
+    }
+
 }

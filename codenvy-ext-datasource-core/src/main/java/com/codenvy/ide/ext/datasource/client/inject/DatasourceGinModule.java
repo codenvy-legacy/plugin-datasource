@@ -56,6 +56,8 @@ import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerView;
 import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerViewImpl;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogView;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogViewImpl;
+import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogView;
+import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogViewImpl;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
@@ -107,6 +109,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(SslKeyStoreClientService.class).to(SslKeyStoreClientServiceImpl.class).in(Singleton.class);
         bind(SslKeyStoreManagerView.class).to(SslKeyStoreManagerViewImpl.class).in(Singleton.class);
         bind(UploadSslKeyDialogView.class).to(UploadSslKeyDialogViewImpl.class).in(Singleton.class);
+        bind(UploadSslTrustCertDialogView.class).to(UploadSslTrustCertDialogViewImpl.class).in(Singleton.class);
 
     }
 }

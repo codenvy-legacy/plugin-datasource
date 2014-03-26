@@ -30,8 +30,8 @@ public class SslKeyStoreService {
         return new KeyStoreObject();
     }
 
-    // @Path("truststore")
-    // public Object getTrustStore(){
-    // return new TrustStoreObject();
-    // }
+    @Path("truststore")
+    public Object getTrustStore() throws Exception {
+        return new TrustStoreObject();
+    }
 }

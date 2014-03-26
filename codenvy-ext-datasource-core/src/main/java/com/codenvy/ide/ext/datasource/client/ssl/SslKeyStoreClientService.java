@@ -23,10 +23,17 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 
 public interface SslKeyStoreClientService {
 
-    void getAllKeys(AsyncRequestCallback<Array<SslKeyStoreEntry>> callback);
+    void getAllClientKeys(AsyncRequestCallback<Array<SslKeyStoreEntry>> callback);
 
-    void deleteKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> asyncRequestCallback);
+    void getAllServerCerts(AsyncRequestCallback<Array<SslKeyStoreEntry>> asyncRequestCallback);
+
+    void deleteClientKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> asyncRequestCallback);
 
     String getUploadClientKeyAction(String alias);
+
+    void deleteServerCert(SslKeyStoreEntry key, AsyncRequestCallback<Void> asyncRequestCallback);
+
+    String getUploadServerCertAction(String alias);
+
 
 }

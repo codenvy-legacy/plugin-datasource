@@ -32,20 +32,20 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.ActionDelegate {
-    private UploadSslKeyDialogView   view;
-    private SslMessages              constant;
-    private ConsolePart              console;
-    private NotificationManager      notificationManager;
-    private AsyncCallback<Void>      callback;
-    private SslKeyStoreClientService sslKeyStoreService;
+public class UploadSslTrustCertDialogPresenter implements UploadSslTrustCertDialogView.ActionDelegate {
+    private UploadSslTrustCertDialogView view;
+    private SslMessages                  constant;
+    private ConsolePart                  console;
+    private NotificationManager          notificationManager;
+    private AsyncCallback<Void>          callback;
+    private SslKeyStoreClientService     sslKeyStoreService;
 
     @Inject
-    public UploadSslKeyDialogPresenter(UploadSslKeyDialogView view,
-                                       SslMessages constant,
-                                       ConsolePart console,
-                                       SslKeyStoreClientService sslKeyStoreService,
-                                       NotificationManager notificationManager) {
+    public UploadSslTrustCertDialogPresenter(UploadSslTrustCertDialogView view,
+                                             SslMessages constant,
+                                             ConsolePart console,
+                                             SslKeyStoreClientService sslKeyStoreService,
+                                             NotificationManager notificationManager) {
         this.view = view;
         this.sslKeyStoreService = sslKeyStoreService;
         this.view.setDelegate(this);
@@ -54,7 +54,6 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         this.notificationManager = notificationManager;
     }
 
-    /** Show dialog. */
     public void showDialog(@NotNull AsyncCallback<Void> callback) {
         this.callback = callback;
         view.setMessage("");
@@ -63,13 +62,11 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         view.showDialog();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onCancelClicked() {
         view.close();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onUploadClicked() {
         String alias = view.getAlias();
@@ -78,15 +75,14 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
             return;
         }
         view.setEncoding(FormPanel.ENCODING_MULTIPART);
-        view.setAction(sslKeyStoreService.getUploadClientKeyAction(alias));
+        view.setAction(sslKeyStoreService.getUploadServerCertAction(alias));
         view.submit();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onSubmitComplete(@NotNull String result) {
         if (result.isEmpty()) {
-            UploadSslKeyDialogPresenter.this.view.close();
+            UploadSslTrustCertDialogPresenter.this.view.close();
             callback.onSuccess(null);
         } else {
             if (result.startsWith("<pre>") && result.endsWith("</pre>")) {
@@ -99,11 +95,9 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onFileNameChanged() {
         String certFileName = view.getCertFileName();
-        String keyFileName = view.getKeyFileName();
-        view.setEnabledUploadButton(!certFileName.isEmpty() && !keyFileName.isEmpty());
+        view.setEnabledUploadButton(!certFileName.isEmpty());
     }
 }

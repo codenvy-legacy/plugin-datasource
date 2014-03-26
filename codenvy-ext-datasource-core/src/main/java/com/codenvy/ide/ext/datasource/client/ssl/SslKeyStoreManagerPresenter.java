@@ -26,6 +26,7 @@ import com.codenvy.ide.api.ui.preferences.AbstractPreferencesPagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.commons.exception.ExceptionThrownEvent;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogPresenter;
+import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogPresenter;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.DtoUnmarshallerFactory;
@@ -40,14 +41,15 @@ import com.google.web.bindery.event.shared.EventBus;
 
 @Singleton
 public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresenter implements SslKeyStoreManagerView.ActionDelegate {
-    private final DtoUnmarshallerFactory dtoUnmarshallerFactory;
-    private SslKeyStoreManagerView       view;
-    private SslKeyStoreClientService     service;
-    private SslMessages                  constant;
-    private EventBus                     eventBus;
-    private Loader                       loader;
-    private UploadSslKeyDialogPresenter  uploadSshKeyPresenter;
-    private NotificationManager          notificationManager;
+    private final DtoUnmarshallerFactory       dtoUnmarshallerFactory;
+    private SslKeyStoreManagerView             view;
+    private SslKeyStoreClientService           service;
+    private SslMessages                        constant;
+    private EventBus                           eventBus;
+    private Loader                             loader;
+    private UploadSslKeyDialogPresenter        uploadSshKeyPresenter;
+    private UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter;
+    private NotificationManager                notificationManager;
 
     @Inject
     public SslKeyStoreManagerPresenter(SslKeyStoreManagerView view,
@@ -57,11 +59,13 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
                                        EventBus eventBus,
                                        Loader loader,
                                        UploadSslKeyDialogPresenter uploadSshKeyPresenter,
+                                       UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter,
                                        NotificationManager notificationManager,
                                        DtoUnmarshallerFactory dtoUnmarshallerFactory) {
         super(constant.sslManagerTitle(), resources.sshKeyManager());
 
         this.view = view;
+        this.uploadSshServerCertPresenter = uploadSshServerCertPresenter;
         this.dtoUnmarshallerFactory = dtoUnmarshallerFactory;
         this.view.setDelegate(this);
         this.service = service;
@@ -74,14 +78,14 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     /** {@inheritDoc} */
     @Override
-    public void onDeleteClicked(@NotNull SslKeyStoreEntry key) {
+    public void onClientKeyDeleteClicked(@NotNull SslKeyStoreEntry key) {
         boolean needToDelete = Window.confirm(constant.deleteSslKeyQuestion(key.getAlias()));
         if (needToDelete) {
-            service.deleteKey(key, new AsyncRequestCallback<Void>() {
+            service.deleteClientKey(key, new AsyncRequestCallback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
                     loader.hide();
-                    refreshKeys();
+                    refreshClientKeys();
                 }
 
                 @Override
@@ -95,13 +99,13 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
         }
     }
 
-    protected void refreshKeys() {
-        service.getAllKeys(
+    protected void refreshClientKeys() {
+        service.getAllClientKeys(
                new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
                    @Override
                    public void onSuccess(Array<SslKeyStoreEntry> result) {
                        loader.hide();
-                       view.setKeys(result);
+                       view.setClientKeys(result);
                    }
 
                    @Override
@@ -116,11 +120,11 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     /** {@inheritDoc} */
     @Override
-    public void onUploadClicked() {
+    public void onClientKeyUploadClicked() {
         uploadSshKeyPresenter.showDialog(new AsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                refreshKeys();
+                refreshClientKeys();
             }
 
             @Override
@@ -130,6 +134,61 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
         });
     }
 
+    @Override
+    public void onServerCertDeleteClicked(SslKeyStoreEntry key) {
+        boolean needToDelete = Window.confirm(constant.deleteSslKeyQuestion(key.getAlias()));
+        if (needToDelete) {
+            service.deleteServerCert(key, new AsyncRequestCallback<Void>() {
+                @Override
+                public void onSuccess(Void result) {
+                    loader.hide();
+                    refreshServerCerts();
+                }
+
+                @Override
+                public void onFailure(Throwable exception) {
+                    loader.hide();
+                    Notification notification = new Notification(exception.getMessage(), Type.ERROR);
+                    notificationManager.showNotification(notification);
+                    eventBus.fireEvent(new ExceptionThrownEvent(exception));
+                }
+            });
+        }
+    }
+
+    protected void refreshServerCerts() {
+        service.getAllServerCerts(
+               new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
+                   @Override
+                   public void onSuccess(Array<SslKeyStoreEntry> result) {
+                       loader.hide();
+                       view.setServerCerts(result);
+                   }
+
+                   @Override
+                   public void onFailure(Throwable exception) {
+                       loader.hide();
+                       Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
+                       notificationManager.showNotification(notification);
+                       eventBus.fireEvent(new ExceptionThrownEvent(exception));
+                   }
+               });
+    }
+
+    @Override
+    public void onServerCertUploadClicked() {
+        uploadSshServerCertPresenter.showDialog(new AsyncCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                refreshServerCerts();
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Log.error(SslKeyStoreManagerPresenter.class, "Failed showing dialog", caught);
+            }
+        });
+    }
 
     @Override
     public void doApply() {
@@ -143,7 +202,9 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     @Override
     public void go(AcceptsOneWidget container) {
-        refreshKeys();
+        refreshClientKeys();
+        refreshServerCerts();
         container.setWidget(view);
     }
+
 }
