@@ -136,3 +136,8 @@
   margin-right: 30px;
   line-height: 2em;
 }
+
+.propertiesTable-firstColumn {
+  font-weight: bold;
+  color: #888888;
+}

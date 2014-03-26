@@ -96,5 +96,8 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("resultHeader-infoHeaderTitle")
         String infoHeaderTitle();
+
+        @ClassName("propertiesTable-firstColumn")
+        String propertiesTableFirstColumn();
     }
 }
