@@ -54,7 +54,6 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         this.notificationManager = notificationManager;
     }
 
-    /** Show dialog. */
     public void showDialog(@NotNull AsyncCallback<Void> callback) {
         this.callback = callback;
         view.setMessage("");
@@ -63,13 +62,11 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         view.showDialog();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onCancelClicked() {
         view.close();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onUploadClicked() {
         String alias = view.getAlias();
@@ -82,7 +79,6 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         view.submit();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onSubmitComplete(@NotNull String result) {
         if (result.isEmpty()) {
@@ -99,7 +95,6 @@ public class UploadSslKeyDialogPresenter implements UploadSslKeyDialogView.Actio
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public void onFileNameChanged() {
         String certFileName = view.getCertFileName();

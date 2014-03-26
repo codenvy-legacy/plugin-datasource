@@ -118,13 +118,11 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
         btnUpload.setEnabled(enabled);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setMessage(@NotNull String message) {
         this.message.setText(message);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setEncoding(@NotNull String encodingType) {
         uploadForm.setEncoding(encodingType);
@@ -137,14 +135,12 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
         uploadForm.setMethod(FormPanel.METHOD_POST);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void submit() {
         uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
         uploadForm.submit();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void showDialog() {
         uploadFormVPanel.clear();
@@ -175,7 +171,6 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
         this.show();
     }
 
-    /** {@inheritDoc} */
     @Override
     public void close() {
         this.hide();
@@ -184,7 +179,6 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
         certFile = null;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void setDelegate(ActionDelegate delegate) {
         this.delegate = delegate;
