@@ -25,6 +25,9 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.google.gwt.http.client.RequestException;
 
+/**
+ * Client interface for the datasource plugin server services.
+ */
 public interface DatasourceClientService {
 
     void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,

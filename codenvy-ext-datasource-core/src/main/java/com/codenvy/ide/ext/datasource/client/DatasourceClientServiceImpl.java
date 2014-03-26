@@ -17,10 +17,6 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import static com.codenvy.ide.rest.HTTPHeader.ACCEPT;
-import static com.codenvy.ide.rest.HTTPHeader.CONTENTTYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.dto.DtoFactory;
@@ -32,24 +28,20 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
 import com.codenvy.ide.util.Utils;
-import com.codenvy.ide.websocket.MessageBus;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import com.google.web.bindery.event.shared.EventBus;
 
+/**
+ * Implementation (REST) for the datasource server services client interface.
+ */
 @Singleton
 public class DatasourceClientServiceImpl implements DatasourceClientService {
 
-    private final Loader              loader;
     private final String              wsName;
     private final String              restServiceContext;
-    private final MessageBus          wsMessageBus;
-    private final EventBus            eventBus;
     private final DtoFactory          dtoFactory;
     private final AsyncRequestFactory asyncRequestFactory;
 
@@ -59,16 +51,10 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
      */
     @Inject
     protected DatasourceClientServiceImpl(final @Named("restContext") String restContext,
-                                          final Loader loader,
-                                          final MessageBus wsMessageBus,
-                                          final EventBus eventBus,
                                           final DtoFactory dtoFactory,
                                           final AsyncRequestFactory asyncRequestFactory) {
-        this.loader = loader;
         this.wsName = '/' + Utils.getWorkspaceName();
         this.restServiceContext = restContext + wsName;
-        this.wsMessageBus = wsMessageBus;
-        this.eventBus = eventBus;
         this.dtoFactory = dtoFactory;
         this.asyncRequestFactory = asyncRequestFactory;
     }
@@ -76,14 +62,10 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url =
-                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.DATABASE_METADATA_PATH,
-                               null);
-        AsyncRequest.build(RequestBuilder.POST, url, true)
-                    .data(dtoFactory.toJson(configuration))
-                    .header(CONTENTTYPE, APPLICATION_JSON)
-                    .header(ACCEPT, APPLICATION_JSON)
-                    .send(asyncRequestCallback);
+        final String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
+                                     ServicePaths.DATABASE_METADATA_PATH, null);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, true);
+        postRequest.send(asyncRequestCallback);
     }
 
     @Override
@@ -93,29 +75,23 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final MultipleRequestExecutionMode execMode,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
-        String url =
-                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.EXECUTE_SQL_REQUEST_PATH,
-                               null);
-        RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
-                                                            .withDatabase(configuration)
-                                                            .withResultLimit(resultLimit)
-                                                            .withSqlRequest(sqlRequest)
-                                                            .withMultipleRequestExecutionMode(execMode);
-        AsyncRequest.build(RequestBuilder.POST, url, true)
-                    .data(dtoFactory.toJson(requestParameterDTO))
-                    .header(CONTENTTYPE, APPLICATION_JSON)
-                    .header(ACCEPT, APPLICATION_JSON)
-                    .send(asyncRequestCallback);
+        final String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
+                                     ServicePaths.EXECUTE_SQL_REQUEST_PATH, null);
+        final RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
+                                                                  .withDatabase(configuration)
+                                                                  .withResultLimit(resultLimit)
+                                                                  .withSqlRequest(sqlRequest)
+                                                                  .withMultipleRequestExecutionMode(execMode);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestParameterDTO, true);
+        postRequest.send(asyncRequestCallback);
     }
 
     @Override
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url =
-                     formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH, ServicePaths.DATABASE_TYPES_PATH,
-                               null);
-        AsyncRequest.build(RequestBuilder.GET, url, true)
-                    .header(ACCEPT, APPLICATION_JSON)
-                    .send(asyncRequestCallback);
+        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
+                               ServicePaths.DATABASE_TYPES_PATH, null);
+        final AsyncRequest getRequest = this.asyncRequestFactory.createGetRequest(url, true);
+        getRequest.send(asyncRequestCallback);
     }
 
     @Override
@@ -132,27 +108,35 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
         postRequest.send(asyncRequestCallback);
     }
 
+    @Override
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
                                ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, null);
-        AsyncRequest.build(RequestBuilder.POST, url, true)
-                    .data(dtoFactory.toJson(configuration))
-                    .header(CONTENTTYPE, APPLICATION_JSON)
-                    .header(ACCEPT, APPLICATION_JSON)
-                    .send(asyncRequestCallback);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, true);
+        postRequest.send(asyncRequestCallback);
     }
 
+    /**
+     * Builds the target REST service url.
+     * 
+     * @param context the rest context
+     * @param root the root of the service
+     * @param service the rest service
+     * @param param the parameters
+     * @return the url
+     */
     private String formatUrl(final String context, final String root, final String service, final String param) {
-        StringBuilder sb = new StringBuilder(context).append("/")
-                                                     .append(root)
-                                                     .append("/")
-                                                     .append(service);
+        StringBuilder sb = new StringBuilder(context);
+        sb.append("/")
+          .append(root)
+          .append("/")
+          .append(service);
+
         if (param != null) {
             sb.append('/')
               .append(param);
         }
         return sb.toString();
     }
-
 }
