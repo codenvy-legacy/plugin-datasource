@@ -163,7 +163,7 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> drizzleDBWizardPages = Collections.createArray();
         drizzleDBWizardPages.add(drizzleConnectorPageProvider);
         connectorAgent.register(DrizzleDatasourceConnectorPage.DRIZZLE_DB_ID, connectorCounter,
-                                "Drizzle", null, "org.drizzle.jdbc.DrizzleDriver", drizzleDBWizardPages);
+                                "Drizzle", resources.getDrizzleLogo(), "org.drizzle.jdbc.DrizzleDriver", drizzleDBWizardPages);
 
         connectorCounter++;
 

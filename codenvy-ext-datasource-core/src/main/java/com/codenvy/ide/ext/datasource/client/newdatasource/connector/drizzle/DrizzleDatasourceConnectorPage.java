@@ -33,7 +33,7 @@ public class DrizzleDatasourceConnectorPage extends DefaultNewDatasourceConnecto
                                           final DatasourceClientService service,
                                           final DatasourceUiResources resources,
                                           final NewDatasourceWizardMessages messages) {
-        super(view, "Drizzle", null, DRIZZLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
+        super(view, "Drizzle", resources.getDrizzleLogo(), DRIZZLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages, DEFAULT_PORT_DRIZZLE, DatabaseType.DRIZZLE);
     }
 }
