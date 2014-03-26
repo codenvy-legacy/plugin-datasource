@@ -25,11 +25,11 @@ import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionExcepti
 
 public class JdbcUrlBuilder {
 
-    private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_MYSQL    = "jdbc:mysql://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
-    private static final String URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
+    private static final String URL_TEMPLATE_POSTGRES          = "jdbc:postgresql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_MYSQL             = "jdbc:mysql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_ORACLE            = "jdbc:oracle:thin:@{0}:{1}:{2}";
+    private static final String URL_TEMPLATE_JTDS              = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_NUODB             = "jdbc:com.nuodb://{0}/{1}";
 
     public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
@@ -47,6 +47,8 @@ public class JdbcUrlBuilder {
                 return getJTDSJdbcUrl(configuration);
             case NUODB:
                 return getNuoDBJdbcUrl(configuration);
+            case GOOGLECLOUDSQL:
+                return getMySQLJdbcUrl(configuration);
             default:
                 throw new DatabaseDefinitionException("Unknown database type "
                                                       + configuration.getDatabaseType()

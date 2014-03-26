@@ -27,5 +27,7 @@ public enum DatabaseType {
 
     JTDS,
 
-    NUODB
+    NUODB,
+
+    GOOGLECLOUDSQL
 }

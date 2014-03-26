@@ -39,6 +39,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.cloud.sql.GoogleCloudSqlConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb.NuoDBDatasourceConnectorPage;
@@ -78,6 +79,7 @@ public class DatasourceExtension {
                                Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
                                Provider<NuoDBDatasourceConnectorPage> nuodbConnectorPageProvider,
+                               Provider<GoogleCloudSqlConnectorPage> googleCloudSqlConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
@@ -146,6 +148,15 @@ public class DatasourceExtension {
                                 "NuoDB", resources.getNuoDBLogo(), "com.nuodb.jdbc.Driver", nuoDBWizardPages);
 
         connectorCounter++;
+
+        // add a new GoogleCloudSQL connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> googleCloudSQLWizardPages = Collections.createArray();
+        googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
+        connectorAgent.register(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID, connectorCounter,
+                "GoogleCloudSQL", resources.getGoogleCloudSQLLogo(), "com.mysql.jdbc.Driver", googleCloudSQLWizardPages);
+
+        connectorCounter++;
+
 
         // Add execute shortcut
         actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);

@@ -46,6 +46,9 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("NuoDB.png")
     ImageResource getNuoDBLogo();
 
+    @Source("GoogleCloudSQL.png")
+    ImageResource getGoogleCloudSQLLogo();
+
     @Source("refresh.png")
     ImageResource getRefreshIcon();
 
