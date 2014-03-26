@@ -49,6 +49,9 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("GoogleCloudSQL.png")
     ImageResource getGoogleCloudSQLLogo();
 
+    @Source("Drizzle.png")
+    ImageResource getDrizzleLogo();
+
     @Source("refresh.png")
     ImageResource getRefreshIcon();
 
