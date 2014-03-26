@@ -63,17 +63,9 @@ public class KeyStoreObject {
     protected KeyStore          keystore;
 
     public KeyStoreObject() throws Exception {
-        initSslKeystoreProperties();
         keyStoreLocation = getKeyStoreLocation();
         keyStorePassword = getKeyStorePassword();
         keystore = extractKeyStoreFromFile(keyStoreLocation, keyStorePassword);
-    }
-
-    protected void initSslKeystoreProperties() {
-        System.setProperty("javax.net.ssl.trustStore", "/home/sunix/ssl/instance1/truststore");
-        System.setProperty("javax.net.ssl.trustStorePassword", "kafpass");
-        System.setProperty("javax.net.ssl.keyStore", "/home/sunix/ssl/instance1/keystore");
-        System.setProperty("javax.net.ssl.keyStorePassword", "kafpass");
     }
 
     protected String getKeyStorePassword() {
@@ -92,6 +84,7 @@ public class KeyStoreObject {
             ks.load(fis, sPass.toCharArray());
         } catch (FileNotFoundException e) {
             LOG.info("Couldn't find keystore file " + store);
+            ks.load(null, sPass.toCharArray());
         }
 
         return ks;
