@@ -49,7 +49,7 @@
         </g:DockLayoutPanel>
         </g:north>
         <g:center>
-            <g:SplitLayoutPanel>
+            <g:SplitLayoutPanel ui:field="splitPanel">
                 <g:center>
                     <g:SimpleLayoutPanel ui:field="editorZone" />
                 </g:center>

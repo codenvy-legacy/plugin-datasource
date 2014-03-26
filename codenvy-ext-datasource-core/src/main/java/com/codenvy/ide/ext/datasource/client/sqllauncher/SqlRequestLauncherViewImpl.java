@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -95,6 +96,9 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     @UiField(provided = true)
     protected DatasourceUiResources datasourceUiResources;
 
+    /** The split layout panel - needed so that we can set the splitter size */
+    @UiField(provided = true)
+    protected SplitLayoutPanel      splitPanel;
 
     @Inject
     public SqlRequestLauncherViewImpl(final SqlRequestLauncherViewImplUiBinder uiBinder,
@@ -102,7 +106,9 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
                                       final DatasourceUiResources datasourceUiResources) {
         super();
 
+        /* initialize provided fields */
         this.datasourceUiResources = datasourceUiResources;
+        this.splitPanel = new SplitLayoutPanel(4);
 
         uiBinder.createAndBindUi(this);
         getContainer().add(this.launcherContainer);

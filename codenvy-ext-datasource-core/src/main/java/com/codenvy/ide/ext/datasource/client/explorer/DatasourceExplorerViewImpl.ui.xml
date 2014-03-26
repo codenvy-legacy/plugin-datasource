@@ -34,7 +34,7 @@
             </g:DockLayoutPanel>
         </g:north>
         <g:center>
-            <g:SplitLayoutPanel>
+            <g:SplitLayoutPanel ui:field="splitPanel">
                 <g:south size="200">
                     <g:SimpleLayoutPanel ui:field="propertiesContainer" />
                 </g:south>

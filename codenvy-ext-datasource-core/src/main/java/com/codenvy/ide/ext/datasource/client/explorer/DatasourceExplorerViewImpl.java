@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -75,6 +76,10 @@ public class DatasourceExplorerViewImpl extends
     @UiField(provided = true)
     protected DatasourceUiResources datasourceUiResources;
 
+    /** The split layout panel - needed so that we can set the splitter size */
+    @UiField(provided = true)
+    protected SplitLayoutPanel      splitPanel;
+
     @Inject
     public DatasourceExplorerViewImpl(final Resources resources,
                                       final DatabaseMetadataEntityDTORenderer renderer,
@@ -83,8 +88,11 @@ public class DatasourceExplorerViewImpl extends
                                       final DatasourceUiResources clientResource) {
         super(resources);
 
-        tree = Tree.create(resources, new DatabaseMetadataEntityDTODataAdapter(), renderer);
+        /* initialize provided fields */
+        this.tree = Tree.create(resources, new DatabaseMetadataEntityDTODataAdapter(), renderer);
         this.datasourceUiResources = clientResource;
+        this.splitPanel = new SplitLayoutPanel(4);
+
         uiBinder.createAndBindUi(this);
 
         this.refreshButton.getUpFace().setImage(new Image(clientResource.getRefreshIcon()));
