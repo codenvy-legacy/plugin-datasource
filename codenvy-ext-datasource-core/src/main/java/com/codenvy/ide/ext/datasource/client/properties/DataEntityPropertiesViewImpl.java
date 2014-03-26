@@ -18,7 +18,6 @@
 package com.codenvy.ide.ext.datasource.client.properties;
 
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
-import com.codenvy.ide.ext.datasource.client.common.CellTableResourcesProperties;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;

@@ -36,7 +36,6 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
-import com.codenvy.ide.ext.datasource.client.common.CellTableResourcesQueryResults;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
