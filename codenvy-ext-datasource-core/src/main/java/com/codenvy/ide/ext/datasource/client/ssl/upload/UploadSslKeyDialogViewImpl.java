@@ -75,7 +75,7 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
 
         Widget widget = ourUiBinder.createAndBindUi(this);
 
-        this.setText("Upload SSL client cert and private key");
+        this.setText(locale.dialogUploadSslKeyTitle());
         this.setWidget(widget);
 
         bind();

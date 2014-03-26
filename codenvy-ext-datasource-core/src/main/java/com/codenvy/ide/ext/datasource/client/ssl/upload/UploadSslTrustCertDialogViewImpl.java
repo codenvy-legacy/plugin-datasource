@@ -74,7 +74,7 @@ public class UploadSslTrustCertDialogViewImpl extends DialogBox implements Uploa
 
         Widget widget = ourUiBinder.createAndBindUi(this);
 
-        this.setText("Upload SSL Server Trust Certificate");
+        this.setText(locale.dialogUploadSslTrustCertTitle());
         this.setWidget(widget);
 
         bind();

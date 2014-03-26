@@ -78,7 +78,7 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
 
     protected void initSslKeyTable(CellTable.Resources res) {
         clientKeys = new CellTable<SslKeyStoreEntry>(15, res);
-        addAliasColumn(clientKeys, "Client keys");
+        addAliasColumn(clientKeys, locale.headerKeyList());
         addTypeColumn(clientKeys, "");
         Column<SslKeyStoreEntry, String> deleteColumn = addDeleteColumn(clientKeys, "");
         // Creates handler on button clicked
@@ -137,7 +137,7 @@ public class SslKeyStoreManagerViewImpl extends Composite implements SslKeyStore
 
     protected void initSslCertTable(CellTable.Resources res) {
         serverCerts = new CellTable<SslKeyStoreEntry>(15, res);
-        addAliasColumn(serverCerts, "Server trust certificates");
+        addAliasColumn(serverCerts, locale.headerTrustList());
         addTypeColumn(serverCerts, "");
         Column<SslKeyStoreEntry, String> deleteColumn = addDeleteColumn(serverCerts, "");
         // Creates handler on button clicked

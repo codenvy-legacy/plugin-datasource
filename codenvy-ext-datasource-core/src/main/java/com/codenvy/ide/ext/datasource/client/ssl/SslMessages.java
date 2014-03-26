@@ -37,10 +37,10 @@ public interface SslMessages extends Messages {
     @DefaultMessage("Alias can not be empty")
     String aliasValidationError();
 
-    @DefaultMessage("Upload Client SSL Private Key")
+    @DefaultMessage("Upload Private Key")
     String uploadClientSslKey();
-    
-    @DefaultMessage("Upload Server SSL Trust Certificate")
+
+    @DefaultMessage("Upload Trust Certificate")
     String uploadServerSslCert();
 
     @DefaultMessage("SSL Keystore")
@@ -48,4 +48,16 @@ public interface SslMessages extends Messages {
 
     @DefaultMessage("Do you want to delete ssh keys for <b>{0}</b>")
     String deleteSslKeyQuestion(String alias);
+
+    @DefaultMessage("Upload SSL client key")
+    String dialogUploadSslKeyTitle();
+
+    @DefaultMessage("Upload SSL server trust certificate")
+    String dialogUploadSslTrustCertTitle();
+
+    @DefaultMessage("SSL Trust Certificates")
+    String headerTrustList();
+
+    @DefaultMessage("SSL Private Key Store")
+    String headerKeyList();
 }
