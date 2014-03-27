@@ -160,7 +160,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         if (datasourceIds != null) {
             if (datasourceIds.size() > 1) {
                 // add an empty item
-                this.datasourceList.addItem("", (String)null);
+                this.datasourceList.addItem("", "");
             }
             for (String datasourceId : datasourceIds) {
                 this.datasourceList.addItem(datasourceId);

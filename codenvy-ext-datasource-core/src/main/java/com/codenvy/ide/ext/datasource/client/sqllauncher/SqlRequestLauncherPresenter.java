@@ -190,7 +190,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         String editorFileId = getEditorInput().getFile().getId();
         Log.info(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
         editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
-        if (newDataSourceId == null) {
+        if (newDataSourceId == null || newDataSourceId.isEmpty()) {
             return;
         }
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(newDataSourceId);

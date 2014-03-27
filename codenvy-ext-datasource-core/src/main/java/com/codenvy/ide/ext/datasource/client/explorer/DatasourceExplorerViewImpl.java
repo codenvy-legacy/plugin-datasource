@@ -110,9 +110,15 @@ public class DatasourceExplorerViewImpl extends
 
     /** {@inheritDoc} */
     @Override
-    public void setItems(DatabaseMetadataEntityDTO database) {
-        tree.getModel().setRoot(new EntityTreeNode(null, database));
-        tree.renderTree(1);
+    public void setItems(final DatabaseMetadataEntityDTO database) {
+        if (database == null) {
+            // should probably clean up the model too but we'd need a null-safe DataAdapter and Renderer
+            tree.asWidget().setVisible(false);
+        } else {
+            tree.asWidget().setVisible(true);
+            tree.getModel().setRoot(new EntityTreeNode(null, database));
+            tree.renderTree(1);
+        }
     }
 
     @Override

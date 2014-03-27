@@ -165,6 +165,11 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     protected void loadDatasource(final String datasourceId) {
         try {
             DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
+            if (datasourceId == null || datasourceId.isEmpty()) {
+                view.setItems(null);
+                eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
+                return;
+            }
 
             final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                             Notification.Status.PROGRESS);
