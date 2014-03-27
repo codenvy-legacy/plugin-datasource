@@ -17,6 +17,7 @@
  */
 package com.codenvy.ide.ext.datasource.server.ssl;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 /**
@@ -25,7 +26,8 @@ import javax.ws.rs.Path;
 @Path("ssl-keystore")
 public class SslKeyStoreService {
 
-    static {
+    @GET
+    public String init(){
         if (System.getProperty("javax.net.ssl.trustStore") == null) {
             System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
         }
@@ -38,6 +40,7 @@ public class SslKeyStoreService {
         if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
             System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
         }
+        return "ok";
     }
 
     @Path("keystore")

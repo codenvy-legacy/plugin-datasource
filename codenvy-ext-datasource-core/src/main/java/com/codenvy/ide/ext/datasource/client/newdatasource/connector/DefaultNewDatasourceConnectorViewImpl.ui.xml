@@ -75,6 +75,20 @@
         </g:DockLayoutPanel>
         </g:north>
         <g:north size="30.0">
+            <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
+                <g:center>
+                    <g:CheckBox ui:field="useSSL" text="Use SSL"></g:CheckBox>
+                </g:center>
+            </g:DockLayoutPanel>
+        </g:north>
+        <g:north size="30.0">
+            <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing}">
+                <g:center>
+                    <g:CheckBox ui:field="verifyServerCertificate" text="Verify Server Certificate"></g:CheckBox>
+                </g:center>
+            </g:DockLayoutPanel>
+        </g:north>
+        <g:north size="30.0">
             <g:DockLayoutPanel unit="PX" >
                 <g:east size="127" >
                     <g:Button ui:field="testConnectionButton" text="Test Connection" />

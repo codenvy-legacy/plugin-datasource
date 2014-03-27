@@ -140,7 +140,6 @@ public class KeyStoreObject {
 
         keystore.setKeyEntry(alias, privateKey, keyStorePassword.toCharArray(), certs);
         keystore.store(new FileOutputStream(keyStoreLocation), keyStorePassword.toCharArray());
-
         return Response.ok("", MediaType.TEXT_HTML).build();
     }
 }

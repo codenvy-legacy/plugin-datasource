@@ -44,6 +44,13 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
         this.loader = loader;
         this.asyncRequestFactory = asyncRequestFactory;
     }
+    
+    @Override
+    public void init(AsyncRequestCallback<Void> callback) {
+        loader.setMessage("Init SSL ....");
+        loader.show();
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore").send(callback);
+    }
 
     /** {@inheritDoc} */
     @Override

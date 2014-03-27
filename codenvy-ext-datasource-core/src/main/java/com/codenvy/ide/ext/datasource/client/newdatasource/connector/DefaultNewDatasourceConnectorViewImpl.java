@@ -20,6 +20,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -49,6 +50,12 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     @UiField
     Button                 testConnectionButton;
+
+    @UiField
+    CheckBox               useSSL;
+
+    @UiField
+    CheckBox               verifyServerCertificate;
 
     private ActionDelegate delegate;
 
@@ -93,8 +100,19 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         portField.setText(Integer.toString(port));
     }
 
+    @Override
+    public Boolean getUseSSL() {
+        return useSSL.getValue();
+    }
+
+    @Override
+    public Boolean getVerifyServerCertificate() {
+        return verifyServerCertificate.getValue();
+    }
+
     @UiHandler("testConnectionButton")
     void handleClick(ClickEvent e) {
         delegate.onClickTestConnectionButton();
     }
+
 }
