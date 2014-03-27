@@ -184,13 +184,19 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void datasourceChanged(final String newDataSourceId) {
+    public void datasourceChanged(final String dataSourceId) {
+        String tempDataSourceId = dataSourceId; // we need newDataSourceId to be final so we must use a temp var here
+        if (dataSourceId == null || dataSourceId.isEmpty()) {
+            tempDataSourceId = null;
+        }
+        final String newDataSourceId = tempDataSourceId;
+
         Log.info(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
         String editorFileId = getEditorInput().getFile().getId();
         Log.info(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
         editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
-        if (newDataSourceId == null || newDataSourceId.isEmpty()) {
+        if (newDataSourceId == null) {
             return;
         }
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(newDataSourceId);
