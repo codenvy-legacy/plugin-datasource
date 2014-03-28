@@ -16,6 +16,7 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Provider;
 
@@ -29,18 +30,22 @@ public class NewDatasourceConnector implements Comparable<NewDatasourceConnector
     private final String                                                         jdbcClassName;
     private final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages;
 
+    private final DatabaseCategoryType categoryType;
+
     public NewDatasourceConnector(final String connectorId,
                                   final int priority,
                                   final String title,
                                   final ImageResource logo,
                                   final String jdbcClassName,
-                                  final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
+                                  final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages,
+                                  final DatabaseCategoryType categoryType) {
         this.id = connectorId;
         this.priority = priority;
         this.title = title;
         this.image = logo;
         this.jdbcClassName = jdbcClassName;
         this.wizardPages = wizardPages;
+        this.categoryType = categoryType;
     }
 
     public String getId() {
@@ -62,6 +67,11 @@ public class NewDatasourceConnector implements Comparable<NewDatasourceConnector
     public Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> getWizardPages() {
         return wizardPages;
     }
+
+    public DatabaseCategoryType getCategoryType() {
+        return categoryType;
+    }
+
 
     @Override
     public int hashCode() {

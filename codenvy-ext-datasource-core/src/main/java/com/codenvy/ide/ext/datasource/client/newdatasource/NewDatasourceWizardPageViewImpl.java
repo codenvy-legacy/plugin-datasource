@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -38,6 +39,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
 
 /**
  * The implementation of {@link NewDatasourceWizardPageView}.
@@ -66,15 +70,27 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
     @Override
     public void setConnectors(Collection<NewDatasourceConnector> connectors) {
+        //splitting the parent list to get the maximum size for each category
+        Collection<NewDatasourceConnector> cloudCollection = new ArrayList<>();
+        Collection<NewDatasourceConnector> notCloudCollection = new ArrayList<>();
+        for (NewDatasourceConnector connector: connectors){
+            if (connector.getCategoryType() == CLOUD){
+                cloudCollection.add(connector);
+            }else {
+                notCloudCollection.add(connector);
+            }
+        }
         connectorButtons = new ArrayList<ToggleButton>(connectors.size());
         connectorIds = new ArrayList<String>(connectors.size());
 
-        Grid grid = new Grid(2, connectors.size());
+        Grid grid = new Grid(4, Math.max(cloudCollection.size(), notCloudCollection.size()));
         databasePanel.setWidget(grid);
         HTMLTable.CellFormatter formatter = grid.getCellFormatter();
 
         // create button for each paas
-        int i = 0;
+
+        int indexCloudColumn=0;
+        int indexNotCloudColum=0;
         for (final NewDatasourceConnector connector : connectors) {
 
             ImageResource icon = connector.getImage();
@@ -91,17 +107,24 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
                     delegate.onConnectorSelected(connector.getId());
                 }
             });
-            grid.setWidget(0, i, btn);
-            formatter.setHorizontalAlignment(0, i, HasHorizontalAlignment.ALIGN_CENTER);
+            int rowIndex;
+            int colIndex;
+            if (connector.getCategoryType() == NOTCLOUD){
+                rowIndex = 0;
+                colIndex = indexNotCloudColum++;
+            }else {
+                rowIndex = 2;
+                colIndex = indexCloudColumn++;
+            }
+            grid.setWidget(rowIndex, colIndex, btn);
+            formatter.setHorizontalAlignment(rowIndex, colIndex, HasHorizontalAlignment.ALIGN_CENTER);
 
             Label title = new Label(connector.getTitle());
-            grid.setWidget(1, i, title);
-            formatter.setHorizontalAlignment(1, i, HasHorizontalAlignment.ALIGN_CENTER);
+            grid.setWidget(rowIndex + 1, colIndex, title);
+            formatter.setHorizontalAlignment(rowIndex + 1, colIndex, HasHorizontalAlignment.ALIGN_CENTER);
 
             connectorButtons.add(btn);
             connectorIds.add(connector.getId());
-
-            i++;
         }
     }
 

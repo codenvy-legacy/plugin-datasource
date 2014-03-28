@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
@@ -62,9 +63,10 @@ public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAg
                          @NotNull String title,
                          @Nullable ImageResource image,
                          @NotNull String jdbcClassName,
-                         @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages) {
+                         @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages,
+                         @NotNull DatabaseCategoryType categoryType) {
 
-        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, jdbcClassName, wizardPages);
+        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, jdbcClassName, wizardPages, categoryType);
         register(connector);
     }
 

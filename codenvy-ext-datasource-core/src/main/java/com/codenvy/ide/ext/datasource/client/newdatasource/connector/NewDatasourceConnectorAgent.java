@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Provider;
 
@@ -34,7 +35,8 @@ public interface NewDatasourceConnectorAgent {
                   @NotNull String title,
                   @Nullable ImageResource image,
                   @NotNull String jdbcClassName,
-                  @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages);
+                  @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages,
+                  @NotNull DatabaseCategoryType categoryType);
 
     void register(NewDatasourceConnector connector);
 
