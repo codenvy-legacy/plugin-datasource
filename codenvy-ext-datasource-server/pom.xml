@@ -14,6 +14,7 @@
 ~ See the License for the specific language governing permissions and
 ~ limitations under the License.
 -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -21,26 +22,36 @@
         <groupId>com.codenvy.ide</groupId>
         <version>3.0.0-M14-SNAPSHOT</version>
     </parent>
-    <artifactId>codenvy-ext-datasource-api-war</artifactId>
-    <packaging>war</packaging>
+    <artifactId>codenvy-ext-datasource-server</artifactId>
+    <name>Codenvy Extension :: Datasource Server</name>
     <dependencies>
         <dependency>
-            <groupId>com.codenvy.sdk</groupId>
-            <artifactId>assembly-platform-api</artifactId>
-            <type>war</type>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>codenvy-ext-datasource-shared</artifactId>
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-ext-datasource-server</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>codenvy-ide-api</artifactId>
-                    <groupId>com.codenvy.ide</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>codenvy-ide-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.schemacrawler</groupId>
+            <artifactId>schemacrawler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <finalName>api</finalName>
-    </build>
 </project>

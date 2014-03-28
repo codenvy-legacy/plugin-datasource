@@ -27,7 +27,9 @@
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
-        <module>codenvy-ext-datasource-core</module>
+        <module>codenvy-ext-datasource-shared</module>
+        <module>codenvy-ext-datasource-server</module>
+        <module>codenvy-ext-datasource-client</module>
         <module>codenvy-ext-datasource-api-war</module>
         <module>codenvy-ext-datasource-application-war</module>
         <module>codenvy-ext-datasource-packaging-standalone-tomcat</module>
@@ -50,6 +52,7 @@
     <properties>
         <codenvy.datasource.version>3.0.0-M14-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M14-SNAPSHOT</codenvy.version>
+        <commons.lang.version>3.2.1</commons.lang.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <jtds-driver.version>1.2</jtds-driver.version>
         <mysql-driver.version>5.1.29</mysql-driver.version>
@@ -75,7 +78,17 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-datasource-core</artifactId>
+                <artifactId>codenvy-ext-datasource-client</artifactId>
+                <version>${codenvy.datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-datasource-server</artifactId>
+                <version>${codenvy.datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ext-datasource-shared</artifactId>
                 <version>${codenvy.datasource.version}</version>
             </dependency>
             <dependency>
@@ -149,6 +162,11 @@
                 <groupId>com.google.gwt.inject</groupId>
                 <artifactId>gin</artifactId>
                 <version>${gin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.nuodb.jdbc</groupId>

@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-ext-datasource-core</artifactId>
+            <artifactId>codenvy-ext-datasource-client</artifactId>
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
