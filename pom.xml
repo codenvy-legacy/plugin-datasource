@@ -30,10 +30,6 @@
         <module>codenvy-ext-datasource-shared</module>
         <module>codenvy-ext-datasource-server</module>
         <module>codenvy-ext-datasource-client</module>
-        <module>codenvy-ext-datasource-api-war</module>
-        <module>codenvy-ext-datasource-application-war</module>
-        <module>codenvy-ext-datasource-packaging-standalone-tomcat</module>
-        <module>codenvy-ext-datasource-qa</module>
     </modules>
     <distributionManagement>
         <repository>
@@ -54,15 +50,9 @@
         <codenvy.version>3.0.0-M14-SNAPSHOT</codenvy.version>
         <commons.lang.version>3.2.1</commons.lang.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
-        <jtds-driver.version>1.2</jtds-driver.version>
-        <mysql-driver.version>5.1.29</mysql-driver.version>
-        <nuodb-driver.version>2.0.3</nuodb-driver.version>
         <opencsv.version>2.3</opencsv.version>
-        <oracle-driver.version>11.2.0</oracle-driver.version>
-        <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <schemacrawler.version>10.08.01</schemacrawler.version>
-        <sqlserver-driver.version>4.0</sqlserver-driver.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -70,11 +60,6 @@
                 <groupId>com.codenvy.commons</groupId>
                 <artifactId>codenvy-commons-servlet</artifactId>
                 <version>${com.codenvy.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-builder</artifactId>
-                <version>${codenvy.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
@@ -93,69 +78,12 @@
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-datasource-packaging-standalone-tomcat</artifactId>
-                <version>${codenvy.datasource.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-debugger-java</artifactId>
-                <version>${codenvy.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>tools</artifactId>
-                        <groupId>sun.jdt</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-git</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-github</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-java</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-runner</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-tutorials</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-web</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ide-api</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ide-core</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ide-env-dummy</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ide-security</artifactId>
                 <version>${codenvy.version}</version>
             </dependency>
             <dependency>
@@ -167,12 +95,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.nuodb.jdbc</groupId>
-                <artifactId>nuodb-jdbc</artifactId>
-                <version>${nuodb-driver.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>net.sf.opencsv</groupId>
@@ -191,59 +113,10 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.codenvy.platform-api</groupId>
-                <artifactId>codenvy-api-project</artifactId>
-                <version>${com.codenvy.platform-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.platform-api</groupId>
-                <artifactId>codenvy-api-vfs</artifactId>
-                <version>${com.codenvy.platform-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.sdk</groupId>
-                <artifactId>assembly-platform-api</artifactId>
-                <version>${codenvy.version}</version>
-                <type>war</type>
-            </dependency>
-            <dependency>
                 <groupId>com.google.gwt</groupId>
                 <artifactId>gwt-user</artifactId>
                 <version>${gwt.version}</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ojdbc6</artifactId>
-                <version>${oracle-driver.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-driver.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.sourceforge.jtds</groupId>
-                <artifactId>jtds</artifactId>
-                <version>${jtds-driver.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql-driver.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-api-war</artifactId>
-                <version>${codenvy.version}</version>
-                <type>war</type>
-                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.gwt</groupId>
@@ -261,24 +134,6 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.concordion</groupId>
-                <artifactId>concordion</artifactId>
-                <version>1.4.4</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.concordion</groupId>
-                <artifactId>concordion-extensions</artifactId>
-                <version>1.1.1</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian.extension</groupId>
-                <artifactId>arquillian-phantom-driver</artifactId>
-                <version>1.1.0.Final</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
