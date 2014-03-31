@@ -30,6 +30,9 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
+import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
+import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
+import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
@@ -111,5 +114,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(UploadSslKeyDialogView.class).to(UploadSslKeyDialogViewImpl.class).in(Singleton.class);
         bind(UploadSslTrustCertDialogView.class).to(UploadSslTrustCertDialogViewImpl.class).in(Singleton.class);
 
+        bind(EditDatasourcesView.class).to(EditDatasourcesViewImpl.class);
+        install(new GinFactoryModuleBuilder().build(EditDatasourcesPresenterFactory.class));
     }
 }
