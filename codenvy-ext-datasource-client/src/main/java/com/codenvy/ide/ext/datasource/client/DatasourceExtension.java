@@ -26,6 +26,7 @@ import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
+import com.codenvy.ide.ext.datasource.client.action.EditDatasourcesAction;
 import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
@@ -90,6 +91,7 @@ public class DatasourceExtension {
                                Provider<AwsSqlServerConnectorPage> awsSqlServerConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
+                               EditDatasourcesAction editDatasourcesAction,
                                KeyBindingAgent keyBindingAgent) {
 
         workspaceAgent.openPart(dsExplorer, PartStackType.NAVIGATION);
@@ -106,6 +108,10 @@ public class DatasourceExtension {
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
         wizard.addPage(newDatasourcePageProvider);
+
+        // add submenu "Edit datasource" to Datasource menu
+        actionManager.registerAction("EditDSConnections", editDatasourcesAction);
+        defaultDatasourceMainGroup.add(editDatasourcesAction);
 
         // fetching available drivers list from the server
         availableJdbcDrivers.fetch();
@@ -145,7 +151,8 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
         connectorAgent.register(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID, connectorCounter,
-                                "MsSqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages, NOTCLOUD);
+                                "MsSqlServer", resources.getSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", sqlServerWizardPages,
+                                NOTCLOUD);
 
         connectorCounter++;
 
