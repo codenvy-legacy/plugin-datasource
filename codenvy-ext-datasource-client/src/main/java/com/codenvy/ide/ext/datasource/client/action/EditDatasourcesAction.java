@@ -17,6 +17,7 @@ package com.codenvy.ide.ext.datasource.client.action;
 
 import com.codenvy.ide.api.ui.action.Action;
 import com.codenvy.ide.api.ui.action.ActionEvent;
+import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceMessages;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenter;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.google.inject.Inject;
@@ -32,7 +33,9 @@ public class EditDatasourcesAction extends Action {
     private final EditDatasourcesPresenterFactory dialogFactory;
 
     @Inject
-    public EditDatasourcesAction(final EditDatasourcesPresenterFactory dialogFactory) {
+    public EditDatasourcesAction(final EditDatasourcesPresenterFactory dialogFactory,
+                                 final EditDatasourceMessages messages) {
+        super(messages.editDatasourcesMenuText());
         this.dialogFactory = dialogFactory;
     }
 
