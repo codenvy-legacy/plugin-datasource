@@ -53,10 +53,14 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
+
+        this.setText(messages.editDatasourcesDialogText());
+        this.setModal(true);
     }
 
     @Override
     public void showDialog() {
+        this.center();
         this.show();
     }
 
