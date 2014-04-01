@@ -34,4 +34,6 @@ public interface EditDatasourceMessages extends Messages {
     @DefaultMessage("Edit/Delete datasources")
     String editDatasourcesDialogText();
 
+    @DefaultMessage("Datasources")
+    String datasourcesListLabel();
 }
