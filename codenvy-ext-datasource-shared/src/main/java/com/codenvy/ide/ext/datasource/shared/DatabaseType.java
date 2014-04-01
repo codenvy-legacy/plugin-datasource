@@ -27,5 +27,7 @@ public enum DatabaseType {
 
     NUODB,
 
-    GOOGLECLOUDSQL
+    GOOGLECLOUDSQL,
+
+    AMAZONRDS
 }

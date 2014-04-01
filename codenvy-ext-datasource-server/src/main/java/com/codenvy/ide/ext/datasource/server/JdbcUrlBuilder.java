@@ -47,6 +47,8 @@ public class JdbcUrlBuilder {
                 return getNuoDBJdbcUrl(configuration);
             case GOOGLECLOUDSQL:
                 return getMySQLJdbcUrl(configuration);
+            case AMAZONRDS:
+                return  getMySQLJdbcUrl(configuration);
             default:
                 throw new DatabaseDefinitionException("Unknown database type "
                                                       + configuration.getDatabaseType()

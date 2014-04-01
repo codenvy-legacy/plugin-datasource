@@ -39,6 +39,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.AmazonRdsConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.cloud.sql.GoogleCloudSqlConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
@@ -80,6 +81,7 @@ public class DatasourceExtension {
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
                                Provider<NuoDBDatasourceConnectorPage> nuodbConnectorPageProvider,
                                Provider<GoogleCloudSqlConnectorPage> googleCloudSqlConnectorPageProvider,
+                               Provider<AmazonRdsConnectorPage> amazonRdsConnectorPageProvider ,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
@@ -153,6 +155,14 @@ public class DatasourceExtension {
         googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
         connectorAgent.register(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID, connectorCounter,
                 "GoogleCloudSQL", resources.getGoogleCloudSQLLogo(), "com.mysql.jdbc.Driver", googleCloudSQLWizardPages,CLOUD);
+
+        connectorCounter++;
+
+        // add a new Amazon RDS connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> amazonRdsWizardPages = Collections.createArray();
+        amazonRdsWizardPages.add(amazonRdsConnectorPageProvider);
+        connectorAgent.register(AmazonRdsConnectorPage.AMAZONRDS_DB_ID, connectorCounter,
+                "AmazonRDS", resources.getAmazonRdsLogo(), "com.mysql.jdbc.Driver", amazonRdsWizardPages,CLOUD);
 
         connectorCounter++;
 
