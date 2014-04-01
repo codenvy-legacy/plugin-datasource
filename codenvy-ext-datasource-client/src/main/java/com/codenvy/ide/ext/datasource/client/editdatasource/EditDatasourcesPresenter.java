@@ -41,6 +41,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                                     final DatasourceManager datasourceManager) {
         this.view = view;
         this.datasourceManager = datasourceManager;
+        this.view.bindDatasourceModel(dataProvider);
     }
 
     /** Show dialog. */

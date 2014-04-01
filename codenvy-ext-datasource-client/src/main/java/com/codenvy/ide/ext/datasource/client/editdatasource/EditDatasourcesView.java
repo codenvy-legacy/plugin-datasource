@@ -15,6 +15,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.view.client.AbstractDataProvider;
+
 /**
  * The view interface for the edit/delete datasource dialog.
  * 
@@ -27,6 +30,9 @@ public interface EditDatasourcesView {
 
     /** Close the edit/delete datasource dialog. */
     void closeDialog();
+
+    /** Binds the datasource widget to the datasource list model. */
+    void bindDatasourceModel(AbstractDataProvider<DatabaseConfigurationDTO> provider);
 
     /**
      * Interface for this view's action delegate.

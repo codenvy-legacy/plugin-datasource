@@ -22,6 +22,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.inject.Inject;
 
 /**
@@ -67,6 +68,11 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     @Override
     public void closeDialog() {
         this.hide();
+    }
+
+    @Override
+    public void bindDatasourceModel(final AbstractDataProvider<DatabaseConfigurationDTO> provider) {
+        provider.addDataDisplay(this.datasourceList);
     }
 
     /**
