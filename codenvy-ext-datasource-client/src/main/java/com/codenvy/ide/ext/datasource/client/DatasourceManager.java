@@ -22,7 +22,7 @@ import com.codenvy.api.user.shared.dto.Profile;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface DatasourceManager {
+public interface DatasourceManager extends Iterable<DatabaseConfigurationDTO> {
 
     Iterator<DatabaseConfigurationDTO> getDatasources();
 

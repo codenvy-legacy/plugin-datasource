@@ -98,4 +98,9 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
     public String toString() {
         return "DatasourceManagerPrefImpl[" + preferencesManager.getValue(PREFERENCE_KEY) + "]";
     }
+
+    @Override
+    public Iterator<DatabaseConfigurationDTO> iterator() {
+        return getDatasources();
+    }
 }
