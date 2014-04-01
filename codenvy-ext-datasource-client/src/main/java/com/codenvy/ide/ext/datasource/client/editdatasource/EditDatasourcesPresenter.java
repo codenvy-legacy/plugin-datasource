@@ -49,6 +49,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
+        this.view.bindSelectionModel(this.selectionModel);
     }
 
     /** Show dialog. */

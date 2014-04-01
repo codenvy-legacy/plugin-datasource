@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -85,6 +86,11 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     @Override
     public void bindDatasourceModel(final AbstractDataProvider<DatabaseConfigurationDTO> provider) {
         provider.addDataDisplay(this.datasourceList);
+    }
+
+    @Override
+    public void bindSelectionModel(SelectionModel<DatabaseConfigurationDTO> selectionModel) {
+        this.datasourceList.setSelectionModel(selectionModel);
     }
 
     @UiHandler("closeButton")
