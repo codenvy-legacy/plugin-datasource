@@ -15,8 +15,11 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import java.util.Set;
+
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.inject.Inject;
@@ -35,16 +38,22 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** The component that stores datasources. */
     private final DatasourceManager                             datasourceManager;
 
-    /** the datasource list model component. */
+    /** The datasource list model component. */
     private final ListDataProvider<DatabaseConfigurationDTO>    dataProvider = new ListDataProvider<>();
+    /** The selection model for the datasource list widget. */
     private final MultiSelectionModel<DatabaseConfigurationDTO> selectionModel;
+
+    /** The i18n messages instance. */
+    private final EditDatasourceMessages                        messages;
 
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
                                     final DatasourceManager datasourceManager,
-                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider) {
+                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
+                                    EditDatasourceMessages messages) {
         this.view = view;
         this.datasourceManager = datasourceManager;
+        this.messages = messages;
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
@@ -74,9 +83,28 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
     @Override
     public void deleteSelectedDatasources() {
+        final Set<DatabaseConfigurationDTO> selection = this.selectionModel.getSelectedSet();
+        if (selection.isEmpty()) {
+            Window.alert(this.messages.editOrDeleteNoSelectionMessage());
+            return;
+        }
+        for (final DatabaseConfigurationDTO datasource : selection) {
+            this.dataProvider.getList().remove(datasource);
+            this.datasourceManager.remove(datasource);
+        }
+        this.dataProvider.flush();
     }
 
     @Override
     public void editSelectedDatasource() {
+        final Set<DatabaseConfigurationDTO> selection = this.selectionModel.getSelectedSet();
+        if (selection.isEmpty()) {
+            Window.alert(this.messages.editOrDeleteNoSelectionMessage());
+            return;
+        }
+        if (selection.size() > 1) {
+            Window.alert(this.messages.editMultipleSelectionMessage());
+            return;
+        }
     }
 }

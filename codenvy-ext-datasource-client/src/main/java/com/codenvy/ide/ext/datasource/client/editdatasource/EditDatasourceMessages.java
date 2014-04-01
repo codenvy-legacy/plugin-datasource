@@ -36,4 +36,10 @@ public interface EditDatasourceMessages extends Messages {
 
     @DefaultMessage("Datasources")
     String datasourcesListLabel();
+
+    @DefaultMessage("Cannot edit more than one datasource")
+    String editMultipleSelectionMessage();
+
+    @DefaultMessage("No datasource selected")
+    String editOrDeleteNoSelectionMessage();
 }
