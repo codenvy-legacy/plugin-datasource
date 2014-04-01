@@ -16,8 +16,10 @@
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -81,6 +83,19 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     @Override
     public void bindDatasourceModel(final AbstractDataProvider<DatabaseConfigurationDTO> provider) {
         provider.addDataDisplay(this.datasourceList);
+    }
+
+    @UiHandler("closeButton")
+    public void handleCloseButton(final ClickEvent clickEvent) {
+        this.delegate.closeDialog();
+    }
+
+    @UiHandler("editButton")
+    public void handleEditButton(final ClickEvent clickEvent) {
+    }
+
+    @UiHandler("deleteButton")
+    public void handleDeleteButton(final ClickEvent clickEvent) {
     }
 
     /**
