@@ -15,6 +15,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 
 /**
@@ -25,15 +28,24 @@ import com.google.inject.Inject;
 public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate {
 
     /** The view component. */
-    private EditDatasourcesView view;
+    private final EditDatasourcesView                        view;
+
+    /** The component that stores datasources. */
+    private final DatasourceManager                          datasourceManager;
+
+    /** the datasource list model component. */
+    private final ListDataProvider<DatabaseConfigurationDTO> dataProvider = new ListDataProvider<>();
 
     @Inject
-    public EditDatasourcesPresenter(final EditDatasourcesView view) {
+    public EditDatasourcesPresenter(final EditDatasourcesView view,
+                                    final DatasourceManager datasourceManager) {
         this.view = view;
+        this.datasourceManager = datasourceManager;
     }
 
     /** Show dialog. */
     public void showDialog() {
+        setupDatasourceList();
         this.view.showDialog();
     }
 
@@ -41,5 +53,14 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     public void closeDialog() {
         this.view.closeDialog();
 
+    }
+
+    /** Sets the content of the datasource widget. */
+    private void setupDatasourceList() {
+        this.dataProvider.getList().clear();
+        for (DatabaseConfigurationDTO datasource : this.datasourceManager) {
+            this.dataProvider.getList().add(datasource);
+        }
+        this.dataProvider.flush();
     }
 }
