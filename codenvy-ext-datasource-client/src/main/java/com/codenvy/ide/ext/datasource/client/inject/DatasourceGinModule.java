@@ -30,6 +30,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
+import com.codenvy.ide.ext.datasource.client.editdatasource.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
@@ -65,6 +66,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 
 @ExtensionGinModule
 public class DatasourceGinModule extends AbstractGinModule {
@@ -116,5 +118,8 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(EditDatasourcesView.class).to(EditDatasourcesViewImpl.class);
         install(new GinFactoryModuleBuilder().build(EditDatasourcesPresenterFactory.class));
+        bind(DatasourceKeyProvider.class).annotatedWith(Names.named(DatasourceKeyProvider.NAME))
+                                         .to(DatasourceKeyProvider.class)
+                                         .in(Singleton.class);
     }
 }

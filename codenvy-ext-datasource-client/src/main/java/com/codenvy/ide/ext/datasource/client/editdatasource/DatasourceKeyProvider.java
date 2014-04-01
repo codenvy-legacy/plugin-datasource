@@ -18,7 +18,14 @@ package com.codenvy.ide.ext.datasource.client.editdatasource;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.view.client.ProvidesKey;
 
+/**
+ * A {@link ProvidesKey} implementation for datasource definition objects.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class DatasourceKeyProvider implements ProvidesKey<DatabaseConfigurationDTO> {
+
+    public static final String NAME = "datasourceKeyProvider";
 
     @Override
     public Object getKey(final DatabaseConfigurationDTO item) {
