@@ -19,7 +19,6 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -31,14 +30,14 @@ import com.google.inject.name.Named;
 public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate {
 
     /** The view component. */
-    private final EditDatasourcesView                        view;
+    private final EditDatasourcesView                           view;
 
     /** The component that stores datasources. */
-    private final DatasourceManager                          datasourceManager;
+    private final DatasourceManager                             datasourceManager;
 
     /** the datasource list model component. */
-    private final ListDataProvider<DatabaseConfigurationDTO> dataProvider = new ListDataProvider<>();
-    private final SelectionModel<DatabaseConfigurationDTO>   selectionModel;
+    private final ListDataProvider<DatabaseConfigurationDTO>    dataProvider = new ListDataProvider<>();
+    private final MultiSelectionModel<DatabaseConfigurationDTO> selectionModel;
 
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
