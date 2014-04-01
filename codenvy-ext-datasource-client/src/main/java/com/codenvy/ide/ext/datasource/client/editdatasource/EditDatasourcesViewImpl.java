@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * View implementation for the edit/delete datasource dialog.
@@ -54,8 +55,9 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
 
     @Inject
     public EditDatasourcesViewImpl(final EditDatadourceViewImplUiBinder uiBinder,
-                                   final EditDatasourceMessages messages) {
-        this.datasourceList = new CellList<>(new DatasourceCell(), new DatasourceKeyProvider());
+                                   final EditDatasourceMessages messages,
+                                   final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider) {
+        this.datasourceList = new CellList<>(new DatasourceCell(), keyProvider);
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);

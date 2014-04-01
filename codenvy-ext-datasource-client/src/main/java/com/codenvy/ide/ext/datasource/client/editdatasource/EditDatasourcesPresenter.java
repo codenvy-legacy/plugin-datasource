@@ -18,7 +18,10 @@ package com.codenvy.ide.ext.datasource.client.editdatasource;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * The presenter for the datasource edit/delete datasources dialog.
@@ -35,14 +38,17 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
     /** the datasource list model component. */
     private final ListDataProvider<DatabaseConfigurationDTO> dataProvider = new ListDataProvider<>();
+    private final SelectionModel<DatabaseConfigurationDTO>   selectionModel;
 
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
-                                    final DatasourceManager datasourceManager) {
+                                    final DatasourceManager datasourceManager,
+                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
+        this.selectionModel = new MultiSelectionModel<>(keyProvider);
     }
 
     /** Show dialog. */
