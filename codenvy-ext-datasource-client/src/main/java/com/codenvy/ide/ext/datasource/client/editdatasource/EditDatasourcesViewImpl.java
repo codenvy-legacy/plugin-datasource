@@ -100,10 +100,12 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
 
     @UiHandler("editButton")
     public void handleEditButton(final ClickEvent clickEvent) {
+        this.delegate.editSelectedDatasource();
     }
 
     @UiHandler("deleteButton")
     public void handleDeleteButton(final ClickEvent clickEvent) {
+        this.delegate.deleteSelectedDatasources();
     }
 
     /**
