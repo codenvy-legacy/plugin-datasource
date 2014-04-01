@@ -17,13 +17,23 @@ package com.codenvy.ide.ext.datasource.client.editdatasource;
 
 import java.util.Set;
 
+import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.ide.api.notification.Notification;
+import com.codenvy.ide.api.notification.Notification.Status;
+import com.codenvy.ide.api.notification.Notification.Type;
+import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * The presenter for the datasource edit/delete datasources dialog.
@@ -46,14 +56,23 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** The i18n messages instance. */
     private final EditDatasourceMessages                        messages;
 
+    private final NotificationManager                           notificationManager;
+
+    /** the event bus, used to send event "datasources list modified". */
+    private final EventBus                                      eventBus;
+
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
                                     final DatasourceManager datasourceManager,
                                     final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
-                                    EditDatasourceMessages messages) {
+                                    final EditDatasourceMessages messages,
+                                    final NotificationManager notificationManager,
+                                    final EventBus eventBus) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.messages = messages;
+        this.notificationManager = notificationManager;
+        this.eventBus = eventBus;
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
@@ -92,7 +111,36 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
             this.dataProvider.getList().remove(datasource);
             this.datasourceManager.remove(datasource);
         }
-        this.dataProvider.flush();
+        final Notification persistNotification = new Notification("Saving datasources definitions", Status.PROGRESS);
+        this.notificationManager.showNotification(persistNotification);
+        try {
+            this.datasourceManager.persist(new AsyncCallback<Profile>() {
+
+                @Override
+                public void onSuccess(final Profile result) {
+                    Log.info(EditDatasourcesPresenter.class, "Datasource definitions saved.");
+                    persistNotification.setMessage("Datasource definitions saved");
+                    persistNotification.setStatus(Notification.Status.FINISHED);
+
+                }
+
+                @Override
+                public void onFailure(final Throwable e) {
+                    Log.error(EditDatasourcesPresenter.class, "Exception when persisting datasources: " + e.getMessage());
+                    GWT.log("Full exception :", e);
+                    notificationManager.showNotification(new Notification("Failed to persist datasources", Type.ERROR));
+
+                }
+            });
+        } catch (final Exception e) {
+            Log.error(EditDatasourcesPresenter.class, "Exception when persisting datasources: " + e.getMessage());
+            notificationManager.showNotification(new Notification("Failed to persist datasources", Type.ERROR));
+        }
+
+        // reset datasource model
+        setupDatasourceList();
+        // inform the world about the datasource list modification
+        this.eventBus.fireEvent(new DatasourceListChangeEvent());
     }
 
     @Override
@@ -106,5 +154,6 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
             Window.alert(this.messages.editMultipleSelectionMessage());
             return;
         }
+
     }
 }
