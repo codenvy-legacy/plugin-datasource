@@ -34,6 +34,9 @@ public interface EditDatasourcesView {
     /** Binds the datasource widget to the datasource list model. */
     void bindDatasourceModel(AbstractDataProvider<DatabaseConfigurationDTO> provider);
 
+    /** Sets the view's action delegate. */
+    void setDelegate(ActionDelegate delegate);
+
     /**
      * Interface for this view's action delegate.
      * 

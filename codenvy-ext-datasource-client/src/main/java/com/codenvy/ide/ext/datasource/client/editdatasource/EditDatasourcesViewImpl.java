@@ -47,6 +47,9 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     @UiField(provided = true)
     EditDatasourceMessages             messages;
 
+    /** The delegate/control component. */
+    private ActionDelegate             delegate;
+
     @Inject
     public EditDatasourcesViewImpl(final EditDatadourceViewImplUiBinder uiBinder,
                                    final EditDatasourceMessages messages) {
@@ -68,6 +71,11 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     @Override
     public void closeDialog() {
         this.hide();
+    }
+
+    @Override
+    public void setDelegate(final ActionDelegate delegate) {
+        this.delegate = delegate;
     }
 
     @Override
