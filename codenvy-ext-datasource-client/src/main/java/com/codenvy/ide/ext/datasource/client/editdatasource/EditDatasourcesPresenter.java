@@ -107,6 +107,9 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
             Window.alert(this.messages.editOrDeleteNoSelectionMessage());
             return;
         }
+        if (!Window.confirm(messages.confirmDeleteDatasources(selection.size()))) {
+            return;
+        }
         for (final DatabaseConfigurationDTO datasource : selection) {
             this.dataProvider.getList().remove(datasource);
             this.datasourceManager.remove(datasource);
