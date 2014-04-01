@@ -21,7 +21,7 @@
              xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
 
     <ui:with field='messages' type='com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceMessages'/>
-    <ui:style>
+    <ui:style src="com/codenvy/ide/api/ui/style.css">
         .actions-container {
             display: flex;
             display: -webkit-flex;
@@ -63,6 +63,14 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
         }
+        
+        .label {
+            color: mainFontColor;
+            font-family: mainFontFamily;
+            font-size: boxFontSize;
+            font-weight: normal;
+            text-shadow: boxTextShadow;
+        }
     </ui:style>
 
     <g:DockLayoutPanel unit="EM" height="30em" width="40em">
@@ -78,7 +86,7 @@
             </g:FlowPanel>
         </g:east>
         <g:north size="3">
-            <g:Label text="{messages.datasourcesListLabel}" />
+            <g:Label text="{messages.datasourcesListLabel}" addStyleNames="{style.label}" />
         </g:north>
         <g:center>
             <c:CellList ui:field="datasourceList" />
