@@ -45,5 +45,11 @@ public interface EditDatasourcesView {
     public interface ActionDelegate {
         /** The dialog must be closed. */
         void closeDialog();
+
+        /** Datasource deletion requested. */
+        void deleteSelectedDatasources();
+
+        /** Datasource edition requested. */
+        void editSelectedDatasource();
     }
 }

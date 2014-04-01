@@ -65,4 +65,12 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         }
         this.dataProvider.flush();
     }
+
+    @Override
+    public void deleteSelectedDatasources() {
+    }
+
+    @Override
+    public void editSelectedDatasource() {
+    }
 }
