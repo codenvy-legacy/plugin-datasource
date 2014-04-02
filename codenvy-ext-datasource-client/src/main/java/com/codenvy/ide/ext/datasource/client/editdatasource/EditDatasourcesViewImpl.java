@@ -58,8 +58,9 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
     public EditDatasourcesViewImpl(final EditDatadourceViewImplUiBinder uiBinder,
                                    final EditDatasourceMessages messages,
                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
-                                   final DatasourceCellListResources dsListResources) {
-        this.datasourceList = new CellList<>(new DatasourceCell(), dsListResources, keyProvider);
+                                   final DatasourceCellListResources dsListResources,
+                                   final DatasourceCell datasourceCell) {
+        this.datasourceList = new CellList<>(datasourceCell, dsListResources, keyProvider);
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);

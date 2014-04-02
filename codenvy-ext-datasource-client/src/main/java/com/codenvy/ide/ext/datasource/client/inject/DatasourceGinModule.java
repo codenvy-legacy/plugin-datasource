@@ -30,6 +30,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
+import com.codenvy.ide.ext.datasource.client.editdatasource.DatasourceCell;
 import com.codenvy.ide.ext.datasource.client.editdatasource.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
@@ -121,5 +122,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(DatasourceKeyProvider.class).annotatedWith(Names.named(DatasourceKeyProvider.NAME))
                                          .to(DatasourceKeyProvider.class)
                                          .in(Singleton.class);
+        bind(DatasourceCell.class).in(Singleton.class);
+
     }
 }

@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.editdatasource;
+.datasourceTypeStyle, .datasourceIdStyle {
+  overflow: hidden;
+  font-family: mainFontFamily;
+  font-size: secondaryTextFontSize;
+  text-shadow: 0px 1px 0px rgba(46, 46, 46, 0.5);
+  border-width: 1px;
+  border-style: solid;
+  border-color: #2f2f2f;
+  font-weight: normal;
+}
 
-import com.google.gwt.user.cellview.client.CellList;
+.datasourceTypeStyle {
+  width: 12em;
+  color: mainFontColor;
+}
 
-public interface DatasourceCellListResources extends CellList.Resources {
-
-    interface DatasourceCellListStyle extends CellList.Style {
-    }
-
-    @Source({"CellList.css", "com/codenvy/ide/api/ui/style.css"})
-    DatasourceCellListStyle cellListStyle();
+.datasourceIdStyle {
+  width: 10em;
+  color: mainFontColor;
 }
