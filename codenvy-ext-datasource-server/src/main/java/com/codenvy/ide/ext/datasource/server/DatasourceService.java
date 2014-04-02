@@ -234,18 +234,19 @@ public class DatasourceService {
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
-        final Connection connection = getDatabaseConnection(request.getDatabase());
+        try (final Connection connection = getDatabaseConnection(request.getDatabase())) {
 
-        MultipleRequestExecutionMode mode = SqlRequestService.DEFAULT_MODE;
-        if (request.getMultipleRequestExecutionMode() != null) {
-            mode = request.getMultipleRequestExecutionMode();
+            MultipleRequestExecutionMode mode = SqlRequestService.DEFAULT_MODE;
+            if (request.getMultipleRequestExecutionMode() != null) {
+                mode = request.getMultipleRequestExecutionMode();
+            }
+
+            final RequestResultGroupDTO resultGroup = this.sqlRequestService.executeSqlRequest(request, connection, mode);
+
+            String json = DtoFactory.getInstance().toJson(resultGroup);
+            LOG.debug("Return " + json);
+            return json;
         }
-
-        final RequestResultGroupDTO resultGroup = this.sqlRequestService.executeSqlRequest(request, connection, mode);
-
-        String json = DtoFactory.getInstance().toJson(resultGroup);
-        LOG.debug("Return " + json);
-        return json;
     }
 
     @Path(ServicePaths.RESULT_CSV_PATH)
@@ -308,7 +309,7 @@ public class DatasourceService {
         }
 
         final Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
-                                                            info);
+                                                                  info);
 
         return connection;
     }
