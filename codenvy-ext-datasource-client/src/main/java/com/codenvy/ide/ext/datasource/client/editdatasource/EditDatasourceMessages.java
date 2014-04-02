@@ -45,4 +45,7 @@ public interface EditDatasourceMessages extends Messages {
 
     @DefaultMessage("Delete {0} datasources")
     String confirmDeleteDatasources(int size);
+
+    @DefaultMessage("No datasources configured")
+    String emptyDatasourceList();
 }

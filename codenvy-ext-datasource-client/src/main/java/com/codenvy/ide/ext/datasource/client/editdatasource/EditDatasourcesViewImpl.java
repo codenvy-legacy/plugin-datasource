@@ -23,6 +23,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.SelectionModel;
@@ -67,6 +68,7 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
 
         this.setText(messages.editDatasourcesDialogText());
         this.setModal(true);
+        this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
     }
 
     @Override
