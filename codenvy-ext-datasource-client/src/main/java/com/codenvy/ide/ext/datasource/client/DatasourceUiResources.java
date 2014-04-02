@@ -129,5 +129,17 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("propertiesTable-firstColumn")
         String propertiesTableFirstColumn();
+
+        @ClassName("editDatasourceList-datasourceTypeStyle")
+        String datasourceTypeStyle();
+
+        @ClassName("editDatasourceList-datasourceIdStyle")
+        String datasourceIdStyle();
+
+        @ClassName("editDatasourceList-datasourceIdCellStyle")
+        String datasourceIdCellStyle();
+
+        @ClassName("editDatasourceList-datasourceTypeCellStyle")
+        String datasourceTypeCellStyle();
     }
 }

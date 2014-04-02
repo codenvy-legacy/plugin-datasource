@@ -15,10 +15,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources.DatasourceUiStyle;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -32,13 +32,13 @@ import com.google.inject.Inject;
  */
 public class DatasourceCell extends AbstractCell<DatabaseConfigurationDTO> {
 
-    private final DatasourceCellStyle style;
-    private final CellTemplate        template;
+    private final DatasourceUiStyle style;
+    private final CellTemplate      template;
 
     @Inject
-    public DatasourceCell(final DatasourceCellResource resource,
+    public DatasourceCell(final DatasourceUiResources resource,
                           final CellTemplate template) {
-        this.style = resource.datasourceCellStyle();
+        this.style = resource.datasourceUiCSS();
         this.template = template;
     }
 
@@ -51,7 +51,12 @@ public class DatasourceCell extends AbstractCell<DatabaseConfigurationDTO> {
         final SafeHtml id = SafeHtmlUtils.fromString(value.getDatasourceId());
         final SafeHtml type = SafeHtmlUtils.fromString(value.getDatabaseType().toString());
 
-        sb.append(this.template.datasourceItem(id, style.datasourceIdStyle(), type, style.datasourceTypeStyle()));
+        sb.append(this.template.datasourceItem(id,
+                                               this.style.datasourceIdStyle(),
+                                               type,
+                                               this.style.datasourceTypeStyle(),
+                                               this.style.datasourceIdCellStyle(),
+                                               this.style.datasourceTypeCellStyle()));
     }
 
     /**
@@ -61,41 +66,12 @@ public class DatasourceCell extends AbstractCell<DatabaseConfigurationDTO> {
      */
     interface CellTemplate extends SafeHtmlTemplates {
 
-        @Template("<table><tr><td> <span class='{1}'>{0}</span></td><td><span class='{3}'>{2}</span></td></tr></table>")
-        SafeHtml datasourceItem(SafeHtml datasourceId, String idStyle, SafeHtml datasourceType, String typeStyle);
-    }
-
-    /**
-     * Resource interface for the datasource cell component.
-     * 
-     * @author "Mickaël Leduque"
-     */
-    interface DatasourceCellResource extends ClientBundle {
-
-        @Source({"datasource-cell.css", "com/codenvy/ide/api/ui/style.css"})
-        DatasourceCellStyle datasourceCellStyle();
-    }
-
-    /**
-     * CSS interface for the datasource cell component.
-     * 
-     * @author "Mickaël Leduque"
-     */
-    interface DatasourceCellStyle extends CssResource {
-
-        /**
-         * Style for the datasource Type display.
-         * 
-         * @return the style name
-         */
-        String datasourceTypeStyle();
-
-        /**
-         * Style for the datasource Id display.
-         * 
-         * @return the style name
-         */
-        String datasourceIdStyle();
-
+        @Template("<table><tr><td class='{4}'> <span class='{1}'>{0}</span> </td><td class='{5}'> <span class='{3}'>{2}</span> </td></tr></table>")
+        SafeHtml datasourceItem(SafeHtml datasourceId,
+                                String idStyle,
+                                SafeHtml datasourceType,
+                                String typeStyle,
+                                String idCellStyle,
+                                String typeCellStyle);
     }
 }
