@@ -31,7 +31,7 @@ import com.google.web.bindery.event.shared.EventBus;
 /**
  * This connector page is using JTDS JDBC Driver to connect to MS SQLserver.
  */
-public class AwsSqlServerConnectorPage extends DefaultNewDatasourceConnectorPage {
+public class AwsSqlServegit strConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String AWSSQLSERVER_DB_ID        = "awsSqlserver";
     private static final int   DEFAULT_PORT_SQLSERVER = 1433;
