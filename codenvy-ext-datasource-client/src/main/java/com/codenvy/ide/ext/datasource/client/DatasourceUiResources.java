@@ -47,8 +47,17 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("GoogleCloudSQL.png")
     ImageResource getGoogleCloudSQLLogo();
 
-    @Source("amazonRDS.png")
-    ImageResource getAmazonRdsLogo();
+    @Source("aws_postgres.png")
+    ImageResource getAwsPostgresLogo();
+
+    @Source("aws_mysql.png")
+    ImageResource getAwsMysqlLogo();
+
+    @Source("aws_oracle.png")
+    ImageResource getAwsOracleLogo();
+
+    @Source("aws_sqlserver.png")
+    ImageResource getAwsSqlServerLogo();
 
     @Source("refresh.png")
     ImageResource getRefreshIcon();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon;
+package com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.mysql;
 
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
@@ -29,23 +29,25 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
- * Created by Wafa on 01/04/14.
+ * Created by Wafa on 20/01/14.
  */
-public class AmazonRdsConnectorPage extends DefaultNewDatasourceConnectorPage {
 
-    public static final String AMAZONRDS_DB_ID        = "amazonRds";
+public class AwsMysqlConnectorPage extends DefaultNewDatasourceConnectorPage {
+
+    public static final String AWSMYSQL_DB_ID        = "awsMysql";
     private static final int   DEFAULT_PORT_MYSQL = 3306;
 
+
     @Inject
-    public AmazonRdsConnectorPage(final DefaultNewDatasourceConnectorView view,
-                                  final NotificationManager notificationManager,
-                                  final DtoFactory dtoFactory,
-                                  final DatasourceManager datasourceManager,
-                                  final EventBus eventBus,
-                                  final DatasourceClientService service,
-                                  final DatasourceUiResources resources,
-                                  final NewDatasourceWizardMessages messages) {
-        super(view, "amazonRds", resources.getAmazonRdsLogo(), AMAZONRDS_DB_ID, datasourceManager, eventBus, service,
-                notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.AMAZONRDS);
+    public AwsMysqlConnectorPage(final DefaultNewDatasourceConnectorView view,
+                                        final NotificationManager notificationManager,
+                                        final DtoFactory dtoFactory,
+                                        final DatasourceManager datasourceManager,
+                                        final EventBus eventBus,
+                                        final DatasourceClientService service,
+                                        final DatasourceUiResources resources,
+                                        final NewDatasourceWizardMessages messages) {
+        super(view, "Aws/Mysql", resources.getAwsMysqlLogo(), AWSMYSQL_DB_ID, datasourceManager, eventBus, service,
+              notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
     }
 }

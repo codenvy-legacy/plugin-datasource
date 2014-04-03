@@ -15,12 +15,6 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import static com.codenvy.ide.api.ui.action.Anchor.BEFORE;
-import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_MAIN_MENU;
-import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_WINDOW;
-import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
-import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
-
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.action.Constraints;
@@ -39,7 +33,10 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPa
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.AmazonRdsConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.mysql.AwsMysqlConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.oracle.AwsOracleConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.postgres.AwsPostgresConnectorPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.sqlserver.AwsSqlServerConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.cloud.sql.GoogleCloudSqlConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mssqlserver.MssqlserverDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.MysqlDatasourceConnectorPage;
@@ -52,6 +49,12 @@ import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import static com.codenvy.ide.api.ui.action.Anchor.BEFORE;
+import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_MAIN_MENU;
+import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_WINDOW;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
 
 /**
  * Extension definition for the datasource plugin.
@@ -81,7 +84,10 @@ public class DatasourceExtension {
                                Provider<MssqlserverDatasourceConnectorPage> mssqlserverConnectorPageProvider,
                                Provider<NuoDBDatasourceConnectorPage> nuodbConnectorPageProvider,
                                Provider<GoogleCloudSqlConnectorPage> googleCloudSqlConnectorPageProvider,
-                               Provider<AmazonRdsConnectorPage> amazonRdsConnectorPageProvider ,
+                               Provider<AwsPostgresConnectorPage> awsPostgresConnectorPageProvider ,
+                               Provider<AwsMysqlConnectorPage> awsMysqlConnectorPageProvider,
+                               Provider<AwsOracleConnectorPage> awsOracleConnectorPageProvider,
+                               Provider<AwsSqlServerConnectorPage> awsSqlServerConnectorPageProvider,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                KeyBindingAgent keyBindingAgent) {
@@ -147,22 +153,46 @@ public class DatasourceExtension {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> nuoDBWizardPages = Collections.createArray();
         nuoDBWizardPages.add(nuodbConnectorPageProvider);
         connectorAgent.register(NuoDBDatasourceConnectorPage.NUODB_DB_ID, connectorCounter,
-                                "NuoDB", resources.getNuoDBLogo(), "com.nuodb.jdbc.Driver", nuoDBWizardPages,NOTCLOUD);
+                                "NuoDB", resources.getNuoDBLogo(), "com.nuodb.jdbc.Driver", nuoDBWizardPages, NOTCLOUD);
         connectorCounter++;
 
         // add a new GoogleCloudSQL connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> googleCloudSQLWizardPages = Collections.createArray();
         googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
         connectorAgent.register(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID, connectorCounter,
-                "GoogleCloudSQL", resources.getGoogleCloudSQLLogo(), "com.mysql.jdbc.Driver", googleCloudSQLWizardPages,CLOUD);
+                "GoogleCloudSQL", resources.getGoogleCloudSQLLogo(), "com.mysql.jdbc.Driver", googleCloudSQLWizardPages, CLOUD);
 
         connectorCounter++;
 
-        // add a new Amazon RDS connector
-        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> amazonRdsWizardPages = Collections.createArray();
-        amazonRdsWizardPages.add(amazonRdsConnectorPageProvider);
-        connectorAgent.register(AmazonRdsConnectorPage.AMAZONRDS_DB_ID, connectorCounter,
-                "AmazonRDS", resources.getAmazonRdsLogo(), "com.mysql.jdbc.Driver", amazonRdsWizardPages,CLOUD);
+        // add a new AmazonRDS/Postgres connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> awsPostgresWizardPages = Collections.createArray();
+        awsPostgresWizardPages.add(awsPostgresConnectorPageProvider);
+        connectorAgent.register(AwsPostgresConnectorPage.AWSPOSTGRES_DB_ID, connectorCounter,
+                "Aws/Postgres", resources.getAwsPostgresLogo(), "org.postgresql.Driver", awsPostgresWizardPages, CLOUD);
+
+        connectorCounter++;
+
+        // add a new AmazonRDS/Mysql connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> awsMysqlWizardPages = Collections.createArray();
+        awsMysqlWizardPages.add(awsMysqlConnectorPageProvider);
+        connectorAgent.register(AwsMysqlConnectorPage.AWSMYSQL_DB_ID, connectorCounter,
+                "Aws/Mysql", resources.getAwsMysqlLogo(), "com.mysql.jdbc.Driver", awsMysqlWizardPages, CLOUD);
+
+        connectorCounter++;
+
+        // add a new AmazonRDS/Oracle connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> awsOracleWizardPages = Collections.createArray();
+        awsOracleWizardPages.add(awsOracleConnectorPageProvider);
+        connectorAgent.register(AwsOracleConnectorPage.AWSORACLE_DB_ID, connectorCounter,
+                "Aws/Oracle", resources.getAwsOracleLogo(), "oracle.jdbc.OracleDriver", awsOracleWizardPages, CLOUD);
+
+        connectorCounter++;
+
+        // add a new AmazonRDS/SqlServer connector
+        Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> awsSqlServerWizardPages = Collections.createArray();
+        awsSqlServerWizardPages.add(awsSqlServerConnectorPageProvider);
+        connectorAgent.register(AwsSqlServerConnectorPage.AWSSQLSERVER_DB_ID, connectorCounter,
+                "Aws/SqlServer", resources.getAwsSqlServerLogo(), "net.sourceforge.jtds.jdbc.Driver", awsSqlServerWizardPages, CLOUD);
 
         connectorCounter++;
 
