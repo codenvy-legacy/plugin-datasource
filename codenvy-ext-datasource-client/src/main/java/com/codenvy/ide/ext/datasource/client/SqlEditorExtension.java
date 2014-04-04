@@ -73,9 +73,7 @@ public class SqlEditorExtension {
         newResourceAgent.register(sqlResourceProvider);
 
         // register the sql file icon
-        Map<String, String> icons = new HashMap<String, String>();
-        icons.put("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png");
-        iconRegistry.registerIcons(icons);
+        iconRegistry.registerIcon("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png");
     }
 
 }
