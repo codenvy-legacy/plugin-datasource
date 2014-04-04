@@ -114,6 +114,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                                         .withPassword(getView().getPassword())
                                                         .withBrokers(brokersConf);
 
+        result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
 
         return result;
     }

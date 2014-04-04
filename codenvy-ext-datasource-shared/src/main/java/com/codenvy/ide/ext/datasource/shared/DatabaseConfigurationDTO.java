@@ -29,6 +29,13 @@ public interface DatabaseConfigurationDTO {
     DatabaseConfigurationDTO withDatasourceId(String type);
 
 
+    String getConfigurationConnectorId();
+
+    void setConfigurationConnectorId(String connectorId);
+
+    DatabaseConfigurationDTO withConfigurationConnectorId(String connectorId);
+
+
     String getDatabaseName();
 
     void setDatabaseName(String databaseName);

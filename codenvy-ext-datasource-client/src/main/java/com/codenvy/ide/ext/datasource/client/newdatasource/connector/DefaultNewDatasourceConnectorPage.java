@@ -83,6 +83,8 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
 
         result.withUsername(getView().getUsername())
               .withPassword(getView().getPassword());
+
+        result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
         return result;
     }
 
