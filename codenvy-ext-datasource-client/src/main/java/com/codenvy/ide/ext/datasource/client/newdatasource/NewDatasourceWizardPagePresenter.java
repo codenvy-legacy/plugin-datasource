@@ -24,11 +24,13 @@ import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEventHandler;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class NewDatasourceWizardPagePresenter extends AbstractWizardPage implements NewDatasourceWizardPageView.ActionDelegate {
+public class NewDatasourceWizardPagePresenter extends AbstractWizardPage implements NewDatasourceWizardPageView.ActionDelegate,
+                                                                        InitializableWizardPage {
     protected NewDatasourceWizardPageView        view;
     protected NewDatasourceConnectorAgent        connectorAgent;
     protected Collection<NewDatasourceConnector> dbConnectors;
@@ -126,5 +128,28 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     @Override
     public void storeOptions() {
         wizardContext.putData(NewDatasourceWizard.DATASOURCE_NAME, view.getDatasourceName());
+    }
+
+    @Override
+    public void initPage(final Object data) {
+        if (!(data instanceof DatabaseConfigurationDTO)) {
+            return;
+        }
+        final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
+        if (initData != null) {
+            this.view.setDatasourceName(initData.getDatasourceId());
+
+            final Collection<NewDatasourceConnector> connectors = this.connectorAgent.getConnectors();
+            NewDatasourceConnector foundConnector = null;
+            for (NewDatasourceConnector connector : connectors) {
+                if (connector.getId() != null && connector.getId().equals(initData.getConfigurationConnectorId())) {
+                    foundConnector = connector;
+                    break;
+                }
+            }
+            if (foundConnector != null) {
+                this.view.selectConnector(foundConnector.getId());
+            }
+        }
     }
 }

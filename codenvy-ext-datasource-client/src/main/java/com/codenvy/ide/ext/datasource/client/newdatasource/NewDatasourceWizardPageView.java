@@ -38,7 +38,19 @@ public interface NewDatasourceWizardPageView extends View<NewDatasourceWizardPag
 
     void setConnectors(Collection<NewDatasourceConnector> connectors);
 
+    /**
+     * Retrieve the content of the datasource name field.
+     * 
+     * @return the content of the widget
+     */
     String getDatasourceName();
+
+    /**
+     * Set the content of the datasource name field.
+     * 
+     * @param datasourceName the new value
+     */
+    void setDatasourceName(String datasourceName);
 
     void selectConnector(String id);
 

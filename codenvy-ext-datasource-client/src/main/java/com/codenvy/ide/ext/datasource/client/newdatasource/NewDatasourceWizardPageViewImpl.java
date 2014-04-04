@@ -15,11 +15,13 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -39,9 +41,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
-import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
-import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
 
 /**
  * The implementation of {@link NewDatasourceWizardPageView}.
@@ -70,13 +69,13 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
     @Override
     public void setConnectors(Collection<NewDatasourceConnector> connectors) {
-        //splitting the parent list to get the maximum size for each category
+        // splitting the parent list to get the maximum size for each category
         Collection<NewDatasourceConnector> cloudCollection = new ArrayList<>();
         Collection<NewDatasourceConnector> notCloudCollection = new ArrayList<>();
-        for (NewDatasourceConnector connector: connectors){
-            if (connector.getCategoryType() == CLOUD){
+        for (NewDatasourceConnector connector : connectors) {
+            if (connector.getCategoryType() == CLOUD) {
                 cloudCollection.add(connector);
-            }else {
+            } else {
                 notCloudCollection.add(connector);
             }
         }
@@ -89,8 +88,8 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
 
         // create button for each paas
 
-        int indexCloudColumn=0;
-        int indexNotCloudColum=0;
+        int indexCloudColumn = 0;
+        int indexNotCloudColum = 0;
         for (final NewDatasourceConnector connector : connectors) {
 
             ImageResource icon = connector.getImage();
@@ -109,10 +108,10 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
             });
             int rowIndex;
             int colIndex;
-            if (connector.getCategoryType() == NOTCLOUD){
+            if (connector.getCategoryType() == NOTCLOUD) {
                 rowIndex = 0;
                 colIndex = indexNotCloudColum++;
-            }else {
+            } else {
                 rowIndex = 2;
                 colIndex = indexCloudColumn++;
             }
@@ -136,6 +135,12 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     @Override
     public String getDatasourceName() {
         return datasourceName.getText();
+    }
+
+    @Override
+    public void setDatasourceName(final String datasourceName) {
+        this.datasourceName.setValue(datasourceName);
+
     }
 
     @Override
