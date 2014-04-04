@@ -24,10 +24,10 @@
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
     <g:north size="35">
         <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherEditorBar}">
-            <g:center>
+            <g:west size="150">
                 <g:Button ui:field="executeButton"
                     addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherExecuteButton}" />
-            </g:center>
+            </g:west>
             <g:east size="800">
                 <g:FlowPanel>
                     <!-- use some kind of toolbar ? -->
