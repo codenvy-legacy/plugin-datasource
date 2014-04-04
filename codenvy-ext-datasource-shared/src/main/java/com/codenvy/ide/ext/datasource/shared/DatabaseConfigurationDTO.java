@@ -73,16 +73,16 @@ public interface DatabaseConfigurationDTO {
     void setBrokers(List<NuoDBBrokerDTO> brokers);
 
 
-    Boolean getUseSSL();
+    boolean getUseSSL();
 
-    DatabaseConfigurationDTO withUseSSL(Boolean useSSL);
+    DatabaseConfigurationDTO withUseSSL(boolean useSSL);
 
-    void setUseSSL(Boolean useSSL);
+    void setUseSSL(boolean useSSL);
 
 
-    Boolean getVerifyServerCertificate();
+    boolean getVerifyServerCertificate();
 
-    DatabaseConfigurationDTO withVerifyServerCertificate(Boolean verifyServerCertificate);
+    DatabaseConfigurationDTO withVerifyServerCertificate(boolean verifyServerCertificate);
 
-    void setVerifyServerCertificate(Boolean verifyServerCertificate);
+    void setVerifyServerCertificate(boolean verifyServerCertificate);
 }

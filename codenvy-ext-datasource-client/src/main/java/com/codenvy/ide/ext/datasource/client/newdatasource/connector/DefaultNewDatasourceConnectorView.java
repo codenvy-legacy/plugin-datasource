@@ -34,8 +34,8 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
      */
     void setPort(int port);
 
-    Boolean getUseSSL();
-    
-    Boolean getVerifyServerCertificate();
+    boolean getUseSSL();
+
+    boolean getVerifyServerCertificate();
 
 }

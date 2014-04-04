@@ -301,11 +301,11 @@ public class DatasourceService {
         Properties info = new Properties();
         info.setProperty("user", configuration.getUsername());
         info.setProperty("password", configuration.getPassword());
-        if (configuration.getUseSSL() != null) {
-            info.setProperty("useSSL", configuration.getUseSSL().toString());
+        if (configuration.getUseSSL()) {
+            info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
         }
-        if (configuration.getVerifyServerCertificate() != null) {
-            info.setProperty("verifyServerCertificate", configuration.getVerifyServerCertificate().toString());
+        if (configuration.getVerifyServerCertificate()) {
+            info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
         }
 
         final Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
@@ -313,7 +313,6 @@ public class DatasourceService {
 
         return connection;
     }
-
 
     @Path(ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH)
     @POST

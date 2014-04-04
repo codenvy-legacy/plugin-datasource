@@ -73,13 +73,14 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
     protected DatabaseConfigurationDTO getConfiguredDatabase() {
         String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
         DatabaseConfigurationDTO result = dtoFactory.createDto(DefaultDatasourceDefinitionDTO.class)
-                                                          .withDatabaseName(getView().getDatabaseName())
-                                                          .withDatabaseType(getDatabaseType())
-                                                          .withDatasourceId(datasourceId)
-                                                          .withHostName(getView().getHostname())
-                                                          .withPort(getView().getPort())
-                                                          .withUseSSL(getView().getUseSSL())
-                                                          .withVerifyServerCertificate(getView().getVerifyServerCertificate());
+                                                    .withDatabaseName(getView().getDatabaseName())
+                                                    .withDatabaseType(getDatabaseType())
+                                                    .withDatasourceId(datasourceId)
+                                                    .withHostName(getView().getHostname())
+                                                    .withPort(getView().getPort())
+                                                    .withUseSSL(getView().getUseSSL())
+                                                    .withVerifyServerCertificate(getView().getVerifyServerCertificate());
+
         result.withUsername(getView().getUsername())
               .withPassword(getView().getPassword());
         return result;

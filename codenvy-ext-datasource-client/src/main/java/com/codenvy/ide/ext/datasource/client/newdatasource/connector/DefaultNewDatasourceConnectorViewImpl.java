@@ -101,13 +101,21 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     }
 
     @Override
-    public Boolean getUseSSL() {
-        return useSSL.getValue();
+    public boolean getUseSSL() {
+        if (useSSL.getValue() != null) {
+            return useSSL.getValue();
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Boolean getVerifyServerCertificate() {
-        return verifyServerCertificate.getValue();
+    public boolean getVerifyServerCertificate() {
+        if (verifyServerCertificate.getValue() != null) {
+            return verifyServerCertificate.getValue();
+        } else {
+            return false;
+        }
     }
 
     @UiHandler("testConnectionButton")
