@@ -42,6 +42,7 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements PartStack, TextEditorPartPresenter, FileEventHandler {
@@ -175,6 +176,11 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     @Override
     public String getTitleToolTip() {
         return this.editor.getTitleToolTip();
+    }
+    
+    @Override
+    public IsWidget getTitleWidget() {
+        return this.editor.getTitleWidget();
     }
 
     @Override
