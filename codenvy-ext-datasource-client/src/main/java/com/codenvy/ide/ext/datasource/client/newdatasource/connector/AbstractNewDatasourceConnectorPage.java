@@ -26,7 +26,7 @@ import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
@@ -148,7 +148,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
             }
         });
 
-        this.eventBus.fireEvent(new DatasourceCreatedEvent(configuredDatabase));
+        this.eventBus.fireEvent(new DatasourceListChangeEvent());
     }
 
 

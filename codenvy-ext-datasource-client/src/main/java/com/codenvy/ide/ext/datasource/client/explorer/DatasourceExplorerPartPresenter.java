@@ -29,8 +29,8 @@ import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
-import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
-import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
@@ -56,7 +56,7 @@ import com.google.web.bindery.event.shared.EventBus;
 public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                                                   DatasourceExplorerView.ActionDelegate,
                                                                   DatasourceExplorerPart,
-                                                                  DatasourceCreatedHandler {
+                                                                  DatasourceListChangeHandler {
     private final DatasourceExplorerView        view;
     private final EventBus                      eventBus;
     private final DatasourceClientService       service;
@@ -103,7 +103,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         bind();
 
         // register for datasource creation events
-        this.eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
+        this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
     }
 
     /** {@inheritDoc} */
@@ -219,7 +219,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     }
 
     @Override
-    public void onDatasourceCreated(final DatasourceCreatedEvent event) {
+    public void onDatasourceListChange(final DatasourceListChangeEvent event) {
         setupDatasourceList();
     }
 

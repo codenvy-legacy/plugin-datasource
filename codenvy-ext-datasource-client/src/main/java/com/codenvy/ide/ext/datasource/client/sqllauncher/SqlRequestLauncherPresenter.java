@@ -36,8 +36,8 @@ import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
-import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedEvent;
-import com.codenvy.ide.ext.datasource.client.events.DatasourceCreatedHandler;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
@@ -68,7 +68,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableContentTextEditor> implements
                                                                                                  SqlRequestLauncherView.ActionDelegate,
-                                                                                                 DatasourceCreatedHandler,
+                                                                                                 DatasourceListChangeHandler,
                                                                                                  RequestResultDelegate {
 
     /** Preference property name for default result limit. */
@@ -136,7 +136,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         setupExecutionMode(preferencesManager);
 
         // register for datasource creation events
-        eventBus.addHandler(DatasourceCreatedEvent.getType(), this);
+        eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
     }
 
     private void setupResultLimit(final PreferencesManager preferencesManager) {
@@ -475,7 +475,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void onDatasourceCreated(final DatasourceCreatedEvent event) {
+    public void onDatasourceListChange(final DatasourceListChangeEvent event) {
         this.setupDatasourceComponent();
     }
 
