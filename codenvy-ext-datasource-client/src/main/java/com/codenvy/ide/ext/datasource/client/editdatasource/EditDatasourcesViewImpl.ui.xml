@@ -71,6 +71,20 @@
             align-items: flex-end;
             -webkit-align-items: flex-end;
         }
+        .list-container {
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: column;
+            -webkit-flex-flow: column;
+
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+
+            align-items: flex-start;
+            -webkit-align-items: flex-start;
+        }
+
         .button {
             width: 10em;
             margin-right: 1em;
@@ -82,7 +96,7 @@
         .label {
             color: mainFontColor;
             font-family: mainFontFamily;
-            font-size: boxFontSize;
+            font-size: mainFontSize;
             font-weight: normal;
             text-shadow: boxTextShadow;
         }
@@ -106,7 +120,10 @@
             </g:FlowPanel>
         </g:north>
         <g:center>
-            <c:CellList ui:field="datasourceList" />
+            <g:FlowPanel addStyleNames="{style.list-container}" >
+                <c:CellList ui:field="datasourceList" />
+                <c:SimplePager ui:field="datasourcePager" />
+            </g:FlowPanel>
         </g:center>
     
     </g:DockLayoutPanel>

@@ -21,6 +21,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
@@ -36,6 +39,12 @@ import com.google.inject.name.Named;
  * @author "Mickaël Leduque"
  */
 public class EditDatasourcesViewImpl extends DialogBox implements EditDatasourcesView {
+
+    /** number of datasources that are visible in the datasource list. */
+    private static final int           DATASOURCES_LIST_PAGE_SIZE = 8;
+
+    @UiField(provided = true)
+    SimplePager                        datasourcePager;
 
     @UiField(provided = true)
     CellList<DatabaseConfigurationDTO> datasourceList;
@@ -62,6 +71,7 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
                                    final DatasourceCellListResources dsListResources,
                                    final DatasourceCell datasourceCell) {
         this.datasourceList = new CellList<>(datasourceCell, dsListResources, keyProvider);
+        this.datasourcePager = new SimplePager();
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
@@ -69,6 +79,11 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
         this.setText(messages.editDatasourcesDialogText());
         this.setModal(true);
         this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
+        this.datasourceList.setPageSize(DATASOURCES_LIST_PAGE_SIZE);
+        this.datasourceList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
+        this.datasourceList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+
+        this.datasourcePager.setDisplay(this.datasourceList);
     }
 
     @Override
