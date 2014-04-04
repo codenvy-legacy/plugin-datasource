@@ -38,4 +38,15 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
 
     boolean getVerifyServerCertificate();
 
+    void setDatabaseName(String databaseName);
+
+    void setHostName(String hostName);
+
+    void setUseSSL(boolean useSSL);
+
+    void setVerifyServerCertificate(boolean verifyServerCertificate);
+
+    void setUsername(String username);
+
+    void setPassword(String password);
 }

@@ -22,6 +22,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
@@ -31,7 +32,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage {
+public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements InitializableWizardPage {
 
     private final int          defaultPort;
     private final DatabaseType databaseType;
@@ -53,12 +54,12 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         this.defaultPort = defaultPort;
         this.databaseType = databaseType;
         this.dtoFactory = dtoFactory;
+        getView().setPort(getDefaultPort());
     }
 
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
-        getView().setPort(getDefaultPort());
     }
 
     public DefaultNewDatasourceConnectorView getView() {
@@ -94,5 +95,21 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
 
     public DatabaseType getDatabaseType() {
         return this.databaseType;
+    }
+
+    @Override
+    public void initPage(final Object data) {
+        // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
+        if (!(data instanceof DatabaseConfigurationDTO)) {
+            return;
+        }
+        DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
+        getView().setDatabaseName(initData.getDatabaseName());
+        getView().setHostName(initData.getHostName());
+        getView().setPort(initData.getPort());
+        getView().setUseSSL(initData.getUseSSL());
+        getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
+        getView().setUsername(initData.getUsername());
+        getView().setPassword(initData.getPassword());
     }
 }

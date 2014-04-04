@@ -118,9 +118,38 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         }
     }
 
+    @Override
+    public void setDatabaseName(final String databaseName) {
+        this.dbName.setValue(databaseName);
+    }
+
+    @Override
+    public void setHostName(final String hostName) {
+        this.hostField.setValue(hostName);
+    }
+
+    @Override
+    public void setUseSSL(final boolean useSSL) {
+        this.useSSL.setValue(useSSL);
+    }
+
+    @Override
+    public void setVerifyServerCertificate(final boolean verifyServerCertificate) {
+        this.verifyServerCertificate.setValue(verifyServerCertificate);
+    }
+
+    @Override
+    public void setUsername(final String username) {
+        this.usernameField.setValue(username);
+    }
+
+    @Override
+    public void setPassword(final String password) {
+        this.passwordField.setValue(password);
+    }
+
     @UiHandler("testConnectionButton")
     void handleClick(ClickEvent e) {
         delegate.onClickTestConnectionButton();
     }
-
 }
