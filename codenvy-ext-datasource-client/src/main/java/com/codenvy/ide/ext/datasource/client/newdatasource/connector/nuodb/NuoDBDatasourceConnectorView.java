@@ -39,4 +39,10 @@ public interface NuoDBDatasourceConnectorView extends AbstractNewDatasourceConne
     Set<NuoDBBroker> getBrokerSelection();
 
     void setNuoDelegate(NuoActionDelegate delegate);
+
+    void setDatabaseName(String databaseName);
+
+    void setUsername(String username);
+
+    void setPassword(String password);
 }

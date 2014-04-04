@@ -24,6 +24,7 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
@@ -42,7 +43,8 @@ import com.google.web.bindery.event.shared.EventBus;
  * This connector page is using JTDS JDBC Driver to connect to MS SQLserver.
  */
 public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements
-                                                                                    NuoDBDatasourceConnectorView.NuoActionDelegate {
+                                                                                    NuoDBDatasourceConnectorView.NuoActionDelegate,
+                                                                                    InitializableWizardPage {
 
     public static final String                  NUODB_DB_ID               = "nuodb";
     private static final int                    DEFAULT_PORT_NUODB_BROKER = 48004;
@@ -144,5 +146,28 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         // remove selected items from the list provider
         // the list wrapper should update the view by itself
         this.brokersProvider.getList().removeAll(selection);
+    }
+
+    @Override
+    public void initPage(final Object data) {
+        // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
+        if (!(data instanceof DatabaseConfigurationDTO)) {
+            return;
+        }
+        DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
+        getView().setDatabaseName(initData.getDatabaseName());
+        getView().setUsername(initData.getUsername());
+        getView().setPassword(initData.getPassword());
+
+        this.brokersProvider.getList().clear();
+        int id = 0;
+        for (final NuoDBBrokerDTO brokerDto : initData.getBrokers()) {
+            final NuoDBBroker broker = NuoDBBroker.create(id);
+            broker.setHost(brokerDto.getHostName());
+            broker.setPort(brokerDto.getPort());
+            this.brokersProvider.getList().add(broker);
+            id++;
+        }
+        this.brokersProvider.flush();
     }
 }

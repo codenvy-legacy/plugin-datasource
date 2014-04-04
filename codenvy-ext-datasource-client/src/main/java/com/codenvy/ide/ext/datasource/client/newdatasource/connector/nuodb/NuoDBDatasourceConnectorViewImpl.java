@@ -173,6 +173,22 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         return passwordField.getText();
     }
 
+    @Override
+    public void setDatabaseName(final String databaseName) {
+        this.dbName.setValue(databaseName);
+    }
+
+    @Override
+    public void setUsername(final String username) {
+        this.usernameField.setValue(username);
+
+    }
+
+    @Override
+    public void setPassword(final String password) {
+        this.passwordField.setValue(password);
+    }
+
     @UiHandler("testConnectionButton")
     void handleTestConnectionClick(final ClickEvent e) {
         this.delegate.onClickTestConnectionButton();
