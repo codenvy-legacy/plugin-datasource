@@ -167,5 +167,10 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         for (DatabaseConfigurationDTO datasource : selection) { // there is only one !
             this.editDatasourceLauncher.launch(datasource);
         }
+
+        // reset datasource model
+        setupDatasourceList();
+        // inform the world about the datasource list modification
+        this.eventBus.fireEvent(new DatasourceListChangeEvent());
     }
 }
