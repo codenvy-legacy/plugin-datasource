@@ -152,6 +152,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
     public void initPage(final Object data) {
         // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
         if (!(data instanceof DatabaseConfigurationDTO)) {
+            clearPage();
             return;
         }
         DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
@@ -168,6 +169,15 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
             this.brokersProvider.getList().add(broker);
             id++;
         }
+        this.brokersProvider.flush();
+    }
+
+    @Override
+    public void clearPage() {
+        getView().setDatabaseName("");
+        getView().setUsername("");
+        getView().setPassword("");
+        this.brokersProvider.getList().clear();
         this.brokersProvider.flush();
     }
 }
