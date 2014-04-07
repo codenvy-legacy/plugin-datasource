@@ -101,6 +101,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
     public void initPage(final Object data) {
         // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
         if (!(data instanceof DatabaseConfigurationDTO)) {
+            clearPage();
             return;
         }
         DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
@@ -111,5 +112,16 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
         getView().setUsername(initData.getUsername());
         getView().setPassword(initData.getPassword());
+    }
+
+    @Override
+    public void clearPage() {
+        getView().setDatabaseName("");
+        getView().setHostName("");
+        getView().setPort(getDefaultPort());
+        getView().setUseSSL(false);
+        getView().setVerifyServerCertificate(false);
+        getView().setUsername("");
+        getView().setPassword("");
     }
 }
