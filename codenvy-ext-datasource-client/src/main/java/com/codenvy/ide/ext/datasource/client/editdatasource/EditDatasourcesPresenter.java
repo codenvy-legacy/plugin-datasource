@@ -15,6 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import java.util.List;
 import java.util.Set;
 
 import com.codenvy.api.user.shared.dto.Profile;
@@ -26,6 +27,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
+import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;
@@ -36,13 +38,14 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * The presenter for the datasource edit/delete datasources dialog.
  * 
  * @author "Mickaël Leduque"
  */
-public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate {
+public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate, DatasourceListChangeHandler {
 
     /** The view component. */
     private final EditDatasourcesView                           view;
@@ -65,6 +68,9 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
     /** A factory that will provide modification wizards. */
     private EditDatasourceLauncher                              editDatasourceLauncher;
+
+    /** a reference to remove handler from eventbus. */
+    private HandlerRegistration                                 handlerRegistration;
 
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
@@ -89,13 +95,15 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** Show dialog. */
     public void showDialog() {
         setupDatasourceList();
+        this.handlerRegistration = this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
         this.view.showDialog();
     }
 
     @Override
     public void closeDialog() {
         this.view.closeDialog();
-
+        this.handlerRegistration.removeHandler();
+        this.handlerRegistration = null;
     }
 
     /** Sets the content of the datasource widget. */
@@ -104,7 +112,11 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         for (DatabaseConfigurationDTO datasource : this.datasourceManager) {
             this.dataProvider.getList().add(datasource);
         }
-        this.dataProvider.flush();
+        this.dataProvider.refresh();
+
+        // selection must be redone
+        final Set<DatabaseConfigurationDTO> oldSelection = this.selectionModel.getSelectedSet();
+        fixSelection(oldSelection);
     }
 
     @Override
@@ -168,10 +180,30 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         for (DatabaseConfigurationDTO datasource : selection) { // there is only one !
             this.editDatasourceLauncher.launch(datasource);
         }
+    }
 
+    @Override
+    public void onDatasourceListChange(final DatasourceListChangeEvent event) {
         // reset datasource model
         setupDatasourceList();
-        // inform the world about the datasource list modification
-        this.eventBus.fireEvent(new DatasourceListChangeEvent());
+    }
+
+    /**
+     * Repair the selection after the datasource list has been modified. The element with the same id as those which where selected before
+     * the datasource model was changed are selected.
+     * 
+     * @param oldSelection the selection before model change
+     */
+    private void fixSelection(final Set<DatabaseConfigurationDTO> oldSelection) {
+        this.selectionModel.clear();
+
+        final List<DatabaseConfigurationDTO> items = this.dataProvider.getList();
+        for (final DatabaseConfigurationDTO oldItem : oldSelection) { // if no selection, no list traversal
+            for (DatabaseConfigurationDTO item : items) {
+                if (this.selectionModel.getKey(item).equals(this.selectionModel.getKey(oldItem))) {
+                    this.selectionModel.setSelected(item, true);
+                }
+            }
+        }
     }
 }
