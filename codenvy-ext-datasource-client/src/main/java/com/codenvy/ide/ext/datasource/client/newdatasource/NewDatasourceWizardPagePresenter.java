@@ -133,6 +133,7 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     @Override
     public void initPage(final Object data) {
         if (!(data instanceof DatabaseConfigurationDTO)) {
+            clearPage();
             return;
         }
         final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
@@ -151,5 +152,11 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
                 this.view.selectConnector(foundConnector.getId());
             }
         }
+    }
+
+    @Override
+    public void clearPage() {
+        this.view.setDatasourceName("");
+        this.view.selectConnector(null);
     }
 }
