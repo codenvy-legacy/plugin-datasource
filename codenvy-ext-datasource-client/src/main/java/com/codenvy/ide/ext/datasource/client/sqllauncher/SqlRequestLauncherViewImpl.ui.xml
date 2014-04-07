@@ -18,17 +18,16 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
-
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
 
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
     <g:north size="35">
         <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherEditorBar}">
-            <g:west size="150">
+            <g:west size="130">
                 <g:Button ui:field="executeButton"
                     addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherExecuteButton}" />
             </g:west>
-            <g:east size="800">
+            <g:center>
                 <g:FlowPanel>
                     <!-- use some kind of toolbar ? -->
                     <g:ListBox ui:field="executionModeList" width="8em"
@@ -44,7 +43,7 @@
                     <g:Label ui:field="selectDatasourceLabel"
                         addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
                 </g:FlowPanel>
-            </g:east>
+            </g:center>
         </g:DockLayoutPanel>
         </g:north>
         <g:center>
