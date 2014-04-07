@@ -39,7 +39,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.StringBuilderWriter;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +71,7 @@ import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionExcepti
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 
 @Path(ServicePaths.BASE_DATASOURCE_PATH)
@@ -330,7 +330,7 @@ public class DatasourceService {
             }
         } catch (final SQLException e) {
             LOG.info("Connection test failed ; error messages : {} | {}", e.getMessage());
-            LOG.debug("Connection test failed ; exception : {}", ExceptionUtils.getStackTrace(e));
+            LOG.debug("Connection test failed ; exception : {}", Throwables.getStackTraceAsString(e));
             testResult.withTestResult(Status.FAILURE).withFailureMessage(e.getLocalizedMessage());
         }
         return DtoFactory.getInstance().toJson(testResult);
