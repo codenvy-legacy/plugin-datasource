@@ -5,4 +5,6 @@ import com.codenvy.ide.api.ui.wizard.WizardPage;
 public interface InitializableWizardPage extends WizardPage {
 
     void initPage(Object initData);
+
+    void clearPage();
 }
