@@ -35,6 +35,10 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.DatasourceKeyProvide
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardFactory;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardProvider;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
@@ -78,9 +82,17 @@ public class DatasourceGinModule extends AbstractGinModule {
                                           .in(Singleton.class);
         bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)
                                            .in(Singleton.class);
+
+        install(new GinFactoryModuleBuilder().build(EditDatasourceWizardFactory.class));
+
         bind(DefaultWizard.class).annotatedWith(NewDatasourceWizardQualifier.class)
                                  .toProvider(NewDatasourceWizardProvider.class)
                                  .in(Singleton.class);
+
+        bind(EditDatasourceWizard.class).annotatedWith(EditDatasourceWizardQualifier.class)
+                                        .toProvider(EditDatasourceWizardProvider.class)
+                                        .in(Singleton.class);
+
         bind(NewDatasourceConnectorAgent.class).to(NewDatasourceConnectorAgentImpl.class).in(Singleton.class);
         bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
         bind(DefaultNewDatasourceConnectorView.class).to(DefaultNewDatasourceConnectorViewImpl.class);
