@@ -28,18 +28,19 @@ public class SslKeyStoreService {
 
     @GET
     public String init(){
-        if (System.getProperty("javax.net.ssl.trustStore") == null) {
-            System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
-        }
-        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
-        }
-        if (System.getProperty("javax.net.ssl.keyStore") == null) {
-            System.setProperty("javax.net.ssl.keyStore", System.getProperty("catalina.base") + "/keystore");
-        }
-        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
-            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
-        }
+        // temporary disabling to allow https if truststore and keystore are not setted
+//        if (System.getProperty("javax.net.ssl.trustStore") == null) {
+//            System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
+//        }
+//        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
+//            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+//        }
+//        if (System.getProperty("javax.net.ssl.keyStore") == null) {
+//            System.setProperty("javax.net.ssl.keyStore", System.getProperty("catalina.base") + "/keystore");
+//        }
+//        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
+//            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+//        }
         return "ok";
     }
 
