@@ -93,32 +93,32 @@ public class DatasourceService {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            LOG.info("postgresql driver not present");
-            LOG.debug("postgresql driver not present", e);
+            LOG.debug("postgresql driver not present");
+            LOG.trace("postgresql driver not present", e);
         }
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            LOG.info("MySQL driver not present");
-            LOG.debug("MySQL driver not present", e);
+            LOG.debug("MySQL driver not present");
+            LOG.trace("MySQL driver not present", e);
         }
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         } catch (ClassNotFoundException e) {
-            LOG.info("Oracle driver not present");
-            LOG.debug("Oracle driver not present", e);
+            LOG.debug("Oracle driver not present");
+            LOG.trace("Oracle driver not present", e);
         }
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            LOG.info("JTDS driver not present");
-            LOG.debug("JTDS driver not present", e);
+            LOG.debug("JTDS driver not present");
+            LOG.trace("JTDS driver not present", e);
         }
         try {
             Class.forName("com.nuodb.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            LOG.info("NuoDB driver not present");
-            LOG.debug("NuoDB driver not present", e);
+            LOG.debug("NuoDB driver not present");
+            LOG.trace("NuoDB driver not present", e);
         }
     }
 
@@ -141,7 +141,7 @@ public class DatasourceService {
         }
         final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
         final String msg = DtoFactory.getInstance().toJson(driversDTO);
-        LOG.info(msg);
+        LOG.debug(msg);
         return msg;
     }
 
@@ -244,7 +244,7 @@ public class DatasourceService {
             final RequestResultGroupDTO resultGroup = this.sqlRequestService.executeSqlRequest(request, connection, mode);
 
             String json = DtoFactory.getInstance().toJson(resultGroup);
-            LOG.debug("Return " + json);
+            LOG.debug("Return {}", json);
             return json;
         }
     }
@@ -269,7 +269,7 @@ public class DatasourceService {
     }
 
     private String convertDataToCsv(final RequestResultDTO requestResult, boolean withHeader) {
-        LOG.info("convertDataToCsv - called for {}, withHeader={}", requestResult, withHeader);
+        LOG.debug("convertDataToCsv - called for {}, withHeader={}", requestResult, withHeader);
 
         final StringBuilder sb = new StringBuilder();
         try (
@@ -329,8 +329,10 @@ public class DatasourceService {
                 // no message
             }
         } catch (final SQLException e) {
-            LOG.info("Connection test failed ; error messages : {} | {}", e.getMessage());
-            LOG.debug("Connection test failed ; exception : {}", Throwables.getStackTraceAsString(e));
+            LOG.debug("Connection test failed ; error messages : {} | {}", e.getMessage());
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Connection test failed ; exception : {}", Throwables.getStackTraceAsString(e));
+            }
             testResult.withTestResult(Status.FAILURE).withFailureMessage(e.getLocalizedMessage());
         }
         return DtoFactory.getInstance().toJson(testResult);

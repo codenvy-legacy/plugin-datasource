@@ -54,7 +54,7 @@ public class SqlRequestService {
                                                    final MultipleRequestExecutionMode mode) throws SQLException,
                                                                                            DatabaseDefinitionException {
 
-        LOG.info("Execution request ; parameter : {}", requestParameter);
+        LOG.debug("Execution request ; parameter : {}", requestParameter);
         final String agglutinatedRequests = requestParameter.getSqlRequest();
         Iterable<String> requests = SQL_REQUEST_SPLITTER.split(agglutinatedRequests); // TODO allow ; inside /* ... */ or '...'
 
@@ -97,24 +97,24 @@ public class SqlRequestService {
 
     private List<RequestResultDTO> processSingleRequest(final String request, final Statement statement) throws SQLException {
         boolean returnsRows = statement.execute(request);
-        LOG.info("Request executed successfully");
+        LOG.debug("Request executed successfully");
 
         ResultSet resultSet = statement.getResultSet();
         int count = statement.getUpdateCount();
 
         List<RequestResultDTO> resultList = new ArrayList<>();
         while (resultSet != null || count != -1) {
-            LOG.info("New result returned by request :");
+            LOG.trace("New result returned by request :");
 
             if (count != -1) {
-                LOG.info("   is an update count");
+                LOG.trace("   is an update count");
                 final UpdateResultDTO result = DtoFactory.getInstance().createDto(UpdateResultDTO.class);
                 resultList.add(result);
                 result.withResultType(UpdateResultDTO.TYPE)
                       .withUpdateCount(count)
                       .withOriginRequest(request);
             } else {
-                LOG.info("   is a result set");
+                LOG.trace("   is a result set");
                 final SelectResultDTO result = DtoFactory.getInstance().createDto(SelectResultDTO.class);
                 result.withResultType(SelectResultDTO.TYPE)
                       .withOriginRequest(request);
