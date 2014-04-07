@@ -23,6 +23,7 @@ import com.codenvy.ide.api.notification.Notification.Status;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;

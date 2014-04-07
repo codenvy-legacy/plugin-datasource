@@ -15,6 +15,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCell;
+import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCellListResources;
+import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;

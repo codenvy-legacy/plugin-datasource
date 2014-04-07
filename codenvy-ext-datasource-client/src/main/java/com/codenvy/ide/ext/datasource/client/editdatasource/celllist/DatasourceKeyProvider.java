@@ -13,16 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.codenvy.ide.ext.datasource.client.editdatasource.celllist;
 
-package com.codenvy.ide.ext.datasource.client.editdatasource;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.gwt.view.client.ProvidesKey;
 
-import com.google.gwt.user.cellview.client.CellList;
+/**
+ * A {@link ProvidesKey} implementation for datasource definition objects.
+ * 
+ * @author "Mickaël Leduque"
+ */
+public class DatasourceKeyProvider implements ProvidesKey<DatabaseConfigurationDTO> {
 
-public interface DatasourceCellListResources extends CellList.Resources {
+    public static final String NAME = "datasourceKeyProvider";
 
-    interface DatasourceCellListStyle extends CellList.Style {
+    @Override
+    public Object getKey(final DatabaseConfigurationDTO item) {
+        return item.getDatasourceId();
     }
 
-    @Source({"CellList.css", "com/codenvy/ide/api/ui/style.css"})
-    DatasourceCellListStyle cellListStyle();
 }
