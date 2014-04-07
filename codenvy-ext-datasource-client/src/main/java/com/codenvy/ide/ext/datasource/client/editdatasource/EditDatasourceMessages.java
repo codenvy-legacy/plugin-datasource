@@ -28,10 +28,10 @@ public interface EditDatasourceMessages extends Messages {
     @DefaultMessage("Close")
     String closeButtonText();
 
-    @DefaultMessage("Edit/Delete datasources")
+    @DefaultMessage("Manage datasources")
     String editDatasourcesMenuText();
 
-    @DefaultMessage("Edit/Delete datasources")
+    @DefaultMessage("Manage datasources")
     String editDatasourcesDialogText();
 
     @DefaultMessage("Datasources")
