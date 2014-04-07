@@ -106,16 +106,22 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     @Override
     public void onConnectorSelected(String id) {
         NewDatasourceConnector connector = null;
-        for (final NewDatasourceConnector item : dbConnectors) {
-            if (item.getId().equals(id)) {
-                connector = item;
-                break;
+        if (id != null) {
+            for (final NewDatasourceConnector item : dbConnectors) {
+                if (item.getId().equals(id)) {
+                    connector = item;
+                    break;
+                }
             }
         }
         if (connector != null) {
             wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
 
             view.selectConnector(id);
+            delegate.updateControls();
+        } else {
+            wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, null);
+            view.selectConnector(null);
             delegate.updateControls();
         }
     }
@@ -140,24 +146,12 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
         final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
         this.view.setDatasourceName(initData.getDatasourceId());
 
-        final Collection<NewDatasourceConnector> connectors = this.connectorAgent.getConnectors();
-        NewDatasourceConnector foundConnector = null;
-        for (NewDatasourceConnector connector : connectors) {
-            if (connector.getId() != null && connector.getId().equals(initData.getConfigurationConnectorId())) {
-                foundConnector = connector;
-                break;
-            }
-        }
-        if (foundConnector != null) {
-            this.view.selectConnector(foundConnector.getId());
-        }
-        delegate.updateControls();
+        onConnectorSelected(initData.getConfigurationConnectorId());
     }
 
     @Override
     public void clearPage() {
         this.view.setDatasourceName("");
-        this.view.selectConnector(null);
-        delegate.updateControls();
+        onConnectorSelected(null);
     }
 }
