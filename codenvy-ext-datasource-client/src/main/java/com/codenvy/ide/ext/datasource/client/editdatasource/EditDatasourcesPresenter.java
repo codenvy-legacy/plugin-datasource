@@ -23,6 +23,7 @@ import com.codenvy.ide.api.notification.Notification.Status;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
@@ -61,18 +62,23 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** the event bus, used to send event "datasources list modified". */
     private final EventBus                                      eventBus;
 
+    /** A factory that will provide modification wizards. */
+    private EditDatasourceLauncher                              editDatasourceLauncher;
+
     @Inject
     public EditDatasourcesPresenter(final EditDatasourcesView view,
                                     final DatasourceManager datasourceManager,
                                     final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
                                     final EditDatasourceMessages messages,
                                     final NotificationManager notificationManager,
-                                    final EventBus eventBus) {
+                                    final EventBus eventBus,
+                                    final EditDatasourceLauncher editDatasourceLauncher) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.messages = messages;
         this.notificationManager = notificationManager;
         this.eventBus = eventBus;
+        this.editDatasourceLauncher = editDatasourceLauncher;
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
@@ -158,5 +164,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
             return;
         }
 
+        for (DatabaseConfigurationDTO datasource : selection) { // there is only one !
+            this.editDatasourceLauncher.launch(datasource);
+        }
     }
 }
