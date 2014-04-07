@@ -136,27 +136,28 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
             clearPage();
             return;
         }
-        final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
-        if (initData != null) {
-            this.view.setDatasourceName(initData.getDatasourceId());
 
-            final Collection<NewDatasourceConnector> connectors = this.connectorAgent.getConnectors();
-            NewDatasourceConnector foundConnector = null;
-            for (NewDatasourceConnector connector : connectors) {
-                if (connector.getId() != null && connector.getId().equals(initData.getConfigurationConnectorId())) {
-                    foundConnector = connector;
-                    break;
-                }
-            }
-            if (foundConnector != null) {
-                this.view.selectConnector(foundConnector.getId());
+        final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
+        this.view.setDatasourceName(initData.getDatasourceId());
+
+        final Collection<NewDatasourceConnector> connectors = this.connectorAgent.getConnectors();
+        NewDatasourceConnector foundConnector = null;
+        for (NewDatasourceConnector connector : connectors) {
+            if (connector.getId() != null && connector.getId().equals(initData.getConfigurationConnectorId())) {
+                foundConnector = connector;
+                break;
             }
         }
+        if (foundConnector != null) {
+            this.view.selectConnector(foundConnector.getId());
+        }
+        delegate.updateControls();
     }
 
     @Override
     public void clearPage() {
         this.view.setDatasourceName("");
         this.view.selectConnector(null);
+        delegate.updateControls();
     }
 }

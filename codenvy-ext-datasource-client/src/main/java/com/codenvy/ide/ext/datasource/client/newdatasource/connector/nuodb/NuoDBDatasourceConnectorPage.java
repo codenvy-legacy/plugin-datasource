@@ -170,6 +170,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
             id++;
         }
         this.brokersProvider.flush();
+        this.delegate.updateControls();
     }
 
     @Override
@@ -179,5 +180,6 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         getView().setPassword("");
         this.brokersProvider.getList().clear();
         this.brokersProvider.flush();
+        this.delegate.updateControls();
     }
 }
