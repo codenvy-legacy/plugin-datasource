@@ -25,6 +25,8 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
@@ -33,13 +35,16 @@ import com.google.inject.Provider;
 
 public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAgent {
 
-    private final DefaultWizard                     datasourceWizard;
+    private final DefaultWizard                     newDatasourceWizard;
+    private final DefaultWizard                     editDatasourceWizard;
 
     private final SortedSet<NewDatasourceConnector> registeredConnectors;
 
     @Inject
-    public NewDatasourceConnectorAgentImpl(final @NewDatasourceWizardQualifier DefaultWizard datasourceWizard) {
-        this.datasourceWizard = datasourceWizard;
+    public NewDatasourceConnectorAgentImpl(final @NewDatasourceWizardQualifier DefaultWizard newDatasourceWizard,
+                                           final @EditDatasourceWizardQualifier EditDatasourceWizard editDatasourceWizard) {
+        this.newDatasourceWizard = newDatasourceWizard;
+        this.editDatasourceWizard = editDatasourceWizard;
         registeredConnectors = new TreeSet<NewDatasourceConnector>();
     }
 
@@ -53,7 +58,8 @@ public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAg
 
         registeredConnectors.add(connector);
         for (Provider< ? extends AbstractNewDatasourceConnectorPage> provider : connector.getWizardPages().asIterable()) {
-            datasourceWizard.addPage(provider);
+            newDatasourceWizard.addPage(provider);
+            editDatasourceWizard.addPage(provider);
         }
     }
 
