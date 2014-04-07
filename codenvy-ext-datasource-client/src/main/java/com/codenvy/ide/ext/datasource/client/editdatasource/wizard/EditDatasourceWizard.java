@@ -17,47 +17,15 @@
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.api.ui.wizard.WizardPage;
-import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-public class EditDatasourceWizard extends DefaultWizard {
+public class EditDatasourceWizard extends InitializableWizard<DatabaseConfigurationDTO> {
 
-    private DatabaseConfigurationDTO configuration;
-
-    public EditDatasourceWizard(final NotificationManager notificationManager) {
-        super(notificationManager, "Edit datasource");
+    @Inject
+    public EditDatasourceWizard(NotificationManager notificationManager, @Assisted String title) {
+        super(notificationManager, title);
     }
 
-    public void initData(final DatabaseConfigurationDTO configuration) {
-        this.configuration = configuration;
-    }
-
-    @Override
-    public WizardPage flipToFirst() {
-        WizardPage page = super.flipToFirst();
-        if (page instanceof InitializableWizardPage) {
-            ((InitializableWizardPage)page).initPage(configuration);
-        }
-        return page;
-    }
-
-    @Override
-    public WizardPage flipToNext() {
-        WizardPage page = super.flipToNext();
-        if (page instanceof InitializableWizardPage) {
-            ((InitializableWizardPage)page).initPage(configuration);
-        }
-        return page;
-    }
-
-    @Override
-    public WizardPage flipToPrevious() {
-        WizardPage page = super.flipToPrevious();
-        if (page instanceof InitializableWizardPage) {
-            ((InitializableWizardPage)page).initPage(configuration);
-        }
-        return page;
-    }
 }

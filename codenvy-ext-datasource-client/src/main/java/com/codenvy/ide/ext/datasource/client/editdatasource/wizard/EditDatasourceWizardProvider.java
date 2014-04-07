@@ -13,12 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
-import javax.validation.constraints.NotNull;
+import com.codenvy.ide.util.loging.Log;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-public interface EditDatasourceWizardFactory {
-    @NotNull
-    EditDatasourceWizard create(String title);
+public class EditDatasourceWizardProvider implements Provider<EditDatasourceWizard> {
+    private EditDatasourceWizardFactory wizardFactory;
+
+    @Inject
+    public EditDatasourceWizardProvider(final EditDatasourceWizardFactory wizardFactory) {
+        this.wizardFactory = wizardFactory;
+    }
+
+    @Override
+    public EditDatasourceWizard get() {
+        Log.debug(EditDatasourceWizardProvider.class, "Create new Edit datasource wizard.");
+        return wizardFactory.create("Edit Datasource Wizard");
+    }
 }

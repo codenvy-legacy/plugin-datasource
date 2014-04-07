@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
-import javax.validation.constraints.NotNull;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface EditDatasourceWizardFactory {
-    @NotNull
-    EditDatasourceWizard create(String title);
+import com.google.inject.BindingAnnotation;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.TYPE})
+@BindingAnnotation
+public @interface EditDatasourceWizardQualifier {
 }
