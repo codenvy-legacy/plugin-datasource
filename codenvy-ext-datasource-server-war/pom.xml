@@ -74,14 +74,24 @@
         <dependency>
             <groupId>com.codenvy.commons</groupId>
             <artifactId>codenvy-commons-inject</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>mail</artifactId>
-                    <groupId>javax.mail</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.codenvy.commons</groupId>
+                <artifactId>codenvy-commons-inject</artifactId>
+                <scope>compile</scope>
+                <version>${com.codenvy.commons.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>mail</artifactId>
+                        <groupId>javax.mail</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <finalName>datasource-api</finalName>
     </build>
