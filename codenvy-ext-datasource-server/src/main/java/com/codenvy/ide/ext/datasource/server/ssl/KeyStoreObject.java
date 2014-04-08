@@ -13,10 +13,14 @@ package com.codenvy.ide.ext.datasource.server.ssl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -56,9 +61,7 @@ public class KeyStoreObject {
     protected KeyStore          keystore;
 
     public KeyStoreObject() throws Exception {
-        keyStoreLocation = getKeyStoreLocation();
-        keyStorePassword = getKeyStorePassword();
-        keystore = extractKeyStoreFromFile(keyStoreLocation, keyStorePassword);
+        keystore = extractKeyStoreFromFile();
     }
 
     protected String getKeyStorePassword() {
@@ -71,13 +74,15 @@ public class KeyStoreObject {
         return store;
     }
 
-    protected KeyStore extractKeyStoreFromFile(String store, String sPass) throws Exception {
+    protected KeyStore extractKeyStoreFromFile() throws Exception {
+        keyStoreLocation = getKeyStoreLocation();
+        keyStorePassword = getKeyStorePassword();
         KeyStore ks = KeyStore.getInstance("JKS");
-        try (FileInputStream fis = new FileInputStream(store)) {
-            ks.load(fis, sPass.toCharArray());
+        try (FileInputStream fis = new FileInputStream(keyStoreLocation)) {
+            ks.load(fis, keyStorePassword.toCharArray());
         } catch (FileNotFoundException e) {
-            LOG.info("Couldn't find keystore file " + store);
-            ks.load(null, sPass.toCharArray());
+            LOG.info("Couldn't find keystore file " + keyStoreLocation);
+            ks.load(null, keyStorePassword.toCharArray());
         }
 
         return ks;
@@ -109,8 +114,13 @@ public class KeyStoreObject {
     @POST
     @Path("add")
     @Consumes({MediaType.MULTIPART_FORM_DATA})
-    public Response addNewKeyCertificate(@QueryParam("alias") String alias,
-                                         Iterator<FileItem> uploadedFilesIterator) throws Exception {
+    public Response addNewKeyCertificateAndRespond(@QueryParam("alias") String alias,
+                                                   Iterator<FileItem> uploadedFilesIterator) throws Exception {
+        addNewKey(alias, uploadedFilesIterator);
+        return Response.ok("", MediaType.TEXT_HTML).build();
+    }
+
+    public void addNewKey(String alias, Iterator<FileItem> uploadedFilesIterator) throws Exception {
         PrivateKey privateKey = null;
         Certificate[] certs = null;
         while (uploadedFilesIterator.hasNext()) {
@@ -132,7 +142,10 @@ public class KeyStoreObject {
         }
 
         keystore.setKeyEntry(alias, privateKey, keyStorePassword.toCharArray(), certs);
+        save();
+    }
+
+    protected void save() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, FileNotFoundException {
         keystore.store(new FileOutputStream(keyStoreLocation), keyStorePassword.toCharArray());
-        return Response.ok("", MediaType.TEXT_HTML).build();
     }
 }

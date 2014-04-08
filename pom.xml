@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
+        <module>codenvy-ssl-socket-factory</module>
         <module>codenvy-ext-datasource-shared</module>
         <module>codenvy-ext-datasource-server</module>
         <module>codenvy-ext-datasource-client</module>
