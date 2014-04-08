@@ -149,6 +149,12 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
+        if (datasourceIds.isEmpty()) {
+            this.datasourceList.clear();
+            getDelegate().datasourceChanged(null);
+            return;
+        }
+
         // save the currently selected item
         int index = this.datasourceList.getSelectedIndex();
         String selectedValue = null;
@@ -175,13 +181,13 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
                     break;
                 }
             }
+            getDelegate().datasourceChanged(getSelectedId());
         } else {
             if (this.datasourceList.getItemCount() == 1) {
                 this.datasourceList.setSelectedIndex(0);
                 getDelegate().datasourceChanged(this.datasourceList.getValue(0));
             }
         }
-        getDelegate().datasourceChanged(getSelectedId());
     }
 
     public String getSelectedId() {

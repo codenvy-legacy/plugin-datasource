@@ -100,11 +100,53 @@ public class DatasourceExplorerViewImpl extends
 
     @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
-        datasourceListBox.clear();
+        if (datasourceIds.isEmpty()) {
+            this.datasourceListBox.clear();
+            delegate.onSelectedDatasourceChanged(null);
+            return;
+        }
+
+        // save the currently selected item
+        int index = this.datasourceListBox.getSelectedIndex();
+        String selectedValue = null;
+        if (index != -1) {
+            selectedValue = this.datasourceListBox.getValue(index);
+        }
+
+        this.datasourceListBox.clear();
         if (datasourceIds != null) {
-            for (String dsIds : datasourceIds) {
-                datasourceListBox.addItem(dsIds);
+            if (datasourceIds.size() > 1) {
+                // add an empty item
+                this.datasourceListBox.addItem("", "");
             }
+            for (String datasourceId : datasourceIds) {
+                this.datasourceListBox.addItem(datasourceId);
+            }
+        }
+
+        // restore selected value if needed
+        if (index != -1) {
+            for (int i = 0; i < this.datasourceListBox.getItemCount(); i++) {
+                if (this.datasourceListBox.getItemText(i).equals(selectedValue)) {
+                    this.datasourceListBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+            delegate.onSelectedDatasourceChanged(getSelectedId());
+        } else {
+            if (this.datasourceListBox.getItemCount() == 1) {
+                this.datasourceListBox.setSelectedIndex(0);
+                delegate.onSelectedDatasourceChanged(this.datasourceListBox.getValue(0));
+            }
+        }
+    }
+
+    public String getSelectedId() {
+        int index = this.datasourceListBox.getSelectedIndex();
+        if (index != -1) {
+            return this.datasourceListBox.getValue(index);
+        } else {
+            return null;
         }
     }
 
