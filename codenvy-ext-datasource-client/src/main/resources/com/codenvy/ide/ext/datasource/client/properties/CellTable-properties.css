@@ -97,29 +97,22 @@
 }
 
 .cellTableKeyboardSelectedRow {
-  background: cellKeyboardSelectedRow;
 }
 
 .cellTableKeyboardSelectedRowCell {
-  border: selectionBorderWidth solid cellKeyboardSelectedRow;
 }
 
 .cellTableSelectedRow {
-  background: cellKeyboardSelectedRow;
-  color: editorSelectionColor;
-  height: auto;
-  overflow: auto;
 }
 
 .cellTableSelectedRowCell {
-  border: selectionBorderWidth solid cellKeyboardSelectedRow;
 }
 
 /**
  * The keyboard selected cell is visible over selection.
  */
 .cellTableKeyboardSelectedCell {
-  border: selectionBorderWidth solid #d7dde8;
+  background-color: cellKeyboardSelectedRow;
 }
 
 .cellTableLoading {
