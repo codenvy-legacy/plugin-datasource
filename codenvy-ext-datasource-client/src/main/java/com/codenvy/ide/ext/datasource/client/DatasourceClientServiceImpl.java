@@ -59,7 +59,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         final String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
                                      ServicePaths.DATABASE_METADATA_PATH, null);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, true);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
         postRequest.send(asyncRequestCallback);
     }
 
@@ -77,7 +77,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                                                   .withResultLimit(resultLimit)
                                                                   .withSqlRequest(sqlRequest)
                                                                   .withMultipleRequestExecutionMode(execMode);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestParameterDTO, true);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestParameterDTO, false);
         postRequest.send(asyncRequestCallback);
     }
 
@@ -85,7 +85,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
                                ServicePaths.DATABASE_TYPES_PATH, null);
-        final AsyncRequest getRequest = this.asyncRequestFactory.createGetRequest(url, true);
+        final AsyncRequest getRequest = this.asyncRequestFactory.createGetRequest(url, false);
         getRequest.send(asyncRequestCallback);
     }
 
@@ -99,7 +99,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                             final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
                                ServicePaths.RESULT_CSV_PATH, null);
-        AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestResult, true);
+        AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestResult, false);
         postRequest.send(asyncRequestCallback);
     }
 
@@ -108,7 +108,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
                                ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, null);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, true);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
         postRequest.send(asyncRequestCallback);
     }
 
