@@ -30,6 +30,7 @@
         <module>codenvy-ext-datasource-shared</module>
         <module>codenvy-ext-datasource-server</module>
         <module>codenvy-ext-datasource-client</module>
+        <module>codenvy-ext-datasource-server-war</module>
     </modules>
     <distributionManagement>
         <repository>
@@ -116,6 +117,18 @@
                 <groupId>com.google.gwt</groupId>
                 <artifactId>gwt-user</artifactId>
                 <version>${gwt.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.commons</groupId>
+                <artifactId>codenvy-commons-inject</artifactId>
+                <version>${com.codenvy.commons.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
