@@ -17,15 +17,12 @@
 @def selectionBorderWidth 2px;
 .cellTableWidget {
   border-collapse: collapse;
-  
 }
 
 .cellTableFirstColumn {
- 
 }
 
 .cellTableLastColumn {
- 
 }
 
 .cellTableFooter, .cellTableHeader, .cellTableCell {
@@ -57,19 +54,15 @@
 }
 
 .cellTableFirstColumnFooter {
- 
 }
 
 .cellTableFirstColumnHeader {
- 
 }
 
 .cellTableLastColumnFooter {
- 
 }
 
 .cellTableLastColumnHeader {
- 
 }
 
 .cellTableSortableHeader {
