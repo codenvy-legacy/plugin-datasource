@@ -15,6 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.inject;
 
+
 import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
@@ -78,6 +79,9 @@ public class DatasourceGinModule extends AbstractGinModule {
     /** {@inheritDoc} */
     @Override
     protected void configure() {
+        bindConstant().annotatedWith(Names.named(DatasourceClientServiceImpl.DATASOURCE_CONTEXT_NAME))
+                      .to("/datasource");
+
         bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
                                           .in(Singleton.class);
         bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)

@@ -26,6 +26,7 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,6 +38,8 @@ import com.google.inject.name.Named;
 @Singleton
 public class DatasourceClientServiceImpl implements DatasourceClientService {
 
+    public static final String        DATASOURCE_CONTEXT_NAME = "datasourceRestContext";
+
     private final String              restServiceContext;
     private final DtoFactory          dtoFactory;
     private final AsyncRequestFactory asyncRequestFactory;
@@ -46,7 +49,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
      * @param loader loader to show on server request
      */
     @Inject
-    protected DatasourceClientServiceImpl(final @Named("restContext") String restContext,
+    protected DatasourceClientServiceImpl(final @Named(DATASOURCE_CONTEXT_NAME) String restContext,
                                           final DtoFactory dtoFactory,
                                           final AsyncRequestFactory asyncRequestFactory) {
         this.restServiceContext = restContext;
@@ -132,6 +135,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
             sb.append('/')
               .append(param);
         }
+        Log.info(DatasourceClientServiceImpl.class, "Create REST URL : " + sb.toString());
         return sb.toString();
     }
 }
