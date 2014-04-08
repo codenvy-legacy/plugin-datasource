@@ -56,6 +56,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import com.codenvy.dto.server.DtoFactory;
+import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
@@ -321,12 +322,23 @@ public class DatasourceService {
         Properties info = new Properties();
         info.setProperty("user", configuration.getUsername());
         info.setProperty("password", configuration.getPassword());
+
         if (configuration.getUseSSL()) {
             info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
+            CodenvySSLSocketFactory.init.set(true);
+            CodenvySSLSocketFactory.clientCertificateKeyStoreUrl.set("file://" + System.getProperty("javax.net.ssl.keyStore"));
+            CodenvySSLSocketFactory.clientCertificateKeyStorePassword.set(System.getProperty("javax.net.ssl.keyStorePassword"));
+            CodenvySSLSocketFactory.clientCertificateKeyStoreType.set("JKS");
+
         }
         if (configuration.getVerifyServerCertificate()) {
             info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
+            CodenvySSLSocketFactory.verifyServerCertificate.set(configuration.getVerifyServerCertificate());
+            CodenvySSLSocketFactory.trustCertificateKeyStoreUrl.set("file://" + System.getProperty("javax.net.ssl.trustStore"));
+            CodenvySSLSocketFactory.trustCertificateKeyStorePassword.set(System.getProperty("javax.net.ssl.trustStorePassword"));
+            CodenvySSLSocketFactory.trustCertificateKeyStoreType.set("JKS");
         }
+
 
         final Connection connection = DriverManager.getConnection(this.jdbcUrlBuilder.getJdbcUrl(configuration),
                                                                   info);

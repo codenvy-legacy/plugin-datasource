@@ -27,6 +27,7 @@
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
+        <module>codenvy-ssl-socket-factory</module>
         <module>codenvy-ext-datasource-shared</module>
         <module>codenvy-ext-datasource-server</module>
         <module>codenvy-ext-datasource-client</module>
@@ -66,6 +67,12 @@
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-datasource-shared</artifactId>
                 <version>${codenvy.datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codenvy.ide</groupId>
+                <artifactId>codenvy-ssl-socket-factory</artifactId>
+                <version>${codenvy.datasource.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>

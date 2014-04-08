@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.codenvy.ide.ext.datasource.server.ssl;
 
 import java.io.FileOutputStream;
@@ -48,8 +47,13 @@ public class TrustStoreObject extends KeyStoreObject {
     }
 
     @Override
-    public Response addNewKeyCertificate(@QueryParam("alias") String alias,
-                                         Iterator<FileItem> uploadedFilesIterator) throws Exception {
+    public Response addNewKeyCertificateAndRespond(@QueryParam("alias") String alias,
+                                                   Iterator<FileItem> uploadedFilesIterator) throws Exception {
+        addNewServerCACert(alias, uploadedFilesIterator);
+        return Response.ok("", MediaType.TEXT_HTML).build();
+    }
+
+    public void addNewServerCACert(String alias, Iterator<FileItem> uploadedFilesIterator) throws Exception {
         Certificate[] certs = null;
         while (uploadedFilesIterator.hasNext()) {
             FileItem fileItem = uploadedFilesIterator.next();
@@ -66,8 +70,6 @@ public class TrustStoreObject extends KeyStoreObject {
         }
 
         keystore.setCertificateEntry(alias, certs[0]);
-        keystore.store(new FileOutputStream(keyStoreLocation), keyStorePassword.toCharArray());
-
-        return Response.ok("", MediaType.TEXT_HTML).build();
+        save();
     }
 }

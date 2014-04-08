@@ -16,6 +16,9 @@
 
 package com.codenvy.ide.ext.datasource.server.ssl;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -24,22 +27,26 @@ import javax.ws.rs.Path;
  */
 @Path("ssl-keystore")
 public class SslKeyStoreService {
-
+    
     @GET
-    public String init(){
-        // temporary disabling to allow https if truststore and keystore are not setted
-//        if (System.getProperty("javax.net.ssl.trustStore") == null) {
-//            System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
-//        }
-//        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
-//            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
-//        }
-//        if (System.getProperty("javax.net.ssl.keyStore") == null) {
-//            System.setProperty("javax.net.ssl.keyStore", System.getProperty("catalina.base") + "/keystore");
-//        }
-//        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
-//            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
-//        }
+    public String init() throws Exception {
+        if (System.getProperty("javax.net.ssl.trustStore") == null) {
+            System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
+        }
+        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
+            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+        }
+        if (System.getProperty("javax.net.ssl.keyStore") == null) {
+            System.setProperty("javax.net.ssl.keyStore", System.getProperty("catalina.base") + "/keystore");
+        }
+        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
+            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+        }
+
+        TrustStoreObject trustore = new TrustStoreObject();
+        KeyStoreObject keystore = new KeyStoreObject();
+        trustore.save();
+        keystore.save();        
         return "ok";
     }
 
@@ -49,7 +56,7 @@ public class SslKeyStoreService {
     }
 
     @Path("truststore")
-    public Object getTrustStore() throws Exception {
+    public TrustStoreObject getTrustStore() throws Exception {
         return new TrustStoreObject();
     }
 }
