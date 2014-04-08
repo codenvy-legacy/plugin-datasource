@@ -18,6 +18,7 @@ package com.codenvy.ide.ext.datasource.client;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.dto.DtoFactory;
+import com.codenvy.ide.ext.datasource.client.inject.DatasourceGinModule;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
@@ -38,8 +39,6 @@ import com.google.inject.name.Named;
 @Singleton
 public class DatasourceClientServiceImpl implements DatasourceClientService {
 
-    public static final String        DATASOURCE_CONTEXT_NAME = "datasourceRestContext";
-
     private final String              restServiceContext;
     private final DtoFactory          dtoFactory;
     private final AsyncRequestFactory asyncRequestFactory;
@@ -49,7 +48,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
      * @param loader loader to show on server request
      */
     @Inject
-    protected DatasourceClientServiceImpl(final @Named(DATASOURCE_CONTEXT_NAME) String restContext,
+    protected DatasourceClientServiceImpl(final @Named(DatasourceGinModule.DATASOURCE_CONTEXT_NAME) String restContext,
                                           final DtoFactory dtoFactory,
                                           final AsyncRequestFactory asyncRequestFactory) {
         this.restServiceContext = restContext;

@@ -76,11 +76,14 @@ import com.google.inject.name.Names;
 
 @ExtensionGinModule
 public class DatasourceGinModule extends AbstractGinModule {
+
+    /** The name bound to the datasource rest context. */
+    public static final String DATASOURCE_CONTEXT_NAME = "datasourceRestContext";
+
     /** {@inheritDoc} */
     @Override
     protected void configure() {
-        bindConstant().annotatedWith(Names.named(DatasourceClientServiceImpl.DATASOURCE_CONTEXT_NAME))
-                      .to("/datasource");
+        bindConstant().annotatedWith(Names.named(DATASOURCE_CONTEXT_NAME)).to("/datasource");
 
         bind(DatasourceExplorerView.class).to(DatasourceExplorerViewImpl.class)
                                           .in(Singleton.class);
