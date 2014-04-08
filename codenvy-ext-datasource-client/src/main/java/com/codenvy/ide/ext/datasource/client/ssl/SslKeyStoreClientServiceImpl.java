@@ -18,6 +18,7 @@ package com.codenvy.ide.ext.datasource.client.ssl;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.ext.datasource.client.inject.DatasourceGinModule;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
@@ -35,7 +36,7 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
-    protected SslKeyStoreClientServiceImpl(@Named("restContext") String baseUrl,
+    protected SslKeyStoreClientServiceImpl(@Named(DatasourceGinModule.DATASOURCE_CONTEXT_NAME) String baseUrl,
                                            Loader loader,
                                            AsyncRequestFactory asyncRequestFactory) {
         this.baseUrl = baseUrl;
