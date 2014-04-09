@@ -18,12 +18,23 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.i18n.client.Messages;
 
+/**
+ * Constant interface for the datasource explorer.
+ * 
+ * @author "Mickaël Leduque"
+ */
 @DefaultLocale("en")
 public interface DatasourceExplorerConstants extends Messages {
 
-    @DefaultMessage("Explore")
-    String exploreButtonLabel();
+    /** The tooltip for the refresh button. */
+    @DefaultMessage("Refresh and explore")
+    String exploreButtonTooltip();
 
+    /** The string used in the part (top). */
     @DefaultMessage("Datasource Explorer")
-    String datasourceExplorerTitle();
+    String datasourceExplorerPartTitle();
+
+    /** The string used in the side tab. */
+    @DefaultMessage("Datasource")
+    String datasourceExplorerTabTitle();
 }

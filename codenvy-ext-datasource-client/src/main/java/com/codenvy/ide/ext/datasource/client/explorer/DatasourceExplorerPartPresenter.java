@@ -99,7 +99,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.notificationConstants = notificationConstants;
         this.databaseInfoStore = databaseInfoStore;
 
-        this.view.setTitle(constants.datasourceExplorerTitle());
+        this.view.setTitle(constants.datasourceExplorerPartTitle());
         bind();
 
         // register for datasource creation events
@@ -124,7 +124,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     /** {@inheritDoc} */
     @Override
     public String getTitle() {
-        return constants.datasourceExplorerTitle();
+        return constants.datasourceExplorerTabTitle();
     }
 
     /** {@inheritDoc} */

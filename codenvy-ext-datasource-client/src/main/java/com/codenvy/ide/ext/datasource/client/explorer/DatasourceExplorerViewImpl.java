@@ -94,6 +94,7 @@ public class DatasourceExplorerViewImpl extends
         uiBinder.createAndBindUi(this);
 
         this.refreshButton.getUpFace().setImage(new Image(clientResource.getRefreshIcon()));
+        this.refreshButton.setTitle(constants.exploreButtonTooltip());
 
         container.add(mainContainer);
     }
