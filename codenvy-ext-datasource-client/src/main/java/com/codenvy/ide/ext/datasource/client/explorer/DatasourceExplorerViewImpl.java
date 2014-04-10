@@ -15,7 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import java.util.Collection;
+import elemental.events.MouseEvent;
 
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import elemental.html.DragEvent;
+import java.util.Collection;
 
 /**
  * The datasource explorer view component.
@@ -208,11 +208,11 @@ public class DatasourceExplorerViewImpl extends
             }
 
             @Override
-            public void onNodeDragStart(TreeNodeElement<EntityTreeNode> node, DragEvent event) {
+            public void onNodeDragStart(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
             }
 
             @Override
-            public void onNodeDragDrop(TreeNodeElement<EntityTreeNode> node, DragEvent event) {
+            public void onNodeDragDrop(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
             }
 
             @Override
@@ -230,7 +230,7 @@ public class DatasourceExplorerViewImpl extends
             }
 
             @Override
-            public void onRootDragDrop(DragEvent event) {
+            public void onRootDragDrop(MouseEvent event) {
             }
         });
     }
