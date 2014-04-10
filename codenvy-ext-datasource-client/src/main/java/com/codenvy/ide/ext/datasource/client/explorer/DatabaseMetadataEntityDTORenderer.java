@@ -27,7 +27,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 
 import elemental.html.DivElement;
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.SpanElement;
 
 /**
@@ -67,18 +67,18 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
     @Override
     public void updateNodeContents(final TreeNodeElement<EntityTreeNode> treeNode) {
         if (treeNode.getData().getData() instanceof TableDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            Element icon = treeNode.getNodeLabel().getFirstElementChild();
             icon.setClassName(css.icon());
-            icon.addClassName(css.tableIcon());
+            Elements.addClassName(css.tableIcon(), icon);
 
         } else if (treeNode.getData().getData() instanceof SchemaDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            Element icon = treeNode.getNodeLabel().getFirstElementChild();
             icon.setClassName(css.icon());
-            icon.addClassName(css.schemaIcon());
+            Elements.addClassName(css.schemaIcon(), icon);
         } else if (treeNode.getData().getData() instanceof ColumnDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstChildElement();
+            Element icon = treeNode.getNodeLabel().getFirstElementChild();
             icon.setClassName(css.icon());
-            icon.addClassName(css.columnIcon());
+            Elements.addClassName(css.columnIcon(), icon);
         }
     }
 
@@ -98,7 +98,7 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
         SpanElement root = Elements.createSpanElement(css.root());
         if (renderIcon) {
             DivElement icon = Elements.createDivElement(css.icon());
-            icon.addClassName(iconClassName);
+            Elements.addClassName(iconClassName, icon);
             root.appendChild(icon);
         }
 
