@@ -72,6 +72,7 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.google.common.base.Throwables;
+import com.google.common.math.LongMath;
 import com.google.inject.Inject;
 
 @Path(ServicePaths.BASE_DATASOURCE_PATH)
@@ -230,6 +231,14 @@ public class DatasourceService {
     }
 
 
+    /**
+     * Executes the SQL requests given as parameter.
+     * 
+     * @param request the requests parameters
+     * @return a result object, either success (with data) or failure (with message)
+     * @throws SQLException if the execution caused an error
+     * @throws DatabaseDefinitionException if the datasource is not correctly defined
+     */
     @Path(ServicePaths.EXECUTE_SQL_REQUEST_PATH)
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
@@ -241,10 +250,21 @@ public class DatasourceService {
                 mode = request.getMultipleRequestExecutionMode();
             }
 
+            long startTime = System.currentTimeMillis();
             final RequestResultGroupDTO resultGroup = this.sqlRequestService.executeSqlRequest(request, connection, mode);
+            long endExecTime = System.currentTimeMillis();
 
             String json = DtoFactory.getInstance().toJson(resultGroup);
-            LOG.debug("Return {}", json);
+            long endJsonTime = System.currentTimeMillis();
+            try {
+                LOG.debug("Execution of SQL request '{}' with result limit {} - sql duration={}, json conversion duration={}",
+                          request.getSqlRequest(), request.getResultLimit(),
+                          LongMath.checkedSubtract(endExecTime, startTime),
+                          LongMath.checkedSubtract(endJsonTime, endExecTime));
+            } catch (final ArithmeticException e) {
+                LOG.debug("Execution of SQL request '{}' with result limit {} - unknwown durations");
+            }
+            LOG.trace("Return {}", json);
             return json;
         }
     }

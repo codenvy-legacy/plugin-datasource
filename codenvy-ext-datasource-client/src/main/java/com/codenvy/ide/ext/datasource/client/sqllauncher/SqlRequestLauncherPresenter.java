@@ -302,18 +302,24 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                 try {
                     final Notification requestNotification = new Notification("Executing SQL request...",
                                                                               Notification.Status.PROGRESS);
+                    final Long startRequestTime = System.currentTimeMillis();
                     AsyncRequestCallback<String> callback = new AsyncRequestCallback<String>(new StringUnmarshaller()) {
 
                         @Override
                         protected void onSuccess(final String result) {
-                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received.");
+                            final Long endRequestTime = System.currentTimeMillis();
+                            final Long requestDuration = endRequestTime - startRequestTime;
+                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received (" + requestDuration + " ms)");
                             requestNotification.setMessage("SQL request execution completed");
                             requestNotification.setStatus(Notification.Status.FINISHED);
                             final RequestResultGroupDTO resultDto = dtoFactory.createDtoFromJson(result,
                                                                                                  RequestResultGroupDTO.class);
-                            Log.info(SqlRequestLauncherPresenter.class, "JSON->dto conversion OK - result :"
-                                                                        + resultDto);
+                            // Log.info(SqlRequestLauncherPresenter.class, "JSON->dto conversion OK - result :" + resultDto);
+                            final Long startDisplayTime = System.currentTimeMillis();
                             updateResultDisplay(resultDto);
+                            final Long endDisplayTime = System.currentTimeMillis();
+                            final Long displayDuration = endDisplayTime - startDisplayTime;
+                            Log.info(SqlRequestLauncherPresenter.class, "Build display for SQL request result(" + displayDuration + " ms)");
                         }
 
                         @Override
