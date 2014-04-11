@@ -46,6 +46,11 @@
             <url>https://maven.codenvycorp.com/content/groups/codenvy-public-group/</url>
         </site>
     </distributionManagement>
+    <scm>
+        <connection>scm:git:git@github.com:codenvy/plugin-datasource.git</connection>
+        <developerConnection>scm:git:git@github.com:codenvy/plugin-datasource.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <properties>
         <codenvy.datasource.version>3.0.0-M14-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M14</codenvy.version>
