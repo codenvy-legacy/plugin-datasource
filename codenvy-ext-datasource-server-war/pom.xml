@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.codenvy.ide</groupId>
         <artifactId>codenvy-ext-datasource-parent</artifactId>
-        <version>3.0.0-M14-SNAPSHOT</version>
+        <version>3.0.0-M15-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-server-war</artifactId>
     <packaging>war</packaging>
