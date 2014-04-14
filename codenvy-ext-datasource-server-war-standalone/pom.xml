@@ -24,10 +24,10 @@
         <artifactId>codenvy-ext-datasource-parent</artifactId>
         <version>3.0.0-M15-SNAPSHOT</version>
     </parent>
-    <artifactId>codenvy-ext-datasource-server-war</artifactId>
+    <artifactId>codenvy-ext-datasource-server-war-standalone</artifactId>
     <packaging>war</packaging>
     <name>Datasource plugin server WAR</name>
-    <description>WAR packaging for the server-side par of the datasource plugin</description>
+    <description>Standalone WAR packaging for the server-side par of the datasource plugin</description>
     <dependencies>
         <dependency>
             <groupId>com.codenvy.ide</groupId>

@@ -30,7 +30,8 @@
         <module>codenvy-ext-datasource-shared</module>
         <module>codenvy-ext-datasource-server</module>
         <module>codenvy-ext-datasource-client</module>
-        <module>codenvy-ext-datasource-server-war</module>
+        <module>codenvy-ext-datasource-server-war-sdk</module>
+        <module>codenvy-ext-datasource-server-war-standalone</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:codenvy/plugin-datasource.git</connection>
