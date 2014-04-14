@@ -23,7 +23,7 @@
         <version>3.0.0-M14</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>3.0.1-M14-SNAPSHOT</version>
+    <version>3.0.0-M14-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
@@ -32,27 +32,13 @@
         <module>codenvy-ext-datasource-client</module>
         <module>codenvy-ext-datasource-server-war</module>
     </modules>
-    <distributionManagement>
-        <repository>
-            <id>repo.codenvy.private</id>
-            <url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>repo.codenvy.private</id>
-            <url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</url>
-        </snapshotRepository>
-        <site>
-            <id>repo.codenvy.private</id>
-            <url>https://maven.codenvycorp.com/content/groups/codenvy-public-group/</url>
-        </site>
-    </distributionManagement>
     <scm>
         <connection>scm:git:git@github.com:codenvy/plugin-datasource.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/plugin-datasource.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <codenvy.datasource.version>3.0.1-M14-SNAPSHOT</codenvy.datasource.version>
+        <codenvy.datasource.version>3.0.0-M14-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M14</codenvy.version>
         <commons.lang.version>3.2.1</commons.lang.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
