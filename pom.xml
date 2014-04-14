@@ -45,6 +45,11 @@
         <opencsv.version>2.3</opencsv.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <schemacrawler.version>10.08.01</schemacrawler.version>
+
+        <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
+        <mysql-driver.version>5.1.29</mysql-driver.version>
+        <jtds-driver.version>1.2</jtds-driver.version>
+        <nuodb-driver.version>2.0.3</nuodb-driver.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -140,6 +145,30 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql-driver.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.jtds</groupId>
+                <artifactId>jtds</artifactId>
+                <version>${jtds-driver.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-driver.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.nuodb.jdbc</groupId>
+                <artifactId>nuodb-jdbc</artifactId>
+                <version>${nuodb-driver.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

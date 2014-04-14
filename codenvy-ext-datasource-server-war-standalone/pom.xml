@@ -75,6 +75,22 @@
             <groupId>com.codenvy.commons</groupId>
             <artifactId>codenvy-commons-inject</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nuodb.jdbc</groupId>
+            <artifactId>nuodb-jdbc</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
