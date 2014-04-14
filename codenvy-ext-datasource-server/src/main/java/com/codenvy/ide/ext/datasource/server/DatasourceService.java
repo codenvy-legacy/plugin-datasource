@@ -153,6 +153,8 @@ public class DatasourceService {
 
         Database database = null;
 
+        final long startTime = System.currentTimeMillis();
+        long endSetupTime;
         try (final Connection connection = getDatabaseConnection(databaseConfig)) {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
             SchemaInfoLevel customized = SchemaInfoLevel.standard();
@@ -164,9 +166,11 @@ public class DatasourceService {
             // RegularExpressionInclusionRule(
             // "PUBLIC.BOOKS"));
 
+            endSetupTime = System.currentTimeMillis();
             final SchemaCrawler schemaCrawler = new SchemaCrawler(connection);
             database = schemaCrawler.crawl(options);
         }
+        final long endCrawlingTime = System.currentTimeMillis();
 
         DatabaseDTO databaseDTO = DtoFactory.getInstance().createDto(DatabaseDTO.class)
                                             .withName(database.getName())
@@ -226,8 +230,21 @@ public class DatasourceService {
             schemaDTO.withTables(tables);
             schemaToInject.put(schemaDTO.getName(), schemaDTO);
         }
+        final long endDtoTime = System.currentTimeMillis();
+        final String jsonResult = DtoFactory.getInstance().toJson(databaseDTO);
+        final long endJsonTime = System.currentTimeMillis();
 
-        return DtoFactory.getInstance().toJson(databaseDTO);
+        try {
+            LOG.debug("Schema metadata obtained - setup {}ms ; crawl {}ms ; dto conversion {}ms ; json conversion {}ms",
+                      LongMath.checkedSubtract(endSetupTime, startTime),
+                      LongMath.checkedSubtract(endCrawlingTime, endSetupTime),
+                      LongMath.checkedSubtract(endDtoTime, endCrawlingTime),
+                      LongMath.checkedSubtract(endJsonTime, endDtoTime));
+        } catch (final ArithmeticException e) {
+            LOG.debug("Schema metadata obtained - no time info");
+        }
+
+        return jsonResult;
     }
 
 
