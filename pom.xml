@@ -40,7 +40,6 @@
     <properties>
         <codenvy.datasource.version>3.0.0-M15-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M15-SNAPSHOT</codenvy.version>
-        <commons.lang.version>3.2.1</commons.lang.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <opencsv.version>2.3</opencsv.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,11 +81,6 @@
                 <groupId>com.google.gwt.inject</groupId>
                 <artifactId>gin</artifactId>
                 <version>${gin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons.lang.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sf.opencsv</groupId>
