@@ -38,7 +38,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <codenvy.datasource.version>3.0.1-M14-SNAPSHOT</codenvy.datasource.version>
+        <codenvy.datasource.version>3.0.0-M14-SNAPSHOT</codenvy.datasource.version>
         <codenvy.version>3.0.0-M14</codenvy.version>
         <commons.lang.version>3.2.1</commons.lang.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
