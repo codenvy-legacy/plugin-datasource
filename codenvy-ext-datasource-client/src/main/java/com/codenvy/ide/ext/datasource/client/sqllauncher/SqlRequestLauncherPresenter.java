@@ -309,17 +309,22 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                         protected void onSuccess(final String result) {
                             final Long endRequestTime = System.currentTimeMillis();
                             final Long requestDuration = endRequestTime - startRequestTime;
-                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received (" + requestDuration + " ms)");
+                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received (" + requestDuration + "ms)");
                             requestNotification.setMessage("SQL request execution completed");
                             requestNotification.setStatus(Notification.Status.FINISHED);
+
+                            final Long startJsonTime = System.currentTimeMillis();
                             final RequestResultGroupDTO resultDto = dtoFactory.createDtoFromJson(result,
                                                                                                  RequestResultGroupDTO.class);
-                            // Log.info(SqlRequestLauncherPresenter.class, "JSON->dto conversion OK - result :" + resultDto);
+                            final Long endJsonTime = System.currentTimeMillis();
+                            final Long jsonDuration = endJsonTime - startJsonTime;
+                            Log.info(SqlRequestLauncherPresenter.class, "Result converted from JSON(" + jsonDuration + "ms)");
+
                             final Long startDisplayTime = System.currentTimeMillis();
                             updateResultDisplay(resultDto);
                             final Long endDisplayTime = System.currentTimeMillis();
                             final Long displayDuration = endDisplayTime - startDisplayTime;
-                            Log.info(SqlRequestLauncherPresenter.class, "Build display for SQL request result(" + displayDuration + " ms)");
+                            Log.info(SqlRequestLauncherPresenter.class, "Build display for SQL request result(" + displayDuration + "ms)");
                         }
 
                         @Override
