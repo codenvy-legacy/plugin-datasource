@@ -53,6 +53,8 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasour
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgentImpl;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesView;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesViewImpl;
+import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
+import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
@@ -119,6 +121,8 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);
 
         bind(AvailableJdbcDriversService.class).to(AvailableJdbcDriversServiceRestImpl.class).in(Singleton.class);
+
+        bind(FetchMetadataService.class).to(FetchMetadataServiceImpl.class).in(Singleton.class);
 
         bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
 
