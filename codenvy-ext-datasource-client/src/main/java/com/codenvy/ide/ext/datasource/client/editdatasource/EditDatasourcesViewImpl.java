@@ -15,6 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.codenvy.ide.ext.datasource.client.common.Pager;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCell;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCellListResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
@@ -74,7 +75,7 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
                                    final DatasourceCellListResources dsListResources,
                                    final DatasourceCell datasourceCell) {
         this.datasourceList = new CellList<>(datasourceCell, dsListResources, keyProvider);
-        this.datasourcePager = new SimplePager();
+        this.datasourcePager = new Pager(false, true);
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
