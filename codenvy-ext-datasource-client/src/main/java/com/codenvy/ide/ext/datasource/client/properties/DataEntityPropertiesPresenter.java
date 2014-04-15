@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionHandler;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedHandler;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
@@ -42,26 +45,31 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate,
                                                                         DatabaseEntitySelectionHandler,
-                                                                        DatabaseInfoReceivedHandler {
+                                                                        DatabaseInfoReceivedHandler,
+                                                                        DatabaseInfoErrorHandler {
 
     /** The view component. */
     private final DataEntityPropertiesView      view;
 
-    private final ListDataProvider<Property>    dataProvider        = new ListDataProvider<Property>(new PropertyKeyProvider());
+    private final ListDataProvider<Property>    dataProvider = new ListDataProvider<Property>(new PropertyKeyProvider());
 
     private final DataEntityPropertiesConstants constants;
 
-    private DatabaseDTO                         currentDatabaseInfo = null;
+    private final DatabaseInfoStore             databaseInfoStore;
+
+    private DatabaseDTO                         currentDatabaseInfo;
 
     @Inject
     public DataEntityPropertiesPresenter(final DataEntityPropertiesView view,
                                          final EventBus eventBus,
-                                         final DataEntityPropertiesConstants constants) {
+                                         final DataEntityPropertiesConstants constants,
+                                         final DatabaseInfoStore databaseInfoStore) {
         super();
         this.view = view;
         this.view.setDelegate(this);
         this.view.bindDataProvider(this.dataProvider);
         this.constants = constants;
+        this.databaseInfoStore = databaseInfoStore;
         eventBus.addHandler(DatabaseEntitySelectionEvent.getType(), this);
         eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
     }
@@ -102,6 +110,11 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         }
     }
 
+    /**
+     * Update the properties table display.
+     * 
+     * @param newSelection the selected object
+     */
     private void updateDisplay(final DatabaseMetadataEntityDTO newSelection) {
         if (newSelection == null) {
             Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
@@ -129,19 +142,36 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         }
     }
 
-    private void setPropertyList(List<Property> properties) {
+    /**
+     * Push the data in the property table.
+     * 
+     * @param properties the properties displayed in the table
+     */
+    private void setPropertyList(final List<Property> properties) {
         this.dataProvider.getList().clear();
         if (properties != null) {
             this.dataProvider.getList().addAll(properties);
         }
     }
 
+    /**
+     * Create the part of the properties to be fidplayed that are common to all database object types.
+     * 
+     * @param entityDTO the database entity object
+     * @return the common properties
+     */
     private List<Property> getCommonProperties(final DatabaseMetadataEntityDTO entityDTO) {
         List<Property> result = new ArrayList<Property>();
         result.add(new Property(constants.objectNameLabel(), entityDTO.getName()));
         return result;
     }
 
+    /**
+     * Build the table data for a database display.
+     * 
+     * @param schemaDTO the database object
+     * @return the table data
+     */
     private List<Property> getPropertiesForDatabase(final DatabaseDTO databaseDTO) {
         List<Property> result = getCommonProperties(databaseDTO);
         result.add(new Property(constants.objectTypeLabel(), constants.objectTypeDatabase()));
@@ -151,12 +181,24 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         return result;
     }
 
+    /**
+     * Build the table data for a schema display.
+     * 
+     * @param schemaDTO the schema object
+     * @return the table data
+     */
     private List<Property> getPropertiesForSchema(final SchemaDTO schemaDTO) {
         List<Property> result = getCommonProperties(schemaDTO);
         result.add(new Property(constants.objectTypeLabel(), constants.objectTypeSchema()));
         return result;
     }
 
+    /**
+     * Build the table data for a table display.
+     * 
+     * @param tableDTO the table object
+     * @return the table data
+     */
     private List<Property> getPropertiesForTable(final TableDTO tableDTO) {
         List<Property> result = getCommonProperties(tableDTO);
         result.add(new Property(constants.objectTypeLabel(), constants.objectTypeTable()));
@@ -188,8 +230,14 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         }
     }
 
-    private List<Property> getPropertiesForColumn(ColumnDTO columnDTO) {
-        List<Property> result = getCommonProperties(columnDTO);
+    /**
+     * Build the table data for a column display.
+     * 
+     * @param columnDTO the column object
+     * @return the table data
+     */
+    private List<Property> getPropertiesForColumn(final ColumnDTO columnDTO) {
+        final List<Property> result = getCommonProperties(columnDTO);
         result.add(new Property(constants.objectTypeLabel(), constants.objectTypeColumn()));
         result.add(new Property(constants.dataTypeLabel(), columnDTO.getColumnDataType()));
         result.add(new Property(constants.columnSizeLabel(), Integer.toString(columnDTO.getDataSize())));
@@ -200,13 +248,19 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     }
 
     @Override
-    public void onDatabaseInfoReceived(DatabaseInfoReceivedEvent event) {
-        this.currentDatabaseInfo = event.getReceivedInfo();
-        if (this.currentDatabaseInfo != null) {
-            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + this.currentDatabaseInfo.getName());
+    public void onDatabaseInfoReceived(final DatabaseInfoReceivedEvent event) {
+        currentDatabaseInfo = this.databaseInfoStore.getDatabaseInfo(event.getDatabaseId());
+        if (currentDatabaseInfo != null) {
+            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + currentDatabaseInfo.getName());
         } else {
             Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : null");
         }
-        updateDisplay(this.currentDatabaseInfo);
+        updateDisplay(currentDatabaseInfo);
+    }
+
+    @Override
+    public void onDatabaseInfoError(final DatabaseInfoErrorEvent event) {
+        // Keep old database info or show an empty tree ?
+        updateDisplay(null);
     }
 }

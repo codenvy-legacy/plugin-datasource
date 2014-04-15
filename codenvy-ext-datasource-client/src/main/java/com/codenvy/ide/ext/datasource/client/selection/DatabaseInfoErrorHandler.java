@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.client.selection;
 
-import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
-import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.event.shared.EventHandler;
 
-@DefaultLocale("en")
-public interface MetadataNotificationConstants extends Messages {
+/**
+ * Handler interface for database info reception error events.
+ * 
+ * @author "Mickaël Leduque"
+ */
+public interface DatabaseInfoErrorHandler extends EventHandler {
 
-    @DefaultMessage("Fetching database metadata...")
-    String notificationFetchStart();
-
-    @DefaultMessage("Succesfully fetched database metadata")
-    String notificationFetchSuccess();
-
-    @DefaultMessage("Failed fetching database metadata")
-    String notificationFetchFailure();
+    /**
+     * Called when {@link DatabaseInfoErrorEvent} is fired.
+     * 
+     * @param event the {@link DatabaseInfoErrorEvent} that was fired
+     */
+    void onDatabaseInfoError(DatabaseInfoErrorEvent event);
 }

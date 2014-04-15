@@ -19,28 +19,23 @@ import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.ide.api.notification.Notification;
-import com.codenvy.ide.api.notification.Notification.Type;
-import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.selection.Selection;
-import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
-import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
+import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedHandler;
+import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
-import com.codenvy.ide.rest.AsyncRequestCallback;
-import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
@@ -56,17 +51,19 @@ import com.google.web.bindery.event.shared.EventBus;
 public class DatasourceExplorerPartPresenter extends BasePresenter implements
                                                                   DatasourceExplorerView.ActionDelegate,
                                                                   DatasourceExplorerPart,
-                                                                  DatasourceListChangeHandler {
+                                                                  DatasourceListChangeHandler,
+                                                                  DatabaseInfoReceivedHandler,
+                                                                  DatabaseInfoErrorHandler {
     private final DatasourceExplorerView        view;
     private final EventBus                      eventBus;
-    private final DatasourceClientService       service;
-    private final DtoFactory                    dtoFactory;
-    private final NotificationManager           notificationManager;
+    private final FetchMetadataService          service;
     private final DatasourceManager             datasourceManager;
     private final DataEntityPropertiesPresenter propertiesPresenter;
     private final DatasourceExplorerConstants   constants;
-    private final MetadataNotificationConstants notificationConstants;
     private final DatabaseInfoStore             databaseInfoStore;
+
+    /** The currently selected datasource. */
+    private String                              selectedDatasource;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -80,23 +77,17 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     @Inject
     public DatasourceExplorerPartPresenter(@NotNull final DatasourceExplorerView view,
                                            @NotNull final EventBus eventBus,
-                                           @NotNull final DatasourceClientService service,
-                                           @NotNull final DtoFactory dtoFactory,
-                                           @NotNull final NotificationManager notificationManager,
+                                           @NotNull final FetchMetadataService service,
                                            @NotNull final DatasourceManager datasourceManager,
                                            @NotNull final DataEntityPropertiesPresenter propertiesPresenter,
                                            @NotNull final DatasourceExplorerConstants constants,
-                                           @NotNull final MetadataNotificationConstants notificationConstants,
                                            @NotNull final DatabaseInfoStore databaseInfoStore) {
         this.view = view;
         this.eventBus = eventBus;
         this.service = service;
-        this.dtoFactory = dtoFactory;
-        this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
         this.propertiesPresenter = propertiesPresenter;
         this.constants = constants;
-        this.notificationConstants = notificationConstants;
         this.databaseInfoStore = databaseInfoStore;
 
         this.view.setTitle(constants.datasourceExplorerPartTitle());
@@ -104,6 +95,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
         // register for datasource creation events
         this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
+        // register for datasource metadata ready events
+        this.eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
     }
 
     /** {@inheritDoc} */
@@ -163,59 +156,28 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     }
 
     protected void loadDatasource(final String datasourceId) {
-        try {
-            DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
-            if (datasourceId == null || datasourceId.isEmpty()) {
-                view.setItems(null);
-                eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
-                return;
-            }
-
-            final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
-                                                                            Notification.Status.PROGRESS);
-            notificationManager.showNotification(fetchDatabaseNotification);
-            service.fetchDatabaseInfo(datasourceObject,
-                                      new AsyncRequestCallback<String>(new StringUnmarshaller()) {
-                                          @Override
-                                          protected void onSuccess(String result) {
-                                              DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                                                  DatabaseDTO.class);
-                                              fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
-                                              fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                              view.setItems(database);
-                                              eventBus.fireEvent(new DatabaseInfoReceivedEvent(database));
-                                              databaseInfoStore.setDatabaseInfo(datasourceId, database);
-                                          }
-
-                                          @Override
-                                          protected void onFailure(Throwable exception) {
-                                              fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                              notificationManager.showNotification(new Notification(
-                                                                                                    notificationConstants.notificationFetchFailure(),
-                                                                                                    Type.ERROR));
-                                              // clean up current database
-                                              eventBus.fireEvent(new DatabaseInfoReceivedEvent(null));
-                                          }
-                                      }
-
-                   );
-        } catch (RequestException e) {
-            Log.error(DatasourceExplorerPartPresenter.class,
-                      "Exception on database info fetch : " + e.getMessage());
-            notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
-                                                                  Type.ERROR));
+        DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
+        if (datasourceId == null || datasourceId.isEmpty()) {
+            view.setItems(null);
+            return;
         }
+
+        service.fetchDatabaseInfo(datasourceObject);
     }
 
     @Override
-    public void onSelectedDatasourceChanged(String datasourceId) {
+    public void onSelectedDatasourceChanged(final String datasourceId) {
+        this.selectedDatasource = datasourceId;
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
         if (dsMeta != null) {
             view.setItems(dsMeta);
-            eventBus.fireEvent(new DatabaseInfoReceivedEvent(dsMeta));
             return;
         }
         loadDatasource(datasourceId);
+
+        // After selection, the datasource is selected
+        final DatabaseDTO datasource = this.databaseInfoStore.getDatabaseInfo(this.selectedDatasource);
+        eventBus.fireEvent(new DatabaseEntitySelectionEvent(datasource));
     }
 
     @Override
@@ -229,5 +191,21 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     private void setupDatasourceList() {
         Collection<String> datasourceIds = this.datasourceManager.getNames();
         this.view.setDatasourceList(datasourceIds);
+    }
+
+    @Override
+    public void onDatabaseInfoReceived(final DatabaseInfoReceivedEvent event) {
+        if (this.selectedDatasource != null && this.selectedDatasource.equals(event.getDatabaseId())) {
+            final DatabaseDTO datasource = this.databaseInfoStore.getDatabaseInfo(this.selectedDatasource);
+            this.view.setItems(datasource);
+        }
+    }
+
+    @Override
+    public void onDatabaseInfoError(final DatabaseInfoErrorEvent event) {
+        if (this.selectedDatasource != null && this.selectedDatasource.equals(event.getDatabaseId())) {
+            this.view.setItems(null);
+        }
+
     }
 }
