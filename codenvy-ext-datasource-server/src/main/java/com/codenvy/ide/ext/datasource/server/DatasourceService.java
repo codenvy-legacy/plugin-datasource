@@ -235,11 +235,12 @@ public class DatasourceService {
         final long endJsonTime = System.currentTimeMillis();
 
         try {
-            LOG.debug("Schema metadata obtained - setup {}ms ; crawl {}ms ; dto conversion {}ms ; json conversion {}ms",
+            LOG.debug("Schema metadata obtained - setup {}ms ; crawl {}ms ; dto conversion {}ms ; json conversion {}ms - total {}ms",
                       LongMath.checkedSubtract(endSetupTime, startTime),
                       LongMath.checkedSubtract(endCrawlingTime, endSetupTime),
                       LongMath.checkedSubtract(endDtoTime, endCrawlingTime),
-                      LongMath.checkedSubtract(endJsonTime, endDtoTime));
+                      LongMath.checkedSubtract(endJsonTime, endDtoTime),
+                      LongMath.checkedSubtract(endJsonTime, startTime));
         } catch (final ArithmeticException e) {
             LOG.debug("Schema metadata obtained - no time info");
         }
