@@ -33,6 +33,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
+import com.codenvy.ide.ext.datasource.client.common.Pager;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
@@ -59,6 +60,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
@@ -70,6 +72,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                                                                  SqlRequestLauncherView.ActionDelegate,
                                                                                                  DatasourceListChangeHandler,
                                                                                                  RequestResultDelegate {
+
+    private static final int                          DEFAULT_RESULT_PAGE_SIZE             = 100;
 
     /** Preference property name for default result limit. */
     private static final String                       PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
@@ -418,7 +422,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendSelectResult(final RequestResultDTO result) {
 
-        final CellTable<List<String>> resultTable = new CellTable<List<String>>(result.getResultLines().size(), cellTableResources);
+        final CellTable<List<String>> resultTable = new CellTable<List<String>>(DEFAULT_RESULT_PAGE_SIZE, cellTableResources);
 
         final RequestResultHeader infoHeader = buildResultHeader(result, constants.exportCsvLabel());
 
@@ -441,8 +445,20 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         });
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
-        this.view.appendResult(infoHeader, resultTable);
 
+        final FlowPanel tablePanel = new FlowPanel();
+
+        Pager topPager = new Pager(false, true);
+        topPager.setDisplay(resultTable);
+        tablePanel.add(topPager);
+
+        tablePanel.add(resultTable);
+
+        Pager bottomPager = new Pager(false, true);
+        bottomPager.setDisplay(resultTable);
+        tablePanel.add(bottomPager);
+
+        this.view.appendResult(infoHeader, tablePanel);
     }
 
     /**
