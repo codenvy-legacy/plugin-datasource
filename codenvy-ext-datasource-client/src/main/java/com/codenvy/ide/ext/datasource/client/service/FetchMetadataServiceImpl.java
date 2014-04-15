@@ -54,7 +54,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
                 @Override
                 protected void onSuccess(final String result) {
-                    Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch success");
+                    Log.info(DatasourceClientServiceImpl.class, "Database metadata fetch success");
                     DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                         DatabaseDTO.class);
                     fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
