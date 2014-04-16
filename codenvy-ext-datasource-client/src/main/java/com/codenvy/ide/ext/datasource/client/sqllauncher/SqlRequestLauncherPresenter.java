@@ -60,7 +60,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
@@ -410,9 +409,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendErrorReport(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = buildErrorHeader(result.getOriginRequest());
-        this.view.appendResult(infoHeader, new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
-                                                     + " - "
-                                                     + result.getSqlExecutionError().getErrorMessage()));
+        this.view.appendHeader(infoHeader);
+        this.view.appendResult(new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
+                                         + " - "
+                                         + result.getSqlExecutionError().getErrorMessage()));
     }
 
     /**
@@ -446,19 +446,18 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
 
-        final FlowPanel tablePanel = new FlowPanel();
+        this.view.appendHeader(infoHeader);
 
         Pager topPager = new Pager(false, true);
         topPager.setDisplay(resultTable);
-        tablePanel.add(topPager);
+        this.view.appendResult(topPager);
 
-        tablePanel.add(resultTable);
+        this.view.appendResult(resultTable);
 
         Pager bottomPager = new Pager(false, true);
         bottomPager.setDisplay(resultTable);
-        tablePanel.add(bottomPager);
+        this.view.appendResult(bottomPager);
 
-        this.view.appendResult(infoHeader, tablePanel);
     }
 
     /**
@@ -468,7 +467,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendUpdateResult(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = buildResultHeader(result, null);
-        this.view.appendResult(infoHeader, new Label(this.constants.updateCountMessage(result.getUpdateCount())));
+        this.view.appendHeader(infoHeader);
+        this.view.appendResult(new Label(this.constants.updateCountMessage(result.getUpdateCount())));
     }
 
     /**
