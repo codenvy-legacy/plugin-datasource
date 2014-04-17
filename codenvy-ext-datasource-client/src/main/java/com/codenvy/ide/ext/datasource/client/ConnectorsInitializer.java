@@ -135,7 +135,7 @@ public class ConnectorsInitializer {
                                                                             connectorCounter,
                                                                             "GoogleCloudSQL",
                                                                             resources.getGoogleCloudSQLLogo(),
-                                                                            "com.mysql.jdbc.Driver",
+                                                                            "com.mysql.jdbc.GoogleDriver",
                                                                             googleCloudSQLWizardPages,
                                                                             CLOUD);
         this.connectors.add(connectorGoogle);

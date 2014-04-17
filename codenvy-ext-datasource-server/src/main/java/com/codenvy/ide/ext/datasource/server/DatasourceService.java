@@ -121,6 +121,13 @@ public class DatasourceService {
             LOG.debug("NuoDB driver not present");
             LOG.trace("NuoDB driver not present", e);
         }
+        try {
+            Class.forName("com.mysql.jdbc.GoogleDriver");
+        } catch (ClassNotFoundException e) {
+            LOG.debug("Google Cloud SQL driver not present");
+            LOG.trace("Google Cloud SQL driver not present", e);
+        }
+
     }
 
     @Inject
@@ -140,6 +147,8 @@ public class DatasourceService {
             Driver driver = loadedDrivers.nextElement();
             drivers.add(driver.getClass().getCanonicalName());
         }
+        // hack ?
+        drivers.add("com.mysql.jdbc.GoogleDriver");
         final DriversDTO driversDTO = DtoFactory.getInstance().createDto(DriversDTO.class).withDrivers(drivers);
         final String msg = DtoFactory.getInstance().toJson(driversDTO);
         LOG.debug(msg);

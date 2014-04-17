@@ -15,36 +15,113 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.cloud.sql;
 
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
-import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
+import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-/**
- * Created by Wafa on 26/03/14.
- */
-public class GoogleCloudSqlConnectorPage  extends DefaultNewDatasourceConnectorPage {
-
+public class GoogleCloudSqlConnectorPage extends AbstractNewDatasourceConnectorPage implements InitializableWizardPage {
+    
     public static final String GOOGLECLOUDSQL_DB_ID        = "googleCloudSql";
-    private static final int   DEFAULT_PORT_MYSQL = 3306;
+    
+    private final DatabaseType databaseType;
+    private final DtoFactory   dtoFactory;
 
+    
     @Inject
-    public GoogleCloudSqlConnectorPage (final DefaultNewDatasourceConnectorView view,
-                                        final NotificationManager notificationManager,
-                                        final DtoFactory dtoFactory,
-                                        final DatasourceManager datasourceManager,
-                                        final EventBus eventBus,
-                                        final DatasourceClientService service,
-                                        final DatasourceUiResources resources,
-                                        final NewDatasourceWizardMessages messages) {
-        super(view, "googleCloudSql", resources.getGoogleCloudSQLLogo(), GOOGLECLOUDSQL_DB_ID, datasourceManager, eventBus, service,
-                notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.GOOGLECLOUDSQL);
+    public GoogleCloudSqlConnectorPage(@Nullable final GoogleCloudSqlConnectorView view,
+                                             @NotNull final DatasourceManager datasourceManager,
+                                             @NotNull final EventBus eventBus,
+                                             @NotNull final DatasourceClientService service,
+                                             @NotNull final NotificationManager notificationManager,
+                                             @NotNull final DtoFactory dtoFactory,
+                                             @NotNull final NewDatasourceWizardMessages messages,
+                                             final DatasourceUiResources resources) {
+        super(view,  "Google Cloud SQL", resources.getGoogleCloudSQLLogo(), GOOGLECLOUDSQL_DB_ID, datasourceManager, eventBus, service, notificationManager, dtoFactory, messages);
+        this.databaseType = DatabaseType.GOOGLECLOUDSQL;
+        this.dtoFactory = dtoFactory;
+    }
+
+    @Override
+    public void go(final AcceptsOneWidget container) {
+        container.setWidget(getView());
+    }
+
+    public GoogleCloudSqlConnectorView getView() {
+        return (GoogleCloudSqlConnectorView)super.getView();
+    }
+
+    /**
+     * Returns the currently configured database.
+     * 
+     * @return the database
+     */
+    protected DatabaseConfigurationDTO getConfiguredDatabase() {
+        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
+        DatabaseConfigurationDTO result = dtoFactory.createDto(DefaultDatasourceDefinitionDTO.class)
+                                                    .withDatabaseName(getView().getDatabaseName())
+                                                    .withDatabaseType(getDatabaseType())
+                                                    .withDatasourceId(datasourceId)
+                                                    .withInstanceName(getView().getInstanceName())
+                                                    .withUseSSL(getView().getUseSSL())
+                                                    .withVerifyServerCertificate(getView().getVerifyServerCertificate());
+
+        result.withUsername(getView().getUsername())
+              .withPassword(getView().getPassword());
+
+        result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
+        return result;
+    }
+
+    @Override
+    public Integer getDefaultPort() {
+        // don't use it in google cloud sql
+        return null;
+    }
+    
+    public DatabaseType getDatabaseType() {
+        return this.databaseType;
+    }
+
+    @Override
+    public void initPage(final Object data) {
+        // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
+        if (!(data instanceof DatabaseConfigurationDTO)) {
+            clearPage();
+            return;
+        }
+        DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
+        getView().setDatabaseName(initData.getDatabaseName());
+        getView().setInstanceName(initData.getInstanceName());
+        getView().setUseSSL(initData.getUseSSL());
+        getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
+        getView().setUsername(initData.getUsername());
+        getView().setPassword(initData.getPassword());
+        delegate.updateControls();
+    }
+
+    @Override
+    public void clearPage() {
+        getView().setDatabaseName("");
+        getView().setInstanceName("");
+        getView().setUseSSL(false);
+        getView().setVerifyServerCertificate(false);
+        getView().setUsername("");
+        getView().setPassword("");
+        delegate.updateControls();
     }
 }

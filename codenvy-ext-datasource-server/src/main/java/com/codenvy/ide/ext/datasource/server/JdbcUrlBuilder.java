@@ -25,6 +25,7 @@ public class JdbcUrlBuilder {
 
     private static final String URL_TEMPLATE_POSTGRES          = "jdbc:postgresql://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_MYSQL             = "jdbc:mysql://{0}:{1}/{2}";
+    private static final String URL_TEMPLATE_GOOGLECLOUD       = "jdbc:google:mysql://{0}/{1}";
     private static final String URL_TEMPLATE_ORACLE            = "jdbc:oracle:thin:@{0}:{1}:{2}";
     private static final String URL_TEMPLATE_JTDS              = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
     private static final String URL_TEMPLATE_NUODB             = "jdbc:com.nuodb://{0}/{1}";
@@ -46,13 +47,18 @@ public class JdbcUrlBuilder {
             case NUODB:
                 return getNuoDBJdbcUrl(configuration);
             case GOOGLECLOUDSQL:
-                return getMySQLJdbcUrl(configuration);
+                return getGoogleCloudSqlUrl(configuration);
             default:
                 throw new DatabaseDefinitionException("Unknown database type "
                                                       + configuration.getDatabaseType()
                                                       + " in "
                                                       + configuration.toString());
         }
+    }
+
+    private String getGoogleCloudSqlUrl(DatabaseConfigurationDTO configuration) {
+        String url = MessageFormat.format(URL_TEMPLATE_GOOGLECLOUD, configuration.getInstanceName(), configuration.getDatabaseName());
+        return url;
     }
 
     private String getPostgresJdbcUrl(final DatabaseConfigurationDTO configuration) {

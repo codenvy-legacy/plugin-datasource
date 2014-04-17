@@ -92,4 +92,13 @@ public interface DatabaseConfigurationDTO {
     DatabaseConfigurationDTO withVerifyServerCertificate(boolean verifyServerCertificate);
 
     void setVerifyServerCertificate(boolean verifyServerCertificate);
+
+    /**
+     * Get the instance name. Used for google cloud sql for instance
+     */
+    String getInstanceName();
+
+    void setInstanceName(String instanceName);
+
+    DatabaseConfigurationDTO withInstanceName(String instanceName);
 }
