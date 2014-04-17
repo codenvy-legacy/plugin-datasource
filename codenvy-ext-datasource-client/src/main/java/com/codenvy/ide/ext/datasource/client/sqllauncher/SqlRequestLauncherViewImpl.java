@@ -148,7 +148,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
     @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
-        if (datasourceIds.isEmpty()) {
+        if (datasourceIds == null || datasourceIds.isEmpty()) {
             this.datasourceList.clear();
             getDelegate().datasourceChanged(null);
             return;
@@ -162,15 +162,14 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         }
 
         this.datasourceList.clear();
-        if (datasourceIds != null) {
-            if (datasourceIds.size() > 1) {
-                // add an empty item
-                this.datasourceList.addItem("", "");
-            }
-            for (String datasourceId : datasourceIds) {
-                this.datasourceList.addItem(datasourceId);
-            }
+        if (datasourceIds.size() > 1) {
+            // add an empty item
+            this.datasourceList.addItem("", "");
         }
+        for (String datasourceId : datasourceIds) {
+            this.datasourceList.addItem(datasourceId);
+        }
+
 
         // restore selected value if needed
         if (index != -1) {

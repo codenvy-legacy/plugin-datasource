@@ -15,7 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import elemental.events.MouseEvent;
+import java.util.Collection;
 
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import java.util.Collection;
+import elemental.events.MouseEvent;
 
 /**
  * The datasource explorer view component.
@@ -101,7 +101,7 @@ public class DatasourceExplorerViewImpl extends
 
     @Override
     public void setDatasourceList(final Collection<String> datasourceIds) {
-        if (datasourceIds.isEmpty()) {
+        if (datasourceIds == null || datasourceIds.isEmpty()) {
             this.datasourceListBox.clear();
             delegate.onSelectedDatasourceChanged(null);
             return;
@@ -115,15 +115,14 @@ public class DatasourceExplorerViewImpl extends
         }
 
         this.datasourceListBox.clear();
-        if (datasourceIds != null) {
-            if (datasourceIds.size() > 1) {
-                // add an empty item
-                this.datasourceListBox.addItem("", "");
-            }
-            for (String datasourceId : datasourceIds) {
-                this.datasourceListBox.addItem(datasourceId);
-            }
+        if (datasourceIds.size() > 1) {
+            // add an empty item
+            this.datasourceListBox.addItem("", "");
         }
+        for (String datasourceId : datasourceIds) {
+            this.datasourceListBox.addItem(datasourceId);
+        }
+
 
         // restore selected value if needed
         if (index != -1) {
