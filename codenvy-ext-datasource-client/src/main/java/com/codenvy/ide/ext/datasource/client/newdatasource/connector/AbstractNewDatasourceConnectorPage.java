@@ -56,7 +56,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     private final DtoFactory                         dtoFactory;
     private final NewDatasourceWizardMessages        messages;
 
-    public AbstractNewDatasourceConnectorPage(@Nullable final AbstractNewDatasourceConnectorView view,
+    public AbstractNewDatasourceConnectorPage(@NotNull final AbstractNewDatasourceConnectorView view,
                                               @Nullable final String caption,
                                               @Nullable final ImageResource image,
                                               @NotNull final String datasourceId,
