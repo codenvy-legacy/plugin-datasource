@@ -17,6 +17,8 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 
 import java.util.Collection;
 
+import org.vectomatic.dom.svg.ui.SVGPushButton;
+
 import com.codenvy.ide.api.parts.base.BaseView;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
@@ -31,10 +33,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -66,9 +66,9 @@ public class DatasourceExplorerViewImpl extends
     @UiField
     protected SimplePanel           propertiesContainer;
 
-    /** the button to refresh the datasource metadata. */
+    /** The button to refresh the datasource metadata. */
     @UiField
-    protected PushButton            refreshButton;
+    protected SVGPushButton         refreshButton;
 
     /** The CSS resource. */
     @UiField(provided = true)
@@ -93,7 +93,6 @@ public class DatasourceExplorerViewImpl extends
 
         uiBinder.createAndBindUi(this);
 
-        this.refreshButton.getUpFace().setImage(new Image(clientResource.getRefreshIcon()));
         this.refreshButton.setTitle(constants.exploreButtonTooltip());
 
         container.add(mainContainer);

@@ -15,6 +15,8 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
+import org.vectomatic.dom.svg.ui.SVGResource;
+
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -59,8 +61,8 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("aws_sqlserver.png")
     ImageResource getAwsSqlServerLogo();
 
-    @Source("refresh.png")
-    ImageResource getRefreshIcon();
+    @Source("refresh.svg")
+    SVGResource getRefreshIcon();
 
     @Source({"datasource-ui.css", "com/codenvy/ide/api/ui/style.css"})
     DatasourceUiStyle datasourceUiCSS();
@@ -78,6 +80,18 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("explorer-refreshButton")
         String explorerRefreshButton();
+
+        @ClassName("explorer-refreshButton-up")
+        String explorerRefreshButtonUp();
+
+        @ClassName("explorer-refreshButton-up-hover")
+        String explorerRefreshButtonUpHover();
+
+        @ClassName("explorer-refreshButton-down")
+        String explorerRefreshButtonDown();
+
+        @ClassName("explorer-refreshButton-down-hover")
+        String explorerRefreshButtonDownHover();
 
         @ClassName("requestLauncher-editorBar")
         String requestLauncherEditorBar();

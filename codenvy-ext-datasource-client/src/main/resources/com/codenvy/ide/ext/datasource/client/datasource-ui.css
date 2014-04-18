@@ -31,12 +31,24 @@
 }
 
 .explorer-refreshButton {
-    width: 16px; /* keep px units, it comes from the image sizes */
-    height: 16px;
+    width: 23px;
+    height: 23px;
     margin-top: 5px;
     margin-right: 0;
     margin-bottom: 5px;
     margin-left: 5px;
+}
+
+.explorer-refreshButton-up {
+}
+
+.explorer-refreshButton-down {
+}
+
+.explorer-refreshButton-up-hover {
+}
+
+.explorer-refreshButton-down-hover {
 }
 
 .explorer-topPanel {
