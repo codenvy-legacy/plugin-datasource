@@ -38,7 +38,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
     private final DatabaseType databaseType;
     private final DtoFactory   dtoFactory;
 
-    public DefaultNewDatasourceConnectorPage(@Nullable final DefaultNewDatasourceConnectorView view,
+    public DefaultNewDatasourceConnectorPage(@NotNull final DefaultNewDatasourceConnectorView view,
                                              @Nullable final String caption,
                                              @Nullable final ImageResource image,
                                              @NotNull final String datasourceId,
