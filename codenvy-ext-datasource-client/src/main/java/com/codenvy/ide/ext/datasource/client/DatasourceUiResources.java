@@ -130,6 +130,9 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("propertiesTable-firstColumn")
         String propertiesTableFirstColumn();
 
+        @ClassName("propertiesPanel-background")
+        String propertiesPanelBackground();
+
         @ClassName("editDatasourceList-datasourceTypeStyle")
         String datasourceTypeStyle();
 

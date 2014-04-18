@@ -44,11 +44,15 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
     @UiField(provided = true)
     CellTable<Property>    propertiesDisplay;
 
+    @UiField(provided = true)
+    DatasourceUiResources  datasourceUiResources;
+
     @Inject
     public DataEntityPropertiesViewImpl(final DataEntityPropertiesViewUiBinder uiBinder,
                                         final CellTableResourcesProperties cellTableResources,
                                         final DatasourceUiResources datasourceUiResources) {
         this.propertiesDisplay = new CellTable<Property>(15, cellTableResources);
+        this.datasourceUiResources = datasourceUiResources;
         propertiesDisplay.addColumn(new TextColumn<Property>() {
 
             @Override

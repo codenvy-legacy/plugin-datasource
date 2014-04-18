@@ -170,6 +170,9 @@
   color: #888888;
 }
 
+.propertiesPanel-background {
+  background-color: cellEvenRow;
+}
 
 .editDatasourceList-datasourceTypeStyle {
   overflow: hidden;
