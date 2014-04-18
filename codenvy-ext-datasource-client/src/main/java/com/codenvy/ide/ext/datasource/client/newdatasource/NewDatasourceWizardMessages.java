@@ -19,8 +19,17 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface NewDatasourceWizardMessages extends Messages {
 
+    @DefaultMessage("New Datasource Connection")
+    String newDatasourceMenuText();
+
+    @DefaultMessage("Create a new datasource connection")
+    String newDatasourceMenuDescription();
+
     @DefaultMessage("New Datasource")
     String wizardTitle();
+
+    @DefaultMessage("An error occured while creating the datasource connection")
+    String defaultNewDatasourceWizardErrorMessage();
 
     @DefaultMessage("Establishing Database Connection...")
     String startConnectionTest();

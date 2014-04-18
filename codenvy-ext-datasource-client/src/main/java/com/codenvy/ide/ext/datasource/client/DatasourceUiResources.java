@@ -64,6 +64,12 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("refresh.svg")
     SVGResource getRefreshIcon();
 
+    @Source("NewDatasource.svg")
+    SVGResource newDatasourceMenuIcon();
+
+    @Source("ManageDatasource.svg")
+    SVGResource manageDatasourceMenuIcon();
+
     @Source({"datasource-ui.css", "com/codenvy/ide/api/ui/style.css"})
     DatasourceUiStyle datasourceUiCSS();
 
