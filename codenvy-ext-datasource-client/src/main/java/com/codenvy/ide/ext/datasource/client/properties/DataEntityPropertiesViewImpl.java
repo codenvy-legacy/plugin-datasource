@@ -23,7 +23,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.inject.Inject;
@@ -37,9 +36,6 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     /** The action delegate for the view. */
     private ActionDelegate delegate;
-
-    @UiField
-    Panel                  mainContainer;
 
     @UiField(provided = true)
     CellTable<Property>    propertiesDisplay;
@@ -87,7 +83,7 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
 
     @Override
     public void setShown(final boolean shown) {
-        this.mainContainer.setVisible(shown);
+        this.propertiesDisplay.setVisible(shown);
     }
 
     /**

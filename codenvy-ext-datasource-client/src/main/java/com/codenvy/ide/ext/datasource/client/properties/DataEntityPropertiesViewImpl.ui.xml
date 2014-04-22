@@ -22,9 +22,7 @@
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
 
     <g:HTMLPanel addStyleNames="{datasourceUiResources.datasourceUiCSS.propertiesPanelBackground}">
-        <g:HTMLPanel ui:field="mainContainer">
-            <c:CellTable ui:field="propertiesDisplay" />
-        </g:HTMLPanel>
+        <c:CellTable ui:field="propertiesDisplay" />
     </g:HTMLPanel>
 
 </ui:UiBinder>
