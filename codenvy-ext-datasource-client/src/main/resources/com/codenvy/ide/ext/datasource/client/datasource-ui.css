@@ -76,6 +76,8 @@
     margin-right: 2px;
     padding-left: 7px;
     padding-right: 7px;
+    padding-top: 0;
+    padding-bottom: 0;
     float: right;
 }
 .requestLauncher-executionModeListBox {
@@ -91,6 +93,9 @@
     margin-bottom: 5px;
     text-align: right;
     float: right;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box; /* to stay cohesive with the listbox */
 }
 .requestLauncher-resultLimitInput {
 }
