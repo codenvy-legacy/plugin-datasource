@@ -87,6 +87,9 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("explorer-refreshButton")
         String explorerRefreshButton();
 
+        @ClassName("explorer-refreshButton-image")
+        String explorerRefreshButtonImage();
+
         @ClassName("explorer-refreshButton-up")
         String explorerRefreshButtonUp();
 
