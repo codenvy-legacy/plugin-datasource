@@ -99,7 +99,7 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
             } else {
                 btn = new ToggleButton();
             }
-            btn.setSize("48px", "48px");
+            btn.setSize("97px", "97px");
             btn.ensureDebugId("datasource-wizard-ds-type-"+ connector.getId());
 
             btn.addClickHandler(new ClickHandler() {

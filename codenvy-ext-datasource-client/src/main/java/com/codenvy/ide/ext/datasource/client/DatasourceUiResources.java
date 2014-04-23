@@ -31,34 +31,34 @@ public interface DatasourceUiResources extends ClientBundle {
      * 
      * @return an image resource for the PostGreSQL logo.
      */
-    @Source("PostgreSQL.png")
+    @Source("postgresql.png")
     ImageResource getPostgreSqlLogo();
 
-    @Source("mySQL.png")
+    @Source("mysql.png")
     ImageResource getMySqlLogo();
 
-    @Source("sqlServer.png")
+    @Source("sqlserver.png")
     ImageResource getSqlServerLogo();
 
     @Source("oracle.png")
     ImageResource getOracleLogo();
 
-    @Source("NuoDB.png")
+    @Source("nuodb.png")
     ImageResource getNuoDBLogo();
 
-    @Source("GoogleCloudSQL.png")
+    @Source("google.png")
     ImageResource getGoogleCloudSQLLogo();
 
-    @Source("aws_postgres.png")
+    @Source("aws-postgresql.png")
     ImageResource getAwsPostgresLogo();
 
-    @Source("aws_mysql.png")
+    @Source("aws-mysql.png")
     ImageResource getAwsMysqlLogo();
 
-    @Source("aws_oracle.png")
+    @Source("aws-oracle.png")
     ImageResource getAwsOracleLogo();
 
-    @Source("aws_sqlserver.png")
+    @Source("aws-sqlserver.png")
     ImageResource getAwsSqlServerLogo();
 
     @Source("refresh.svg")
