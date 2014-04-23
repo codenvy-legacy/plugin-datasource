@@ -61,7 +61,7 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     @Override
     public Image getImage() {
         Image image = new Image();
-        image.setResource(invocationContext.getResources().sqlFile());
+        image.setResource(invocationContext.getResources().sqlCompletionIcon());
         return image;
     }
 
@@ -131,6 +131,7 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     public void setCursorPosition(int cursorPosition) {
         this.cursorPosition = cursorPosition;
     }
+
     public void setSelectionLength(int selectionLength) {
         this.selectionLength = selectionLength;
     }
