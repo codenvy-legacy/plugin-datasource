@@ -15,7 +15,10 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
+import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.google.inject.ImplementedBy;
+
+import java.util.Collection;
 
 /**
  * The view of datasource wizard connectors.
@@ -49,4 +52,6 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
     void setUsername(String username);
 
     void setPassword(String password);
+
+    void setProjectList(Collection<String> projectIds);
 }
