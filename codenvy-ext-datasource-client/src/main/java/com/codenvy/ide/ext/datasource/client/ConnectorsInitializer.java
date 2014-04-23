@@ -133,7 +133,7 @@ public class ConnectorsInitializer {
         googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
         NewDatasourceConnector connectorGoogle = new NewDatasourceConnector(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID,
                                                                             connectorCounter,
-                                                                            "GoogleCloudSQL",
+                                                                            "Google Cloud SQL",
                                                                             resources.getGoogleCloudSQLLogo(),
                                                                             "com.mysql.jdbc.Driver",
                                                                             googleCloudSQLWizardPages,
@@ -147,7 +147,7 @@ public class ConnectorsInitializer {
         awsPostgresWizardPages.add(awsPostgresConnectorPageProvider);
         NewDatasourceConnector connectorAwsPostg = new NewDatasourceConnector(AwsPostgresConnectorPage.AWSPOSTGRES_DB_ID,
                                                                               connectorCounter,
-                                                                              "Aws/Postgres",
+                                                                              "Amazon RDS \n Postgres",
                                                                               resources.getAwsPostgresLogo(),
                                                                               "org.postgresql.Driver",
                                                                               awsPostgresWizardPages,
@@ -161,7 +161,7 @@ public class ConnectorsInitializer {
         awsMysqlWizardPages.add(awsMysqlConnectorPageProvider);
         NewDatasourceConnector connectorAwsMySql = new NewDatasourceConnector(AwsMysqlConnectorPage.AWSMYSQL_DB_ID,
                                                                               connectorCounter,
-                                                                              "Aws/Mysql",
+                                                                              "Amazon RDS \n Mysql",
                                                                               resources.getAwsMysqlLogo(),
                                                                               "com.mysql.jdbc.Driver",
                                                                               awsMysqlWizardPages,
@@ -175,7 +175,7 @@ public class ConnectorsInitializer {
         awsOracleWizardPages.add(awsOracleConnectorPageProvider);
         NewDatasourceConnector connectorAwsOracle = new NewDatasourceConnector(AwsOracleConnectorPage.AWSORACLE_DB_ID,
                                                                                connectorCounter,
-                                                                               "Aws/Oracle",
+                                                                               "Amazon RDS \n Oracle",
                                                                                resources.getAwsOracleLogo(),
                                                                                "oracle.jdbc.OracleDriver",
                                                                                awsOracleWizardPages,
@@ -189,7 +189,7 @@ public class ConnectorsInitializer {
         awsSqlServerWizardPages.add(awsSqlServerConnectorPageProvider);
         NewDatasourceConnector connectorAwsMs = new NewDatasourceConnector(AwsSqlServerConnectorPage.AWSSQLSERVER_DB_ID,
                                                                            connectorCounter,
-                                                                           "Aws/SqlServer",
+                                                                           "Amazon RDS \n SqlServer",
                                                                            resources.getAwsSqlServerLogo(),
                                                                            "net.sourceforge.jtds.jdbc.Driver",
                                                                            awsSqlServerWizardPages,
