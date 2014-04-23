@@ -39,8 +39,6 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
 
     void appendResult(Widget widget);
 
-    void appendHeader(RequestResultHeader header);
-
     void clearResultZone();
 
     void setExecutionMode(MultipleRequestExecutionMode executionMode);

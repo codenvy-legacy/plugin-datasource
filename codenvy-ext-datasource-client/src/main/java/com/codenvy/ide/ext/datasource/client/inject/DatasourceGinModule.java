@@ -58,6 +58,7 @@ import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.ResultItemBoxFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherView;
@@ -149,5 +150,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(DatasourceCell.class).in(Singleton.class);
 
         install(new GinFactoryModuleBuilder().build(ResultItemBoxFactory.class));
+        install(new GinFactoryModuleBuilder().build(RequestResultHeaderFactory.class));
     }
 }

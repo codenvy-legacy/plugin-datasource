@@ -15,27 +15,32 @@
  */
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources.DatasourceUiStyle;
+import javax.validation.constraints.NotNull;
+
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Result header is displayed along (on top of) the results themselves. It shows information on the request and controls on the results.
  * 
  * @author "Mickaël Leduque"
  */
-public class RequestResultHeader extends DockLayoutPanel {
+public class RequestResultHeader extends Composite {
 
     /** The default name for the CSV resource. */
     private static final String         DEFAULT_CSV_FILENAME = "data.csv";
@@ -43,42 +48,54 @@ public class RequestResultHeader extends DockLayoutPanel {
     /** The template used to generte the header. */
     private static final HeaderTemplate TEMPLATE             = GWT.create(HeaderTemplate.class);
 
-    /** The width of the CSV export button. */
-    private static final int            EXPORT_BUTTON_WIDTH  = 70;
-
-    /** The width of the CSV download link. */
-    private static final int            CSV_LINK_WIDTH       = 90;
-
     private static int                  TRUNCATE_LIMIT       = 150;
 
     /** A reminder of the SQL query that caused this result. */
-    private Widget                      queryReminder;
+    @UiField
+    SimplePanel                         queryReminderPlace;
+
     /** A button to export the content to a CSV resource. */
-    private Button                      exportButton;
-    private final SimpleLayoutPanel     csvLinkPanel         = new SimpleLayoutPanel();
-    private final DatasourceUiStyle     style;
+    @UiField
+    SimplePanel                         csvButtonPlace;
+
+    @UiField
+    SimplePanel                         csvLinkPlace;
+
+    @UiField(provided = true)
+    final DatasourceUiResources         datasourceUiResources;
+
     private final RequestResultDelegate delegate;
 
-    public RequestResultHeader(final DatasourceUiStyle style,
-                               final RequestResultDelegate delegate) {
-        super(Unit.PX);
-        this.style = style;
+    @Inject
+    public RequestResultHeader(@NotNull final DatasourceUiResources datasourceUiResources,
+                               @NotNull final RequestResultHeaderUiBinder uiBinder,
+                               @NotNull @Assisted final RequestResultDelegate delegate,
+                               @NotNull @Assisted final String query) {
+        super();
+        this.datasourceUiResources = datasourceUiResources;
+        initWidget(uiBinder.createAndBindUi(this));
+
+        setRequestReminder(query);
+
         this.delegate = delegate;
-        addStyleName(style.resultItemHeaderBar());
+        addStyleName(datasourceUiResources.datasourceUiCSS().resultItemHeaderBar());
     }
 
-    public RequestResultHeader setRequestReminder(final String query) {
+    private RequestResultHeader setRequestReminder(final String query) {
         // limit size of displayed query - just a bit over display overflow
         final String queryPart = query.substring(0, Math.min(query.length(), TRUNCATE_LIMIT));
-
-        this.queryReminder = new HTML(TEMPLATE.queryReminder(style.resultItemQueryReminder(), queryPart));
+        SafeHtml queryHtml = TEMPLATE.queryReminder(datasourceUiResources.datasourceUiCSS().resultItemQueryReminder(),
+                                                    queryPart);
+        final HTML queryReminder = new HTML(queryHtml);
+        this.queryReminderPlace.setWidget(queryReminder);
         return this;
     }
 
     public RequestResultHeader withExportButton(final RequestResultDTO requestResult, final String text) {
-        this.exportButton = new Button(text);
-        this.exportButton.setStyleName(style.resultItemCsvButton());
-        this.exportButton.addClickHandler(new ClickHandler() {
+        final Button exportButton = new Button(text);
+        this.csvButtonPlace.setWidget(exportButton);
+        exportButton.setStyleName(datasourceUiResources.datasourceUiCSS().resultItemCsvButton());
+        exportButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
@@ -89,19 +106,9 @@ public class RequestResultHeader extends DockLayoutPanel {
     }
 
     public void showCsvLink(final String contentData) {
-        Anchor csvLink = new Anchor(TEMPLATE.csvExportLink(style.resultItemCsvLink(), contentData, "Download CSV", DEFAULT_CSV_FILENAME));
-        this.csvLinkPanel.setWidget(csvLink);
-        setWidgetSize(this.csvLinkPanel, CSV_LINK_WIDTH);
-    }
-
-    public RequestResultHeader prepare() {
-        clear();
-        if (this.exportButton != null) {
-            addEast(this.exportButton, EXPORT_BUTTON_WIDTH);
-        }
-        addEast(this.csvLinkPanel, 0);
-        add(this.queryReminder);
-        return this;
+        final Anchor csvLink = new Anchor(TEMPLATE.csvExportLink(datasourceUiResources.datasourceUiCSS().resultItemCsvLink(),
+                                                                 contentData, "Download CSV", DEFAULT_CSV_FILENAME));
+        this.csvLinkPlace.setWidget(csvLink);
     }
 
     /**
@@ -147,5 +154,13 @@ public class RequestResultHeader extends DockLayoutPanel {
          * @param target the header that triggered the action, to be updated on completion
          */
         void triggerCsvExport(RequestResultDTO requestResult, RequestResultHeader target);
+    }
+
+    /**
+     * UIBinder interface for {@link RequestResultHeader}.
+     * 
+     * @author "Mickaël Leduque"
+     */
+    interface RequestResultHeaderUiBinder extends UiBinder<Widget, RequestResultHeader> {
     }
 }

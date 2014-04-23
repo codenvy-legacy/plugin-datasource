@@ -140,13 +140,6 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     }
 
     @Override
-    public void appendHeader(final RequestResultHeader header) {
-        // Set initial width to the header, won't resize
-        header.setWidth(Integer.toString(this.resultScroll.getOffsetWidth() - 16) + "px");
-        resultZone.add(header);
-    }
-
-    @Override
     public void clearResultZone() {
         this.resultZone.clear();
     }

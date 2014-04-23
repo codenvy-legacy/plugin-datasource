@@ -105,6 +105,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private final ResultItemBoxFactory                resultItemBoxFactory;
 
+    private final RequestResultHeaderFactory          requestResultHeaderFactory;
+
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
@@ -121,7 +123,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull WorkspaceAgent workspaceAgent,
                                        final @NotNull CellTableResourcesQueryResults cellTableResources,
                                        final @NotNull DatasourceUiResources datasourceUiResources,
-                                       final @NotNull ResultItemBoxFactory resultItemBoxFactory) {
+                                       final @NotNull ResultItemBoxFactory resultItemBoxFactory,
+                                       final @NotNull RequestResultHeaderFactory requestResultHeaderFactory) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -138,6 +141,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.cellTableResources = cellTableResources;
         this.datasourceUiResources = datasourceUiResources;
         this.resultItemBoxFactory = resultItemBoxFactory;
+        this.requestResultHeaderFactory = requestResultHeaderFactory;
 
         setupResultLimit(preferencesManager);
         setupExecutionMode(preferencesManager);
@@ -494,12 +498,12 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @return a result header
      */
     private RequestResultHeader buildResultHeader(final RequestResultDTO requestResult, final String text) {
-        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
-        result.setRequestReminder(requestResult.getOriginRequest());
+        final RequestResultHeader result = this.requestResultHeaderFactory.createRequestResultHeader(this,
+                                                                                                     requestResult.getOriginRequest());
         if (text != null) {
             result.withExportButton(requestResult, text);
         }
-        return result.prepare();
+        return result;
     }
 
     /**
@@ -509,10 +513,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @return a result header
      */
     private RequestResultHeader buildErrorHeader(final String originRequest) {
-        final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
-        result.setRequestReminder(originRequest);
+        final RequestResultHeader result = this.requestResultHeaderFactory.createRequestResultHeader(this, originRequest);
 
-        return result.prepare();
+        return result;
     }
 
     @Override

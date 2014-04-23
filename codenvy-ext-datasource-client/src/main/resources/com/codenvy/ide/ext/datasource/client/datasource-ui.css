@@ -157,9 +157,7 @@
 
   padding-left: 0.8em;
   padding-right: 0.8em;
-  margin-right: 3em;
   height: 1.6em;
-  margin-top: 0.2em;
 }
 
 .resultItemHeader-csvLink {
@@ -169,6 +167,8 @@
   overflow: hidden;
   white-space: nowrap;
   line-height: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .resultZoneHeader-bar {
