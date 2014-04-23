@@ -48,6 +48,8 @@ public class DataEntityPropertiesViewImpl extends Composite implements DataEntit
                                         final CellTableResourcesProperties cellTableResources,
                                         final DatasourceUiResources datasourceUiResources) {
         this.propertiesDisplay = new CellTable<Property>(15, cellTableResources);
+        this.propertiesDisplay.setWidth("100%", true);
+
         this.datasourceUiResources = datasourceUiResources;
         propertiesDisplay.addColumn(new TextColumn<Property>() {
 
