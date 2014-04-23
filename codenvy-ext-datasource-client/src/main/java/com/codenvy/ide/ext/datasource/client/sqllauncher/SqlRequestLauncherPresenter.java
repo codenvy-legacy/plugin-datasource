@@ -31,7 +31,6 @@ import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.Pager;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
@@ -55,13 +54,10 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.http.client.RequestException;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -101,7 +97,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private final EditorDatasourceOracle              editorDatasourceOracle;
     private final CellTableResourcesQueryResults      cellTableResources;
-    private final DatasourceUiResources               datasourceUiResources;
 
     private final ResultItemBoxFactory                resultItemBoxFactory;
 
@@ -122,7 +117,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent,
                                        final @NotNull CellTableResourcesQueryResults cellTableResources,
-                                       final @NotNull DatasourceUiResources datasourceUiResources,
                                        final @NotNull ResultItemBoxFactory resultItemBoxFactory,
                                        final @NotNull RequestResultHeaderFactory requestResultHeaderFactory) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
@@ -139,7 +133,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
         this.cellTableResources = cellTableResources;
-        this.datasourceUiResources = datasourceUiResources;
         this.resultItemBoxFactory = resultItemBoxFactory;
         this.requestResultHeaderFactory = requestResultHeaderFactory;
 
@@ -436,7 +429,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendSelectResult(final RequestResultDTO result) {
 
-        final CellTable<List<String>> resultTable = new CellTable<List<String>>(DEFAULT_RESULT_PAGE_SIZE, cellTableResources);
+        final ResultCellTable resultTable = new ResultCellTable(DEFAULT_RESULT_PAGE_SIZE, cellTableResources, constants);
 
         final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeaderWithExport(this, result);
 
@@ -446,17 +439,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                   new AlignableColumnHeader(headerEntry, ALIGN_LEFT));
             i++;
         }
-
-
-        resultTable.addCellPreviewHandler(new CellPreviewEvent.Handler<List<String>>() {
-            @Override
-            public void onCellPreview(CellPreviewEvent<List<String>> event) {
-                if ("click".equals(event.getNativeEvent().getType())) {
-                    TableCellElement cellElement = resultTable.getRowElement(event.getIndex()).getCells().getItem(event.getColumn());
-                    cellElement.setTitle(cellElement.getInnerText());
-                }
-            }
-        });
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
 

@@ -20,6 +20,8 @@ import com.google.gwt.user.cellview.client.CellTable;
 public interface CellTableResourcesQueryResults extends CellTable.Resources {
 
     interface CellTableStyle extends CellTable.Style {
+        @ClassName("empty-table")
+        String emptyTableWidget();
     }
 
     @Source({"CellTable-sql-results.css", "com/codenvy/ide/api/ui/style.css"})
