@@ -32,8 +32,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 /**
  * Result header is displayed along (on top of) the results themselves. It shows information on the request and controls on the results.
@@ -66,7 +66,7 @@ public class RequestResultHeader extends Composite {
 
     private final RequestResultDelegate delegate;
 
-    @Inject
+    @AssistedInject
     public RequestResultHeader(@NotNull final DatasourceUiResources datasourceUiResources,
                                @NotNull final RequestResultHeaderUiBinder uiBinder,
                                @NotNull @Assisted final RequestResultDelegate delegate,
@@ -81,6 +81,16 @@ public class RequestResultHeader extends Composite {
         addStyleName(datasourceUiResources.datasourceUiCSS().resultItemHeaderBar());
     }
 
+    @AssistedInject
+    public RequestResultHeader(@NotNull final DatasourceUiResources datasourceUiResources,
+                               @NotNull final RequestResultHeaderUiBinder uiBinder,
+                               @NotNull final SqlRequestLauncherConstants constants,
+                               @NotNull @Assisted final RequestResultDelegate delegate,
+                               @NotNull @Assisted final RequestResultDTO requestResult) {
+        this(datasourceUiResources, uiBinder, delegate, requestResult.getOriginRequest());
+        withExportButton(requestResult, constants.exportCsvLabel());
+    }
+
     private RequestResultHeader setRequestReminder(final String query) {
         // limit size of displayed query - just a bit over display overflow
         final String queryPart = query.substring(0, Math.min(query.length(), TRUNCATE_LIMIT));
@@ -91,7 +101,7 @@ public class RequestResultHeader extends Composite {
         return this;
     }
 
-    public RequestResultHeader withExportButton(final RequestResultDTO requestResult, final String text) {
+    private RequestResultHeader withExportButton(final RequestResultDTO requestResult, final String text) {
         final Button exportButton = new Button(text);
         this.csvButtonPlace.setWidget(exportButton);
         exportButton.setStyleName(datasourceUiResources.datasourceUiCSS().resultItemCsvButton());

@@ -416,7 +416,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @param result the result data
      */
     private void appendErrorReport(final RequestResultDTO result) {
-        final RequestResultHeader infoHeader = buildErrorHeader(result.getOriginRequest());
+        final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeader(this, result.getOriginRequest());
 
         ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
         resultItemBox.setHeader(infoHeader);
@@ -438,7 +438,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         final CellTable<List<String>> resultTable = new CellTable<List<String>>(DEFAULT_RESULT_PAGE_SIZE, cellTableResources);
 
-        final RequestResultHeader infoHeader = buildResultHeader(result, constants.exportCsvLabel());
+        final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeaderWithExport(this, result);
 
         int i = 0;
         for (final String headerEntry : result.getHeaderLine()) {
@@ -480,7 +480,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @param result the result data
      */
     private void appendUpdateResult(final RequestResultDTO result) {
-        final RequestResultHeader infoHeader = buildResultHeader(result, null);
+        final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeader(this, result.getOriginRequest());
 
         ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
         resultItemBox.setHeader(infoHeader);
@@ -489,33 +489,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         resultItemBox.addResultItem(resultDisplay);
 
         this.view.appendResult(resultItemBox);
-    }
-
-    /**
-     * Creates a result header for SQL requests result that succeeded.
-     * 
-     * @param originRequest the SQL request
-     * @return a result header
-     */
-    private RequestResultHeader buildResultHeader(final RequestResultDTO requestResult, final String text) {
-        final RequestResultHeader result = this.requestResultHeaderFactory.createRequestResultHeader(this,
-                                                                                                     requestResult.getOriginRequest());
-        if (text != null) {
-            result.withExportButton(requestResult, text);
-        }
-        return result;
-    }
-
-    /**
-     * Creates a result header for SQL requests result that failed.
-     * 
-     * @param originRequest the SQL request
-     * @return a result header
-     */
-    private RequestResultHeader buildErrorHeader(final String originRequest) {
-        final RequestResultHeader result = this.requestResultHeaderFactory.createRequestResultHeader(this, originRequest);
-
-        return result;
     }
 
     @Override
@@ -559,7 +532,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                     notificationManager.showNotification(new Notification("CSV export failure", Type.ERROR));
                 }
             });
-        } catch (RequestException e) {
+        } catch (final RequestException e) {
             Log.error(SqlRequestLauncherPresenter.class, "Exception on CSV export : " + e.getMessage());
             this.notificationManager.showNotification(new Notification("CSV export failure", Type.ERROR));
         }
