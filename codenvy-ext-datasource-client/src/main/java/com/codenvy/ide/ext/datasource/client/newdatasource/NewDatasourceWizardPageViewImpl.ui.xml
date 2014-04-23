@@ -77,7 +77,6 @@
         <g:north size="200">
             <g:FlowPanel addStyleNames="{res.coreCss.line}">
                 <g:Label text="Choose Database Type" addStyleNames="{style.title} {res.coreCss.mainBoldFont} {style.alignLeft}" />
-                <g:Image ui:field="chooseTechnologyTooltip" resource="{res.question}" addStyleNames="{style.questionImage} {res.coreCss.cursorPointer} {style.alignLeft}" />
                 <g:SimplePanel ui:field="databasePanel" addStyleNames="{res.coreCss.mainFont} {style.clearLeft} {style.emptyBorder}" />
             </g:FlowPanel>
         </g:north>
