@@ -25,8 +25,14 @@ public interface NewDatasourceWizardMessages extends Messages {
     @DefaultMessage("Create a new datasource connection")
     String newDatasourceMenuDescription();
 
+    @DefaultMessage("Datasource Name:")
+    String datasourceName();
+
     @DefaultMessage("New Datasource")
     String wizardTitle();
+
+    @DefaultMessage("Create a new datasource connection for your project to execute your sql queries and explore results")
+    String wizardDescription();
 
     @DefaultMessage("An error occured while creating the datasource connection")
     String defaultNewDatasourceWizardErrorMessage();
@@ -45,4 +51,40 @@ public interface NewDatasourceWizardMessages extends Messages {
 
     @DefaultMessage("Connection failed")
     String connectionTestFailureSuccessMessage();
+
+    @DefaultMessage("Select the type of Datasource you want to connect to:")
+    String selectDatasourceType();
+
+    @DefaultMessage("New Datasource")
+    String newDatasource();
+
+    @DefaultMessage("PostgreSQL")
+    String postgresql();
+
+    @DefaultMessage("MySQL")
+    String mysql();
+
+    @DefaultMessage("Oracle")
+    String oracle();
+
+    @DefaultMessage("Ms SQL Server")
+    String mssqlserver();
+
+    @DefaultMessage("NuoDB")
+    String nuodb();
+
+    @DefaultMessage("Google Cloud SQL")
+    String googlecloudsql();
+
+    @DefaultMessage("Amazon RDS PostgreSQL")
+    String awspg();
+
+    @DefaultMessage("Amazon RDS MySQL")
+    String awsmysql();
+
+    @DefaultMessage("Amazon RDS Oracle")
+    String awsoracle();
+
+    @DefaultMessage("Amazon RDS Ms SQL Server")
+    String awssqlserver();
 }

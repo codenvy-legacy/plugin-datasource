@@ -43,7 +43,7 @@ public class OracleDatasourceConnectorPage extends DefaultNewDatasourceConnector
                                          final DatasourceClientService service,
                                          final DatasourceUiResources resources,
                                          final NewDatasourceWizardMessages messages) {
-        super(view, "Oracle", resources.getOracleLogo(), ORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
+        super(view, messages.oracle(), resources.getOracleLogo(), ORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages, DEFAULT_PORT_ORACLE, DatabaseType.ORACLE);
     }
 }

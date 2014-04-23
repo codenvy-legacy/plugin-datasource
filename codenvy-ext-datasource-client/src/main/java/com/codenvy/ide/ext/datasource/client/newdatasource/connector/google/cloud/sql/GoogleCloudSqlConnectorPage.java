@@ -44,7 +44,7 @@ public class GoogleCloudSqlConnectorPage  extends DefaultNewDatasourceConnectorP
                                         final DatasourceClientService service,
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, "googleCloudSql", resources.getGoogleCloudSQLLogo(), GOOGLECLOUDSQL_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.googlecloudsql(), resources.getGoogleCloudSQLLogo(), GOOGLECLOUDSQL_DB_ID, datasourceManager, eventBus, service,
                 notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.GOOGLECLOUDSQL);
     }
 }

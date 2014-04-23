@@ -45,7 +45,7 @@ public class AwsSqlServerConnectorPage extends DefaultNewDatasourceConnectorPage
                                               final DatasourceClientService service,
                                               final DatasourceUiResources resources,
                                               final NewDatasourceWizardMessages messages) {
-        super(view, "Aws/SQLServer", resources.getSqlServerLogo(), AWSSQLSERVER_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.awssqlserver(), resources.getSqlServerLogo(), AWSSQLSERVER_DB_ID, datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages, DEFAULT_PORT_SQLSERVER, DatabaseType.JTDS);
     }
 }

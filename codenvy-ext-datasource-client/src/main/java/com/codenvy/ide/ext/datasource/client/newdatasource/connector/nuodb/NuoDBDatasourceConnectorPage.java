@@ -62,7 +62,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
 
-        super(view, "NuoDB", resources.getNuoDBLogo(), NUODB_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.nuodb(), resources.getNuoDBLogo(), NUODB_DB_ID, datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages);
         view.setNuoDelegate(this);
 

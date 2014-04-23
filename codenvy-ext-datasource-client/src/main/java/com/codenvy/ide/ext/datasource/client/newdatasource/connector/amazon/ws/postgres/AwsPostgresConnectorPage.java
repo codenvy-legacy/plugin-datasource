@@ -42,7 +42,7 @@ public class AwsPostgresConnectorPage extends DefaultNewDatasourceConnectorPage 
                                            final DatasourceClientService service,
                                            final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
-        super(view, "Aws/Postgres", resources.getAwsPostgresLogo(), AWSPOSTGRES_DB_ID, datasourceManager, eventBus, service, notificationManager,
+        super(view, messages.awspg(), resources.getAwsPostgresLogo(), AWSPOSTGRES_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages, DEFAULT_PORT_PGSQL, DatabaseType.POSTGRES);
     }
 

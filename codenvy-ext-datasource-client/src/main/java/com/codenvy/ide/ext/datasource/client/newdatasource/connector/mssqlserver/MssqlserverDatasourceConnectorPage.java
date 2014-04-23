@@ -45,7 +45,7 @@ public class MssqlserverDatasourceConnectorPage extends DefaultNewDatasourceConn
                                               final DatasourceClientService service,
                                               final DatasourceUiResources resources,
                                               final NewDatasourceWizardMessages messages) {
-        super(view, "Microsoft SQL Server", resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.mssqlserver(), resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages, DEFAULT_PORT_SQLSERVER, DatabaseType.JTDS);
     }
 }

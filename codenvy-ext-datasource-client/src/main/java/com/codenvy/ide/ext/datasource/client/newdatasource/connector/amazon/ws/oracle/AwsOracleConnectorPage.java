@@ -43,7 +43,7 @@ public class AwsOracleConnectorPage extends DefaultNewDatasourceConnectorPage {
                                          final DatasourceClientService service,
                                          final DatasourceUiResources resources,
                                          final NewDatasourceWizardMessages messages) {
-        super(view, "Aws/Oracle", resources.getAwsOracleLogo(), AWSORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
+        super(view, messages.awsoracle(), resources.getAwsOracleLogo(), AWSORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages, DEFAULT_PORT_ORACLE, DatabaseType.ORACLE);
     }
 }

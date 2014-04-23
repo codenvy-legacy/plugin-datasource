@@ -21,16 +21,18 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 public class NewDatasourceWizardProvider implements Provider<DefaultWizard> {
-    private DefaultWizardFactory wizardFactory;
+    private DefaultWizardFactory        wizardFactory;
+    private NewDatasourceWizardMessages messages;
 
     @Inject
-    public NewDatasourceWizardProvider(DefaultWizardFactory wizardFactory) {
+    public NewDatasourceWizardProvider(DefaultWizardFactory wizardFactory, NewDatasourceWizardMessages messages) {
         this.wizardFactory = wizardFactory;
+        this.messages = messages;
     }
 
     /** {@inheritDoc} */
     @Override
     public DefaultWizard get() {
-        return wizardFactory.create("New Datasource Wizard");
+        return wizardFactory.create(messages.newDatasource());
     }
 }

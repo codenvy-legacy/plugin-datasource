@@ -45,7 +45,7 @@ public class MysqlDatasourceConnectorPage extends DefaultNewDatasourceConnectorP
                                         final DatasourceClientService service,
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, "mySQL", resources.getMySqlLogo(), MYSQL_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.mysql(), resources.getMySqlLogo(), MYSQL_DB_ID, datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
     }
 }

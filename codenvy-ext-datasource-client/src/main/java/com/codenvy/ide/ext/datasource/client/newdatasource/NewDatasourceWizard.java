@@ -32,7 +32,7 @@ public class NewDatasourceWizard extends DefaultWizard {
                                                                                                                        "DatasourceName");
 
     @Inject
-    public NewDatasourceWizard(NotificationManager notificationManager) {
-        super(notificationManager, "New Datasource");
+    public NewDatasourceWizard(NotificationManager notificationManager, NewDatasourceWizardMessages locale) {
+        super(notificationManager, locale.newDatasource());
     }
 }

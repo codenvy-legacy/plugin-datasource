@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
@@ -48,6 +49,7 @@ public class ConnectorsInitializer {
     @Inject
     public ConnectorsInitializer(final NewDatasourceConnectorAgent connectorAgent,
                                  final DatasourceUiResources resources,
+                                 final NewDatasourceWizardMessages dsMessages,
                                  final Provider<PostgresDatasourceConnectorPage> pgConnectorPageProvider,
                                  final Provider<MysqlDatasourceConnectorPage> mysqlConnectorPageProvider,
                                  final Provider<OracleDatasourceConnectorPage> oracleConnectorPageProvider,
@@ -68,7 +70,7 @@ public class ConnectorsInitializer {
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
         NewDatasourceConnector connectorPostgres = new NewDatasourceConnector(PostgresDatasourceConnectorPage.PG_DB_ID,
-                                                                              connectorCounter, "PostgreSQL",
+                                                                              connectorCounter, dsMessages.postgresql(),
                                                                               resources.getPostgreSqlLogo(),
                                                                               "org.postgresql.Driver",
                                                                               pgWizardPages, NOTCLOUD);
@@ -81,7 +83,7 @@ public class ConnectorsInitializer {
         mysqlWizardPages.add(mysqlConnectorPageProvider);
         NewDatasourceConnector connectorMysql = new NewDatasourceConnector(MysqlDatasourceConnectorPage.MYSQL_DB_ID,
                                                                            connectorCounter,
-                                                                           "MySQL",
+                                                                           dsMessages.mysql(),
                                                                            resources.getMySqlLogo(),
                                                                            "com.mysql.jdbc.Driver",
                                                                            mysqlWizardPages, NOTCLOUD);
@@ -94,7 +96,7 @@ public class ConnectorsInitializer {
         oracleWizardPages.add(oracleConnectorPageProvider);
         NewDatasourceConnector connectorOracle = new NewDatasourceConnector(OracleDatasourceConnectorPage.ORACLE_DB_ID,
                                                                             connectorCounter,
-                                                                            "Oracle",
+                                                                            dsMessages.oracle(),
                                                                             resources.getOracleLogo(),
                                                                             "oracle.jdbc.OracleDriver", oracleWizardPages, NOTCLOUD);
         this.connectors.add(connectorOracle);
@@ -106,7 +108,7 @@ public class ConnectorsInitializer {
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
         NewDatasourceConnector connectorMs = new NewDatasourceConnector(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID,
                                                                         connectorCounter,
-                                                                        "MsSqlServer",
+                                                                        dsMessages.mssqlserver(),
                                                                         resources.getSqlServerLogo(),
                                                                         "net.sourceforge.jtds.jdbc.Driver",
                                                                         sqlServerWizardPages,
@@ -120,7 +122,7 @@ public class ConnectorsInitializer {
         nuoDBWizardPages.add(nuodbConnectorPageProvider);
         NewDatasourceConnector connectorNuoDB = new NewDatasourceConnector(NuoDBDatasourceConnectorPage.NUODB_DB_ID,
                                                                            connectorCounter,
-                                                                           "NuoDB",
+                                                                           dsMessages.nuodb(),
                                                                            resources.getNuoDBLogo(),
                                                                            "com.nuodb.jdbc.Driver",
                                                                            nuoDBWizardPages, NOTCLOUD);
@@ -133,7 +135,7 @@ public class ConnectorsInitializer {
         googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
         NewDatasourceConnector connectorGoogle = new NewDatasourceConnector(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID,
                                                                             connectorCounter,
-                                                                            "GoogleCloudSQL",
+                                                                            dsMessages.googlecloudsql(),
                                                                             resources.getGoogleCloudSQLLogo(),
                                                                             "com.mysql.jdbc.Driver",
                                                                             googleCloudSQLWizardPages,
@@ -147,7 +149,7 @@ public class ConnectorsInitializer {
         awsPostgresWizardPages.add(awsPostgresConnectorPageProvider);
         NewDatasourceConnector connectorAwsPostg = new NewDatasourceConnector(AwsPostgresConnectorPage.AWSPOSTGRES_DB_ID,
                                                                               connectorCounter,
-                                                                              "Aws/Postgres",
+                                                                              dsMessages.awspg(),
                                                                               resources.getAwsPostgresLogo(),
                                                                               "org.postgresql.Driver",
                                                                               awsPostgresWizardPages,
@@ -161,7 +163,7 @@ public class ConnectorsInitializer {
         awsMysqlWizardPages.add(awsMysqlConnectorPageProvider);
         NewDatasourceConnector connectorAwsMySql = new NewDatasourceConnector(AwsMysqlConnectorPage.AWSMYSQL_DB_ID,
                                                                               connectorCounter,
-                                                                              "Aws/Mysql",
+                                                                              dsMessages.awsmysql(),
                                                                               resources.getAwsMysqlLogo(),
                                                                               "com.mysql.jdbc.Driver",
                                                                               awsMysqlWizardPages,
@@ -175,7 +177,7 @@ public class ConnectorsInitializer {
         awsOracleWizardPages.add(awsOracleConnectorPageProvider);
         NewDatasourceConnector connectorAwsOracle = new NewDatasourceConnector(AwsOracleConnectorPage.AWSORACLE_DB_ID,
                                                                                connectorCounter,
-                                                                               "Aws/Oracle",
+                                                                               dsMessages.awsoracle(),
                                                                                resources.getAwsOracleLogo(),
                                                                                "oracle.jdbc.OracleDriver",
                                                                                awsOracleWizardPages,
@@ -189,7 +191,7 @@ public class ConnectorsInitializer {
         awsSqlServerWizardPages.add(awsSqlServerConnectorPageProvider);
         NewDatasourceConnector connectorAwsMs = new NewDatasourceConnector(AwsSqlServerConnectorPage.AWSSQLSERVER_DB_ID,
                                                                            connectorCounter,
-                                                                           "Aws/SqlServer",
+                                                                           dsMessages.awssqlserver(),
                                                                            resources.getAwsSqlServerLogo(),
                                                                            "net.sourceforge.jtds.jdbc.Driver",
                                                                            awsSqlServerWizardPages,

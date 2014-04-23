@@ -42,7 +42,7 @@ public class PostgresDatasourceConnectorPage extends DefaultNewDatasourceConnect
                                            final DatasourceClientService service,
                                            final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
-        super(view, "PostgreSQL", resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
+        super(view, messages.postgresql(), resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
               dtoFactory, messages, DEFAULT_PORT_PGSQL, DatabaseType.POSTGRES);
     }
 

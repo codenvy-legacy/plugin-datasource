@@ -47,7 +47,7 @@ public class AwsMysqlConnectorPage extends DefaultNewDatasourceConnectorPage {
                                         final DatasourceClientService service,
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, "Aws/Mysql", resources.getAwsMysqlLogo(), AWSMYSQL_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.awsmysql(), resources.getAwsMysqlLogo(), AWSMYSQL_DB_ID, datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
     }
 }
