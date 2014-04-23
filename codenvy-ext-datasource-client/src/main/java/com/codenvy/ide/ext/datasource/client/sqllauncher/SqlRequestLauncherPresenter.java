@@ -103,6 +103,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final CellTableResourcesQueryResults      cellTableResources;
     private final DatasourceUiResources               datasourceUiResources;
 
+    private final ResultItemBoxFactory                resultItemBoxFactory;
+
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
@@ -118,7 +120,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull DtoFactory dtoFactory,
                                        final @NotNull WorkspaceAgent workspaceAgent,
                                        final @NotNull CellTableResourcesQueryResults cellTableResources,
-                                       final @NotNull DatasourceUiResources datasourceUiResources) {
+                                       final @NotNull DatasourceUiResources datasourceUiResources,
+                                       final @NotNull ResultItemBoxFactory resultItemBoxFactory) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -134,6 +137,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.datasourceManager = datasourceManager;
         this.cellTableResources = cellTableResources;
         this.datasourceUiResources = datasourceUiResources;
+        this.resultItemBoxFactory = resultItemBoxFactory;
 
         setupResultLimit(preferencesManager);
         setupExecutionMode(preferencesManager);
@@ -409,10 +413,16 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendErrorReport(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = buildErrorHeader(result.getOriginRequest());
-        this.view.appendHeader(infoHeader);
-        this.view.appendResult(new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
-                                         + " - "
-                                         + result.getSqlExecutionError().getErrorMessage()));
+
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
+        resultItemBox.setHeader(infoHeader);
+
+        final Label errorDisplay = new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
+                                             + " - "
+                                             + result.getSqlExecutionError().getErrorMessage());
+        resultItemBox.addResultItem(errorDisplay);
+
+        this.view.appendResult(resultItemBox);
     }
 
     /**
@@ -446,17 +456,17 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
 
-        this.view.appendHeader(infoHeader);
 
-        Pager topPager = new Pager(false, true);
-        topPager.setDisplay(resultTable);
-        this.view.appendResult(topPager);
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
+        resultItemBox.setHeader(infoHeader);
 
-        this.view.appendResult(resultTable);
+        resultItemBox.addResultItem(resultTable);
 
         Pager bottomPager = new Pager(false, true);
         bottomPager.setDisplay(resultTable);
-        this.view.appendResult(bottomPager);
+        resultItemBox.setFooter(bottomPager);
+
+        this.view.appendResult(resultItemBox);
 
     }
 
@@ -467,8 +477,14 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private void appendUpdateResult(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = buildResultHeader(result, null);
-        this.view.appendHeader(infoHeader);
-        this.view.appendResult(new Label(this.constants.updateCountMessage(result.getUpdateCount())));
+
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
+        resultItemBox.setHeader(infoHeader);
+
+        final Label resultDisplay = new Label(this.constants.updateCountMessage(result.getUpdateCount()));
+        resultItemBox.addResultItem(resultDisplay);
+
+        this.view.appendResult(resultItemBox);
     }
 
     /**
@@ -479,7 +495,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private RequestResultHeader buildResultHeader(final RequestResultDTO requestResult, final String text) {
         final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
-        result.setInfoHeaderTitle(constants.queryResultsTitle());
         result.setRequestReminder(requestResult.getOriginRequest());
         if (text != null) {
             result.withExportButton(requestResult, text);
@@ -495,7 +510,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      */
     private RequestResultHeader buildErrorHeader(final String originRequest) {
         final RequestResultHeader result = new RequestResultHeader(this.datasourceUiResources.datasourceUiCSS(), this);
-        result.setInfoHeaderTitle(constants.queryErrorTitle());
         result.setRequestReminder(originRequest);
 
         return result.prepare();

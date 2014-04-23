@@ -15,10 +15,72 @@
 ~ limitations under the License.
 -->
 
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent"><!-- required for html entities -->
+
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
+    <ui:with field="constants" type="com.codenvy.ide.ext.datasource.client.sqllauncher.SqlRequestLauncherConstants" />
+    <ui:style>
+        .resultZone-layout {
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: column;
+            -webkit-flex-flow: column;
+
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+        }
+        .resultZone-layout-header {
+            flex-grow: 0; /* don't allow growth if there is space available */
+            -webkit-flex-grow: 0;
+            flex-shrink: 0; /* don't allow to shrink if there is not enough space */
+            -webkit-flex-shrink: 0;
+
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
+            justify-content: center;
+            -webkit-justify-content: center;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+        }
+        .resultZone-header-text {
+            padding-left: 1.5em;
+            padding-right: 1.5em;
+        }
+        .resultZone-header-decoration {
+            vertical-align: sub;
+        }
+        .resultZone-layout-scroll {
+        }
+        .resultZone-layout-output {
+            display: flex;
+            display: -webkit-flex;
+            
+            flex-flow: column;
+            -webkit-flex-flow: column;
+
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+
+            min-width: max-content;
+            min-width: -webkit-max-content;
+            min-width: -moz-max-content;
+        }
+    </ui:style>
 
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
     <g:north size="35">
@@ -52,9 +114,16 @@
                     <g:SimpleLayoutPanel ui:field="editorZone" />
                 </g:center>
                 <g:south size="200">
-                    <g:ScrollPanel ui:field="resultScroll">
-                        <g:FlowPanel ui:field="resultZone" />
-                    </g:ScrollPanel>
+                    <g:HTMLPanel addStyleNames="{style.resultZone-layout}">
+                        <div class="{style.resultZone-layout-header} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderBar}">
+                            <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
+                            <g:Label text="{constants.queryResultsTitle}" addStyleNames="{style.resultZone-header-text} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderText}" />
+                            <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
+                        </div>
+                        <g:ScrollPanel ui:field="resultScroll" addStyleNames="{style.resultZone-layout-scroll}">
+                            <g:FlowPanel ui:field="resultZone" addStyleNames="{style.resultZone-layout-output} {datasourceUiResources.datasourceUiCSS.resultZoneOutput}" />
+                        </g:ScrollPanel>
+                    </g:HTMLPanel>
                 </g:south>
             </g:SplitLayoutPanel>
         </g:center>

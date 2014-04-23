@@ -132,17 +132,12 @@
 .requestLauncher-selectDatasourceLabel {
 }
 
-.resultHeader-infoHeader {
-  height:2em;
-}
-
-.resultHeader-queryReminder {
+.resultItemHeader-queryReminder {
   font-weight: normal;
   font-size: boxFontSize;
   font-family: editorFontFamily;
   text-shadow: boxTextShadow;
   color: boxTextColor;
-  background: activeTabBackground;
 
   text-overflow: ellipsis;
   overflow: hidden;
@@ -152,7 +147,7 @@
   line-height: 2em;
 }
 
-.resultHeader-csvButton {
+.resultItemHeader-csvButton {
   font-weight: bold;
   font-size: boxFontSize;
   box-shadow: boxInnerShadow, boxOuterShadow;
@@ -167,7 +162,7 @@
   margin-top: 0.2em;
 }
 
-.resultHeader-csvLink {
+.resultItemHeader-csvLink {
   font-weight: normal;
   font-size: fontSize;
   font-family: mainFontFamily;
@@ -176,16 +171,29 @@
   line-height: 2em;
 }
 
-.resultHeader-infoHeaderTitle {
+.resultZoneHeader-bar {
+  height: 18px;
+  box-shadow: boxInnerShadow, boxOuterShadow;
+}
+.resultZoneHeader-text {
   font-weight: bold;
   font-size: boxFontSize;
   text-shadow: boxTextShadow;
   color: boxTextColor;
-  background: activeTabBackground;
+}
 
-  margin-left: 0.5em;
-  margin-right: 30px;
-  line-height: 2em;
+.resultZoneOutput {
+  background-color: activeTabBackground;
+}
+
+.resultItemHeader-bar {
+  height: 2em;
+}
+
+.resultItem {
+  background-color: cellEvenRow;
+  border: 1px solid boxBorderColor;
+  margin-bottom: 4px;
 }
 
 .propertiesTable-firstColumn {

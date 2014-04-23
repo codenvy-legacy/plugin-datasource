@@ -135,20 +135,29 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("requestLauncher-selectDatasourceLabel")
         String requestLauncherSelectDatasourceLabel();
 
-        @ClassName("resultHeader-infoHeader")
-        String infoHeader();
+        @ClassName("resultItemHeader-queryReminder")
+        String resultItemQueryReminder();
 
-        @ClassName("resultHeader-queryReminder")
-        String queryReminder();
+        @ClassName("resultItemHeader-csvButton")
+        String resultItemCsvButton();
 
-        @ClassName("resultHeader-csvButton")
-        String csvButton();
+        @ClassName("resultItemHeader-csvLink")
+        String resultItemCsvLink();
 
-        @ClassName("resultHeader-csvLink")
-        String csvLink();
+        @ClassName("resultZoneHeader-text")
+        String resultZoneHeaderText();
 
-        @ClassName("resultHeader-infoHeaderTitle")
-        String infoHeaderTitle();
+        @ClassName("resultZoneHeader-bar")
+        String resultZoneHeaderBar();
+
+        @ClassName("resultZoneOutput")
+        String resultZoneOutput();
+
+        @ClassName("resultItemHeader-bar")
+        String resultItemHeaderBar();
+
+        @ClassName("resultItem")
+        String resultItem();
 
         @ClassName("propertiesTable-firstColumn")
         String propertiesTableFirstColumn();

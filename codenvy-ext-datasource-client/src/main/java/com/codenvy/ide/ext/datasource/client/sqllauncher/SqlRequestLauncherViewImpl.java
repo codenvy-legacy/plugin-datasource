@@ -43,60 +43,64 @@ import com.google.inject.Inject;
  */
 public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherView.ActionDelegate> implements SqlRequestLauncherView {
 
-    private static final String     EXECUTE_ALL   = "all";
-    private static final String     STOP_ON_ERROR = "stop";
-    private static final String     TRANSACTION   = "transaction";
+    private static final String                 EXECUTE_ALL   = "all";
+    private static final String                 STOP_ON_ERROR = "stop";
+    private static final String                 TRANSACTION   = "transaction";
 
     @UiField
-    Widget                          launcherContainer;
+    Widget                                      launcherContainer;
 
     /** The SQL edition zone. */
     @UiField
-    AcceptsOneWidget                editorZone;
+    AcceptsOneWidget                            editorZone;
 
     /** The request result display. */
     @UiField
-    FlowPanel                       resultZone;
+    FlowPanel                                   resultZone;
 
     /** The request result display scroll component. */
     @UiField
-    ScrollPanel                     resultScroll;
+    ScrollPanel                                 resultScroll;
 
     /** The label for the datasource selection widget. */
     @UiField
-    Label                           selectDatasourceLabel;
+    Label                                       selectDatasourceLabel;
 
     /** The datasource selection widget. */
     @UiField
-    ListBox                         datasourceList;
+    ListBox                                     datasourceList;
 
     /** The label for the request result limit widget. */
     @UiField
-    Label                           resultLimitLabel;
+    Label                                       resultLimitLabel;
 
     /** The request result limit widget. */
     @UiField
-    TextBox                         resultLimitInput;
+    TextBox                                     resultLimitInput;
 
     /** The label for the execution mode widget. */
     @UiField
-    Label                           executionModeLabel;
+    Label                                       executionModeLabel;
 
     /** The execution mode selection widget. */
     @UiField
-    ListBox                         executionModeList;
+    ListBox                                     executionModeList;
 
     /** The button that commands request execution. */
     @UiField
-    Button                          executeButton;
+    Button                                      executeButton;
 
     /** The CSS resource. */
     @UiField(provided = true)
-    protected DatasourceUiResources datasourceUiResources;
+    protected final DatasourceUiResources       datasourceUiResources;
+
+    /** The i18n constants. */
+    @UiField(provided = true)
+    protected final SqlRequestLauncherConstants constants;
 
     /** The split layout panel - needed so that we can set the splitter size */
     @UiField(provided = true)
-    protected SplitLayoutPanel      splitPanel;
+    protected SplitLayoutPanel                  splitPanel;
 
     @Inject
     public SqlRequestLauncherViewImpl(final SqlRequestLauncherViewImplUiBinder uiBinder,
@@ -106,6 +110,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
 
         /* initialize provided fields */
         this.datasourceUiResources = datasourceUiResources;
+        this.constants = constants;
         this.splitPanel = new SplitLayoutPanel(4);
 
         uiBinder.createAndBindUi(this);

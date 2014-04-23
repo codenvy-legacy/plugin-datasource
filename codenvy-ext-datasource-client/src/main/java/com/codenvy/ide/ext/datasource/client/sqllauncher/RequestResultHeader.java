@@ -37,16 +37,23 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class RequestResultHeader extends DockLayoutPanel {
 
+    /** The default name for the CSV resource. */
     private static final String         DEFAULT_CSV_FILENAME = "data.csv";
+
+    /** The template used to generte the header. */
     private static final HeaderTemplate TEMPLATE             = GWT.create(HeaderTemplate.class);
-    private static final int            INFO_HEADER_WIDTH    = 150;
+
+    /** The width of the CSV export button. */
     private static final int            EXPORT_BUTTON_WIDTH  = 70;
+
+    /** The width of the CSV download link. */
     private static final int            CSV_LINK_WIDTH       = 90;
 
     private static int                  TRUNCATE_LIMIT       = 150;
 
-    private Widget                      infoHeaderTitle;
+    /** A reminder of the SQL query that caused this result. */
     private Widget                      queryReminder;
+    /** A button to export the content to a CSV resource. */
     private Button                      exportButton;
     private final SimpleLayoutPanel     csvLinkPanel         = new SimpleLayoutPanel();
     private final DatasourceUiStyle     style;
@@ -57,25 +64,20 @@ public class RequestResultHeader extends DockLayoutPanel {
         super(Unit.PX);
         this.style = style;
         this.delegate = delegate;
-        setStyleName(style.infoHeader());
-    }
-
-    public RequestResultHeader setInfoHeaderTitle(final String label) {
-        this.infoHeaderTitle = new HTML(TEMPLATE.infoHeaderTitle(style.infoHeaderTitle(), label));
-        return this;
+        addStyleName(style.resultItemHeaderBar());
     }
 
     public RequestResultHeader setRequestReminder(final String query) {
         // limit size of displayed query - just a bit over display overflow
         final String queryPart = query.substring(0, Math.min(query.length(), TRUNCATE_LIMIT));
 
-        this.queryReminder = new HTML(TEMPLATE.queryReminder(style.queryReminder(), queryPart));
+        this.queryReminder = new HTML(TEMPLATE.queryReminder(style.resultItemQueryReminder(), queryPart));
         return this;
     }
 
     public RequestResultHeader withExportButton(final RequestResultDTO requestResult, final String text) {
         this.exportButton = new Button(text);
-        this.exportButton.setStyleName(style.csvButton());
+        this.exportButton.setStyleName(style.resultItemCsvButton());
         this.exportButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -87,14 +89,13 @@ public class RequestResultHeader extends DockLayoutPanel {
     }
 
     public void showCsvLink(final String contentData) {
-        Anchor csvLink = new Anchor(TEMPLATE.csvExportLink(style.csvLink(), contentData, "Download CSV", DEFAULT_CSV_FILENAME));
+        Anchor csvLink = new Anchor(TEMPLATE.csvExportLink(style.resultItemCsvLink(), contentData, "Download CSV", DEFAULT_CSV_FILENAME));
         this.csvLinkPanel.setWidget(csvLink);
         setWidgetSize(this.csvLinkPanel, CSV_LINK_WIDTH);
     }
 
     public RequestResultHeader prepare() {
         clear();
-        addWest(this.infoHeaderTitle, INFO_HEADER_WIDTH);
         if (this.exportButton != null) {
             addEast(this.exportButton, EXPORT_BUTTON_WIDTH);
         }
@@ -119,16 +120,6 @@ public class RequestResultHeader extends DockLayoutPanel {
          */
         @Template("<div class='{0}'>{1}</div>")
         SafeHtml queryReminder(String className, String query);
-
-        /**
-         * Template for the header title part.
-         * 
-         * @param className the CSS class name
-         * @param label the title
-         * @return the html
-         */
-        @Template("<span class='{0}'>{1}</span>")
-        SafeHtml infoHeaderTitle(String className, String label);
 
         /**
          * Template for the header CSV link part.
