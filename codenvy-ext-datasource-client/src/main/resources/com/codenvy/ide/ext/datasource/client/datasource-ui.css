@@ -150,10 +150,7 @@
 .resultItemHeader-csvButton {
   font-weight: bold;
   font-size: boxFontSize;
-  box-shadow: boxInnerShadow, boxOuterShadow;
   text-shadow: boxTextShadow;
-  background-color: boxBackgroundColor;
-  color: boxTextColor;
 
   padding-left: 0.8em;
   padding-right: 0.8em;
