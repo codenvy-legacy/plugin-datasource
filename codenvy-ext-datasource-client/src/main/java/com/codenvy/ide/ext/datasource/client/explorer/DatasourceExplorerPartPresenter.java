@@ -117,7 +117,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     /** {@inheritDoc} */
     @Override
     public String getTitle() {
-        return constants.datasourceExplorerTabTitle();
+        return constants.datasourceExplorerTabTitle(this.datasourceManager.getNames().size());
     }
 
     /** {@inheritDoc} */
@@ -183,6 +183,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     @Override
     public void onDatasourceListChange(final DatasourceListChangeEvent event) {
         setupDatasourceList();
+        changeTabTitle();
     }
 
     /**
@@ -207,5 +208,10 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
             this.view.setItems(null);
         }
 
+    }
+
+    /** Triggers a tab title change. */
+    private void changeTabTitle() {
+        firePropertyChange(TITLE_PROPERTY);
     }
 }
