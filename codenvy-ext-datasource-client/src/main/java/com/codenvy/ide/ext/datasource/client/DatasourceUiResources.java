@@ -179,5 +179,11 @@ public interface DatasourceUiResources extends ClientBundle {
         
         @ClassName("datasourceWizard-testConnection")
         String datasourceWizardTestConnection();
+        
+        @ClassName("datasourceWizard-testConnection-ok")
+        String datasourceWizardTestConnectionOK();
+        
+        @ClassName("datasourceWizard-testConnection-ko")
+        String datasourceWizardTestConnectionKO();
     }
 }

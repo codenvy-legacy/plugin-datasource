@@ -48,4 +48,8 @@ public interface AbstractNewDatasourceConnectorView extends View<AbstractNewData
      * @return the password
      */
     String getPassword();
+
+    void onTestConnectionSuccess();
+
+    void onTestConnectionFailure(String errorMessage);
 }

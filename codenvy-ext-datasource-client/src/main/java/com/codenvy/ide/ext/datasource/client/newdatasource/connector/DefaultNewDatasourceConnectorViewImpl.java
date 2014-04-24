@@ -17,6 +17,7 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import javax.annotation.Nullable;
 
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -64,10 +65,16 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     Button                 testConnectionButton;
 
     @UiField
+    Label                  testConnectionErrorMessage;
+
+    @UiField
     CheckBox               useSSL;
 
     @UiField
     CheckBox               verifyServerCertificate;
+
+    @UiField
+    DatasourceUiResources  datasourceUiResources;
 
     private ActionDelegate delegate;
 
@@ -173,5 +180,22 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     @UiHandler("testConnectionButton")
     void handleClick(ClickEvent e) {
         delegate.onClickTestConnectionButton();
+    }
+
+    @Override
+    public void onTestConnectionSuccess() {
+        // turn button green
+        testConnectionButton.setStyleName(datasourceUiResources.datasourceUiCSS().datasourceWizardTestConnectionOK());
+        // clear error messages
+        testConnectionErrorMessage.setText("");
+    }
+
+    @Override
+    public void onTestConnectionFailure(String errorMessage) {
+        // turn test button red
+        testConnectionButton.setStyleName(datasourceUiResources.datasourceUiCSS().datasourceWizardTestConnectionKO());
+        // set message
+        testConnectionErrorMessage.setText(errorMessage);
+
     }
 }

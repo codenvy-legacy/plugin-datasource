@@ -17,6 +17,7 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb;
 
 import java.util.Set;
 
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.shared.GWT;
@@ -31,6 +32,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -70,10 +72,14 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     private ActionDelegate      delegate;
     private NuoActionDelegate   nuoDelegate;
 
+    private NewDatasourceWizardMessages messages;
+
 
     @Inject
     public NuoDBDatasourceConnectorViewImpl(final NuoDBDatasourceViewImplUiBinder uiBinder,
-                                            final DataGridResourcesInvisible dataGridResources) {
+                                            final DataGridResourcesInvisible dataGridResources,
+                                            final NewDatasourceWizardMessages messages) {
+        this.messages = messages;
         ProvidesKey<NuoDBBroker> keyProvider = new ProvidesKey<NuoDBBroker>() {
             @Override
             public Object getKey(final NuoDBBroker item) {
@@ -233,4 +239,15 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         @Template("<input type=\"text\" value=\"{0}\" tabindex=\"-1\" class='{1}'></input>")
         SafeHtml input(final String value, final String className);
     }
+
+    @Override
+    public void onTestConnectionFailure(String errorMessage) {
+        Window.alert(errorMessage);
+    }
+
+    @Override
+    public void onTestConnectionSuccess() {
+        Window.alert(messages.connectionTestSuccessMessage());
+    }
+
 }

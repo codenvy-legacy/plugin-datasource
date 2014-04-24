@@ -109,8 +109,11 @@
         </g:center>
         <g:east size="170">
             <g:DockLayoutPanel unit="PX" width="100%" addStyleNames="{res.coreCss.mainText} {style.spacing} {style.testButtonCenter}">
+                <g:north size="50.0">
+                    <g:Button ui:field="testConnectionButton" text="Test Connection" addStyleNames="{datasourceUiResources.datasourceUiCSS.datasourceWizardTestConnection}" />
+                </g:north>
                 <g:center>
-                    <g:Button ui:field="testConnectionButton" text="Test Connection" addStyleNames="{datasourceUiResources.datasourceUiCSS.datasourceWizardTestConnection}"/>
+                    <g:Label ui:field="testConnectionErrorMessage" addStyleNames="{res.coreCss.mainBoldFont}" />
                 </g:center>
             </g:DockLayoutPanel>
         </g:east>

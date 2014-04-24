@@ -38,7 +38,6 @@ import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -166,20 +165,23 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
                 protected void onSuccess(String result) {
                     final ConnectionTestResultDTO testResult = dtoFactory.createDtoFromJson(result, ConnectionTestResultDTO.class);
                     if (Status.SUCCESS.equals(testResult.getTestResult())) {
-                        Window.alert(messages.connectionTestSuccessMessage());
+                        getView().onTestConnectionSuccess();
                         connectingNotification.setMessage(messages.connectionTestSuccessNotification());
                         connectingNotification.setStatus(Notification.Status.FINISHED);
                     } else {
-                        Window.alert(messages.connectionTestFailureSuccessMessage() + " " + testResult.getFailureMessage());
+                        getView().onTestConnectionFailure(messages.connectionTestFailureSuccessMessage() + " "
+                                                          + testResult.getFailureMessage());
                         connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
+                        connectingNotification.setType(Type.ERROR);
                         connectingNotification.setStatus(Notification.Status.FINISHED);
                     }
                 }
 
                 @Override
                 protected void onFailure(final Throwable exception) {
-                    Window.alert(messages.connectionTestFailureSuccessMessage());
+                    getView().onTestConnectionFailure(messages.connectionTestFailureSuccessMessage());
                     connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
+                    connectingNotification.setType(Type.ERROR);
                     connectingNotification.setStatus(Notification.Status.FINISHED);
                 }
             }
@@ -187,8 +189,9 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
                         );
         } catch (final RequestException e) {
             Log.info(AbstractNewDatasourceConnectorPage.class, e.getMessage());
-            Window.alert(messages.connectionTestFailureSuccessMessage());
+            getView().onTestConnectionFailure(messages.connectionTestFailureSuccessMessage());
             connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
+            connectingNotification.setType(Type.ERROR);
             connectingNotification.setStatus(Notification.Status.FINISHED);
         }
     }
