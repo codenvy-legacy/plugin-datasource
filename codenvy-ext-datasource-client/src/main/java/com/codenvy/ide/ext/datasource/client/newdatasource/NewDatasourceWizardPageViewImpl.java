@@ -27,6 +27,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasour
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -47,6 +48,12 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, NewDatasourceWizardPageViewImpl> {
     }
 
+    interface Style extends CssResource {
+        String dbToogleButton();
+    }
+
+    @UiField
+    Style style;    
     @UiField
     TextArea                     datasourceName;
     @UiField
@@ -99,7 +106,7 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
             }
             btn.setSize("97px", "97px");
             btn.ensureDebugId("datasource-wizard-ds-type-"+ connector.getId());
-
+            btn.addStyleName(style.dbToogleButton());
             btn.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent event) {
                     delegate.onConnectorSelected(connector.getId());
