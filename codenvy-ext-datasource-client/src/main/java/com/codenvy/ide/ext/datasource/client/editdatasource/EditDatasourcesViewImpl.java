@@ -54,6 +54,9 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     CellList<DatabaseConfigurationDTO> datasourceList;
 
     @UiField
+    Button                             createButton;
+
+    @UiField
     Button                             deleteButton;
 
     @UiField
@@ -117,6 +120,11 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     @UiHandler("closeButton")
     public void handleCloseButton(final ClickEvent clickEvent) {
         this.delegate.closeDialog();
+    }
+
+    @UiHandler("createButton")
+    public void handleCreateButton(final ClickEvent clickEvent) {
+        this.delegate.createDatasource();
     }
 
     @UiHandler("editButton")

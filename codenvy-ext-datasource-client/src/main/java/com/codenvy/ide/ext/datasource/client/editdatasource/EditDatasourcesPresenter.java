@@ -18,6 +18,8 @@ package com.codenvy.ide.ext.datasource.client.editdatasource;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.api.user.shared.dto.Profile;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Status;
@@ -28,6 +30,7 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceK
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;
@@ -67,19 +70,23 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     private final EventBus                                      eventBus;
 
     /** A factory that will provide modification wizards. */
-    private EditDatasourceLauncher                              editDatasourceLauncher;
+    private final EditDatasourceLauncher                        editDatasourceLauncher;
 
-    /** a reference to remove handler from eventbus. */
+    /** A reference to remove handler from eventbus. */
     private HandlerRegistration                                 handlerRegistration;
 
+    /** The action object to create new datasources. */
+    private final NewDatasourceAction                           newDatasourceAction;
+
     @Inject
-    public EditDatasourcesPresenter(final EditDatasourcesView view,
-                                    final DatasourceManager datasourceManager,
-                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
-                                    final EditDatasourceMessages messages,
-                                    final NotificationManager notificationManager,
-                                    final EventBus eventBus,
-                                    final EditDatasourceLauncher editDatasourceLauncher) {
+    public EditDatasourcesPresenter(final @NotNull EditDatasourcesView view,
+                                    final @NotNull DatasourceManager datasourceManager,
+                                    final @NotNull @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
+                                    final @NotNull EditDatasourceMessages messages,
+                                    final @NotNull NotificationManager notificationManager,
+                                    final @NotNull EventBus eventBus,
+                                    final @NotNull EditDatasourceLauncher editDatasourceLauncher,
+                                    final @NotNull NewDatasourceAction newDatasourceAction) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.messages = messages;
@@ -90,6 +97,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.view.setDelegate(this);
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
         this.view.bindSelectionModel(this.selectionModel);
+        this.newDatasourceAction = newDatasourceAction;
     }
 
     /** Show dialog. */
@@ -205,5 +213,10 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                 }
             }
         }
+    }
+
+    @Override
+    public void createDatasource() {
+        this.newDatasourceAction.actionPerformed();
     }
 }

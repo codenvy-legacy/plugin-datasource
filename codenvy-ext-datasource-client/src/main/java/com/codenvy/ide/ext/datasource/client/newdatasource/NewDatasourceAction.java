@@ -62,6 +62,13 @@ public class NewDatasourceAction extends Action {
 
     @Override
     public void actionPerformed(final ActionEvent event) {
+        actionPerformed();
+    }
+
+    /**
+     * Reaction to action activation.
+     */
+    public void actionPerformed() {
         try {
             WizardDialog wizardDialog = wizardDialogFactory.create(wizard);
             wizardDialog.show();
@@ -75,5 +82,4 @@ public class NewDatasourceAction extends Action {
             notificationManager.showNotification(notification);
         }
     }
-
 }

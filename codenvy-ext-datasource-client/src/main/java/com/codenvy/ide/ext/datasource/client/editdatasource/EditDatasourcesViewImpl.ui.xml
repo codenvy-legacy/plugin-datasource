@@ -110,6 +110,7 @@
         </g:south>
         <g:east size="16">
             <g:FlowPanel addStyleNames="{style.actions-container}" >
+                <g:Button ui:field="createButton" text="{messages.createButtonText}" addStyleNames="{style.button}" />
                 <g:Button ui:field="editButton" text="{messages.editButtonText}" addStyleNames="{style.button}" />
                 <g:Button ui:field="deleteButton" text="{messages.deleteButtonText}" addStyleNames="{style.button}" />
             </g:FlowPanel>

@@ -55,5 +55,8 @@ public interface EditDatasourcesView {
 
         /** Datasource edition requested. */
         void editSelectedDatasource();
+
+        /** Datasource creation requested. */
+        void createDatasource();
     }
 }

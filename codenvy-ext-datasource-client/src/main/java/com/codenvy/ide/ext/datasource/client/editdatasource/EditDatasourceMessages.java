@@ -19,6 +19,9 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface EditDatasourceMessages extends Messages {
 
+    @DefaultMessage("Create Datasource")
+    String createButtonText();
+
     @DefaultMessage("Edit Datasource")
     String editButtonText();
 
