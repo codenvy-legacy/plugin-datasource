@@ -41,8 +41,10 @@
 }
 
 .explorer-refreshButton-image {
-    width: 23px;
-    height: 23px;
+    width: 19px;
+    height: 19px;
+    fill: #dbdbdb;
+    margin: 2px;
 }
 
 .explorer-refreshButton-up {
