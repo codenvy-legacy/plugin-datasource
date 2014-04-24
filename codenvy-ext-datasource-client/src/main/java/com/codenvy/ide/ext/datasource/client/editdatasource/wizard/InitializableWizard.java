@@ -59,6 +59,7 @@ public class InitializableWizard<T> extends DefaultWizard {
             throw new NullPointerException();
         }
         if (page instanceof InitializableWizardPage) {
+            Log.info(InitializableWizard.class, "Schedule wizard page init : " + page.getClass());
             scheduleInit(page);
 
         } else {
@@ -71,6 +72,7 @@ public class InitializableWizard<T> extends DefaultWizard {
     public WizardPage flipToNext() {
         WizardPage page = super.flipToNext();
         if (page instanceof InitializableWizardPage) {
+            Log.info(InitializableWizard.class, "Schedule wizard page init : " + page.getClass());
             scheduleInit(page);
         } else {
             Log.warn(InitializableWizard.class, "Not an initializable wizard page : " + page.getClass());
@@ -82,6 +84,7 @@ public class InitializableWizard<T> extends DefaultWizard {
     public WizardPage flipToPrevious() {
         WizardPage page = super.flipToPrevious();
         if (page instanceof InitializableWizardPage) {
+            Log.info(InitializableWizard.class, "Schedule wizard page init : " + page.getClass());
             scheduleInit(page);
         } else {
             Log.warn(InitializableWizard.class, "Not an initializable wizard page : " + page.getClass());
@@ -99,7 +102,9 @@ public class InitializableWizard<T> extends DefaultWizard {
 
             @Override
             public void execute() {
+                Log.info(InitializableWizard.class, "Initializing wizard page : " + page.getClass());
                 ((InitializableWizardPage)page).initPage(configuration);
+                Log.info(InitializableWizard.class, "Wizard page initialization done");
             }
         };
         Scheduler.get().scheduleDeferred(command);
