@@ -37,6 +37,8 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
     private final int          defaultPort;
     private final DatabaseType databaseType;
     private final DtoFactory   dtoFactory;
+    protected final ImageResource image;
+    protected final String caption;
 
     public DefaultNewDatasourceConnectorPage(@NotNull final DefaultNewDatasourceConnectorView view,
                                              @Nullable final String caption,
@@ -50,11 +52,15 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
                                              @NotNull final NewDatasourceWizardMessages messages,
                                              final int defaultPort,
                                              final DatabaseType databaseType) {
-        super(view, caption, image, datasourceId, datasourceManager, eventBus, service, notificationManager, dtoFactory, messages);
+        super(view, null, null, datasourceId, datasourceManager, eventBus, service, notificationManager, dtoFactory, messages);
+        this.caption = caption;
+        this.image = image;
         this.defaultPort = defaultPort;
         this.databaseType = databaseType;
         this.dtoFactory = dtoFactory;
         getView().setPort(getDefaultPort());
+        getView().setImage(image);
+        getView().setDatasourceName(caption);
     }
 
     @Override

@@ -15,6 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -49,4 +50,8 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
     void setUsername(String username);
 
     void setPassword(String password);
+
+    void setImage(ImageResource image);
+
+    void setDatasourceName(String dsName);
 }

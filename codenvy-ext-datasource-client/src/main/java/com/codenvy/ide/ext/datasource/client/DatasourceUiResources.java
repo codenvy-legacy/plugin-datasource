@@ -176,5 +176,8 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("editDatasourceList-datasourceTypeCellStyle")
         String datasourceTypeCellStyle();
+        
+        @ClassName("datasourceWizard-testConnection")
+        String datasourceWizardTestConnection();
     }
 }
