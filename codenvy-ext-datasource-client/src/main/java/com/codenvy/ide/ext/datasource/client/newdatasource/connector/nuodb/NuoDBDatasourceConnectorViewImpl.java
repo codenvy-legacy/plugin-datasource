@@ -46,31 +46,31 @@ import com.google.inject.Inject;
 public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDBDatasourceConnectorView {
 
 
-    private static final String TEXT_BOX_STYLE = "gwt-TextBox";
+    private static final String         TEXT_BOX_STYLE = "gwt-TextBox";
 
     @UiField(provided = true)
-    DataGrid<NuoDBBroker>       brokerList;
+    DataGrid<NuoDBBroker>               brokerList;
 
     @UiField
-    Button                      addBrokerButton;
+    Button                              addBrokerButton;
 
     @UiField
-    Button                      deleteBrokersButton;
+    Button                              deleteBrokersButton;
 
     @UiField
-    TextBox                     dbName;
+    TextBox                             dbName;
 
     @UiField
-    TextBox                     usernameField;
+    TextBox                             usernameField;
 
     @UiField
-    PasswordTextBox             passwordField;
+    PasswordTextBox                     passwordField;
 
     @UiField
-    Button                      testConnectionButton;
+    Button                              testConnectionButton;
 
-    private ActionDelegate      delegate;
-    private NuoActionDelegate   nuoDelegate;
+    private ActionDelegate              delegate;
+    private NuoActionDelegate           nuoDelegate;
 
     private NewDatasourceWizardMessages messages;
 
