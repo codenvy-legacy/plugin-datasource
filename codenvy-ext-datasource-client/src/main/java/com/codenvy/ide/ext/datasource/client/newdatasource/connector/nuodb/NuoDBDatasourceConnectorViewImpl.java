@@ -17,7 +17,6 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb;
 
 import java.util.Set;
 
-import com.codenvy.ide.ext.datasource.client.common.CellTableResourcesInvisible;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.shared.GWT;
@@ -29,8 +28,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -48,7 +47,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     private static final String TEXT_BOX_STYLE = "gwt-TextBox";
 
     @UiField(provided = true)
-    CellTable<NuoDBBroker>      brokerList;
+    DataGrid<NuoDBBroker>       brokerList;
 
     @UiField
     Button                      addBrokerButton;
@@ -74,14 +73,14 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     @Inject
     public NuoDBDatasourceConnectorViewImpl(final NuoDBDatasourceViewImplUiBinder uiBinder,
-                                            final CellTableResourcesInvisible cellTableResources) {
+                                            final DataGridResourcesInvisible dataGridResources) {
         ProvidesKey<NuoDBBroker> keyProvider = new ProvidesKey<NuoDBBroker>() {
             @Override
             public Object getKey(final NuoDBBroker item) {
                 return item.getId();
             }
         };
-        this.brokerList = new CellTable<NuoDBBroker>(20, cellTableResources, keyProvider);
+        this.brokerList = new DataGrid<NuoDBBroker>(20, dataGridResources, keyProvider);
         initWidget(uiBinder.createAndBindUi(this));
 
         // first column : host
