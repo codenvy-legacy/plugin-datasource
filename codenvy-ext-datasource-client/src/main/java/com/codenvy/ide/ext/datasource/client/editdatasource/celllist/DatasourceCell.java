@@ -15,8 +15,12 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource.celllist;
 
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources.DatasourceUiStyle;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
+import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
@@ -32,14 +36,17 @@ import com.google.inject.Inject;
  */
 public class DatasourceCell extends AbstractCell<DatabaseConfigurationDTO> {
 
-    private final DatasourceUiStyle style;
-    private final CellTemplate      template;
+    private final DatasourceUiStyle           style;
+    private final CellTemplate                template;
+    private final NewDatasourceConnectorAgent connectorAgent;
 
     @Inject
-    public DatasourceCell(final DatasourceUiResources resource,
-                          final CellTemplate template) {
+    public DatasourceCell(final @NotNull DatasourceUiResources resource,
+                          final @NotNull CellTemplate template,
+                          final @NotNull NewDatasourceConnectorAgent connectorAgent) {
         this.style = resource.datasourceUiCSS();
         this.template = template;
+        this.connectorAgent = connectorAgent;
     }
 
     @Override
@@ -49,7 +56,19 @@ public class DatasourceCell extends AbstractCell<DatabaseConfigurationDTO> {
         }
 
         final SafeHtml id = SafeHtmlUtils.fromString(value.getDatasourceId());
-        final SafeHtml type = SafeHtmlUtils.fromString(value.getDatabaseType().toString());
+        final String connectorId = value.getConfigurationConnectorId();
+
+        // for old datasources, the connector id was not recorded
+
+        NewDatasourceConnector connector = this.connectorAgent.getConnector(connectorId);
+        String dbType;
+        if (connector != null) {
+            dbType = connector.getTitle();
+        } else {
+            dbType = value.getDatabaseType().toString();
+        }
+
+        final SafeHtml type = SafeHtmlUtils.fromString(dbType);
 
         sb.append(this.template.datasourceItem(id,
                                                this.style.datasourceIdStyle(),
