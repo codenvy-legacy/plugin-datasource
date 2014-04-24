@@ -86,8 +86,8 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
         connectorIds = new ArrayList<String>(connectors.size());
 
         Grid grid = new Grid(4, Math.max(cloudCollection.size(), notCloudCollection.size()));
-        grid.setCellSpacing(10);
-        grid.setCellPadding(5);
+        grid.setCellSpacing(7);
+        grid.setCellPadding(3);
         databasePanel.setWidget(grid);
         HTMLTable.CellFormatter formatter = grid.getCellFormatter();
 
