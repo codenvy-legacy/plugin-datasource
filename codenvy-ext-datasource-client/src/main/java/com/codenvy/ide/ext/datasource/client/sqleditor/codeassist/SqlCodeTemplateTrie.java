@@ -21,6 +21,8 @@ import com.codenvy.ide.util.AbstractTrie;
 
 public class SqlCodeTemplateTrie {
     private static final Array<String> ELEMENTS = Collections.createArray(
+            "SELECT * FROM aTable;",//
+            "SELECT * FROM aTable INNER JOIN anotherTable ON aTable.id = anotherTable.id;",//
             "SELECT * FROM aTable WHERE column = 'value';",//
             "SELECT COUNT(1) FROM aTable;",//
             "INSERT INTO aTable (column1, column2) VALUES ('value1', 0);",//
