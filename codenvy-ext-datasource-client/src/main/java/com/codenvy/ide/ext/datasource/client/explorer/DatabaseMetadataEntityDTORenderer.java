@@ -54,14 +54,22 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
         String iconClassName = css.schemaIcon();
         String labelClassName = css.schemaLabel();
 
+        int depth = 0;
+
         if (data.getData() instanceof TableDTO) {
             iconClassName = css.tableIcon();
             labelClassName = css.tableLabel();
+            depth = 1;
         } else if (data.getData() instanceof ColumnDTO) {
             iconClassName = css.columnIcon();
             labelClassName = css.columnLabel();
+            depth = 2;
         }
-        return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
+
+        SpanElement node = renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
+        node.setAttribute("__depth", "" + depth);
+        return node;
+        //return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
     }
 
     @Override

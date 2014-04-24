@@ -26,9 +26,10 @@
     gwt-image: "column";
 }
 
-.schemaLabel, .tableLabel {
+.schemaLabel,
+.tableLabel {
     font-weight: bold;
-    color: #888888;
+    color: #b4b4b4;
 }
 
 .columnLabel {
