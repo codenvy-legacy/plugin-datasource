@@ -35,6 +35,6 @@ public interface DatasourceExplorerConstants extends Messages {
     String datasourceExplorerPartTitle();
 
     /** The string used in the side tab. */
-    @DefaultMessage("Datasource({0})")
-    String datasourceExplorerTabTitle(int datasourceCount);
+    @DefaultMessage("Datasource")
+    String datasourceExplorerTabTitle();
 }
