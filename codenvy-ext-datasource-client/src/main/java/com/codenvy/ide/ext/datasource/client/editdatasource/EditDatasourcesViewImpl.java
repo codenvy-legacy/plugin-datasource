@@ -20,6 +20,7 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceC
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCellListResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ui.window.Window;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -29,7 +30,6 @@ import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagin
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AbstractDataProvider;
@@ -42,7 +42,7 @@ import com.google.inject.name.Named;
  * 
  * @author "Mickaël Leduque"
  */
-public class EditDatasourcesViewImpl extends DialogBox implements EditDatasourcesView {
+public class EditDatasourcesViewImpl extends Window implements EditDatasourcesView {
 
     /** number of datasources that are visible in the datasource list. */
     private static final int           DATASOURCES_LIST_PAGE_SIZE = 8;
@@ -80,8 +80,7 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
 
-        this.setText(messages.editDatasourcesDialogText());
-        this.setModal(true);
+        this.setTitle(messages.editDatasourcesDialogText());
         this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
         this.datasourceList.setPageSize(DATASOURCES_LIST_PAGE_SIZE);
         this.datasourceList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
@@ -92,7 +91,6 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
 
     @Override
     public void showDialog() {
-        this.center();
         this.show();
     }
 
@@ -137,5 +135,9 @@ public class EditDatasourcesViewImpl extends DialogBox implements EditDatasource
      * @author "Mickaël Leduque"
      */
     interface EditDatadourceViewImplUiBinder extends UiBinder<Widget, EditDatasourcesViewImpl> {
+    }
+
+    @Override
+    protected void onClose() {
     }
 }
