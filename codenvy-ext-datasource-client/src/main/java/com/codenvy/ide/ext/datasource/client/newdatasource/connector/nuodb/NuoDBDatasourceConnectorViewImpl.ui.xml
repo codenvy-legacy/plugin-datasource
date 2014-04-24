@@ -24,8 +24,9 @@
         .spacing {
             margin-bottom: 6px;
         }
-        .buttonMarginLeft {
+        .actionButton {
             margin-left: 8px;
+            width:11em";
         }
     </ui:style>
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
@@ -47,10 +48,10 @@
                 <g:east size="150">
                     <g:DockLayoutPanel unit="PX">
                         <g:north size="30">
-                            <g:Button ui:field="addBrokerButton"  width="8em" text="Add broker" addStyleNames="{style.buttonMarginLeft}" />
+                            <g:Button ui:field="addBrokerButton" text="Add broker" addStyleNames="{style.actionButton}" />
                         </g:north>
                         <g:north size="30">
-                            <g:Button ui:field="deleteBrokersButton" width="8em" text="Delete brokers" addStyleNames="{style.buttonMarginLeft}" />
+                            <g:Button ui:field="deleteBrokersButton" text="Delete brokers" addStyleNames="{style.actionButton}" />
                         </g:north>
                     </g:DockLayoutPanel>
                 </g:east>
