@@ -1,4 +1,4 @@
-package com.codenvy.ide.ext.datasource.client.common;
+package com.codenvy.ide.ext.datasource.client.common.pager;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
