@@ -17,28 +17,30 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
 import java.util.Collection;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
-
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Provider;
-
 /**
  * Provides DB registered connectors
  */
 public interface NewDatasourceConnectorAgent {
 
-    void register(@NotNull String id,
-                  int priority,
-                  @NotNull String title,
-                  @Nullable ImageResource image,
-                  @NotNull String jdbcClassName,
-                  @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages,
-                  @NotNull DatabaseCategoryType categoryType);
-
+    /**
+     * Register a new connector.
+     * 
+     * @param connector the connector to register
+     */
     void register(NewDatasourceConnector connector);
 
+    /**
+     * Returns all registered connectors.
+     * 
+     * @return the connectors
+     */
     Collection<NewDatasourceConnector> getConnectors();
+
+    /**
+     * Retrieve a connector by id.
+     * 
+     * @param id the id of the connector we seek
+     * @return the connector if found, null otherwise
+     */
+    NewDatasourceConnector getConnector(String id);
 }

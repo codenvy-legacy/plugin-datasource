@@ -19,16 +19,10 @@ import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
-
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.ext.datasource.client.DatabaseCategoryType;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -64,20 +58,20 @@ public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAg
     }
 
     @Override
-    public void register(@NotNull String id,
-                         int priority,
-                         @NotNull String title,
-                         @Nullable ImageResource image,
-                         @NotNull String jdbcClassName,
-                         @NotNull Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages,
-                         @NotNull DatabaseCategoryType categoryType) {
-
-        NewDatasourceConnector connector = new NewDatasourceConnector(id, priority, title, image, jdbcClassName, wizardPages, categoryType);
-        register(connector);
+    public Collection<NewDatasourceConnector> getConnectors() {
+        return registeredConnectors;
     }
 
     @Override
-    public Collection<NewDatasourceConnector> getConnectors() {
-        return registeredConnectors;
+    public NewDatasourceConnector getConnector(final String id) {
+        if (id == null) {
+            return null;
+        }
+        for (final NewDatasourceConnector connector : registeredConnectors) {
+            if (id.equals(connector.getId())) {
+                return connector;
+            }
+        }
+        return null;
     }
 }
