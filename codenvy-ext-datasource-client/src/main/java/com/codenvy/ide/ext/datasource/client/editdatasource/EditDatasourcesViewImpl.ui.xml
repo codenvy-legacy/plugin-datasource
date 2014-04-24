@@ -18,7 +18,8 @@
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
+             xmlns:c='urn:import:com.google.gwt.user.cellview.client'
+             xmlns:my='urn:import:com.codenvy.ide.ext.datasource.client.common.pager'>
 
     <ui:with field='messages' type='com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceMessages'/>
     <ui:style src="com/codenvy/ide/api/ui/style.css">
@@ -122,8 +123,7 @@
         </g:north>
         <g:center>
             <g:FlowPanel addStyleNames="{style.list-container}" >
-                <c:CellList ui:field="datasourceList" />
-                <c:SimplePager ui:field="datasourcePager" />
+                <my:ShowMorePagerPanel ui:field="pagerPanel" />
             </g:FlowPanel>
         </g:center>
     

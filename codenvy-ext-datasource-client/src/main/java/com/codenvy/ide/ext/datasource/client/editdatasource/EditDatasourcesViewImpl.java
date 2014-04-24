@@ -15,7 +15,7 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
-import com.codenvy.ide.ext.datasource.client.common.Pager;
+import com.codenvy.ide.ext.datasource.client.common.pager.ShowMorePagerPanel;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCell;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCellListResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
@@ -28,7 +28,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -44,32 +43,33 @@ import com.google.inject.name.Named;
  */
 public class EditDatasourcesViewImpl extends Window implements EditDatasourcesView {
 
-    /** number of datasources that are visible in the datasource list. */
-    private static final int           DATASOURCES_LIST_PAGE_SIZE = 8;
+    /** Number of datasources that are visible in the datasource list. */
+    private static final int                         DATASOURCES_LIST_PAGE_SIZE = 20;
+    /** Number of datasources that are added in the datasource list when the bottom of the list is reached. */
+    private static final int                         DATASOURCES_LIST_INCREMENT = 10;
+
+    private final CellList<DatabaseConfigurationDTO> datasourceList;
+
+    @UiField
+    ShowMorePagerPanel                               pagerPanel;
+
+    @UiField
+    Button                                           createButton;
+
+    @UiField
+    Button                                           deleteButton;
+
+    @UiField
+    Button                                           editButton;
+
+    @UiField
+    Button                                           closeButton;
 
     @UiField(provided = true)
-    SimplePager                        datasourcePager;
-
-    @UiField(provided = true)
-    CellList<DatabaseConfigurationDTO> datasourceList;
-
-    @UiField
-    Button                             createButton;
-
-    @UiField
-    Button                             deleteButton;
-
-    @UiField
-    Button                             editButton;
-
-    @UiField
-    Button                             closeButton;
-
-    @UiField(provided = true)
-    EditDatasourceMessages             messages;
+    EditDatasourceMessages                           messages;
 
     /** The delegate/control component. */
-    private ActionDelegate             delegate;
+    private ActionDelegate                           delegate;
 
     @Inject
     public EditDatasourcesViewImpl(final EditDatadourceViewImplUiBinder uiBinder,
@@ -77,19 +77,19 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
                                    final DatasourceCellListResources dsListResources,
                                    final DatasourceCell datasourceCell) {
-        this.datasourceList = new CellList<>(datasourceCell, dsListResources, keyProvider);
-        this.datasourcePager = new Pager(false, true);
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
+
+        this.datasourceList = new CellList<>(datasourceCell, dsListResources, keyProvider);
+        this.pagerPanel.setIncrementSize(DATASOURCES_LIST_INCREMENT);
+        this.pagerPanel.setDisplay(this.datasourceList);
 
         this.setTitle(messages.editDatasourcesDialogText());
         this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
         this.datasourceList.setPageSize(DATASOURCES_LIST_PAGE_SIZE);
         this.datasourceList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
         this.datasourceList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-
-        this.datasourcePager.setDisplay(this.datasourceList);
     }
 
     @Override
