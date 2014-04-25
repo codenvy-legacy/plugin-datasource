@@ -29,12 +29,12 @@
 .schemaLabel,
 .tableLabel {
     font-weight: bold;
-    color: #b4b4b4;
+    color: treeTextFolderColor;
 }
 
 .columnLabel {
     font-weight: normal;
-    color: #dbdbdb;
+    color: treeTextFileColor;
 }
 
 .root {
@@ -52,7 +52,7 @@
 
 .label {
     font-size: secondaryTextFontSize;
-    font-family : mainFontFamily;
+    font-family : fileTreeFontFamily;
     text-shadow: 0px 1px 0px rgba(46, 46, 46, 0.5);
 
     padding: 0px 3px 0px 3px;
