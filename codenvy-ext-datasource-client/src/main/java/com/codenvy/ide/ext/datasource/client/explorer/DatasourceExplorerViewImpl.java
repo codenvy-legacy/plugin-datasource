@@ -122,7 +122,6 @@ public class DatasourceExplorerViewImpl extends
             this.datasourceListBox.addItem(datasourceId);
         }
 
-
         // restore selected value if needed
         if (index != -1) {
             for (int i = 0; i < this.datasourceListBox.getItemCount(); i++) {

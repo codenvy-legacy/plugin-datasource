@@ -54,22 +54,15 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
         String iconClassName = css.schemaIcon();
         String labelClassName = css.schemaLabel();
 
-        int depth = 0;
-
         if (data.getData() instanceof TableDTO) {
             iconClassName = css.tableIcon();
             labelClassName = css.tableLabel();
-            depth = 1;
         } else if (data.getData() instanceof ColumnDTO) {
             iconClassName = css.columnIcon();
             labelClassName = css.columnLabel();
-            depth = 2;
         }
 
-        SpanElement node = renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
-        node.setAttribute("__depth", "" + depth);
-        return node;
-        //return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
+        return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
     }
 
     @Override
@@ -94,7 +87,7 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
      * Renders the tree node.
      * 
      * @param css the CSS resource for this tree
-     * @param label the node label
+     * @param contents the node contents
      * @param iconClassName the class name for the icon
      * @param renderIcon true to render the icon
      * @param labelClassName the class name for the abel part
