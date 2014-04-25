@@ -75,7 +75,7 @@
                     <g:center>
                         <g:SimplePanel addStyleNames="{style.spaceRight}">
                             <g:SimplePanel>
-                                <g:TextArea width="300px" height="16px" ui:field="datasourceName" alignment="JUSTIFY" />
+                                <g:TextBox width="300px" height="16px" ui:field="datasourceName" />
                             </g:SimplePanel>
                         </g:SimplePanel>
                     </g:center>

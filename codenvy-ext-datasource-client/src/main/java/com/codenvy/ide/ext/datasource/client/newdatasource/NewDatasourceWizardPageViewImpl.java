@@ -18,7 +18,6 @@ package com.codenvy.ide.ext.datasource.client.newdatasource;
 import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
 import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,11 +31,16 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ToggleButton;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 /**
@@ -53,9 +57,9 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
     }
 
     @UiField
-    Style style;    
+    Style                        style;
     @UiField
-    TextArea                     datasourceName;
+    TextBox                      datasourceName;
     @UiField
     SimplePanel                  databasePanel;
 
@@ -105,7 +109,7 @@ public class NewDatasourceWizardPageViewImpl extends Composite implements NewDat
                 btn = new ToggleButton();
             }
             btn.setSize("97px", "97px");
-            btn.ensureDebugId("datasource-wizard-ds-type-"+ connector.getId());
+            btn.ensureDebugId("datasource-wizard-ds-type-" + connector.getId());
             btn.addStyleName(style.dbToogleButton());
             btn.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent event) {
