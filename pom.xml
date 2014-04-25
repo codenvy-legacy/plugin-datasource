@@ -20,10 +20,10 @@
     <parent>
         <artifactId>codenvy-ide-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M15-SNAPSHOT</version>
+        <version>3.0.0-M16-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>3.0.0-M15-SNAPSHOT</version>
+    <version>3.0.0-M16-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
@@ -39,8 +39,8 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <codenvy.datasource.version>3.0.0-M15-SNAPSHOT</codenvy.datasource.version>
-        <codenvy.version>3.0.0-M15-SNAPSHOT</codenvy.version>
+        <codenvy.datasource.version>3.0.0-M16-SNAPSHOT</codenvy.datasource.version>
+        <codenvy.version>3.0.0-M16-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <opencsv.version>2.3</opencsv.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
