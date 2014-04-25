@@ -15,6 +15,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import org.vectomatic.dom.svg.OMSVGSVGElement;
+import org.vectomatic.dom.svg.ui.SVGResource;
+
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
@@ -23,12 +26,11 @@ import com.codenvy.ide.ui.tree.NodeRenderer;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 
-import elemental.html.DivElement;
 import elemental.dom.Element;
 import elemental.html.SpanElement;
+import elemental.js.svg.JsSVGSVGElement;
 
 /**
  * Node renderer for the datasource explorer tree.
@@ -36,11 +38,13 @@ import elemental.html.SpanElement;
 public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTreeNode> {
 
     /** The tree CSS resource. */
-    private final Css css;
+    private final Css       css;
+    private final Resources resources;
 
     @Inject
     public DatabaseMetadataEntityDTORenderer(final Resources resources) {
         this.css = resources.getCss();
+        this.resources = resources;
         resources.getCss().ensureInjected();
     }
 
@@ -53,33 +57,41 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
     public SpanElement renderNodeContents(final EntityTreeNode data) {
         String iconClassName = css.schemaIcon();
         String labelClassName = css.schemaLabel();
+        SVGResource iconResource = resources.schema();
 
         if (data.getData() instanceof TableDTO) {
             iconClassName = css.tableIcon();
             labelClassName = css.tableLabel();
+            iconResource = resources.table();
         } else if (data.getData() instanceof ColumnDTO) {
             iconClassName = css.columnIcon();
             labelClassName = css.columnLabel();
+            iconResource = resources.column();
         }
 
-        return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName);
+        return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName, iconResource);
     }
 
     @Override
     public void updateNodeContents(final TreeNodeElement<EntityTreeNode> treeNode) {
+        SVGResource iconResource = null;
+        String itemTypeClass = null;
         if (treeNode.getData().getData() instanceof TableDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstElementChild();
-            icon.setClassName(css.icon());
-            Elements.addClassName(css.tableIcon(), icon);
-
+            iconResource = resources.table();
+            itemTypeClass = css.tableIcon();
         } else if (treeNode.getData().getData() instanceof SchemaDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstElementChild();
-            icon.setClassName(css.icon());
-            Elements.addClassName(css.schemaIcon(), icon);
+            iconResource = resources.schema();
+            itemTypeClass = css.schemaIcon();
         } else if (treeNode.getData().getData() instanceof ColumnDTO) {
-            Element icon = treeNode.getNodeLabel().getFirstElementChild();
-            icon.setClassName(css.icon());
-            Elements.addClassName(css.columnIcon(), icon);
+            iconResource = resources.column();
+            itemTypeClass = css.columnIcon();
+        }
+
+        if (iconResource != null) {
+            final JsSVGSVGElement jsIconElement = generateSvgIconElement(iconResource, css.icon(), itemTypeClass);
+
+            final Element icon = treeNode.getNodeLabel().getFirstElementChild();
+            treeNode.getNodeLabel().replaceChild(jsIconElement, icon);
         }
     }
 
@@ -94,13 +106,13 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
      * @return the HTML element for the treer node
      */
     public static SpanElement renderNodeContents(final Css css, final String contents, final String iconClassName,
-                                                 final boolean renderIcon, final String labelClassName) {
+                                                 final boolean renderIcon, final String labelClassName,
+                                                 final SVGResource iconResource) {
 
         SpanElement root = Elements.createSpanElement(css.root());
         if (renderIcon) {
-            DivElement icon = Elements.createDivElement(css.icon());
-            Elements.addClassName(iconClassName, icon);
-            root.appendChild(icon);
+            JsSVGSVGElement jsIconElement = generateSvgIconElement(iconResource, css.icon(), iconClassName);
+            root.appendChild(jsIconElement);
         }
 
         final Element label;
@@ -109,6 +121,23 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
         root.appendChild(label);
 
         return root;
+    }
+
+    /**
+     * Configure the SVG icon element for the node.
+     * 
+     * @param iconResource the SVGResource that will provide the element
+     * @param classNames the CSS classes that will be added to the element
+     */
+    private static JsSVGSVGElement generateSvgIconElement(final SVGResource iconResource, final String... classNames) {
+        final OMSVGSVGElement iconSvg = iconResource.getSvg();
+        for (final String className : classNames) {
+            iconSvg.addClassNameBaseVal(className);
+        }
+        final com.google.gwt.dom.client.Element iconElement = iconSvg.getElement();
+
+        final JsSVGSVGElement jsIconElement = iconElement.<JsSVGSVGElement> cast();
+        return jsIconElement;
     }
 
     /**
@@ -192,15 +221,15 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
         DatabaseMetadataEntityDTORenderer.Css getCss();
 
         /** Returns the icon for schema nodes. */
-        @Source("schema.png")
-        ImageResource schema();
+        @Source("schema.svg")
+        SVGResource schema();
 
         /** Returns the icon for table nodes. */
-        @Source("table.png")
-        ImageResource table();
+        @Source("table.svg")
+        SVGResource table();
 
         /** Returns the icon for column nodes. */
-        @Source("column.png")
-        ImageResource column();
+        @Source("column.svg")
+        SVGResource column();
     }
 }

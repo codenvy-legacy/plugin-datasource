@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-@sprite .schemaIcon {
-    gwt-image: "schema";
+.schemaIcon {
+    fill: #b4b4b4;
 }
 
-@sprite .tableIcon {
-    gwt-image: "table";
+.tableIcon {
+    fill: #b4b4b4;
 }
 
-@sprite .columnIcon {
-    gwt-image: "column";
+.columnIcon {
+    fill: #dbdbdb;
 }
 
 .schemaLabel,
@@ -48,6 +48,8 @@
     display: inline-block;
     background-position: center center;
     padding: 0px 3px 0px 3px;
+    width: 16px;
+    height: 16px;
 }
 
 .label {
