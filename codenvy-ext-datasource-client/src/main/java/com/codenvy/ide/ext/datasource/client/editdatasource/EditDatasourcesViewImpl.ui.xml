@@ -126,6 +126,6 @@
                 <my:ShowMorePagerPanel ui:field="pagerPanel" />
             </g:FlowPanel>
         </g:center>
-    
+
     </g:DockLayoutPanel>
 </ui:UiBinder>
