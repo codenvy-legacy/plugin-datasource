@@ -40,7 +40,7 @@
     </scm>
     <properties>
         <codenvy.datasource.version>3.0.0-M15-SNAPSHOT</codenvy.datasource.version>
-        <codenvy.version>3.0.0-M15-SHANPSHOT</codenvy.version>
+        <codenvy.version>3.0.0-M15-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <opencsv.version>2.3</opencsv.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
