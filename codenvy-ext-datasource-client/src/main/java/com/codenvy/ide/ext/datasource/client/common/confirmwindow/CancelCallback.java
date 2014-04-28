@@ -16,8 +16,14 @@
 
 package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 
+/**
+ * Callback called when the user clicks on "cancel" in the confirmation window.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface CancelCallback {
 
+    /** Action called when the user click on cancel. */
     void cancelled();
 
 }

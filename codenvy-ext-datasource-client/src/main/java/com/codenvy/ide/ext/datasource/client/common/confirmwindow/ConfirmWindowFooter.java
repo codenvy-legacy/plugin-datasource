@@ -28,12 +28,20 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * The footer show on confirmation windows.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class ConfirmWindowFooter extends Composite {
 
+    /** The UI binder instance. */
     private static ConfirmWindowFooterUiBinder uiBinder = GWT.create(ConfirmWindowFooterUiBinder.class);
 
+    /** The action delegate. */
     private ActionDelegate                     actionDelegate;
 
+    /** The i18n messages. */
     @UiField(provided = true)
     ConfirmWindowMessages                      messages;
 
@@ -43,20 +51,40 @@ public class ConfirmWindowFooter extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Sets the action delegate.
+     * 
+     * @param delegate the new value
+     */
     public void setDelegate(final ActionDelegate delegate) {
         this.actionDelegate = delegate;
     }
 
+    /**
+     * Handler set on the OK button.
+     * 
+     * @param event the event that triggers the handler call
+     */
     @UiHandler("okButton")
     public void handleOkClick(final ClickEvent event) {
         this.actionDelegate.accepted();
     }
 
+    /**
+     * Handler set on the cancel button.
+     * 
+     * @param event the event that triggers the handler call
+     */
     @UiHandler("cancelButton")
     public void handleCancelClick(final ClickEvent event) {
         this.actionDelegate.cancelled();
     }
 
+    /**
+     * The UI binder interface for this component.
+     * 
+     * @author "Mickaël Leduque"
+     */
     interface ConfirmWindowFooterUiBinder extends UiBinder<Widget, ConfirmWindowFooter> {
     }
 }

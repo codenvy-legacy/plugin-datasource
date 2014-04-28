@@ -18,6 +18,11 @@ package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 
 import com.google.gwt.i18n.client.Messages;
 
+/**
+ * I18n messages interface for the confirmation window.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface ConfirmWindowMessages extends Messages {
 
     @DefaultMessage("OK")

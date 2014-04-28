@@ -18,22 +18,35 @@ package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
+/**
+ * The view interface for the confirmation window component.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface ConfirmWindowView {
 
+    /** Sets the action delegate. */
     void setDelegate(ActionDelegate delegate);
 
+    /** Displays the dialog window. */
     void showDialog();
 
+    /** Closes the dialog window. */
     void closeDialog();
 
+    /** Fill the window with its content. */
     void setContent(IsWidget content);
 
+    /** Sets the window title. */
     void setTitle(String title);
 
+    /** The interface for the action delegate. */
     public interface ActionDelegate {
 
+        /** Defines what's done when the user clicks cancel. */
         void cancelled();
 
+        /** Defines what's done when the user clicks cancel. */
         void accepted();
     }
 }

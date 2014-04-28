@@ -27,13 +27,21 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * Implementation for the confirmation window view.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class ConfirmWindowViewImpl extends Window implements ConfirmWindowView {
 
+    /** The UI binder instance. */
     private static ConfirmWindowUiBinder uiBinder = GWT.create(ConfirmWindowUiBinder.class);
 
+    /** The container for the window content. */
     @UiField
     SimplePanel                          content;
 
+    /** The window footer. */
     private final ConfirmWindowFooter    footer;
 
     @Inject
@@ -71,6 +79,11 @@ public class ConfirmWindowViewImpl extends Window implements ConfirmWindowView {
         this.content.setWidget(content);
     }
 
+    /**
+     * The UI binder interface for this components.
+     * 
+     * @author "Mickaël Leduque"
+     */
     interface ConfirmWindowUiBinder extends UiBinder<Widget, ConfirmWindowViewImpl> {
     }
 }

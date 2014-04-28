@@ -24,11 +24,20 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
+/**
+ * Confirmation window {@link ConfirmWindow} implementation.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class ConfirmWindowPresenter implements ConfirmWindow, ConfirmWindowView.ActionDelegate {
 
+    /** This component view. */
     private final ConfirmWindowView view;
 
+    /** The callback used on OK. */
     private final ConfirmCallback   confirmCallback;
+
+    /** The callback used on cancel. */
     private final CancelCallback    cancelCallback;
 
     @AssistedInject

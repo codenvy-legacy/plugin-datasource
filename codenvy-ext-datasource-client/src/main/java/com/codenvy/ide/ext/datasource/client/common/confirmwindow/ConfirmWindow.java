@@ -16,7 +16,13 @@
 
 package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 
+/**
+ * Interface to the confirm window component.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface ConfirmWindow {
 
+    /** Operate the confirmation window : show it and manage user actions. */
     void confirm();
 }

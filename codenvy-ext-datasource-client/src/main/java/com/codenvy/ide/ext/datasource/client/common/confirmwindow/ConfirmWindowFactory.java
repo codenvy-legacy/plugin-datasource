@@ -22,13 +22,36 @@ import javax.validation.constraints.NotNull;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Factory for {@link ConfirmWindow} components.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public interface ConfirmWindowFactory {
 
+    /**
+     * Create a confirm window with only text as content.
+     * 
+     * @param title the window title
+     * @param content the window content/text
+     * @param confirmCallback the callback used on OK
+     * @param cancelCallback the callback used on cancel
+     * @return a {@link ConfirmWindow} instance
+     */
     ConfirmWindow createConfirmWindow(@NotNull @Assisted("title") String title,
                                       @NotNull @Assisted("message") String content,
                                       @Nullable ConfirmCallback confirmCallback,
                                       @Nullable CancelCallback cancelCallback);
 
+    /**
+     * Create a confirm window with a widget as content.
+     * 
+     * @param title the window title
+     * @param content the window content
+     * @param confirmCallback the callback used on OK
+     * @param cancelCallback the callback used on cancel
+     * @return a {@link ConfirmWindow} instance
+     */
     ConfirmWindow createConfirmWindow(@NotNull String title,
                                       @NotNull IsWidget content,
                                       @Nullable ConfirmCallback confirmCallback,
