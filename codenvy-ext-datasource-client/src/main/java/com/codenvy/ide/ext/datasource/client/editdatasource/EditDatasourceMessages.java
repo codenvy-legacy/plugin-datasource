@@ -49,6 +49,9 @@ public interface EditDatasourceMessages extends Messages {
     @DefaultMessage("No datasource selected")
     String editOrDeleteNoSelectionMessage();
 
+    @DefaultMessage("Confirm datasource deletion")
+    String confirmDeleteDatasourcesTitle();
+
     @DefaultMessage("Delete {0} datasources")
     String confirmDeleteDatasources(int size);
 
