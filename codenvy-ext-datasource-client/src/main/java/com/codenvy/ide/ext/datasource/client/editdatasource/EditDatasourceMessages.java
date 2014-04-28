@@ -15,8 +15,15 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.i18n.client.Messages;
 
+/**
+ * Internationalizable messages for the "Manage Datasource"-related dialogs.
+ * 
+ * @author "Mickaël Leduque"
+ */
+@DefaultLocale("en")
 public interface EditDatasourceMessages extends Messages {
 
     @DefaultMessage("Create Datasource")
@@ -52,8 +59,9 @@ public interface EditDatasourceMessages extends Messages {
     @DefaultMessage("Confirm datasource deletion")
     String confirmDeleteDatasourcesTitle();
 
-    @DefaultMessage("Delete {0} datasources")
-    String confirmDeleteDatasources(int size);
+    @DefaultMessage("Delete these {0} datasources ?")
+    @AlternateMessage({"one", "Delete the selected datasource ?"})
+    String confirmDeleteDatasources(@PluralCount int count);
 
     @DefaultMessage("No datasources configured")
     String emptyDatasourceList();
