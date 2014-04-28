@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction;
 
 /**
- * Callback called when the user clicks on "cancel" in the confirmation window.
+ * Callback called when the user clicks on "OK" in the confirmation window.
  * 
  * @author "Mickaël Leduque"
  */
-public interface CancelCallback {
+public interface ConfirmCallback {
 
-    /** Action called when the user click on cancel. */
-    void cancelled();
+    /** Action called when the user click on OK. */
+    void accepted();
 
 }

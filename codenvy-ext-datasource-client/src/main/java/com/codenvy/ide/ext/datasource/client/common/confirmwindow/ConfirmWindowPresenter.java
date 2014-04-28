@@ -19,6 +19,8 @@ package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.ide.ext.datasource.client.common.interaction.CancelCallback;
+import com.codenvy.ide.ext.datasource.client.common.interaction.ConfirmCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.inject.assistedinject.Assisted;
