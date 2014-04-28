@@ -15,6 +15,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.editdatasource;
 
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.ext.datasource.client.common.pager.ShowMorePagerPanel;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCell;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCellListResources;
@@ -62,11 +64,11 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     @UiField
     Button                                           editButton;
 
-    @UiField
-    Button                                           closeButton;
-
     @UiField(provided = true)
     EditDatasourceMessages                           messages;
+
+    /** The widget used as window footer. */
+    private final EditWindowFooter                   footer;
 
     /** The delegate/control component. */
     private ActionDelegate                           delegate;
@@ -76,7 +78,8 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
                                    final EditDatasourceMessages messages,
                                    final @Named(DatasourceKeyProvider.NAME) DatasourceKeyProvider keyProvider,
                                    final DatasourceCellListResources dsListResources,
-                                   final DatasourceCell datasourceCell) {
+                                   final DatasourceCell datasourceCell,
+                                   final @NotNull EditWindowFooter editWindowFooter) {
         this.messages = messages;
         Widget widget = uiBinder.createAndBindUi(this);
         setWidget(widget);
@@ -85,7 +88,11 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
         this.pagerPanel.setIncrementSize(DATASOURCES_LIST_INCREMENT);
         this.pagerPanel.setDisplay(this.datasourceList);
 
+        this.footer = editWindowFooter;
+
         this.setTitle(messages.editDatasourcesDialogText());
+        this.getFooter().add(editWindowFooter);
+
         this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
         this.datasourceList.setPageSize(DATASOURCES_LIST_PAGE_SIZE);
         this.datasourceList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
@@ -105,6 +112,7 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     @Override
     public void setDelegate(final ActionDelegate delegate) {
         this.delegate = delegate;
+        this.footer.setDelegate(delegate);
     }
 
     @Override
@@ -115,11 +123,6 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     @Override
     public void bindSelectionModel(SelectionModel<DatabaseConfigurationDTO> selectionModel) {
         this.datasourceList.setSelectionModel(selectionModel);
-    }
-
-    @UiHandler("closeButton")
-    public void handleCloseButton(final ClickEvent clickEvent) {
-        this.delegate.closeDialog();
     }
 
     @UiHandler("createButton")

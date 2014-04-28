@@ -104,11 +104,6 @@
     </ui:style>
 
     <g:DockLayoutPanel unit="EM" height="30em" width="40em">
-        <g:south size="3">
-            <g:SimplePanel addStyleNames="{style.flow-container}">
-                <g:Button ui:field="closeButton" text="{messages.closeButtonText}" addStyleNames="{style.button}" />
-            </g:SimplePanel>
-        </g:south>
         <g:east size="16">
             <g:FlowPanel addStyleNames="{style.actions-container}" >
                 <g:Button ui:field="createButton" text="{messages.createButtonText}" addStyleNames="{style.button}" />
