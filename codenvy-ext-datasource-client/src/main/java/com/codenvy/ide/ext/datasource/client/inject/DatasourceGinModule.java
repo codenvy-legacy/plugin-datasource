@@ -31,6 +31,12 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindow;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowFactory;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowFooter;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowPresenter;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowView;
+import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowViewImpl;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
@@ -149,7 +155,14 @@ public class DatasourceGinModule extends AbstractGinModule {
                                          .in(Singleton.class);
         bind(DatasourceCell.class).in(Singleton.class);
 
+        /* factories for the result zone */
         install(new GinFactoryModuleBuilder().build(ResultItemBoxFactory.class));
         install(new GinFactoryModuleBuilder().build(RequestResultHeaderFactory.class));
+
+        /* factory for the confirmation window */
+        bind(ConfirmWindowFooter.class);
+        bind(ConfirmWindowView.class).to(ConfirmWindowViewImpl.class);
+        install(new GinFactoryModuleBuilder().implement(ConfirmWindow.class, ConfirmWindowPresenter.class)
+                                             .build(ConfirmWindowFactory.class));
     }
 }
