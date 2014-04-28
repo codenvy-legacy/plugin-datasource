@@ -38,7 +38,6 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -140,7 +139,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     public void deleteSelectedDatasources() {
         final Set<DatabaseConfigurationDTO> selection = this.selectionModel.getSelectedSet();
         if (selection.isEmpty()) {
-            final String warnMessage = this.messages.editOrDeleteNoSelectionMessage();
+            final String warnMessage = this.messages.deleteNoSelectionMessage();
             final String warnTitle = this.messages.editOrDeleteNoSelectionTitle();
             final MessageWindow messageWindow = this.dialogFactory.createMessageWindow(warnTitle, warnMessage, null);
             messageWindow.inform();
@@ -203,11 +202,17 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     public void editSelectedDatasource() {
         final Set<DatabaseConfigurationDTO> selection = this.selectionModel.getSelectedSet();
         if (selection.isEmpty()) {
-            Window.alert(this.messages.editOrDeleteNoSelectionMessage());
+            final String warnMessage = this.messages.editNoSelectionMessage();
+            final String warnTitle = this.messages.editOrDeleteNoSelectionTitle();
+            final MessageWindow messageWindow = this.dialogFactory.createMessageWindow(warnTitle, warnMessage, null);
+            messageWindow.inform();
             return;
         }
         if (selection.size() > 1) {
-            Window.alert(this.messages.editMultipleSelectionMessage());
+            final String warnMessage = this.messages.editMultipleSelectionMessage();
+            final String warnTitle = this.messages.editMultipleSelectionTitle();
+            final MessageWindow messageWindow = this.dialogFactory.createMessageWindow(warnTitle, warnMessage, null);
+            messageWindow.inform();
             return;
         }
 
