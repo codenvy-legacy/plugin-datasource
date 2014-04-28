@@ -28,7 +28,8 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmCallback;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindow;
-import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowFactory;
+import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindow;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
@@ -81,8 +82,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** The action object to create new datasources. */
     private final NewDatasourceAction                           newDatasourceAction;
 
-    /** Factory for confirmation widnows. */
-    private final ConfirmWindowFactory                          confirmWindowFactory;
+    /** Factory for confirmation and message windows. */
+    private final DialogFactory                                 dialogFactory;
 
     @Inject
     public EditDatasourcesPresenter(final @NotNull EditDatasourcesView view,
@@ -93,7 +94,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                                     final @NotNull EventBus eventBus,
                                     final @NotNull EditDatasourceLauncher editDatasourceLauncher,
                                     final @NotNull NewDatasourceAction newDatasourceAction,
-                                    final @NotNull ConfirmWindowFactory confirmWindowFactory) {
+                                    final @NotNull DialogFactory dialogFactory) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.messages = messages;
@@ -105,7 +106,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
         this.view.bindSelectionModel(this.selectionModel);
         this.newDatasourceAction = newDatasourceAction;
-        this.confirmWindowFactory = confirmWindowFactory;
+        this.dialogFactory = dialogFactory;
     }
 
     /** Show dialog. */
@@ -139,7 +140,10 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     public void deleteSelectedDatasources() {
         final Set<DatabaseConfigurationDTO> selection = this.selectionModel.getSelectedSet();
         if (selection.isEmpty()) {
-            Window.alert(this.messages.editOrDeleteNoSelectionMessage());
+            final String warnMessage = this.messages.editOrDeleteNoSelectionMessage();
+            final String warnTitle = this.messages.editOrDeleteNoSelectionTitle();
+            final MessageWindow messageWindow = this.dialogFactory.createMessageWindow(warnTitle, warnMessage, null);
+            messageWindow.inform();
             return;
         }
         final String confirmMessage = messages.confirmDeleteDatasources(selection.size());
@@ -152,8 +156,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         };
 
         // no cancel callback
-        final ConfirmWindow confirmWindow = this.confirmWindowFactory.createConfirmWindow(confirmTitle, confirmMessage,
-                                                                                          callback, null);
+        final ConfirmWindow confirmWindow = this.dialogFactory.createConfirmWindow(confirmTitle, confirmMessage,
+                                                                                   callback, null);
         confirmWindow.confirm();
 
     }
