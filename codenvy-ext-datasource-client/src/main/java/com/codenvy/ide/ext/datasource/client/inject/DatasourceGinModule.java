@@ -32,11 +32,16 @@ import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindow;
-import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowFactory;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowFooter;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowPresenter;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowView;
 import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowViewImpl;
+import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindow;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowFooter;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowPresenter;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowView;
+import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowViewImpl;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
@@ -159,10 +164,16 @@ public class DatasourceGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder().build(ResultItemBoxFactory.class));
         install(new GinFactoryModuleBuilder().build(RequestResultHeaderFactory.class));
 
-        /* factory for the confirmation window */
+        /* confirmation window */
         bind(ConfirmWindowFooter.class);
         bind(ConfirmWindowView.class).to(ConfirmWindowViewImpl.class);
+        /* message window */
+        bind(MessageWindowFooter.class);
+        bind(MessageWindowView.class).to(MessageWindowViewImpl.class);
+        /* factory for these dialogs. */
         install(new GinFactoryModuleBuilder().implement(ConfirmWindow.class, ConfirmWindowPresenter.class)
-                                             .build(ConfirmWindowFactory.class));
+                                             .implement(MessageWindow.class, MessageWindowPresenter.class)
+                                             .build(DialogFactory.class));
+
     }
 }
