@@ -89,7 +89,7 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
         this.datasourceList.setEmptyListWidget(new Label(messages.emptyDatasourceList()));
         this.datasourceList.setPageSize(DATASOURCES_LIST_PAGE_SIZE);
         this.datasourceList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
-        this.datasourceList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+        this.datasourceList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
     }
 
     @Override
