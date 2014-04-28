@@ -36,14 +36,14 @@ import com.google.inject.Inject;
 public class EditWindowFooter extends Composite {
 
     /** The UI binder instance for this class. */
-    private static ConfirmWindowFooterUiBinder uiBinder = GWT.create(ConfirmWindowFooterUiBinder.class);
+    private static EditWindowFooterUiBinder uiBinder = GWT.create(EditWindowFooterUiBinder.class);
 
     /** The action delegate. */
-    private ActionDelegate                     actionDelegate;
+    private ActionDelegate                  actionDelegate;
 
     /** The i18n messages. */
     @UiField(provided = true)
-    EditDatasourceMessages                     messages;
+    EditDatasourceMessages                  messages;
 
     @Inject
     public EditWindowFooter(final @NotNull EditDatasourceMessages messages) {
@@ -75,6 +75,6 @@ public class EditWindowFooter extends Composite {
      * 
      * @author "Mickaël Leduque"
      */
-    interface ConfirmWindowFooterUiBinder extends UiBinder<Widget, EditWindowFooter> {
+    interface EditWindowFooterUiBinder extends UiBinder<Widget, EditWindowFooter> {
     }
 }
