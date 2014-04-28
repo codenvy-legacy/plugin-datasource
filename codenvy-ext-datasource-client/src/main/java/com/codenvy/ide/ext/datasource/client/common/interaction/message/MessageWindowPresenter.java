@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction.message;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.ide.ext.datasource.client.common.interaction.CancelCallback;
 import com.codenvy.ide.ext.datasource.client.common.interaction.ConfirmCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -27,50 +26,36 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
 /**
- * Confirmation window {@link ConfirmWindow} implementation.
+ * Message/information window {@link MessageWindow} implementation.
  * 
  * @author "Mickaël Leduque"
  */
-public class ConfirmWindowPresenter implements ConfirmWindow, ConfirmWindowView.ActionDelegate {
+public class MessageWindowPresenter implements MessageWindow, MessageWindowView.ActionDelegate {
 
     /** This component view. */
-    private final ConfirmWindowView view;
+    private final MessageWindowView view;
 
     /** The callback used on OK. */
     private final ConfirmCallback   confirmCallback;
 
-    /** The callback used on cancel. */
-    private final CancelCallback    cancelCallback;
-
     @AssistedInject
-    public ConfirmWindowPresenter(final @NotNull ConfirmWindowView view,
+    public MessageWindowPresenter(final @NotNull MessageWindowView view,
                                   final @NotNull @Assisted("title") String title,
                                   final @NotNull @Assisted("message") String message,
-                                  final @Nullable @Assisted ConfirmCallback confirmCallback,
-                                  final @Nullable @Assisted CancelCallback cancelCallback) {
-        this(view, title, new Label(message), confirmCallback, cancelCallback);
+                                  final @Nullable @Assisted ConfirmCallback confirmCallback) {
+        this(view, title, new Label(message), confirmCallback);
     }
 
     @AssistedInject
-    public ConfirmWindowPresenter(final @NotNull ConfirmWindowView view,
+    public MessageWindowPresenter(final @NotNull MessageWindowView view,
                                   final @NotNull @Assisted String title,
                                   final @NotNull @Assisted IsWidget content,
-                                  final @Nullable @Assisted ConfirmCallback confirmCallback,
-                                  final @Nullable @Assisted CancelCallback cancelCallback) {
+                                  final @Nullable @Assisted ConfirmCallback confirmCallback) {
         this.view = view;
         this.view.setContent(content);
         this.view.setTitle(title);
         this.confirmCallback = confirmCallback;
-        this.cancelCallback = cancelCallback;
         this.view.setDelegate(this);
-    }
-
-    @Override
-    public void cancelled() {
-        this.view.closeDialog();
-        if (this.cancelCallback != null) {
-            this.cancelCallback.cancelled();
-        }
     }
 
     @Override
@@ -82,7 +67,7 @@ public class ConfirmWindowPresenter implements ConfirmWindow, ConfirmWindowView.
     }
 
     @Override
-    public void confirm() {
+    public void inform() {
         this.view.showDialog();
     }
 }

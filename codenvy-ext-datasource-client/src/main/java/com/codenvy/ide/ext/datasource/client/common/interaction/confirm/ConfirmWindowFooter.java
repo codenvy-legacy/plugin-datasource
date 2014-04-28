@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.messagewindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction.confirm;
 
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.ext.datasource.client.common.interaction.InteractionWindowMessages;
-import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowView.ActionDelegate;
+import com.codenvy.ide.ext.datasource.client.common.interaction.confirm.ConfirmWindowView.ActionDelegate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -30,14 +30,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 /**
- * The footer show on message windows.
+ * The footer show on confirmation windows.
  * 
  * @author "Mickaël Leduque"
  */
-public class MessageWindowFooter extends Composite {
+public class ConfirmWindowFooter extends Composite {
 
     /** The UI binder instance. */
-    private static MessageWindowFooterUiBinder uiBinder = GWT.create(MessageWindowFooterUiBinder.class);
+    private static ConfirmWindowFooterUiBinder uiBinder = GWT.create(ConfirmWindowFooterUiBinder.class);
 
     /** The action delegate. */
     private ActionDelegate                     actionDelegate;
@@ -47,7 +47,7 @@ public class MessageWindowFooter extends Composite {
     InteractionWindowMessages                      messages;
 
     @Inject
-    public MessageWindowFooter(final @NotNull InteractionWindowMessages messages) {
+    public ConfirmWindowFooter(final @NotNull InteractionWindowMessages messages) {
         this.messages = messages;
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -72,10 +72,20 @@ public class MessageWindowFooter extends Composite {
     }
 
     /**
+     * Handler set on the cancel button.
+     * 
+     * @param event the event that triggers the handler call
+     */
+    @UiHandler("cancelButton")
+    public void handleCancelClick(final ClickEvent event) {
+        this.actionDelegate.cancelled();
+    }
+
+    /**
      * The UI binder interface for this component.
      * 
      * @author "Mickaël Leduque"
      */
-    interface MessageWindowFooterUiBinder extends UiBinder<Widget, MessageWindowFooter> {
+    interface ConfirmWindowFooterUiBinder extends UiBinder<Widget, ConfirmWindowFooter> {
     }
 }

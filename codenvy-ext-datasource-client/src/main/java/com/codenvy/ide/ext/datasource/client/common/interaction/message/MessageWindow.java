@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.messagewindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction.message;
 
 /**
  * Interface to the message window component.

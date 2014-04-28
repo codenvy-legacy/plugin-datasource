@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction.message;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * The view interface for the confirmation window component.
+ * The view interface for the message window component.
  * 
  * @author "Mickaël Leduque"
  */
-public interface ConfirmWindowView {
+public interface MessageWindowView {
 
     /** Sets the action delegate. */
     void setDelegate(ActionDelegate delegate);
@@ -42,9 +42,6 @@ public interface ConfirmWindowView {
 
     /** The interface for the action delegate. */
     public interface ActionDelegate {
-
-        /** Defines what's done when the user clicks cancel. */
-        void cancelled();
 
         /** Defines what's done when the user clicks cancel. */
         void accepted();

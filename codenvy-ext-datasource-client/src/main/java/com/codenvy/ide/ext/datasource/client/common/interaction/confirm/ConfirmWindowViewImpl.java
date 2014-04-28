@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction.confirm;
 
 import javax.validation.constraints.NotNull;
 
