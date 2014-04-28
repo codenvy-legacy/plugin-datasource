@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
 
 import com.google.gwt.i18n.client.Messages;
