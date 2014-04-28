@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.codenvy.ide.ext.datasource.client.common.confirmwindow;
+package com.codenvy.ide.ext.datasource.client.common.interaction;
 
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * I18n messages interface for the confirmation window.
+ * I18n messages interface for the confirmation and message windows.
  * 
  * @author "Mickaël Leduque"
  */
-public interface ConfirmWindowMessages extends Messages {
+public interface InteractionWindowMessages extends Messages {
 
     @DefaultMessage("OK")
     String okButtonText();

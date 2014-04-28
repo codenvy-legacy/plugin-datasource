@@ -18,7 +18,7 @@ package com.codenvy.ide.ext.datasource.client.common.messagewindow;
 
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.ide.ext.datasource.client.common.confirmwindow.ConfirmWindowMessages;
+import com.codenvy.ide.ext.datasource.client.common.interaction.InteractionWindowMessages;
 import com.codenvy.ide.ext.datasource.client.common.messagewindow.MessageWindowView.ActionDelegate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,10 +44,10 @@ public class MessageWindowFooter extends Composite {
 
     /** The i18n messages. */
     @UiField(provided = true)
-    ConfirmWindowMessages                      messages;
+    InteractionWindowMessages                      messages;
 
     @Inject
-    public MessageWindowFooter(final @NotNull ConfirmWindowMessages messages) {
+    public MessageWindowFooter(final @NotNull InteractionWindowMessages messages) {
         this.messages = messages;
         initWidget(uiBinder.createAndBindUi(this));
     }
