@@ -221,7 +221,9 @@ public class DatasourceService {
                                                     .withDefaultValue(column.getDefaultValue())
                                                     .withNullable(column.isNullable())
                                                     .withDataSize(column.getSize())
-                                                    .withDecimalDigits(column.getDecimalDigits());
+                                                    .withDecimalDigits(column.getDecimalDigits())
+                                                    .withPartOfForeignKey(column.isPartOfForeignKey())
+                                                    .withPartOfPrimaryKey(column.isPartOfPrimaryKey());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
@@ -247,7 +249,6 @@ public class DatasourceService {
 
         return jsonResult;
     }
-
 
     /**
      * Executes the SQL requests given as parameter.
