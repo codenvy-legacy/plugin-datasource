@@ -58,4 +58,18 @@ public interface ColumnDTO extends DatabaseMetadataEntityDTO {
     void setNullable(boolean nullable);
 
     boolean getNullable();
+
+
+    ColumnDTO withPartOfForeignKey(boolean partOfFK);
+
+    void setPartOfForeignKey(boolean partOfFK);
+
+    boolean isPartOfForeignKey();
+
+
+    ColumnDTO withPartOfPrimaryKey(boolean partOfPK);
+
+    void setPartOfPrimaryKey(boolean partOfPK);
+
+    boolean isPartOfPrimaryKey();
 }
