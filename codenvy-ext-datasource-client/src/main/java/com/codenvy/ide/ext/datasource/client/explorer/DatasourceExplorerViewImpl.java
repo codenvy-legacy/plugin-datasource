@@ -20,6 +20,7 @@ import java.util.Collection;
 import org.vectomatic.dom.svg.ui.SVGPushButton;
 
 import com.codenvy.ide.api.parts.base.BaseView;
+import com.codenvy.ide.collections.js.JsoArray;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
@@ -27,6 +28,7 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -217,8 +219,27 @@ public class DatasourceExplorerViewImpl extends
             }
 
             @Override
-            public void onNodeSelected(TreeNodeElement<EntityTreeNode> node, SignalEvent event) {
-                delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
+            public void onNodeSelected(final TreeNodeElement<EntityTreeNode> node, final SignalEvent event) {
+                // we must force single selection and check unselection
+                final JsoArray<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
+                if (selectedNodes.isEmpty()) {
+                    // this was a unselection
+                    Log.info(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
+                    delegate.onDatabaseMetadataEntitySelected(null);
+                } else if (selectedNodes.size() == 1) {
+                    // normal selection with exactly one selected element
+                    Log.info(DatasourceExplorerViewImpl.class, "Normal tree item selection.");
+                    tree.getSelectionModel().clearSelections();
+                    tree.getSelectionModel().selectSingleNode(node.getData());
+                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
+                } else {
+                    // attempt to do multiple selection with ctrl or shift
+                    Log.info(DatasourceExplorerViewImpl.class,
+                             "Multiple selection triggered in datasource explorer tree - keep the last one.");
+                    tree.getSelectionModel().clearSelections();
+                    tree.getSelectionModel().selectSingleNode(node.getData());
+                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
+                }
             }
 
             @Override

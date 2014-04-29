@@ -135,8 +135,15 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onDatabaseMetadataEntitySelected(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
-        Log.info(DatasourceExplorerPartPresenter.class, "Database entity selected : " + dbMetadataEntity);
-        setSelection(new Selection<DatabaseMetadataEntityDTO>(dbMetadataEntity));
+        if (dbMetadataEntity != null) {
+            Log.info(DatasourceExplorerPartPresenter.class, "Database entity selected : "
+                                                            + dbMetadataEntity.getLookupKey()
+                                                            + " - "
+                                                            + dbMetadataEntity.getName());
+        } else {
+            Log.info(DatasourceExplorerPartPresenter.class, "Database entity selected : null");
+        }
+        setSelection(new Selection<DatabaseMetadataEntityDTO>(dbMetadataEntity)); // useless ?
         eventBus.fireEvent(new DatabaseEntitySelectionEvent(dbMetadataEntity));
     }
 
