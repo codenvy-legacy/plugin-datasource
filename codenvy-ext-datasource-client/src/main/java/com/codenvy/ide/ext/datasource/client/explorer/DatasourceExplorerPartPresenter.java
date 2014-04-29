@@ -25,6 +25,7 @@ import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
+import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeEvent;
 import com.codenvy.ide.ext.datasource.client.properties.DataEntityPropertiesPresenter;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorEvent;
@@ -152,16 +153,22 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onClickExploreButton(final String datasourceId) {
+        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
+        if (dsMeta != null) {
+            view.setItems(dsMeta);
+            eventBus.fireEvent(new DatabaseEntitySelectionEvent(dsMeta));
+            return;
+        }
         loadDatasource(datasourceId);
     }
 
     protected void loadDatasource(final String datasourceId) {
-        DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
         if (datasourceId == null || datasourceId.isEmpty()) {
             view.setItems(null);
             return;
         }
 
+        DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
         service.fetchDatabaseInfo(datasourceObject);
     }
 
@@ -171,13 +178,12 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
         if (dsMeta != null) {
             view.setItems(dsMeta);
+            eventBus.fireEvent(new DatabaseEntitySelectionEvent(dsMeta));
             return;
         }
         loadDatasource(datasourceId);
 
-        // After selection, the datasource is selected
-        final DatabaseDTO datasource = this.databaseInfoStore.getDatabaseInfo(this.selectedDatasource);
-        eventBus.fireEvent(new DatabaseEntitySelectionEvent(datasource));
+        eventBus.fireEvent(new SelectedDatasourceChangeEvent(datasourceId));
     }
 
     @Override

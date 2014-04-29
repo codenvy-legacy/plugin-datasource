@@ -20,6 +20,8 @@ import java.util.List;
 
 import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
 import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
+import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeEvent;
+import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorEvent;
@@ -44,6 +46,7 @@ import com.google.web.bindery.event.shared.EventBus;
  * @author "Mickaël Leduque"
  */
 public class DataEntityPropertiesPresenter extends AbstractPartPresenter implements DataEntityPropertiesView.ActionDelegate,
+                                                                        SelectedDatasourceChangeHandler,
                                                                         DatabaseEntitySelectionHandler,
                                                                         DatabaseInfoReceivedHandler,
                                                                         DatabaseInfoErrorHandler {
@@ -57,7 +60,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
 
     private final DatabaseInfoStore             databaseInfoStore;
 
-    private DatabaseDTO                         currentDatabaseInfo;
+    private String                              selectedDatabaseId;
 
     @Inject
     public DataEntityPropertiesPresenter(final DataEntityPropertiesView view,
@@ -72,6 +75,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         this.databaseInfoStore = databaseInfoStore;
         eventBus.addHandler(DatabaseEntitySelectionEvent.getType(), this);
         eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
+        eventBus.addHandler(SelectedDatasourceChangeEvent.getType(), this);
     }
 
     @Override
@@ -96,17 +100,16 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
 
     @Override
     public void onDatabaseEntitySelection(final DatabaseEntitySelectionEvent event) {
-        DatabaseMetadataEntityDTO newSelection = event.getSelection();
-        if (newSelection == null && this.currentDatabaseInfo == null) {
-            updateDisplay(null);
-        } else {
-            // show the database when no item is selected
-            if (newSelection == null) {
-                updateDisplay(this.currentDatabaseInfo);
+        final DatabaseMetadataEntityDTO newSelection = event.getSelection();
+        if (newSelection == null) {
+            if (this.selectedDatabaseId == null) {
+                updateDisplay(null);
             } else {
-                updateDisplay(newSelection);
+                final DatabaseDTO metadata = this.databaseInfoStore.getDatabaseInfo(this.selectedDatabaseId);
+                updateDisplay(metadata);
             }
-            this.view.setShown(true);
+        } else {
+            updateDisplay(newSelection);
         }
     }
 
@@ -116,11 +119,13 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
      * @param newSelection the selected object
      */
     private void updateDisplay(final DatabaseMetadataEntityDTO newSelection) {
+
+        boolean showProperties = true;
+
         if (newSelection == null) {
             Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
-            this.view.setShown(false);
+            showProperties = false;
             setPropertyList(null);
-            return;
         }
 
         if (newSelection instanceof DatabaseDTO) {
@@ -137,9 +142,10 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
             setPropertyList(getPropertiesForColumn((ColumnDTO)newSelection));
         } else {
             Log.info(DataEntityPropertiesPresenter.class, "Unknown selection, hiding properties display.");
-            this.view.setShown(false);
+            showProperties = false;
             setPropertyList(null);
         }
+        this.view.setShown(showProperties);
     }
 
     /**
@@ -249,18 +255,26 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
 
     @Override
     public void onDatabaseInfoReceived(final DatabaseInfoReceivedEvent event) {
-        currentDatabaseInfo = this.databaseInfoStore.getDatabaseInfo(event.getDatabaseId());
-        if (currentDatabaseInfo != null) {
-            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : " + currentDatabaseInfo.getName());
-        } else {
-            Log.info(DataEntityPropertiesPresenter.class, "Datasource selected : null");
+        if (this.selectedDatabaseId != null && this.selectedDatabaseId.equals(event.getDatabaseId())) {
+            Log.info(DataEntityPropertiesPresenter.class, "Metadata info received for currently selected datasource "
+                                                          + this.selectedDatabaseId + " - updating display.");
+            final DatabaseDTO dbInfo = this.databaseInfoStore.getDatabaseInfo(this.selectedDatabaseId);
+            updateDisplay(dbInfo);
         }
-        updateDisplay(currentDatabaseInfo);
     }
 
     @Override
     public void onDatabaseInfoError(final DatabaseInfoErrorEvent event) {
         // Keep old database info or show an empty tree ?
-        updateDisplay(null);
+        if (this.selectedDatabaseId != null && this.selectedDatabaseId.equals(event.getDatabaseId())) {
+            updateDisplay(null);
+        }
+    }
+
+    @Override
+    public void onSelectedDatasourceChange(final SelectedDatasourceChangeEvent event) {
+        this.selectedDatabaseId = event.getSelectedDatasourceId();
+        final DatabaseDTO metadata = this.databaseInfoStore.getDatabaseInfo(this.selectedDatabaseId);
+        updateDisplay(metadata);
     }
 }
