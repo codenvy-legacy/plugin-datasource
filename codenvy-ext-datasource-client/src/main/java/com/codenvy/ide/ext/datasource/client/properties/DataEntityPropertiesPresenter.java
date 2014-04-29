@@ -184,6 +184,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         result.add(new Property(constants.productNameLabel(), databaseDTO.getDatabaseProductName()));
         result.add(new Property(constants.productVersionLabel(), databaseDTO.getDatabaseProductVersion()));
         result.add(new Property(constants.usernameLabel(), databaseDTO.getUserName()));
+        result.add(new Property(constants.schemaCountLabel(), Integer.toString(databaseDTO.getSchemas().size())));
         return result;
     }
 
@@ -196,6 +197,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     private List<Property> getPropertiesForSchema(final SchemaDTO schemaDTO) {
         List<Property> result = getCommonProperties(schemaDTO);
         result.add(new Property(constants.objectTypeLabel(), constants.objectTypeSchema()));
+        result.add(new Property(constants.tableCountLabel(), Integer.toString(schemaDTO.getTables().size())));
         return result;
     }
 
@@ -215,6 +217,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
             primaryKeyDisplay = formatPrimaryKey(primaryKey);
         }
         result.add(new Property(constants.primaryKeyLabel(), primaryKeyDisplay));
+        result.add(new Property(constants.columnCountLabel(), Integer.toString(tableDTO.getColumns().size())));
         return result;
     }
 
