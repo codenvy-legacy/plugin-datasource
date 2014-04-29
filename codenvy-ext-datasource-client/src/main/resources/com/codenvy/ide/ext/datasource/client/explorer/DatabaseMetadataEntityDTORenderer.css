@@ -25,6 +25,12 @@
 .columnIcon {
     fill: #dbdbdb;
 }
+.columnIconPK {
+    fill: #ffed35;
+}
+.columnIconFK {
+    fill: #4896c8;
+}
 
 .schemaLabel,
 .tableLabel {

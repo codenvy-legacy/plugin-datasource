@@ -64,12 +64,23 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
             labelClassName = css.tableLabel();
             iconResource = resources.table();
         } else if (data.getData() instanceof ColumnDTO) {
-            iconClassName = css.columnIcon();
+            iconClassName = getColumnIconClassName((ColumnDTO)data.getData());
             labelClassName = css.columnLabel();
             iconResource = resources.column();
         }
 
         return renderNodeContents(css, data.getData().getName(), iconClassName, true, labelClassName, iconResource);
+    }
+
+    private String getColumnIconClassName(final ColumnDTO dto) {
+        // will check if primary or foreign key
+        if (dto.isPartOfForeignKey()) {
+            return css.columnIconFK();
+        }
+        if (dto.isPartOfPrimaryKey()) {
+            return css.columnIconPK();
+        }
+        return css.columnIcon();
     }
 
     @Override
@@ -165,6 +176,20 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
          * @return class name
          */
         String columnIcon();
+
+        /**
+         * Returns the CSS class for primary key icon.
+         * 
+         * @return class name
+         */
+        String columnIconPK();
+
+        /**
+         * Returns the CSS class for foreign key icon.
+         * 
+         * @return class name
+         */
+        String columnIconFK();
 
         /**
          * Returns the CSS class for schema label.
