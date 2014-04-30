@@ -16,8 +16,11 @@
 
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -26,21 +29,22 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * Widget that embeds one result item (one table, one row count or one error.
  * 
  * @author "Mickaël Leduque"
  */
-public class ResultItemBox extends Composite {
+public class ResultItemBox extends Composite implements RequestResultHeader.OpenCloseDelegate {
 
     private static ResultItemBoxUiBinder uiBinder = GWT.create(ResultItemBoxUiBinder.class);
 
     @UiField
     HTMLPanel                            mainPanel;
 
-    @UiField
-    SimplePanel                          headerPlace;
+    @UiField(provided = true)
+    RequestResultHeader                  header;
 
     @UiField
     FlowPanel                            resultPlace;
@@ -51,19 +55,20 @@ public class ResultItemBox extends Composite {
     @UiField(provided = true)
     final DatasourceUiResources          datasourceUiResources;
 
-    @Inject
-    public ResultItemBox(final DatasourceUiResources datasourceUiResources) {
-        this.datasourceUiResources = datasourceUiResources;
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+    @UiField
+    InternalStyle                        style;
 
-    /**
-     * Decides the widget used as result header.
-     * 
-     * @param header the header
-     */
-    public void setHeader(final RequestResultHeader header) {
-        headerPlace.setWidget(header);
+    /** The opened/closed state of the component. */
+    private boolean                      opened   = true;
+
+    @Inject
+    public ResultItemBox(final @NotNull DatasourceUiResources datasourceUiResources,
+                         final @NotNull @Assisted RequestResultHeader header) {
+        this.datasourceUiResources = datasourceUiResources;
+        this.header = header;
+        initWidget(uiBinder.createAndBindUi(this));
+
+        header.setOpenCloseDelegate(this);
     }
 
     /**
@@ -84,11 +89,32 @@ public class ResultItemBox extends Composite {
         footerPlace.setWidget(footer);
     }
 
+    @Override
+    public void onOpenClose() {
+        this.opened = !this.opened;
+        setContentVisible(this.opened);
+        this.header.setOpen(this.opened);
+    }
+
+    private void setContentVisible(boolean visible) {
+        if (visible) {
+            this.resultPlace.removeStyleName(style.folded());
+            this.footerPlace.removeStyleName(style.folded());
+        } else {
+            this.resultPlace.addStyleName(style.folded());
+            this.footerPlace.addStyleName(style.folded());
+        }
+    }
+
     /**
      * UIBinder interface for the ResultItemBox.
      * 
      * @author "Mickaël Leduque"
      */
     interface ResultItemBoxUiBinder extends UiBinder<Widget, ResultItemBox> {
+    }
+
+    public interface InternalStyle extends CssResource {
+        String folded();
     }
 }

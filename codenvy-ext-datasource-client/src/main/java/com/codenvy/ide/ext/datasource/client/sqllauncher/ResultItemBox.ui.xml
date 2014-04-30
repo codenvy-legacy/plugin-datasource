@@ -17,10 +17,13 @@
 
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:my="urn:import:com.codenvy.ide.ext.datasource.client.sqllauncher">
 
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
-    <ui:style src="com/codenvy/ide/api/ui/style.css">
+    <ui:style field="style"
+              src="com/codenvy/ide/api/ui/style.css"
+              type="com.codenvy.ide.ext.datasource.client.sqllauncher.ResultItemBox.InternalStyle">
         .mainPanel-layout {
             display: flex;
             display: -webkit-flex;
@@ -61,11 +64,18 @@
             min-width: -webkit-max-content;
             min-width: -moz-max-content;
         }
+        .foldable {
+        }
+        .folded {
+            display: none;
+        }
     </ui:style>
 
     <g:HTMLPanel ui:field="mainPanel" addStyleNames="{style.mainPanel-layout} {datasourceUiResources.datasourceUiCSS.resultItem}" >
-        <g:SimplePanel ui:field="headerPlace" addStyleNames="{style.headerPlace}" />
-        <g:FlowPanel ui:field="resultPlace" addStyleNames="{style.resultPlace}" />
-        <g:SimplePanel ui:field="footerPlace" addStyleNames="{style.footerPlace}" />
+        <div class="{style.headerPlace}">
+            <my:RequestResultHeader ui:field="header" />
+        </div>
+        <g:FlowPanel ui:field="resultPlace" addStyleNames="{style.resultPlace} {style.foldable}" />
+        <g:SimplePanel ui:field="footerPlace" addStyleNames="{style.footerPlace} {style.foldable}" />
     </g:HTMLPanel>
 </ui:UiBinder>

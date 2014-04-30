@@ -20,7 +20,8 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
-    <ui:style src="com/codenvy/ide/api/ui/style.css">
+    <ui:style src="com/codenvy/ide/api/ui/style.css"
+              type="com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl.HeaderInternalStyle">
         .mainPanel-layout {
             display: flex;
             display: -webkit-flex;
@@ -31,8 +32,8 @@
             justify-content: flex-start;
             -webkit-justify-content: flex-start;
 
-            align-items: stretch;
-            -webkit-align-items: stretch;
+            align-items: center;
+            -webkit-align-items: center;
         }
         .stuck-right {
             position: absolute; /* used with position:relative in the scrollpanel */
@@ -47,8 +48,8 @@
             justify-content: flex-start;
             -webkit-justify-content: flex-start;
 
-            align-items: stretch;
-            -webkit-align-items: stretch;
+            align-items: center;
+            -webkit-align-items: center;
         }
 
         .queryReminderPlace {
@@ -69,9 +70,43 @@
             flex-shrink: 0;
             -webkit-flex-shrink: 0;
         }
+
+        .openCloseMarker-container {
+            margin-right: 2px;
+            width: 16px;
+            height: 16px;
+
+            display: flex;
+            display: -webkit-flex;
+            
+            flex-flow: column;
+            -webkit-flex-flow: column;
+
+            justify-content: center;
+            -webkit-justify-content: center;
+
+            align-items: center;
+            -webkit-align-items: center;
+        }
+        .openCloseMarker {
+            cursor: pointer;
+            
+            -webkit-transform: rotate(0turn);
+            transform: rotate(0turn);
+
+            transition: transform 100ms;
+            transition: -webkit-transform 100ms;
+        }
+        .openCloseMarker-closed {
+            -webkit-transform: literal('rotate(-0.25turn)');
+            transform: literal('rotate(-0.25turn)'); /* moz>16 ie>10 chrome>36 safari? */
+        }
     </ui:style>
 
     <g:HTMLPanel addStyleNames="{style.mainPanel-layout} {datasourceUiResources.datasourceUiCSS.resultItemHeaderBar}" >
+        <div class="{style.openCloseMarker-container}">
+            <g:Label ui:field="openCloseMarker" addStyleNames="{style.openCloseMarker}" text="&#x25BC;" />
+        </div>
         <g:SimplePanel ui:field="queryReminderPlace" addStyleNames="{style.queryReminderPlace} {datasourceUiResources.datasourceUiCSS.resultItemQueryReminder}" />
         <div class="{style.stuck-right}">
             <g:SimplePanel ui:field="csvButtonPlace" addStyleNames="{style.csvButtonPlace}" />

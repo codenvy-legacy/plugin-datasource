@@ -16,18 +16,18 @@
 
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader.RequestResultDelegate;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl.RequestResultDelegate;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 
 /**
- * Factory for {@link RequestResultHeader}.
+ * Factory for {@link RequestResultHeaderImpl}.
  * 
  * @author "Mickaël Leduque"
  */
 public interface RequestResultHeaderFactory {
 
     /**
-     * Creates an instance of {@link RequestResultHeader}.
+     * Creates an instance of {@link RequestResultHeaderImpl}.
      * 
      * @param delegate the action delegate
      * @return a {@link RequestResultDelegate}
@@ -35,7 +35,7 @@ public interface RequestResultHeaderFactory {
     RequestResultHeader createRequestResultHeader(RequestResultDelegate delegate, String query);
 
     /**
-     * Creates an instance of {@link RequestResultHeader} with a CSV export button.
+     * Creates an instance of {@link RequestResultHeaderImpl} with a CSV export button.
      * 
      * @param delegate the action delegate
      * @return a {@link RequestResultDelegate}

@@ -41,7 +41,7 @@ import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPres
 import com.codenvy.ide.ext.datasource.client.service.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
-import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader.RequestResultDelegate;
+import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl.RequestResultDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
@@ -411,8 +411,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private void appendErrorReport(final RequestResultDTO result) {
         final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeader(this, result.getOriginRequest());
 
-        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
-        resultItemBox.setHeader(infoHeader);
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox(infoHeader);
 
         final Label errorDisplay = new Label(Integer.toString(result.getSqlExecutionError().getErrorCode())
                                              + " - "
@@ -443,8 +442,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         new ListDataProvider<List<String>>(result.getResultLines()).addDataDisplay(resultTable);
 
 
-        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
-        resultItemBox.setHeader(infoHeader);
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox(infoHeader);
 
         resultItemBox.addResultItem(resultTable);
 
@@ -462,10 +460,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @param result the result data
      */
     private void appendUpdateResult(final RequestResultDTO result) {
-        final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeader(this, result.getOriginRequest());
+        final RequestResultHeader infoHeader = this.requestResultHeaderFactory.createRequestResultHeader(this,
+                                                                                                         result.getOriginRequest());
 
-        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox();
-        resultItemBox.setHeader(infoHeader);
+        ResultItemBox resultItemBox = this.resultItemBoxFactory.createResultItemBox(infoHeader);
 
         final Label resultDisplay = new Label(this.constants.updateCountMessage(result.getUpdateCount()));
         resultItemBox.addResultItem(resultDisplay);
@@ -492,7 +490,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public void triggerCsvExport(final RequestResultDTO requestResult, final RequestResultHeader origin) {
+    public void triggerCsvExport(final RequestResultDTO requestResult, final RequestResultHeaderImpl origin) {
         final Notification requestNotification = new Notification("Generating CSV export of results...",
                                                                   Notification.Status.PROGRESS);
         this.notificationManager.showNotification(requestNotification);

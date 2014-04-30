@@ -27,5 +27,5 @@ public interface ResultItemBoxFactory {
      * 
      * @return a {@link ResultItemBox}
      */
-    ResultItemBox createResultItemBox();
+    ResultItemBox createResultItemBox(RequestResultHeader header);
 }
