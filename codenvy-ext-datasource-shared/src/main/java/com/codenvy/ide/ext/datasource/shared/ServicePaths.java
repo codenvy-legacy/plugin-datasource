@@ -18,6 +18,7 @@ package com.codenvy.ide.ext.datasource.shared;
 public class ServicePaths {
 
     public static final String BASE_DATASOURCE_PATH            = "datasource";
+    public static final String DATABASE_EXPLORE_PATH           = "databaseExplore";
 
     public static final String DATABASE_TYPES_PATH             = "databasetypes";
 
