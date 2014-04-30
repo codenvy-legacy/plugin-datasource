@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.codenvy.ide.ext.datasource.server;
 
 import java.sql.Connection;
@@ -23,12 +24,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
+import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 import com.codenvy.ide.ext.datasource.shared.request.ExecutionErrorResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
@@ -37,22 +44,88 @@ import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.SqlExecutionError;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
 import com.google.common.base.Splitter;
+import com.google.common.math.LongMath;
+import com.google.inject.Inject;
 
+/**
+ * Service that handles SQL execution requests.
+ * 
+ * @author "Mickaël Leduque"
+ */
+@Path(ServicePaths.EXECUTE_SQL_REQUEST_PATH)
 public class SqlRequestService {
 
+    /** The logger. */
     private static final Logger                      LOG                   = LoggerFactory.getLogger(SqlRequestService.class);
 
+    /** The delimiter used to split SQL requests. */
     private static final String                      SQL_REQUEST_DELIMITER = ";";
+
+    /** The splitter instance used to split SQL request in a query string. */
     private static final Splitter                    SQL_REQUEST_SPLITTER  = Splitter.on(SQL_REQUEST_DELIMITER)
                                                                                      .omitEmptyStrings()
                                                                                      .trimResults();
 
     public static final MultipleRequestExecutionMode DEFAULT_MODE          = MultipleRequestExecutionMode.ONE_BY_ONE;
 
+    /** The factory to create JDBC connections from datasource definitions. */
+    private JdbcConnectionFactory                    jdbcConnectionFactory;
+
+    @Inject
+    public SqlRequestService(final JdbcConnectionFactory jdbcConnectionFactory) {
+        this.jdbcConnectionFactory = jdbcConnectionFactory;
+    }
+
+    /**
+     * Executes the SQL requests given as parameter.
+     * 
+     * @param request the requests parameters
+     * @return a result object, either success (with data) or failure (with message)
+     * @throws SQLException if the execution caused an error
+     * @throws DatabaseDefinitionException if the datasource is not correctly defined
+     */
+    // same path as 'class'
+    @POST
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
+        try (final Connection connection = this.jdbcConnectionFactory.getDatabaseConnection(request.getDatabase())) {
+
+            MultipleRequestExecutionMode mode = SqlRequestService.DEFAULT_MODE;
+            if (request.getMultipleRequestExecutionMode() != null) {
+                mode = request.getMultipleRequestExecutionMode();
+            }
+
+            long startTime = System.currentTimeMillis();
+            final RequestResultGroupDTO resultGroup = executeSqlRequest(request, connection, mode);
+            long endExecTime = System.currentTimeMillis();
+
+            String json = DtoFactory.getInstance().toJson(resultGroup);
+            long endJsonTime = System.currentTimeMillis();
+            try {
+                LOG.debug("Execution of SQL request '{}' with result limit {} - sql duration={}, json conversion duration={}",
+                          request.getSqlRequest(), request.getResultLimit(),
+                          LongMath.checkedSubtract(endExecTime, startTime),
+                          LongMath.checkedSubtract(endJsonTime, endExecTime));
+            } catch (final ArithmeticException e) {
+                LOG.debug("Execution of SQL request '{}' with result limit {} - unknwown durations");
+            }
+            LOG.trace("Return {}", json);
+            return json;
+        }
+    }
+
+    /**
+     * Execute the request string using the provided connection.
+     * 
+     * @param requestParameter a string containing one or more SQL requests
+     * @param connection the conenction the requests will be perfomred on
+     * @param mode the way errors are handled (stop, continue)
+     * @return a result object
+     * @throws SQLException when the requests could not be executed (NOT a SQL error caused by one requests, those are handled)
+     */
     public RequestResultGroupDTO executeSqlRequest(final RequestParameterDTO requestParameter,
                                                    final Connection connection,
-                                                   final MultipleRequestExecutionMode mode) throws SQLException,
-                                                                                           DatabaseDefinitionException {
+                                                   final MultipleRequestExecutionMode mode) throws SQLException {
 
         LOG.debug("Execution request ; parameter : {}", requestParameter);
         final String agglutinatedRequests = requestParameter.getSqlRequest();
@@ -95,8 +168,16 @@ public class SqlRequestService {
         return resultGroup;
     }
 
+    /**
+     * Execute ONE SQL request.
+     * 
+     * @param request the request
+     * @param statement the statement used to execute the request
+     * @return a list of execution result objects
+     * @throws SQLException when the request execution failed (NOT a SQL error caused by the request)
+     */
     private List<RequestResultDTO> processSingleRequest(final String request, final Statement statement) throws SQLException {
-        boolean returnsRows = statement.execute(request);
+        statement.execute(request);
         LOG.debug("Request executed successfully");
 
         ResultSet resultSet = statement.getResultSet();
@@ -149,7 +230,7 @@ public class SqlRequestService {
             if (resultSet != null) {
                 resultSet.close();
             }
-            boolean moreResults = statement.getMoreResults();
+            statement.getMoreResults();
             resultSet = statement.getResultSet();
             count = statement.getUpdateCount();
         }

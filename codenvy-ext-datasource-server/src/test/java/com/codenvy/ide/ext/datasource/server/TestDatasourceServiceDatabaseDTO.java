@@ -54,7 +54,7 @@ public class TestDatasourceServiceDatabaseDTO {
     }
 
     protected String getDatabaseJsonDTOFromDatasourceService(DatabaseConfigurationDTO databaseConfig) throws Exception {
-        DatasourceService dsService = new DatasourceService(new JdbcUrlBuilder(), new SqlRequestService());
+        DatabaseExploreService dsService = new DatabaseExploreService(new JdbcConnectionFactory());
         return dsService.getDatabase(databaseConfig);
     }
 

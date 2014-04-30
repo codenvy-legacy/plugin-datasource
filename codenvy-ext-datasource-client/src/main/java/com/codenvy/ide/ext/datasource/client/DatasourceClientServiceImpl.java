@@ -59,8 +59,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        final String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
-                                     ServicePaths.DATABASE_METADATA_PATH, null);
+        final String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_EXPLORE_PATH, "", null);
         final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
         postRequest.send(asyncRequestCallback);
     }
@@ -72,8 +71,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final MultipleRequestExecutionMode execMode,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
-        final String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
-                                     ServicePaths.EXECUTE_SQL_REQUEST_PATH, null);
+        final String url = formatUrl(this.restServiceContext, ServicePaths.EXECUTE_SQL_REQUEST_PATH, "", null);
         final RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
                                                                   .withDatabase(configuration)
                                                                   .withResultLimit(resultLimit)
@@ -85,8 +83,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
 
     @Override
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
-                               ServicePaths.DATABASE_TYPES_PATH, null);
+        String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_TYPES_PATH, "", null);
         final AsyncRequest getRequest = this.asyncRequestFactory.createGetRequest(url, false);
         getRequest.send(asyncRequestCallback);
     }
@@ -99,8 +96,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public void exportAsCsv(final RequestResultDTO requestResult,
                             final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
-                               ServicePaths.RESULT_CSV_PATH, null);
+        String url = formatUrl(this.restServiceContext, ServicePaths.RESULT_CSV_PATH, "", null);
         AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestResult, false);
         postRequest.send(asyncRequestCallback);
     }
@@ -108,8 +104,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     @Override
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.BASE_DATASOURCE_PATH,
-                               ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, null);
+        String url = formatUrl(this.restServiceContext, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, "", null);
         final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
         postRequest.send(asyncRequestCallback);
     }
@@ -126,9 +121,11 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     private String formatUrl(final String context, final String root, final String service, final String param) {
         StringBuilder sb = new StringBuilder(context);
         sb.append("/")
-          .append(root)
-          .append("/")
-          .append(service);
+          .append(root);
+        if (service != null && !service.isEmpty()) {
+            sb.append("/")
+              .append(service);
+        }
 
         if (param != null) {
             sb.append('/')

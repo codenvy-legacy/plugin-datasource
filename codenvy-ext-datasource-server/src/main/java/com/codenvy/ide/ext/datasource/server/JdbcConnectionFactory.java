@@ -15,21 +15,84 @@
  */
 package com.codenvy.ide.ext.datasource.server;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.NuoDBBrokerDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 
-public class JdbcUrlBuilder {
+/**
+ * Service that builds connections for configured datasources.
+ * 
+ * @author "Mickaël Leduque"
+ */
+public class JdbcConnectionFactory {
 
-    private static final String URL_TEMPLATE_POSTGRES          = "jdbc:postgresql://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_MYSQL             = "jdbc:mysql://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_ORACLE            = "jdbc:oracle:thin:@{0}:{1}:{2}";
-    private static final String URL_TEMPLATE_JTDS              = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
-    private static final String URL_TEMPLATE_NUODB             = "jdbc:com.nuodb://{0}/{1}";
+    /** The logger. */
+    private static final Logger LOG                   = LoggerFactory.getLogger(JdbcConnectionFactory.class);
 
-    public String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
+    /** URL pattern for PostgreSQL databases. */
+    private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
+
+    /** URL pattern for MySQL databases. */
+    private static final String URL_TEMPLATE_MYSQL    = "jdbc:mysql://{0}:{1}/{2}";
+
+    /** URL pattern for Oracle databases. */
+    private static final String URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
+
+    /** URL pattern for SQLServer databases. */
+    private static final String URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
+
+    /** URL pattern for NuoDB databases. */
+    private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
+
+    /**
+     * builds a JDBC {@link Connection} for a datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return a connection
+     * @throws SQLException if the creation of the connection failed
+     * @throws DatabaseDefinitionException if the configuration is incorrect
+     */
+    public Connection getDatabaseConnection(final DatabaseConfigurationDTO configuration) throws SQLException, DatabaseDefinitionException {
+        if (LOG.isInfoEnabled()) {
+            Driver[] drivers = Collections.list(DriverManager.getDrivers()).toArray(new Driver[0]);
+            LOG.info("Available jdbc drivers : {}", Arrays.toString(drivers));
+        }
+
+        Properties info = new Properties();
+        info.setProperty("user", configuration.getUsername());
+        info.setProperty("password", configuration.getPassword());
+        if (configuration.getUseSSL()) {
+            info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
+        }
+        if (configuration.getVerifyServerCertificate()) {
+            info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
+        }
+
+        final Connection connection = DriverManager.getConnection(getJdbcUrl(configuration), info);
+
+        return connection;
+    }
+
+    /**
+     * Builds a JDBC URL for a datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
+    private String getJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         // Should we check and sanitize input values ?
         if (configuration.getDatabaseType() == null) {
             throw new DatabaseDefinitionException("Database type is null in " + configuration.toString());
@@ -55,6 +118,13 @@ public class JdbcUrlBuilder {
         }
     }
 
+    /**
+     * Builds a JDBC URL for a PostgreSQL datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
     private String getPostgresJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_POSTGRES,
                                           configuration.getHostName(),
@@ -63,6 +133,13 @@ public class JdbcUrlBuilder {
         return url;
     }
 
+    /**
+     * Builds a JDBC URL for a MySQL datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
     private String getMySQLJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_MYSQL,
                                           configuration.getHostName(),
@@ -71,6 +148,13 @@ public class JdbcUrlBuilder {
         return url;
     }
 
+    /**
+     * Builds a JDBC URL for an Oracle datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
     private String getOracleJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_ORACLE,
                                           configuration.getHostName(),
@@ -79,6 +163,13 @@ public class JdbcUrlBuilder {
         return url;
     }
 
+    /**
+     * Builds a JDBC URL for a JTDS/MsSQL datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
     private String getJTDSJdbcUrl(final DatabaseConfigurationDTO configuration) {
         String url = MessageFormat.format(URL_TEMPLATE_JTDS,
                                           configuration.getHostName(),
@@ -87,6 +178,13 @@ public class JdbcUrlBuilder {
         return url;
     }
 
+    /**
+     * Builds a JDBC URL for a NuoDB datasource.
+     * 
+     * @param configuration the datasource configuration
+     * @return the URL
+     * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
+     */
     private String getNuoDBJdbcUrl(final DatabaseConfigurationDTO configuration) throws DatabaseDefinitionException {
         if (configuration.getBrokers() == null || configuration.getBrokers().isEmpty()) {
             throw new DatabaseDefinitionException("no brokers configured");

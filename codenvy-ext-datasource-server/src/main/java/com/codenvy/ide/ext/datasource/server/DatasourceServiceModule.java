@@ -19,15 +19,22 @@ import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
 import com.codenvy.inject.DynaModule;
 import com.google.inject.AbstractModule;
 
+/**
+ * Bindings for the datasource-related services.
+ * 
+ * @author "Mickaël Leduque"
+ */
 @DynaModule
 public class DatasourceServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(DatasourceService.class);
-        bind(JdbcUrlBuilder.class);
+        bind(JdbcConnectionFactory.class);
         bind(SqlRequestService.class);
         bind(SslKeyStoreService.class);
+        bind(AvailableDriversService.class);
+        bind(DatabaseExploreService.class);
+        bind(CsvExportService.class);
+        bind(TestConnectionService.class);
     }
-
 }
