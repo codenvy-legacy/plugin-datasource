@@ -39,7 +39,6 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <codenvy.datasource.version>${project.version}</codenvy.datasource.version>
         <codenvy.version>3.0.0-M15</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
         <opencsv.version>2.3</opencsv.version>
@@ -61,17 +60,17 @@
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-datasource-client</artifactId>
-                <version>${codenvy.datasource.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-datasource-server</artifactId>
-                <version>${codenvy.datasource.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
                 <artifactId>codenvy-ext-datasource-shared</artifactId>
-                <version>${codenvy.datasource.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codenvy.ide</groupId>
