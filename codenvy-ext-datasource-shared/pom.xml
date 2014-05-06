@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
             <artifactId>codenvy-dto</artifactId>
-            <version>${com.codenvy.platform-api.version}</version>
+            <version>${codenvy.platform-api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>

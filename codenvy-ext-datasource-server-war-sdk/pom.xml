@@ -82,7 +82,7 @@
                 <groupId>com.codenvy.commons</groupId>
                 <artifactId>codenvy-commons-inject</artifactId>
                 <scope>compile</scope>
-                <version>${com.codenvy.commons.version}</version>
+                <version>${codenvy.commons.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>mail</artifactId>
