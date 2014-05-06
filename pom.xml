@@ -14,14 +14,14 @@
 ~ See the License for the specific language governing permissions and
 ~ limitations under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>codenvy-ide-parent</artifactId>
-        <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M16-SNAPSHOT</version>
+        <artifactId>maven-depmgt-pom</artifactId>
+        <groupId>com.codenvy</groupId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
+    <groupId>com.codenvy.ide</groupId>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
     <version>3.0.0-M16-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -39,166 +39,6 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <codenvy.version>3.0.0-M16-SNAPSHOT</codenvy.version>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
-        <opencsv.version>2.3</opencsv.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <schemacrawler.version>10.08.01</schemacrawler.version>
-
-        <postgresql-driver.version>9.3-1100-jdbc41</postgresql-driver.version>
-        <mysql-driver.version>5.1.29</mysql-driver.version>
-        <jtds-driver.version>1.2</jtds-driver.version>
-        <nuodb-driver.version>2.0.3</nuodb-driver.version>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.codenvy.commons</groupId>
-                <artifactId>codenvy-commons-servlet</artifactId>
-                <version>${codenvy.commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-datasource-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-datasource-server</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ext-datasource-shared</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ide-api</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ide-core</artifactId>
-                <version>${codenvy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gwt.inject</groupId>
-                <artifactId>gin</artifactId>
-                <version>${com.google.gwt.gin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sf.opencsv</groupId>
-                <artifactId>opencsv</artifactId>
-                <version>${opencsv.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sourceforge.schemacrawler</groupId>
-                <artifactId>schemacrawler</artifactId>
-                <version>${schemacrawler.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.ide</groupId>
-                <artifactId>codenvy-ide-client</artifactId>
-                <version>${codenvy.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-user</artifactId>
-                <version>${com.google.gwt.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax.servlet.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.codenvy.commons</groupId>
-                <artifactId>codenvy-commons-inject</artifactId>
-                <version>${codenvy.commons.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-servlet</artifactId>
-                <version>${com.google.gwt.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.gwt-test-utils</groupId>
-                <artifactId>gwt-test-utils</artifactId>
-                <version>${com.googlecode.gwt-test-utils.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${org.mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql-driver.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.sourceforge.jtds</groupId>
-                <artifactId>jtds</artifactId>
-                <version>${jtds-driver.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-driver.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.nuodb.jdbc</groupId>
-                <artifactId>nuodb-jdbc</artifactId>
-                <version>${nuodb-driver.version}</version>
-                <scope>compile</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.google.code.sortpom</groupId>
-                    <artifactId>maven-sortpom-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <phase />
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>com.google.code.sortpom</groupId>
-                <artifactId>maven-sortpom-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase />
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

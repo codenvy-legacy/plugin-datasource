@@ -26,28 +26,34 @@
     <name>Codenvy Extension :: Datasource Server</name>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-ext-datasource-shared</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-ide-api</artifactId>
+            <version>${codenvy.ide.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
+            <version>${net.sf.opencsv.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.schemacrawler</groupId>
             <artifactId>schemacrawler</artifactId>
+            <version>${net.sourceforge.schemacrawler.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <version>${org.mockito.version}</version>
         </dependency>
     </dependencies>
 </project>
