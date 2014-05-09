@@ -41,6 +41,12 @@ public interface EditDatasourcesView {
     /** Sets the view's action delegate. */
     void setDelegate(ActionDelegate delegate);
 
+    /** Enables/disbales the edit datasources button. */
+    void setEditEnabled(boolean enabled);
+
+    /** Enables/disbales the delete datasources button. */
+    void setDeleteEnabled(boolean enabled);
+
     /**
      * Interface for this view's action delegate.
      * 

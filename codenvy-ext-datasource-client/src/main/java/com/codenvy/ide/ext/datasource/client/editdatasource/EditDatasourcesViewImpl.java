@@ -140,6 +140,20 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
         this.delegate.deleteSelectedDatasources();
     }
 
+    @Override
+    protected void onClose() {
+    }
+
+    @Override
+    public void setEditEnabled(final boolean enabled) {
+        this.editButton.setEnabled(enabled);
+    }
+
+    @Override
+    public void setDeleteEnabled(final boolean enabled) {
+        this.deleteButton.setEnabled(enabled);
+    }
+
     /**
      * UiBinder interface for this view.
      * 
@@ -148,7 +162,4 @@ public class EditDatasourcesViewImpl extends Window implements EditDatasourcesVi
     interface EditDatadourceViewImplUiBinder extends UiBinder<Widget, EditDatasourcesViewImpl> {
     }
 
-    @Override
-    protected void onClose() {
-    }
 }
