@@ -29,7 +29,6 @@ import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.action.EditDatasourcesAction;
-import com.codenvy.ide.ext.datasource.client.common.CellTableResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
@@ -67,7 +66,6 @@ public class DatasourceExtension {
                                ConnectorsInitializer connectorsInitializer,
                                NewDatasourceConnectorAgent connectorAgent,
                                DatasourceUiResources resources,
-                               CellTableResources celltableResources,
                                AvailableJdbcDriversService availableJdbcDrivers,
                                ExecuteSqlAction executeSqlAction,
                                EditDatasourcesAction editDatasourcesAction,
@@ -101,7 +99,6 @@ public class DatasourceExtension {
 
         // inject CSS
         resources.datasourceUiCSS().ensureInjected();
-        celltableResources.cellTableStyle().ensureInjected();
 
         // Add execute shortcut
         actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);
