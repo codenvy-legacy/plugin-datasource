@@ -81,33 +81,80 @@
             min-width: -webkit-max-content;
             min-width: -moz-max-content;
         }
+        
+        .editorHeader-layout {
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+        }
+        .editorHeader-left-layout {
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
+            justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+            
+            flex-basis: 18em;
+            flex-grow: 0;
+            flex-shrink: 0;
+            
+            -webkit-flex-basis: 18em;
+            -webkit-flex-grow: 0;
+            -webkit-flex-shrink: 0;
+        }
+        .editorHeader-right-layout {
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
+            justify-content: flex-end;
+            -webkit-justify-content: flex-end;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+            
+            margin-right: 1em;
+        }
     </ui:style>
 
     <g:DockLayoutPanel unit="PX" ui:field="launcherContainer">
         <g:north size="35">
-            <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherEditorBar}">
-                <g:west size="130">
+            <g:HTMLPanel addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherEditorBar} {style.editorHeader-layout}">
+                <div class="{style.editorHeader-left-layout}">
                     <g:Button ui:field="executeButton"
                         addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherExecuteButton}" />
-                </g:west>
-                <g:center>
-                    <g:FlowPanel>
-                        <!-- use some kind of toolbar ? -->
-                        <g:ListBox ui:field="executionModeList" width="8em"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
-                        <g:Label ui:field="executionModeLabel"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
-                        <g:TextBox ui:field="resultLimitInput" width="4em"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherTextBox}" />
-                        <g:Label ui:field="resultLimitLabel"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
-                        <g:ListBox ui:field="datasourceList" width="9em"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
-                        <g:Label ui:field="selectDatasourceLabel"
-                            addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
-                    </g:FlowPanel>
-                </g:center>
-            </g:DockLayoutPanel>
+                </div>
+                <div class="{style.editorHeader-right-layout}">
+                    <g:Label ui:field="selectDatasourceLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                    <g:ListBox ui:field="datasourceList" width="9em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
+                    <g:Label ui:field="resultLimitLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                    <g:TextBox ui:field="resultLimitInput" width="4em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherTextBox}" />
+                    <g:Label ui:field="executionModeLabel"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.formFieldLabel} {datasourceUiResources.datasourceUiCSS.requestLauncherLabel}" />
+                    <g:ListBox ui:field="executionModeList" width="8em"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.requestLauncherListBox}" />
+                </div>
+            </g:HTMLPanel>
         </g:north>
         <g:center>
             <g:SplitLayoutPanel ui:field="splitPanel">
