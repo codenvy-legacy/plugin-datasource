@@ -19,10 +19,10 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.collections.StringMap;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.codeassist.SqlCodeAssistProcessor;
+import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
 import com.codenvy.ide.text.Document;
 import com.codenvy.ide.texteditor.api.TextEditorConfiguration;
 import com.codenvy.ide.texteditor.api.TextEditorPartView;

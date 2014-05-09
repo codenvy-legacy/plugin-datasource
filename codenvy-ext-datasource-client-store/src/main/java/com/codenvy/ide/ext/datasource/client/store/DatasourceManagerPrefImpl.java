@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.client.store;
 
 import java.util.Iterator;
 import java.util.Set;

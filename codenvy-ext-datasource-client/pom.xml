@@ -26,6 +26,11 @@
     <dependencies>
         <dependency>
             <groupId>com.codenvy.ide</groupId>
+            <artifactId>codenvy-ext-datasource-client-store</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.ide</groupId>
             <artifactId>codenvy-ext-datasource-client-widget</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -25,7 +25,6 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Status;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.common.interaction.ConfirmCallback;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
 import com.codenvy.ide.ext.datasource.client.common.interaction.confirm.ConfirmWindow;
@@ -35,6 +34,7 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourc
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
+import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;

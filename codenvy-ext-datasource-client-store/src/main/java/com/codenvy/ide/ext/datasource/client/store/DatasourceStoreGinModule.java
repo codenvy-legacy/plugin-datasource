@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.codenvy.ide.ext.datasource.client;
 
-import java.util.HashMap;
-import java.util.Map;
+package com.codenvy.ide.ext.datasource.client.store;
 
-import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
-@Singleton
-public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
+@ExtensionGinModule
+public class DatasourceStoreGinModule extends AbstractGinModule {
 
-    private final Map<String, DatabaseDTO> data = new HashMap<String, DatabaseDTO>();
-
-    @Override
-    public void setDatabaseInfo(final String datasourceId, final DatabaseDTO info) {
-        this.data.put(datasourceId, info);
-    }
 
     @Override
-    public DatabaseDTO getDatabaseInfo(final String datasourceId) {
-        return this.data.get(datasourceId);
+    protected void configure() {
+        // bind the datasource manager and the datasource metadat store
+        bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
+        bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
+        bind(DatabaseInfoOracle.class).to(DatabaseInfoOracleImpl.class);
     }
 }

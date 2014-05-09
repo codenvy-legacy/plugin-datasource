@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.codenvy.ide.ext.datasource.client;
+package com.codenvy.ide.ext.datasource.client.store;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.google.inject.Singleton;
 
-/**
- * Keep the link between a datasource and its database content structure. Default implementation is using it as a cache: when
- * {@link DatabaseDTO} of a datasource is retrieved from server side, {@link DatabaseDTO} is stored in memory through this class.
- */
-public interface DatabaseInfoStore {
+@Singleton
+public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
 
-    void setDatabaseInfo(String datasourceId, DatabaseDTO info);
+    private final Map<String, DatabaseDTO> data = new HashMap<String, DatabaseDTO>();
 
-    DatabaseDTO getDatabaseInfo(String datasourceId);
+    @Override
+    public void setDatabaseInfo(final String datasourceId, final DatabaseDTO info) {
+        this.data.put(datasourceId, info);
+    }
 
+    @Override
+    public DatabaseDTO getDatabaseInfo(final String datasourceId) {
+        return this.data.get(datasourceId);
+    }
 }

@@ -21,14 +21,8 @@ import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracleImpl;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoStoreImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
-import com.codenvy.ide.ext.datasource.client.DatasourceManager;
-import com.codenvy.ide.ext.datasource.client.DatasourceManagerPrefImpl;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
@@ -121,8 +115,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
         bind(DefaultNewDatasourceConnectorView.class).to(DefaultNewDatasourceConnectorViewImpl.class);
 
-        bind(DatasourceManager.class).to(DatasourceManagerPrefImpl.class).in(Singleton.class);
-
         bind(DataEntityPropertiesView.class).to(DataEntityPropertiesViewImpl.class);
 
         bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
@@ -139,9 +131,6 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         bind(FetchMetadataService.class).to(FetchMetadataServiceImpl.class).in(Singleton.class);
 
-        bind(DatabaseInfoStore.class).to(DatabaseInfoStoreImpl.class);
-
-        bind(DatabaseInfoOracle.class).to(DatabaseInfoOracleImpl.class);
         bind(EditorDatasourceOracle.class).to(EditorDatasourceOracleImpl.class).in(Singleton.class);
 
         bind(Resources.class).in(Singleton.class);

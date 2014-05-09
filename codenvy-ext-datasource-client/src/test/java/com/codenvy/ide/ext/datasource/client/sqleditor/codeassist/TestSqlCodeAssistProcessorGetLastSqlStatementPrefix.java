@@ -23,10 +23,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoOracle;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
+import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
 import com.codenvy.ide.text.BadLocationException;
 import com.codenvy.ide.text.DocumentImpl;
 import com.codenvy.ide.text.Position;

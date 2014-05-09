@@ -21,8 +21,6 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.parts.base.BasePresenter;
 import com.codenvy.ide.api.selection.Selection;
-import com.codenvy.ide.ext.datasource.client.DatabaseInfoStore;
-import com.codenvy.ide.ext.datasource.client.DatasourceManager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeEvent;
@@ -33,6 +31,8 @@ import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedHandler;
 import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
+import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoStore;
+import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
