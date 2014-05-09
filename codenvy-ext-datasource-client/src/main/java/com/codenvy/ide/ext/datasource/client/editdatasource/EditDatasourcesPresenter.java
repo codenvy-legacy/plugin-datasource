@@ -41,6 +41,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.EventBus;
@@ -51,7 +52,8 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * 
  * @author "Mickaël Leduque"
  */
-public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate, DatasourceListChangeHandler {
+public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate, DatasourceListChangeHandler,
+                                     SelectionChangeEvent.Handler {
 
     /** The view component. */
     private final EditDatasourcesView                           view;
@@ -60,7 +62,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     private final DatasourceManager                             datasourceManager;
 
     /** The datasource list model component. */
-    private final ListDataProvider<DatabaseConfigurationDTO>    dataProvider = new ListDataProvider<>();
+    private final ListDataProvider<DatabaseConfigurationDTO>    dataProvider        = new ListDataProvider<>();
     /** The selection model for the datasource list widget. */
     private final MultiSelectionModel<DatabaseConfigurationDTO> selectionModel;
 
@@ -76,7 +78,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     private final EditDatasourceLauncher                        editDatasourceLauncher;
 
     /** A reference to remove handler from eventbus. */
-    private HandlerRegistration                                 handlerRegistration;
+    private HandlerRegistration[]                               handlerRegistration = new HandlerRegistration[2];
 
     /** The action object to create new datasources. */
     private final NewDatasourceAction                           newDatasourceAction;
@@ -102,8 +104,11 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.editDatasourceLauncher = editDatasourceLauncher;
         this.view.bindDatasourceModel(dataProvider);
         this.view.setDelegate(this);
+
         this.selectionModel = new MultiSelectionModel<>(keyProvider);
         this.view.bindSelectionModel(this.selectionModel);
+        updateButtonsState();
+
         this.newDatasourceAction = newDatasourceAction;
         this.dialogFactory = dialogFactory;
     }
@@ -111,14 +116,17 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     /** Show dialog. */
     public void showDialog() {
         setupDatasourceList();
-        this.handlerRegistration = this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
+        this.handlerRegistration[0] = this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
+        this.handlerRegistration[1] = this.selectionModel.addSelectionChangeHandler(this);
         this.view.showDialog();
     }
 
     @Override
     public void closeDialog() {
         this.view.closeDialog();
-        this.handlerRegistration.removeHandler();
+        for (final HandlerRegistration handlerReg : this.handlerRegistration) {
+            handlerReg.removeHandler();
+        }
         this.handlerRegistration = null;
     }
 
@@ -249,5 +257,26 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     @Override
     public void createDatasource() {
         this.newDatasourceAction.actionPerformed();
+    }
+
+    @Override
+    public void onSelectionChange(final SelectionChangeEvent event) {
+        Log.info(EditDatasourcesPresenter.class, "Datasource selection changed, updating buttons state");
+        updateButtonsState();
+    }
+
+    private void updateButtonsState() {
+        final Set<DatabaseConfigurationDTO> selected = this.selectionModel.getSelectedSet();
+        if (selected == null || selected.size() == 0) {
+            this.view.setEditEnabled(false);
+            this.view.setDeleteEnabled(false);
+        } else {
+            this.view.setDeleteEnabled(true);
+            if (selected.size() == 1) {
+                this.view.setEditEnabled(true);
+            } else {
+                this.view.setEditEnabled(false);
+            }
+        }
     }
 }
