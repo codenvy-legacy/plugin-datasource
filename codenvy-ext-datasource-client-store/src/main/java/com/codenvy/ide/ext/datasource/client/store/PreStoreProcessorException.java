@@ -29,13 +29,6 @@ public class PreStoreProcessorException extends Exception {
     public PreStoreProcessorException() {
     }
 
-    public PreStoreProcessorException(final String message,
-                                      final Throwable cause,
-                                      final boolean enableSuppression,
-                                      final boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
     public PreStoreProcessorException(final String message, final Throwable cause) {
         super(message, cause);
     }
