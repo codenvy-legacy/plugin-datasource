@@ -18,19 +18,41 @@ package com.codenvy.ide.ext.datasource.client.store;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Singleton;
 
+/**
+ * Implementation of the {@link DatabaseInfoStore} interface.
+ * 
+ * @author "Mickaël Leduque"
+ */
 @Singleton
 public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
 
+    /** The database metadata cache. */
     private final Map<String, DatabaseDTO> data         = new HashMap<String, DatabaseDTO>();
+
+    /** Per-datasource "fetch pending" flags. */
     private final HashSet<String>          fetchPending = new HashSet<>();
+
+    /** Actions that are executed on database metadata before storing it. */
+    private final Set<PreStoreProcessor>   preStoreProcessors;
+
+    @Inject
+    public DatabaseInfoStoreImpl(final @Nullable Set<PreStoreProcessor> preStoreProcessors) {
+        this.preStoreProcessors = preStoreProcessors;
+    }
 
     @Override
     public void setDatabaseInfo(final String datasourceId, final DatabaseDTO info) {
-        this.data.put(datasourceId, info);
+        final DatabaseDTO modifiedInfo = preStoreProcessing(info);
+        this.data.put(datasourceId, modifiedInfo);
     }
 
     @Override
@@ -51,5 +73,28 @@ public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
     @Override
     public void clearFetchPending(final String datasourceId) {
         this.fetchPending.remove(datasourceId);
+    }
+
+    /**
+     * Execute all processors on the given database metadata. The order the processors are called in is unspecified.
+     * 
+     * @param databaseDTO the metadata to process
+     * @return the modified metadata
+     */
+    private DatabaseDTO preStoreProcessing(final DatabaseDTO databaseDTO) {
+        if (this.preStoreProcessors == null) {
+            return databaseDTO;
+        }
+        DatabaseDTO modifiedDto = databaseDTO;
+        for (final PreStoreProcessor processor : this.preStoreProcessors) {
+            try {
+                modifiedDto = processor.execute(modifiedDto);
+            } catch (final PreStoreProcessorException e) {
+                Log.error(DatabaseInfoStoreImpl.class, "Pre store processing error - " + e.getLocalizedMessage());
+                // keep the last successfully processed dto
+                break;
+            }
+        }
+        return modifiedDto;
     }
 }
