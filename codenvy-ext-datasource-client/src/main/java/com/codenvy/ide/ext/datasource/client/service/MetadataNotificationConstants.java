@@ -29,4 +29,7 @@ public interface MetadataNotificationConstants extends Messages {
 
     @DefaultMessage("Failed fetching database metadata")
     String notificationFetchFailure();
+
+    @DefaultMessage("Invalid configuration for this datasource")
+    String invalidConfigurationNotification();
 }

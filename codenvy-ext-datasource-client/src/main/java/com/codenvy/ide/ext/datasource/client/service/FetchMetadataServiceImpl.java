@@ -58,6 +58,12 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
     @Override
     public void fetchDatabaseInfo(final DatabaseConfigurationDTO configuration) {
+        if (configuration == null) {
+            final Notification invalidConfigNotification = new Notification(notificationConstants.invalidConfigurationNotification(),
+                                                                            Notification.Type.ERROR);
+            notificationManager.showNotification(invalidConfigNotification);
+            return;
+        }
 
         final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                         Notification.Status.PROGRESS);
