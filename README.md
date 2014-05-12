@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/codenvy/plugin-datasource.png?label=ready&title=Ready)](https://waffle.io/codenvy/plugin-datasource)
 Datasource-Plug-In
 ==================
 
