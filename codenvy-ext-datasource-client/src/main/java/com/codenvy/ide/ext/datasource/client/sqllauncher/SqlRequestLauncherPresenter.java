@@ -32,6 +32,8 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
+import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
+import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageWindow;
 import com.codenvy.ide.ext.datasource.client.common.pager.Pager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
@@ -102,6 +104,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     private final RequestResultHeaderFactory          requestResultHeaderFactory;
 
+    /** The factory used to build message windows. */
+    private final DialogFactory                       dialogFactory;
+
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
@@ -118,7 +123,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull WorkspaceAgent workspaceAgent,
                                        final @NotNull CellTableResourcesQueryResults cellTableResources,
                                        final @NotNull ResultItemBoxFactory resultItemBoxFactory,
-                                       final @NotNull RequestResultHeaderFactory requestResultHeaderFactory) {
+                                       final @NotNull RequestResultHeaderFactory requestResultHeaderFactory,
+                                       final @NotNull DialogFactory dialogFactory) {
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -135,6 +141,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.cellTableResources = cellTableResources;
         this.resultItemBoxFactory = resultItemBoxFactory;
         this.requestResultHeaderFactory = requestResultHeaderFactory;
+        this.dialogFactory = dialogFactory;
 
         setupResultLimit(preferencesManager);
         setupExecutionMode(preferencesManager);
@@ -291,11 +298,17 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     public void executeRequested() {
         Log.info(SqlRequestLauncherPresenter.class, "Execution requested.");
         if (this.selectedDatasourceId == null) {
-            Window.alert("No datasource selected");
+            final MessageWindow dialog = this.dialogFactory.createMessageWindow(this.constants.executeNoDatasourceTitle(),
+                                                                                this.constants.executeNoDatasourceMessage(),
+                                                                                null);
+            dialog.inform();
             return;
         }
         if (this.executionMode == null) {
-            Window.alert("No execute mode selected");
+            final MessageWindow dialog = this.dialogFactory.createMessageWindow(this.constants.executeNoExecutionModeTitle(),
+                                                                                this.constants.executeNoExecutionModeMessage(),
+                                                                                null);
+            dialog.inform();
             return;
         }
         DatabaseConfigurationDTO databaseConf = this.datasourceManager.getByName(this.selectedDatasourceId);

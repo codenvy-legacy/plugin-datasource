@@ -63,4 +63,16 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("< empty result >")
     String emptyResult();
+
+    @DefaultMessage("No datasource selected")
+    String executeNoDatasourceTitle();
+
+    @DefaultMessage("Please select the datasource to execute the request.")
+    String executeNoDatasourceMessage();
+
+    @DefaultMessage("No execution mode selected")
+    String executeNoExecutionModeTitle();
+
+    @DefaultMessage("Please choose an execution mode for the request.")
+    String executeNoExecutionModeMessage();
 }
