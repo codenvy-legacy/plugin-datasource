@@ -64,6 +64,16 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
             notificationManager.showNotification(invalidConfigNotification);
             return;
         }
+        // check if there is a pending fetch on this datasource
+        // no synchronization needed, we are in pure single-threaded code (browser)
+        final String datasourceId = configuration.getDatasourceId();
+        if (this.databaseInfoStore.isFetchPending(datasourceId)) {
+            Log.info(FetchMetadataServiceImpl.class, "Fetch pending found for this datasource ("
+                                                     + datasourceId
+                                                     + ") - no need to trigger another fetch.");
+            return;
+        }
+        this.databaseInfoStore.setFetchPending(datasourceId);
 
         final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                         Notification.Status.PROGRESS);
@@ -82,6 +92,9 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
                     databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), database);
                     eventBus.fireEvent(new DatabaseInfoReceivedEvent(configuration.getDatasourceId()));
+
+                    // clear the fetch pending flag
+                    databaseInfoStore.clearFetchPending(datasourceId);
                 }
 
                 @Override
@@ -95,6 +108,8 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                     // clean up current database
                     eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
 
+                    // clear the fetch pending flag
+                    databaseInfoStore.clearFetchPending(datasourceId);
                 }
             });
         } catch (final RequestException e) {
@@ -106,9 +121,10 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
             // clean up current database
             this.eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
 
+            // the flag must be cleared on failure
+            this.databaseInfoStore.clearFetchPending(datasourceId);
         }
 
 
     }
-
 }
