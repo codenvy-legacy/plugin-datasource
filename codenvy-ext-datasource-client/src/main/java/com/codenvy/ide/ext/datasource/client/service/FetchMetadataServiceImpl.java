@@ -18,13 +18,27 @@ import com.google.gwt.http.client.RequestException;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
+/**
+ * Client-side service for database metadata loading.
+ * 
+ * @author "Mickaël Leduque"
+ */
 public class FetchMetadataServiceImpl implements FetchMetadataService {
 
+    /** DTO factory used to deserialize DTOs from JSON. */
     private final DtoFactory                    dtoFactory;
+
+    /** Notification manager used to display metadata progress, success and failure. */
     private final NotificationManager           notificationManager;
     private final DatasourceClientService       datasourceClientService;
+
+    /** The event bus on which metadata loading (success, failure) events are posted. */
     private final EventBus                      eventBus;
+
+    /** The i18n constants. */
     private final MetadataNotificationConstants notificationConstants;
+
+    /** Where the metadata is stored. */
     private final DatabaseInfoStore             databaseInfoStore;
 
     @Inject
