@@ -16,6 +16,7 @@
 package com.codenvy.ide.ext.datasource.client.store;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
@@ -24,7 +25,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
 
-    private final Map<String, DatabaseDTO> data = new HashMap<String, DatabaseDTO>();
+    private final Map<String, DatabaseDTO> data         = new HashMap<String, DatabaseDTO>();
+    private final HashSet<String>          fetchPending = new HashSet<>();
 
     @Override
     public void setDatabaseInfo(final String datasourceId, final DatabaseDTO info) {
@@ -34,5 +36,20 @@ public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
     @Override
     public DatabaseDTO getDatabaseInfo(final String datasourceId) {
         return this.data.get(datasourceId);
+    }
+
+    @Override
+    public void setFetchPending(final String datasourceId) {
+        this.fetchPending.add(datasourceId);
+    }
+
+    @Override
+    public boolean isFetchPending(final String datasourceId) {
+        return this.fetchPending.contains(datasourceId);
+    }
+
+    @Override
+    public void clearFetchPending(final String datasourceId) {
+        this.fetchPending.remove(datasourceId);
     }
 }

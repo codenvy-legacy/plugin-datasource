@@ -23,8 +23,37 @@ import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
  */
 public interface DatabaseInfoStore {
 
+    /** Store the metadata for the given datasource id. */
     void setDatabaseInfo(String datasourceId, DatabaseDTO info);
 
+    /**
+     * Retrieve the stored metadata for the given datasource id. Null is returned is no metadata was stored.
+     * 
+     * @param datasourceId the id of the datasource
+     * @return the previously stored metadata (or null if there weren't any)
+     */
     DatabaseDTO getDatabaseInfo(String datasourceId);
+
+    /**
+     * Clears the "fetch pending" flag for the given datasource.
+     * 
+     * @param datasourceId the datasource id
+     */
+    void clearFetchPending(String datasourceId);
+
+    /**
+     * Check if there is a "fetch pending" flag for the given datasource.
+     * 
+     * @param datasourceId the datasource id
+     * @return true iff there is a pending fetch for the datasource
+     */
+    boolean isFetchPending(String datasourceId);
+
+    /**
+     * Sets a "fetch pending" flag for this datasource.
+     * 
+     * @param datasourceId the datasource id
+     */
+    void setFetchPending(String datasourceId);
 
 }
