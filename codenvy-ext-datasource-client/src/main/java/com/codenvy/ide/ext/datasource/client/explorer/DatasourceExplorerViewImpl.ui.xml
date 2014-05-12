@@ -21,26 +21,51 @@
              xmlns:svgui='urn:import:org.vectomatic.dom.svg.ui'>
 
     <ui:with field="datasourceUiResources" type="com.codenvy.ide.ext.datasource.client.DatasourceUiResources" />
+    <ui:style>
+        .explorer-header-layout {
+            display: flex;
+            display: -webkit-flex;
 
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+        .datasourcelist-layout {
+            flex-grow: 0;
+            -webkit-flex-grow: 0;
+            flex-shrink: 1;
+            -webkit-flex-shrink: 1;
+        }
+        .button-layout {
+            flex-grow: 0;
+            -webkit-flex-grow: 0;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+        }
+    </ui:style>
     <g:DockLayoutPanel unit="PX" ui:field="mainContainer">
         <g:north size="40">
-            <g:DockLayoutPanel unit="PX" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerTopPanel}">
-                <g:center>
-                    <g:ListBox ui:field="datasourceListBox" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerDatasourceList}" />
-                </g:center>
-                <g:east size="40">
-                    <g:SimplePanel addStyleNames="gwt-Button {datasourceUiResources.datasourceUiCSS.explorerRefreshButton}">
-                        <svgui:SVGPushButton ui:field="refreshButton" resource="{datasourceUiResources.getRefreshIcon}">
-                           <svgui:upFace>
-                               <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonUp}"/>
-                           </svgui:upFace>
-                           <svgui:downFace>
-                               <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonDown}"/>
-                           </svgui:downFace>
-                        </svgui:SVGPushButton>
-                    </g:SimplePanel>
-                </g:east>
-            </g:DockLayoutPanel>
+            <g:HTMLPanel addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerTopPanel} {style.explorer-header-layout}">
+                <g:ListBox ui:field="datasourceListBox" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerDatasourceList} {style.datasourcelist-layout}" />
+                <g:SimplePanel addStyleNames="gwt-Button {datasourceUiResources.datasourceUiCSS.explorerRefreshButton} {style.button-layout}">
+                    <svgui:SVGPushButton ui:field="refreshButton" resource="{datasourceUiResources.getRefreshIcon}">
+                       <svgui:upFace>
+                           <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonUp}"/>
+                       </svgui:upFace>
+                       <svgui:downFace>
+                           <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonDown}"/>
+                       </svgui:downFace>
+                    </svgui:SVGPushButton>
+                </g:SimplePanel>
+            </g:HTMLPanel>
         </g:north>
         <g:center>
             <g:SplitLayoutPanel ui:field="splitPanel">

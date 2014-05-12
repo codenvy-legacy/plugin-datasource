@@ -176,13 +176,13 @@ public interface DatasourceUiResources extends ClientBundle {
 
         @ClassName("editDatasourceList-datasourceTypeCellStyle")
         String datasourceTypeCellStyle();
-        
+
         @ClassName("datasourceWizard-testConnection")
         String datasourceWizardTestConnection();
-        
+
         @ClassName("datasourceWizard-testConnection-ok")
         String datasourceWizardTestConnectionOK();
-        
+
         @ClassName("datasourceWizard-testConnection-ko")
         String datasourceWizardTestConnectionKO();
     }
