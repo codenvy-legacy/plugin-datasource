@@ -37,7 +37,7 @@ import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageW
 import com.codenvy.ide.ext.datasource.client.common.pager.Pager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
-import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
+import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
 import com.codenvy.ide.ext.datasource.client.service.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
@@ -107,13 +107,17 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     /** The factory used to build message windows. */
     private final DialogFactory                       dialogFactory;
 
+    /** The service used to obtain datasource metadata. */
+    private final FetchMetadataService                fetchMetadataService;
+
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
                                        final @NotNull MetadataNotificationConstants notificationConstants,
                                        final @NotNull PreferencesManager preferencesManager,
                                        final @NotNull SqlEditorProvider sqlEditorProvider,
-                                       final @NotNull DatasourceClientService service,
+                                       final @NotNull DatasourceClientService datasourceClientService,
+                                       final @NotNull FetchMetadataService fetchMetadataService,
                                        final @NotNull DatabaseInfoStore databaseInfoStore,
                                        final @NotNull NotificationManager notificationManager,
                                        final @NotNull DatasourceManager datasourceManager,
@@ -135,7 +139,8 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.notificationConstants = notificationConstants;
         this.dtoFactory = dtoFactory;
 
-        this.datasourceClientService = service;
+        this.datasourceClientService = datasourceClientService;
+        this.fetchMetadataService = fetchMetadataService;
         this.notificationManager = notificationManager;
         this.datasourceManager = datasourceManager;
         this.cellTableResources = cellTableResources;
@@ -212,38 +217,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
         DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(newDataSourceId);
         if (dsMeta == null) {
-            try {
-                final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
-                                                                                Notification.Status.PROGRESS);
-                notificationManager.showNotification(fetchDatabaseNotification);
-                datasourceClientService.fetchDatabaseInfo(datasourceManager.getByName(newDataSourceId),
-                                                          new AsyncRequestCallback<String>(new StringUnmarshaller()) {
-                                                              @Override
-                                                              protected void onSuccess(String result) {
-                                                                  DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                                                                      DatabaseDTO.class);
-                                                                  fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
-                                                                  fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                                                  notificationManager.showNotification(fetchDatabaseNotification);
-                                                                  databaseInfoStore.setDatabaseInfo(newDataSourceId, database);
-                                                              }
-
-                                                              @Override
-                                                              protected void onFailure(Throwable exception) {
-                                                                  fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                                                                  notificationManager.showNotification(new Notification(
-                                                                                                                        notificationConstants.notificationFetchFailure(),
-                                                                                                                        Type.ERROR));
-                                                              }
-                                                          }
-
-                                       );
-            } catch (RequestException e) {
-                Log.error(DatasourceExplorerPartPresenter.class,
-                          "Exception on database info fetch : " + e.getMessage());
-                notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
-                                                                      Type.ERROR));
-            }
+            this.fetchMetadataService.fetchDatabaseInfo(this.datasourceManager.getByName(newDataSourceId));
         }
     }
 
