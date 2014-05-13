@@ -50,6 +50,9 @@ public interface DataEntityPropertiesConstants extends Constants {
     @DefaultStringValue("Default value")
     String defaultValueLabel();
 
+    @DefaultStringValue("Position in table")
+    String ordinalPositionLabel();
+
     @DefaultStringValue("Object type")
     String objectTypeLabel();
 

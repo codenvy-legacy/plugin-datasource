@@ -252,6 +252,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         result.add(new Property(constants.columnSizeLabel(), Integer.toString(columnDTO.getDataSize())));
         result.add(new Property(constants.decimalDigitsLabel(), Integer.toString(columnDTO.getDecimalDigits())));
         result.add(new Property(constants.nullableLabel(), Boolean.toString(columnDTO.getNullable())));
+        result.add(new Property(constants.ordinalPositionLabel(), Integer.toString(columnDTO.getOrdinalPositionInTable())));
         result.add(new Property(constants.defaultValueLabel(), columnDTO.getDefaultValue()));
         return result;
     }
