@@ -119,7 +119,8 @@ public class DatabaseExploreService {
                                             .withDatabaseProductVersion(database.getDatabaseInfo().getProductVersion())
                                             .withUserName(database.getDatabaseInfo().getUserName())
                                             .withJdbcDriverName(database.getJdbcDriverInfo().getDriverName())
-                                            .withJdbcDriverVersion(database.getJdbcDriverInfo().getDriverVersion());
+                                            .withJdbcDriverVersion(database.getJdbcDriverInfo().getDriverVersion())
+                                            .withComment(database.getRemarks());
         Map<String, SchemaDTO> schemaToInject = new HashMap<String, SchemaDTO>();
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
@@ -128,13 +129,15 @@ public class DatabaseExploreService {
                                             // a constraint on it)
                                             // TODO do we always want to display the fullname ? rather than the name ?
                                             .withName((schema.getName() == null) ? schema.getFullName() : schema.getName())
-                                            .withLookupKey(schema.getLookupKey());
+                                            .withLookupKey(schema.getLookupKey())
+                                            .withComment(database.getRemarks());
             Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
             for (final Table table : database.getTables(schema)) {
                 TableDTO tableDTO = DtoFactory.getInstance().createDto(TableDTO.class)
                                               .withName(table.getName())
                                               .withLookupKey(table.getLookupKey())
-                                              .withType(table.getTableType().name());
+                                              .withType(table.getTableType().name())
+                                              .withComment(database.getRemarks());
                 if (table instanceof View) {
                     tableDTO = tableDTO.withIsView(true);
                 }
@@ -164,7 +167,8 @@ public class DatabaseExploreService {
                                                     .withDecimalDigits(column.getDecimalDigits())
                                                     .withPartOfForeignKey(column.isPartOfForeignKey())
                                                     .withPartOfPrimaryKey(column.isPartOfPrimaryKey())
-                                                    .withOrdinalPositionInTable(column.getOrdinalPosition());
+                                                    .withOrdinalPositionInTable(column.getOrdinalPosition())
+                                                    .withComment(database.getRemarks());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
