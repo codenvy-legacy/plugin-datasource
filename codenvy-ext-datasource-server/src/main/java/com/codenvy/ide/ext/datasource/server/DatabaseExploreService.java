@@ -31,18 +31,19 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Database;
 import schemacrawler.schema.IndexColumn;
 import schemacrawler.schema.PrimaryKey;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
+import schemacrawler.schema.TableType;
 import schemacrawler.schema.View;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
+import schemacrawler.utility.SchemaCrawlerUtility;
 
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
@@ -52,6 +53,7 @@ import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.google.common.collect.Lists;
 import com.google.common.math.LongMath;
 import com.google.inject.Inject;
 
@@ -97,18 +99,23 @@ public class DatabaseExploreService {
         long endSetupTime;
         try (final Connection connection = this.jdbcConnectionFactory.getDatabaseConnection(databaseConfig)) {
             final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+
+            // info level set to standard + additional table and column attributes
             SchemaInfoLevel customized = SchemaInfoLevel.standard();
             customized.setRetrieveAdditionalTableAttributes(true);
             customized.setRetrieveAdditionalColumnAttributes(true);
             options.setSchemaInfoLevel(customized);
+
+            // exclude procedures and function for now
             options.setRoutineInclusionRule(new ExcludeAll());
-            // options.setSchemaInclusionRule(new
-            // RegularExpressionInclusionRule(
-            // "PUBLIC.BOOKS"));
+
+            // all table types, see java.sql.DatabaseMetadata.getTables would be 'null' but
+            // we probably don't need temp tables etc
+            options.setTableTypes(Lists.newArrayList(TableType.table, TableType.view, TableType.system_table,
+                                                     TableType.alias, TableType.synonym));
 
             endSetupTime = System.currentTimeMillis();
-            final SchemaCrawler schemaCrawler = new SchemaCrawler(connection);
-            database = schemaCrawler.crawl(options);
+            database = SchemaCrawlerUtility.getDatabase(connection, options);
         }
         final long endCrawlingTime = System.currentTimeMillis();
 
@@ -121,17 +128,18 @@ public class DatabaseExploreService {
                                             .withJdbcDriverName(database.getJdbcDriverInfo().getDriverName())
                                             .withJdbcDriverVersion(database.getJdbcDriverInfo().getDriverVersion())
                                             .withComment(database.getRemarks());
-        Map<String, SchemaDTO> schemaToInject = new HashMap<String, SchemaDTO>();
+        final Map<String, SchemaDTO> schemaToInject = new HashMap<String, SchemaDTO>();
         databaseDTO = databaseDTO.withSchemas(schemaToInject);
         for (final Schema schema : database.getSchemas()) {
-            SchemaDTO schemaDTO = DtoFactory.getInstance().createDto(SchemaDTO.class)
-                                            // TODO maybe clean up this (schema.getName() can be null with mysql and the json serializer has
-                                            // a constraint on it)
-                                            // TODO do we always want to display the fullname ? rather than the name ?
-                                            .withName((schema.getName() == null) ? schema.getFullName() : schema.getName())
-                                            .withLookupKey(schema.getLookupKey())
-                                            .withComment(database.getRemarks());
-            Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
+            final SchemaDTO schemaDTO = DtoFactory.getInstance().createDto(SchemaDTO.class)
+                                                  // TODO maybe clean up this (schema.getName() can be null with mysql and the json
+                                                  // serializer has
+                                                  // a constraint on it)
+                                                  // TODO do we always want to display the fullname ? rather than the name ?
+                                                  .withName((schema.getName() == null) ? schema.getFullName() : schema.getName())
+                                                  .withLookupKey(schema.getLookupKey())
+                                                  .withComment(database.getRemarks());
+            final Map<String, TableDTO> tables = new HashMap<String, TableDTO>();
             for (final Table table : database.getTables(schema)) {
                 TableDTO tableDTO = DtoFactory.getInstance().createDto(TableDTO.class)
                                               .withName(table.getName())
@@ -142,10 +150,10 @@ public class DatabaseExploreService {
                     tableDTO = tableDTO.withIsView(true);
                 }
 
-                PrimaryKey primaryKey = table.getPrimaryKey();
+                final PrimaryKey primaryKey = table.getPrimaryKey();
                 if (primaryKey != null) {
-                    List<IndexColumn> primaryKeyColumns = primaryKey.getColumns();
-                    List<String> pkColumnNames = new ArrayList<>();
+                    final List<IndexColumn> primaryKeyColumns = primaryKey.getColumns();
+                    final List<String> pkColumnNames = new ArrayList<>();
                     for (final IndexColumn indexColumn : primaryKeyColumns) {
                         pkColumnNames.add(indexColumn.getName());
                     }
@@ -153,22 +161,20 @@ public class DatabaseExploreService {
                 }
 
 
-                Map<String, ColumnDTO> columns = new HashMap<String, ColumnDTO>();
-                for (Column column : table.getColumns()) {
-                    ColumnDTO columnDTO = DtoFactory
-                                                    .getInstance()
-                                                    .createDto(ColumnDTO.class)
-                                                    .withName(column.getName())
-                                                    .withLookupKey(column.getLookupKey())
-                                                    .withColumnDataType(column.getColumnDataType().getName())
-                                                    .withDefaultValue(column.getDefaultValue())
-                                                    .withNullable(column.isNullable())
-                                                    .withDataSize(column.getSize())
-                                                    .withDecimalDigits(column.getDecimalDigits())
-                                                    .withPartOfForeignKey(column.isPartOfForeignKey())
-                                                    .withPartOfPrimaryKey(column.isPartOfPrimaryKey())
-                                                    .withOrdinalPositionInTable(column.getOrdinalPosition())
-                                                    .withComment(database.getRemarks());
+                final Map<String, ColumnDTO> columns = new HashMap<String, ColumnDTO>();
+                for (final Column column : table.getColumns()) {
+                    final ColumnDTO columnDTO = DtoFactory.getInstance().createDto(ColumnDTO.class)
+                                                          .withName(column.getName())
+                                                          .withLookupKey(column.getLookupKey())
+                                                          .withColumnDataType(column.getColumnDataType().getName())
+                                                          .withDefaultValue(column.getDefaultValue())
+                                                          .withNullable(column.isNullable())
+                                                          .withDataSize(column.getSize())
+                                                          .withDecimalDigits(column.getDecimalDigits())
+                                                          .withPartOfForeignKey(column.isPartOfForeignKey())
+                                                          .withPartOfPrimaryKey(column.isPartOfPrimaryKey())
+                                                          .withOrdinalPositionInTable(column.getOrdinalPosition())
+                                                          .withComment(database.getRemarks());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
