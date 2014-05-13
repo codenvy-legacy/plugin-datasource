@@ -59,6 +59,9 @@ public interface DataEntityPropertiesConstants extends Constants {
     @DefaultStringValue("Object name")
     String objectNameLabel();
 
+    @DefaultStringValue("Comment")
+    String commentLabel();
+
     @DefaultStringValue("None")
     String noValue();
 

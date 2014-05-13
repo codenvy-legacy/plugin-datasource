@@ -169,6 +169,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     private List<Property> getCommonProperties(final DatabaseMetadataEntityDTO entityDTO) {
         List<Property> result = new ArrayList<Property>();
         result.add(new Property(constants.objectNameLabel(), entityDTO.getName()));
+        result.add(new Property(constants.commentLabel(), entityDTO.getComment()));
         return result;
     }
 
