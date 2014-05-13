@@ -51,4 +51,26 @@ public interface DatabaseMetadataEntityDTO {
     DatabaseMetadataEntityDTO withName(String name);
 
     DatabaseMetadataEntityDTO withLookupKey(String lookupKey);
+
+    /**
+     * Returns the comment for the database entity (if available).
+     * 
+     * @return the comment
+     */
+    String getComment();
+
+    /**
+     * Affect the comment for the database entity.
+     * 
+     * @param comment the new value
+     */
+    void setComment(String comment);
+
+    /**
+     * Chainable version of the comment property setter.
+     * 
+     * @param comment the value for comment
+     * @return this object
+     */
+    DatabaseMetadataEntityDTO withComment(String comment);
 }
