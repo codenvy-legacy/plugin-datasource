@@ -72,4 +72,11 @@ public interface ColumnDTO extends DatabaseMetadataEntityDTO {
     void setPartOfPrimaryKey(boolean partOfPK);
 
     boolean isPartOfPrimaryKey();
+
+
+    ColumnDTO withOrdinalPositionInTable(int position);
+
+    void setOrdinalPositionInTable(int position);
+
+    int getOrdinalPositionInTable();
 }
