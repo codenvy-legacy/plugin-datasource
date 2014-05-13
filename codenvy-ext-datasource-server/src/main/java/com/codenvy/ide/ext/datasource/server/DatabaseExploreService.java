@@ -163,7 +163,8 @@ public class DatabaseExploreService {
                                                     .withDataSize(column.getSize())
                                                     .withDecimalDigits(column.getDecimalDigits())
                                                     .withPartOfForeignKey(column.isPartOfForeignKey())
-                                                    .withPartOfPrimaryKey(column.isPartOfPrimaryKey());
+                                                    .withPartOfPrimaryKey(column.isPartOfPrimaryKey())
+                                                    .withOrdinalPositionInTable(column.getOrdinalPosition());
                     columns.put(columnDTO.getName(), columnDTO);
                 }
                 tableDTO = tableDTO.withColumns(columns);
