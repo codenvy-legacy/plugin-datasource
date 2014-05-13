@@ -174,7 +174,7 @@ public class DatasourceExplorerViewImpl extends
      * @param event the event
      */
     @UiHandler("refreshButton")
-    public void onClick(final ClickEvent event) {
+    public void onRefreshClick(final ClickEvent event) {
         delegate.onClickExploreButton(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
     }
 
