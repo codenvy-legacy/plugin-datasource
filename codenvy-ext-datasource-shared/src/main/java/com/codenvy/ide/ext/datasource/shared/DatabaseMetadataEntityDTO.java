@@ -17,6 +17,11 @@ package com.codenvy.ide.ext.datasource.shared;
 
 import com.codenvy.dto.shared.DTO;
 
+/**
+ * Interface for all database entity info.
+ * 
+ * @author "Mickaël Leduque"
+ */
 @DTO
 public interface DatabaseMetadataEntityDTO {
 
@@ -34,6 +39,15 @@ public interface DatabaseMetadataEntityDTO {
      */
     void setName(String name);
 
+
+    /**
+     * Chainable version of the name property setter.
+     * 
+     * @param name the value for name
+     * @return this object
+     */
+    DatabaseMetadataEntityDTO withName(String name);
+
     /**
      * Returns an identifier for the object relative to the database.
      * 
@@ -48,8 +62,13 @@ public interface DatabaseMetadataEntityDTO {
      */
     void setLookupKey(String lookupKey);
 
-    DatabaseMetadataEntityDTO withName(String name);
 
+    /**
+     * Chainable version of the lookupKey property setter.
+     * 
+     * @param lookupKey the value for lookupKey
+     * @return this object
+     */
     DatabaseMetadataEntityDTO withLookupKey(String lookupKey);
 
     /**
