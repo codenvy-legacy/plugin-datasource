@@ -25,10 +25,12 @@ import com.codenvy.dto.shared.DTO;
 @DTO
 public interface DatabaseDTO extends DatabaseMetadataEntityDTO {
 
-    /* Database name. */
+    /* Database overrides. */
     DatabaseDTO withName(String name);
 
     DatabaseDTO withLookupKey(String lookupKey);
+
+    DatabaseDTO withComment(String comment);
 
     /* JDBC driver. */
     DatabaseDTO withJdbcDriverName(String driverName);

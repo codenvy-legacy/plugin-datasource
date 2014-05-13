@@ -26,6 +26,8 @@ public interface SchemaDTO extends DatabaseMetadataEntityDTO {
 
     SchemaDTO withLookupKey(String lookupKey);
 
+    SchemaDTO withComment(String comment);
+
     SchemaDTO withTables(Map<String, TableDTO> tables);
 
     Map<String, TableDTO> getTables();
