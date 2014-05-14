@@ -160,12 +160,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     @Override
     public void onClickExploreButton(final String datasourceId) {
-        DatabaseDTO dsMeta = databaseInfoStore.getDatabaseInfo(datasourceId);
-        if (dsMeta != null) {
-            view.setItems(dsMeta);
-            eventBus.fireEvent(new DatabaseEntitySelectionEvent(dsMeta));
-            return;
-        }
         loadDatasource(datasourceId);
     }
 
