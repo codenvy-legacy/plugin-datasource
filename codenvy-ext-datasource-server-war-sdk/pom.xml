@@ -84,12 +84,30 @@
                     <artifactId>lucene-core</artifactId>
                     <groupId>org.apache.lucene</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>gwt-user</artifactId>
+                    <groupId>com.google.gwt</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gin</artifactId>
+                    <groupId>com.google.gwt.inject</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>com.nuodb.jdbc</groupId>
             <artifactId>nuodb-jdbc</artifactId>
             <version>${jdbc.nuodb-driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
