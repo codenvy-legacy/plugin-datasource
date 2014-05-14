@@ -36,6 +36,7 @@ import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
+import com.codenvy.ide.ext.datasource.shared.exception.BadSQLRequestParameterException;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
 import com.codenvy.ide.ext.datasource.shared.request.ExecutionErrorResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
@@ -87,7 +88,10 @@ public class SqlRequestService {
     // same path as 'class'
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public String executeSqlRequest(final RequestParameterDTO request) throws SQLException, DatabaseDefinitionException {
+    public String executeSqlRequest(final RequestParameterDTO request) throws SQLException,
+                                                                      DatabaseDefinitionException,
+                                                                      BadSQLRequestParameterException {
+        checkParameters(request);
         try (final Connection connection = this.jdbcConnectionFactory.getDatabaseConnection(request.getDatabase())) {
 
             MultipleRequestExecutionMode mode = SqlRequestService.DEFAULT_MODE;
@@ -235,5 +239,29 @@ public class SqlRequestService {
             count = statement.getUpdateCount();
         }
         return resultList;
+    }
+
+    /**
+     * Checks the parameters. Thoses are mostly technical errors that the UI should guard against, but double checking protects against UI
+     * changes, API changes and direct REST requests.
+     * 
+     * @param requestParameter the parameters
+     * @throws BadSQLRequestParameterException error in the parameters
+     */
+    private void checkParameters(final RequestParameterDTO requestParameter) throws BadSQLRequestParameterException {
+        // check result limit > 0
+        final int resultLimit = requestParameter.getResultLimit();
+        if (resultLimit < 1) {
+            throw new BadSQLRequestParameterException("Result limit must be greater than or equal to 1");
+        }
+        // check the request string is not null
+        if (requestParameter.getSqlRequest() == null) {
+            throw new BadSQLRequestParameterException("The request string must not be null");
+        }
+        // check if the datasource configuration object is null
+        // invalid configuration is in another check and has its own dedicated exception
+        if (requestParameter.getDatabase() == null) {
+            throw new BadSQLRequestParameterException("No datasource configuration provided");
+        }
     }
 }
