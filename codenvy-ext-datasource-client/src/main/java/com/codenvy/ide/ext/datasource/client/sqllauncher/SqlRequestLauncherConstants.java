@@ -75,4 +75,10 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("Please choose an execution mode for the request.")
     String executeNoExecutionModeMessage();
+
+    @DefaultMessage("The result limit can''t be negative. It was reset to the previous value.")
+    String userErrorNegativeLimit();
+
+    @DefaultMessage("The result limit can''t be zero. It was reset to the previous value.")
+    String userErrorZeroLimit();
 }

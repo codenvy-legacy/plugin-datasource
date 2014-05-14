@@ -227,8 +227,13 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         int resultLimitValue;
         try {
             resultLimitValue = Integer.parseInt(newResultLimitString);
-            if (resultLimit < 0) {
+            if (resultLimitValue < 0) {
+                notifyUserError(constants.userErrorNegativeLimit());
                 Log.debug(SqlRequestLauncherPresenter.class, "  new value for result limit is negative - abort change");
+                this.view.setResultLimit(this.resultLimit);
+            } else if (resultLimitValue == 0) {
+                notifyUserError(constants.userErrorZeroLimit());
+                Log.debug(SqlRequestLauncherPresenter.class, "  new value for result limit is zero - abort change");
                 this.view.setResultLimit(this.resultLimit);
             } else {
                 Log.debug(SqlRequestLauncherPresenter.class, "  valid value for result limit - changed");
@@ -238,6 +243,16 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
             Log.debug(SqlRequestLauncherPresenter.class, "  new value for result limit is not a number - abort change");
             this.view.setResultLimit(this.resultLimit);
         }
+    }
+
+    /**
+     * Display a notification that tells the user they made an invalid operation.
+     * 
+     * @param explain what the user did wrong
+     */
+    private void notifyUserError(final String explain) {
+        final Notification errorNotification = new Notification(explain, Notification.Type.WARNING);
+        notificationManager.showNotification(errorNotification);
     }
 
     private String getSqlRequestInput() {
