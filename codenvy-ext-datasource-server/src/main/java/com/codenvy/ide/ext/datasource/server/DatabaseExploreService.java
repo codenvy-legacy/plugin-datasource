@@ -19,7 +19,6 @@ package com.codenvy.ide.ext.datasource.server;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +53,7 @@ import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.google.common.collect.Lists;
 import com.google.common.math.LongMath;
 import com.google.inject.Inject;
 
@@ -111,7 +111,7 @@ public class DatabaseExploreService {
 
             // all table types, see java.sql.DatabaseMetadata.getTables would be 'null' but
             // we probably don't need temp tables etc
-            options.setTableTypes((Collection<TableType>)null);
+            options.setTableTypes(Lists.newArrayList(TableType.table, TableType.view, TableType.system_table));
 
             endSetupTime = System.currentTimeMillis();
             database = SchemaCrawlerUtility.getDatabase(connection, options);
