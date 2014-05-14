@@ -23,7 +23,7 @@
         <version>3.0.0-M15</version>
     </parent>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>3.0.0-M16-SNAPSHOT</version>
+    <version>3.0.0-M15-release-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
