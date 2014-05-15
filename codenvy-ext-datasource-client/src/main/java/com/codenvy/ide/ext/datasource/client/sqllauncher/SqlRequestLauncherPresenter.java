@@ -38,7 +38,6 @@ import com.codenvy.ide.ext.datasource.client.common.pager.Pager;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
-import com.codenvy.ide.ext.datasource.client.service.MetadataNotificationConstants;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl.RequestResultDelegate;
@@ -84,7 +83,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     private final SqlRequestLauncherView              view;
     /** The i18n-able constants. */
     private final SqlRequestLauncherConstants         constants;
-    private final MetadataNotificationConstants       notificationConstants;
+
     /** The DTO factory. */
     private final DtoFactory                          dtoFactory;
 
@@ -113,7 +112,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
                                        final @NotNull SqlRequestLauncherConstants constants,
-                                       final @NotNull MetadataNotificationConstants notificationConstants,
                                        final @NotNull PreferencesManager preferencesManager,
                                        final @NotNull SqlEditorProvider sqlEditorProvider,
                                        final @NotNull DatasourceClientService datasourceClientService,
@@ -136,7 +134,6 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
-        this.notificationConstants = notificationConstants;
         this.dtoFactory = dtoFactory;
 
         this.datasourceClientService = datasourceClientService;
