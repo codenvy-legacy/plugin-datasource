@@ -93,6 +93,10 @@ public class DatabaseExploreService {
                                                                             DatabaseDefinitionException,
                                                                             SchemaCrawlerException {
 
+        if (databaseConfig == null) {
+            throw new DatabaseDefinitionException("Database definition is null");
+        }
+
         Database database = null;
 
         final long startTime = System.currentTimeMillis();
