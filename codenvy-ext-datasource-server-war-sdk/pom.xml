@@ -134,4 +134,21 @@
     <build>
         <finalName>datasource-api</finalName>
     </build>
+    <profiles>
+        <profile>
+            <activation>
+                <property>
+                    <name>enableOracle</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.oracle</groupId>
+                    <artifactId>ojdbc6</artifactId>
+                    <version>11.2.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
