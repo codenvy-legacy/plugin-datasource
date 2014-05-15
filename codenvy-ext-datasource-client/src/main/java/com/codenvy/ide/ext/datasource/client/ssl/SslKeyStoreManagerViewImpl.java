@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.ext.datasource.client.ssl.SslKeyStoreManagerViewImpl.SshKeyManagerViewImplUiBinder;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell.Context;

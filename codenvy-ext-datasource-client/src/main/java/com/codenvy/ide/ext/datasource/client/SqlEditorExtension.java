@@ -17,9 +17,6 @@ package com.codenvy.ide.ext.datasource.client;
 
 import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.resources.FileType;
