@@ -1,8 +1,44 @@
 [![Stories in Ready](https://badge.waffle.io/codenvy/plugin-datasource.png?label=ready&title=Ready)](https://waffle.io/codenvy/plugin-datasource)
-Datasource-Plug-In
-==================
+Datasource-Plug-In for Codenvy IDE 3
+====================================
 
-Datassource plug-In for IDE3
+Description
+-----------
+
+This project is a plugin for [Codenvy IDE 3](http://docs.codenvy.com/sdk/introduction/) that allows to work with databases directly from within the IDE.
+
+What it can do
+--------------
+
+With this plugin, you can :
+
+- create and store "datasources", which is a configuration for a database connection
+- explore your datasources, with a tree representation of the schemas, tales and columns in the database
+- edit SQL files, with syntax highlighting and completion help
+- execute your SQL request on one of your datasources and see the result
+
+How to test it
+--------------
+
+This plugin is bundled in the [Codenvy IDE SDK](https://github.com/codenvy/sdk). See the [Clone the repository...](https://github.com/codenvy/sdk#clone-the-repository--checkout-latest-stable-branch) and [Build the project](https://github.com/codenvy/sdk#build-the-project) for instructions.
+
+
+Supported database types
+------------------------
+
+The following database servers are supported :
+
+- [PostgreSQL](https://en.wikipedia.org/wiki/Postgres)
+- [MySQL](https://en.wikipedia.org/wiki/Mysql)
+- [MS SQL Server](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
+- [NuoDB](https://en.wikipedia.org/wiki/NuoDB)
+- [Oracle](https://en.wikipedia.org/wiki/Oracle_Database)[1]
+
+[1] Not activated in the unmodified SDK
+
+++++++++++++++++++
+not modified yet below
+++++++++++++++++++
 
 Bundled JDBC drivers
 --------------------
