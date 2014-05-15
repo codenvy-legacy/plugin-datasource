@@ -51,6 +51,7 @@
   max-width: 190px;
   word-wrap: normal;
   white-space: nowrap;
+  height: 1em;
 }
 
 .empty-table {
