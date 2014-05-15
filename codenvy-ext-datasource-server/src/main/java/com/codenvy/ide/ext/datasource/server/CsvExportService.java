@@ -36,7 +36,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.exception.CSVExportException;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
-import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
+import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
 import com.google.inject.Inject;
 
 /**
@@ -73,10 +73,9 @@ public class CsvExportService {
         if (requestResult == null) {
             throw new CSVExportException("The parameter doesn't contain a result request");
         }
-        if (requestResult.getResultType() == UpdateResultDTO.TYPE) {
+        if (requestResult.getResultType() != SelectResultDTO.TYPE) {
             throw new CSVExportException("Only request results for select can be converted to CSV");
         }
-
 
         String csvResult = convertDataToCsv(requestResult, true);
 
