@@ -18,6 +18,14 @@ With this plugin, you can :
 - edit SQL files, with syntax highlighting and completion help
 - execute your SQL request on one of your datasources and see the result
 
+Screenshots
+-----------
+
+![Datasource creation wizard](../screenshots/screenshots/datasource_plugin_creation.png?raw=true, "Datasource creation wizard")
+
+![Datasource explorer](../screenshots/screenshots/datasource_plugin_explorer.png?raw=true, "Datasource explorer")
+
+![SQL edition and execution](../screenshots/screenshots/datasource_plugin_sql_exec.png?raw=true, "SQL edition and execution")
 How to test it
 --------------
 
