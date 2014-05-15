@@ -60,10 +60,14 @@ public class TestConnectionService {
      * 
      * @param databaseConfig the datasource configuration
      * @return true iff the connection was successfully created
+     * @throws DatabaseDefinitionException is the datasource is not correctly defined
      */
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) {
+    public String testDatabaseConnectivity(final DatabaseConfigurationDTO databaseConfig) throws DatabaseDefinitionException {
+        if (databaseConfig == null) {
+            throw new DatabaseDefinitionException("Database definition is 'null'");
+        }
 
         final ConnectionTestResultDTO testResult = DtoFactory.getInstance().createDto(ConnectionTestResultDTO.class);
 
