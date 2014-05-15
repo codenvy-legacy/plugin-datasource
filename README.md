@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/codenvy/plugin-datasource.png?label=ready&title=Ready)](https://waffle.io/codenvy/plugin-datasource)
+
 Datasource-Plug-In for Codenvy IDE 3
 ====================================
 
@@ -20,7 +21,9 @@ With this plugin, you can :
 How to test it
 --------------
 
-This plugin is bundled in the [Codenvy IDE SDK](https://github.com/codenvy/sdk). See the [Clone the repository...](https://github.com/codenvy/sdk#clone-the-repository--checkout-latest-stable-branch) and [Build the project](https://github.com/codenvy/sdk#build-the-project) for instructions.
+This plugin is bundled in the [Codenvy IDE SDK](https://github.com/codenvy/sdk). See the
+[Clone the repository...](https://github.com/codenvy/sdk#clone-the-repository--checkout-latest-stable-branch) and
+[Build the project](https://github.com/codenvy/sdk#build-the-project) for instructions.
 
 
 Supported database types
@@ -36,74 +39,65 @@ The following database servers are supported :
 
 [1] Not activated in the unmodified SDK
 
-++++++++++++++++++
-not modified yet below
-++++++++++++++++++
+The following cloud databases have some support :
+
+- Google Cloud SQL
+- Amazon RDS PostgreSQL/MySQL/SqlServer [2]
+
+[2] RDS support for Oracle is present if the Oracle DB support is present
+
 
 Bundled JDBC drivers
 --------------------
 
-The datasource plugin relies on JDBC driver.
-Some JDBC drivers can't be bundled with the tomcat instance that is packaged by the codenvy-ext-datasource-packaging-standalone
-module.
+The datasource plugin relies on JDBC drivers.
+Some JDBC drivers can't be bundled with the tomcat instance that is packaged in the SDK.
 
 The following drivers are bundled by default :
 
-- postgres
-- jtds (for MS SQLServer)
-- mysql
+- PostgreSQL
+- JTDS (for MS SQLServer)
+- MySQL
+- NuoDB
 
-Is the other drivers are needed, you must either :
+This JDBC driver is supported but not bundled :
 
-- be manually added to the packaged tomcat, inside the tomcat-ide/lib directory
-- force their inclusion by activating the relevant profile at compilation
+- Oracle DB
+
+
+If an unbundled driver is needed, you must
+
+1. check the driver is in the maven local repository or is available on a remote repository you maven installation will
+use
+2. force their inclusion in the datasource-plugin by activating the relevant profile at compilation
+3. generate a new SDK bundle with this custom datasource-plugin
 
 To force the bundling at compilation the driver must be present in you maven local repository or be available in a
 repository where your maven installation can find it.
 
-Available JDBC profiles
------------------------
 
-At the moment, the followind JDBC profiles are available :
-
-- postgres ; enabled by default ; can be disabled with -DdisablePostgres at compile time
-- jtds ; enabled by default ; can be disabled with -DdisableJtds at compile time
-- mysql ; enabled by default ; can be disabled with -DdisableMysql at compile time
-
-- oracle ; disabled by default ; can be enabled with -DenableOracle at compile time
-- nuodb ; disabled by default ; can be enabled with -DenableNuodb at compile time
-
-For example, you can create a tomcat ide instance with the following maven command :
+For example, to add support for oracle, you will compile the datasource plugin with :
 
 ```
     mvn clean install -DenableOracle
 ```
 
+Then you will build a new SDK bundle as explained in [Build the project](https://github.com/codenvy/sdk#build-the-project).
+
+
 How to add Oracle JDBC Driver in your Maven local repository:
 -------------------------------------------------------------
 
-1. Get the appropriate oracle JDBC Driver: 2 ways:
+1. Get the appropriate oracle JDBC Driver. 2 ways:
   - Get it from wwww.oracle.com
     For example: You can get Oracle Database 11g Release 2 JDBC Drivers from:
-http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
+    http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
   - Get it from Oracle database installed folder, for example, `{ORACLE_HOME}\jdbc\lib\ojdbc6.jar`
 
+2. Install it.
 
-2. Install it:
 To install your Oracle jdbc driver, issue following command :
 
-
-        mvn install:install-file -Dfile={path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
-
- 
- 
-How to add the NuoDB Driver in your maven local repository:
-----------------------------------------------------------
-
-1. Retrieve the driver jar from a NuoDB installation. it should be in jar/nuodbjdbc.jar.
-
-2. Install it :
-
 ```
-        mvn install:install-file -Dfile={path/to/your/nuodbjdbc.jar} -DgroupId=com.nuodb.jdbc -DartifactId=nuodb-jdbc -Dversion=2.0.3 -Dpackaging=jar
+    mvn install:install-file -Dfile={path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 ```
