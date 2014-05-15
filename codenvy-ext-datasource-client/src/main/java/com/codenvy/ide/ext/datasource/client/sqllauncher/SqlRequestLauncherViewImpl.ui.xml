@@ -48,11 +48,37 @@
             flex-flow: row;
             -webkit-flex-flow: row;
 
+            justify-content: stretch;
+            -webkit-justify-content: stretch;
+
+            align-items: stretch;
+            -webkit-align-items: stretch;
+        }
+        .resultZone-layout-header-left {
+            flex-grow: 1;
+            -webkit-flex-grow: 1;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+
+            display: flex;
+            display: -webkit-flex;
+
+            flex-flow: row;
+            -webkit-flex-flow: row;
+
             justify-content: center;
             -webkit-justify-content: center;
 
             align-items: stretch;
             -webkit-align-items: stretch;
+        }
+        .resultZone-layout-header-right {
+            flex-grow: 0;
+            -webkit-flex-grow: 0;
+            flex-shrink: 0;
+            -webkit-flex-shrink: 0;
+
+            margin-right: 9px;
         }
         .resultZone-header-text {
             padding-left: 1.5em;
@@ -164,9 +190,15 @@
                 <g:south size="200">
                     <g:HTMLPanel addStyleNames="{style.resultZone-layout}">
                         <div class="{style.resultZone-layout-header} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderBar}">
-                            <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
-                            <g:Label text="{constants.queryResultsTitle}" addStyleNames="{style.resultZone-header-text} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderText}" />
-                            <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
+                            <div class="{style.resultZone-layout-header-left} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderBar}">
+                                <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
+                                <g:Label text="{constants.queryResultsTitle}" addStyleNames="{style.resultZone-header-text} {datasourceUiResources.datasourceUiCSS.resultZoneHeaderText}" />
+                                <g:HTML addStyleNames="{style.resultZone-header-decoration}">&#9632;&nbsp;&#9632;&nbsp;&#9632;</g:HTML>
+                            </div>
+                            <div class="{style.resultZone-layout-header-right}">
+                                <g:Label ui:field="clearResultsButton" text="&times;" title="{constants.clearButtonAltText}"
+                                    addStyleNames="{datasourceUiResources.datasourceUiCSS.resultHeaderClearButton}"/>
+                            </div>
                         </div>
                         <g:ScrollPanel ui:field="resultScroll" addStyleNames="{style.resultZone-layout-scroll}">
                             <g:FlowPanel ui:field="resultZone" addStyleNames="{style.resultZone-layout-output} {datasourceUiResources.datasourceUiCSS.resultZoneOutput}" />

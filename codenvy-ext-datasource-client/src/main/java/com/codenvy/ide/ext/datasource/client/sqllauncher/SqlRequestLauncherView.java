@@ -35,23 +35,34 @@ public interface SqlRequestLauncherView extends View<SqlRequestLauncherView.Acti
     /** Returns the zone in which the SQL editor is to be shown. */
     AcceptsOneWidget getEditorZone();
 
+    /** Replaces the items in the datasources list. */
     void setDatasourceList(Collection<String> datasourceIds);
 
+    /** Add a request result block in the result zone. */
     void appendResult(Widget widget);
 
+    /** Removes the contents of the result zone. */
     void clearResultZone();
 
+    /** Sets the value in the execution mode input. */
     void setExecutionMode(MultipleRequestExecutionMode executionMode);
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
 
+        /** Reaction to the change of the datasource input value. */
         void datasourceChanged(String newDataSourceId);
 
+        /** Reaction to the change of the result limit input value. */
         void resultLimitChanged(String newResultLimitString);
 
+        /** Reaction to the execution click. */
         void executeRequested();
 
+        /** Reaction to the change of the execution mode input value. */
         void executionModeChanged(MultipleRequestExecutionMode oneByOne);
+
+        /** Removes the contents of the result zone. */
+        void clearResults();
     }
 }

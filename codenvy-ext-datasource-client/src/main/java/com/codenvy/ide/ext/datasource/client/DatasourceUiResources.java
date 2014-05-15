@@ -108,6 +108,9 @@ public interface DatasourceUiResources extends ClientBundle {
         @ClassName("requestLauncher-listBox")
         String requestLauncherListBox();
 
+        @ClassName("resultHeader-clear-button")
+        String resultHeaderClearButton();
+
         @ClassName("requestLauncher-executionModeListBox")
         String requestLauncherExecutionModeListBox();
 

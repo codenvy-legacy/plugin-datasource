@@ -520,4 +520,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
 
     }
+
+    @Override
+    public void clearResults() {
+        this.view.clearResultZone();
+    }
 }

@@ -99,6 +99,9 @@
     padding-bottom: 0;
     box-sizing: border-box; /* to stay cohesive with the listbox */
 }
+.resultHeader-clear-button {
+    cursor: pointer;
+}
 .requestLauncher-resultLimitInput {
 }
 

@@ -81,4 +81,7 @@ public interface SqlRequestLauncherConstants extends Messages {
 
     @DefaultMessage("The result limit can''t be zero. It was reset to the previous value.")
     String userErrorZeroLimit();
+
+    @DefaultMessage("Clear all results")
+    String clearButtonAltText();
 }

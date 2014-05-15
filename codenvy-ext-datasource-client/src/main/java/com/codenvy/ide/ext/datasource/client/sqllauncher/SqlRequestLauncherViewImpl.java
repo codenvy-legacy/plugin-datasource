@@ -90,6 +90,10 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
     @UiField
     Button                                      executeButton;
 
+    /** The button that clears the result zone. */
+    @UiField
+    Label                                       clearResultsButton;
+
     /** The CSS resource. */
     @UiField(provided = true)
     protected final DatasourceUiResources       datasourceUiResources;
@@ -236,16 +240,31 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         getDelegate().executeRequested();
     }
 
+    /**
+     * Change handler on the datasource list input.
+     * 
+     * @param event the change event
+     */
     @UiHandler("datasourceList")
     void handleDatasourceSelection(final ChangeEvent event) {
         getDelegate().datasourceChanged(getSelectedId());
     }
 
+    /**
+     * Change handler on the result limit input.
+     * 
+     * @param event the change event
+     */
     @UiHandler("resultLimitInput")
     void handleResultLimitChange(final ChangeEvent event) {
         getDelegate().resultLimitChanged(this.resultLimitInput.getValue());
     }
 
+    /**
+     * Change handler on the execution mode input.
+     * 
+     * @param event the change event
+     */
     @UiHandler("executionModeList")
     void handleExecutionModeChange(final ChangeEvent event) {
         final String newExecmode = this.executionModeList.getValue(this.executionModeList.getSelectedIndex());
@@ -260,6 +279,21 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         }
     }
 
+    /**
+     * Handler on the "clear results" button.
+     * 
+     * @param event the click event
+     */
+    @UiHandler("clearResultsButton")
+    void handleResultLimitChange(final ClickEvent event) {
+        getDelegate().clearResults();
+    }
+
+    /**
+     * Sets up the items of the execution mode list input.
+     * 
+     * @param constants i18n constants object
+     */
     private void fillExecutionModeList(final SqlRequestLauncherConstants constants) {
         this.executionModeList.addItem(constants.executeAllModeItem(), EXECUTE_ALL);
         this.executionModeList.addItem(constants.stopOnErrorModeitem(), STOP_ON_ERROR);
