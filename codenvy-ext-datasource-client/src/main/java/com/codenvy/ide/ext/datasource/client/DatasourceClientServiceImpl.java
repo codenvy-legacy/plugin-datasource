@@ -60,13 +60,20 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
 
     @Override
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
+                                  final ExploreTableType tableCategory,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         final String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_EXPLORE_PATH, "", null);
         ExploreRequestDTO request = this.dtoFactory.createDto(ExploreRequestDTO.class);
         request.setDatasourceConfig(configuration);
-        request.setExploreTableType(ExploreTableType.SYSTEM);
+        request.setExploreTableType(tableCategory);
         final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, request, false);
         postRequest.send(asyncRequestCallback);
+    }
+
+    @Override
+    public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
+                                  final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        fetchDatabaseInfo(configuration, ExploreTableType.STANDARD, asyncRequestCallback);
     }
 
     @Override

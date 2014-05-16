@@ -11,6 +11,7 @@ import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
@@ -57,7 +58,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
     }
 
     @Override
-    public void fetchDatabaseInfo(final DatabaseConfigurationDTO configuration) {
+    public void fetchDatabaseInfo(final DatabaseConfigurationDTO configuration, final ExploreTableType tableCategory) {
         if (configuration == null) {
             final Notification invalidConfigNotification = new Notification(notificationConstants.invalidConfigurationNotification(),
                                                                             Notification.Type.ERROR);
@@ -80,7 +81,8 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         notificationManager.showNotification(fetchDatabaseNotification);
 
         try {
-            this.datasourceClientService.fetchDatabaseInfo(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+            this.datasourceClientService.fetchDatabaseInfo(configuration, tableCategory,
+                                                           new AsyncRequestCallback<String>(new StringUnmarshaller()) {
 
                 @Override
                 protected void onSuccess(final String result) {
@@ -124,7 +126,10 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
             // the flag must be cleared on failure
             this.databaseInfoStore.clearFetchPending(datasourceId);
         }
+    }
 
-
+    @Override
+    public void fetchDatabaseInfo(final DatabaseConfigurationDTO configuration) {
+        this.fetchDatabaseInfo(configuration, ExploreTableType.STANDARD);
     }
 }

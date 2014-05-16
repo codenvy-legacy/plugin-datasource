@@ -18,6 +18,7 @@ package com.codenvy.ide.ext.datasource.client;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -29,6 +30,10 @@ import com.google.gwt.http.client.RequestException;
 public interface DatasourceClientService {
 
     void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,
+                           @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
+
+    void fetchDatabaseInfo(@NotNull DatabaseConfigurationDTO configuration,
+                           ExploreTableType tableCategory,
                            @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException;
 
     void executeSqlRequest(@NotNull DatabaseConfigurationDTO configuration,
