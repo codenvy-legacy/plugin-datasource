@@ -49,6 +49,8 @@ import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreRequestDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
@@ -78,7 +80,7 @@ public class DatabaseExploreService {
     }
 
     /**
-     * Explores a database.
+     * Explores a database in standard mode.
      * 
      * @param databaseConfig the datasource configuration
      * @return a description of the contents of the database
@@ -89,12 +91,45 @@ public class DatabaseExploreService {
      */
     @POST
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    @Deprecated
     public String getDatabase(final DatabaseConfigurationDTO databaseConfig) throws SQLException,
                                                                             DatabaseDefinitionException,
-                                                                            SchemaCrawlerException {
+                                                                            ExploreException {
+        final ExploreRequestDTO exploreRequest = DtoFactory.getInstance().createDto(ExploreRequestDTO.class);
+        exploreRequest.setDatasourceConfig(databaseConfig);
+        exploreRequest.setExploreTableType(ExploreTableType.STANDARD);
+        return getDatabase(exploreRequest);
+    }
 
+    /**
+     * Explores a database.
+     * 
+     * @param exploreRequest the parameters for the explore request
+     * @return a description of the contents of the database
+     * @throws DatabaseDefinitionException if the datasource configuration is incorrect
+     * @throws SQLException if the database connection could not be created
+     * @throws ExploreException on crawling error
+     * @throws SchemaCrawlerException if database exploration failed
+     */
+    @POST
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+    public String getDatabase(final ExploreRequestDTO exploreRequest) throws SQLException,
+                                                                     DatabaseDefinitionException,
+                                                                     ExploreException {
+
+        if (exploreRequest == null) {
+            throw new ExploreException("The explore request parameter is null");
+        }
+
+        final DatabaseConfigurationDTO databaseConfig = exploreRequest.getDatasourceConfig();
         if (databaseConfig == null) {
             throw new DatabaseDefinitionException("Database definition is null");
+        }
+
+        ExploreTableType exploreMode = exploreRequest.getExploreTableType();
+        // by default, only crawl simple entities
+        if (exploreMode == null) {
+            exploreMode = ExploreTableType.STANDARD;
         }
 
         Database database = null;
