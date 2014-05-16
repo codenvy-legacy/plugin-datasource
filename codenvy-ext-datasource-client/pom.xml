@@ -19,7 +19,7 @@
     <parent>
         <artifactId>codenvy-ext-datasource-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M16-SNAPSHOT</version>
+        <version>3.0.0-M16</version>
     </parent>
     <artifactId>codenvy-ext-datasource-client</artifactId>
     <name>Codenvy Extension :: Datasource Client</name>
