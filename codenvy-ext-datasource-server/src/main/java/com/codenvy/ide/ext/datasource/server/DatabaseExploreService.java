@@ -37,7 +37,6 @@ import schemacrawler.schema.IndexColumn;
 import schemacrawler.schema.PrimaryKey;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
-import schemacrawler.schema.TableType;
 import schemacrawler.schema.View;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
@@ -69,7 +68,21 @@ import com.google.inject.Inject;
 public class DatabaseExploreService {
 
     /** The logger. */
-    private static final Logger         LOG = LoggerFactory.getLogger(DatabaseExploreService.class);
+    private static final Logger         LOG                     = LoggerFactory.getLogger(DatabaseExploreService.class);
+
+
+    /** Table types list for simple mode. */
+    private static final List<String>   TABLE_TYPES_SIMPLE      = Lists.newArrayList("TABLE", "VIEW");
+
+    /** Table types list for standard mode. */
+    private static final List<String>   TABLE_TYPES_STANDARD    = Lists.newArrayList("TABLE", "VIEW", "MATERIALIZED VIEW",
+                                                                                     "ALIAS", "SYNONYM");
+    /** Table types list for system mode. */
+    private static final List<String>   TABLES_TYPE_WITH_SYSTEM = Lists.newArrayList("TABLE", "VIEW", "MATERIALIZED VIEW",
+                                                                                     "ALIAS", "SYNONYM", "SYSTEM TABLE",
+                                                                                     "SYSTEM VIEW");
+    /** Table types list for 'all' mode. */
+    private static final List<String>   TABLES_TYPE_ALL         = Lists.newArrayList();
 
     /** The connection provider. */
     private final JdbcConnectionFactory jdbcConnectionFactory;
@@ -148,9 +161,23 @@ public class DatabaseExploreService {
             // exclude procedures and function for now
             options.setRoutineInclusionRule(new ExcludeAll());
 
-            // all table types, see java.sql.DatabaseMetadata.getTables would be 'null' but
-            // we probably don't need temp tables etc
-            options.setTableTypes(Lists.newArrayList(TableType.table, TableType.view, TableType.system_table));
+            List<String> tabletypes = null;
+            switch (exploreMode) {
+                case SIMPLE:
+                    tabletypes = TABLE_TYPES_SIMPLE;
+                    break;
+                case SYSTEM:
+                    tabletypes = TABLES_TYPE_WITH_SYSTEM;
+                    break;
+                case ALL:
+                    tabletypes = TABLES_TYPE_ALL;
+                    break;
+                case STANDARD:
+                default:
+                    tabletypes = TABLE_TYPES_STANDARD;
+                    break;
+            }
+            options.setTableTypes(tabletypes);
 
             endSetupTime = System.currentTimeMillis();
             database = SchemaCrawlerUtility.getDatabase(connection, options);
@@ -184,7 +211,7 @@ public class DatabaseExploreService {
                 TableDTO tableDTO = DtoFactory.getInstance().createDto(TableDTO.class)
                                               .withName(table.getName())
                                               .withLookupKey(table.getLookupKey())
-                                              .withType(table.getTableType().name())
+                                              .withType(table.getTableType().getTableType())
                                               .withComment(database.getRemarks());
                 if (table instanceof View) {
                     tableDTO = tableDTO.withIsView(true);

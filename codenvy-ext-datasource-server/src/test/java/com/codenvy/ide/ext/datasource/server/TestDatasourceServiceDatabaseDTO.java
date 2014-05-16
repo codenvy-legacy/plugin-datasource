@@ -24,9 +24,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreRequestDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 
 /**
  * Test the datasource service getDatabase() method that is used to retrieve a database catalog information. Tests are ignored as they needs
@@ -36,6 +37,9 @@ import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
 public class TestDatasourceServiceDatabaseDTO {
     @Mock
     protected DefaultDatasourceDefinitionDTO databaseConfig;
+
+    @Mock
+    protected ExploreRequestDTO              exploreRequest;
 
     @Ignore
     @Test
@@ -47,15 +51,18 @@ public class TestDatasourceServiceDatabaseDTO {
         when(databaseConfig.getUsername()).thenReturn("postgres");
         when(databaseConfig.getPassword()).thenReturn("nuxeospirit");
 
-        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+        when(exploreRequest.getDatasourceConfig()).thenReturn(databaseConfig);
+        when(exploreRequest.getExploreTableType()).thenReturn(ExploreTableType.SIMPLE);
+
+        String json = getDatabaseJsonDTOFromDatasourceService(exploreRequest);
         System.out.println(json);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"PostgreSQL\""));
     }
 
-    protected String getDatabaseJsonDTOFromDatasourceService(DatabaseConfigurationDTO databaseConfig) throws Exception {
+    protected String getDatabaseJsonDTOFromDatasourceService(ExploreRequestDTO exploreRequest) throws Exception {
         DatabaseExploreService dsService = new DatabaseExploreService(new JdbcConnectionFactory());
-        return dsService.getDatabase(databaseConfig);
+        return dsService.getDatabase(exploreRequest);
     }
 
     @Ignore
@@ -68,7 +75,11 @@ public class TestDatasourceServiceDatabaseDTO {
         when(databaseConfig.getUsername()).thenReturn("root");
         when(databaseConfig.getPassword()).thenReturn("selucreh");
 
-        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+
+        when(exploreRequest.getDatasourceConfig()).thenReturn(databaseConfig);
+        when(exploreRequest.getExploreTableType()).thenReturn(ExploreTableType.SIMPLE);
+
+        String json = getDatabaseJsonDTOFromDatasourceService(exploreRequest);
         System.out.println(json);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"MySQL\""));
@@ -84,7 +95,11 @@ public class TestDatasourceServiceDatabaseDTO {
         when(databaseConfig.getUsername()).thenReturn("admin");
         when(databaseConfig.getPassword()).thenReturn("admin");
 
-        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+
+        when(exploreRequest.getDatasourceConfig()).thenReturn(databaseConfig);
+        when(exploreRequest.getExploreTableType()).thenReturn(ExploreTableType.SIMPLE);
+
+        String json = getDatabaseJsonDTOFromDatasourceService(exploreRequest);
         System.out.println(json);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"Oracle\""));
@@ -100,7 +115,11 @@ public class TestDatasourceServiceDatabaseDTO {
         when(databaseConfig.getUsername()).thenReturn("sa");
         when(databaseConfig.getPassword()).thenReturn("admin");
 
-        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+
+        when(exploreRequest.getDatasourceConfig()).thenReturn(databaseConfig);
+        when(exploreRequest.getExploreTableType()).thenReturn(ExploreTableType.SIMPLE);
+
+        String json = getDatabaseJsonDTOFromDatasourceService(exploreRequest);
         System.out.println(json);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"Microsoft SQL Server\""));
