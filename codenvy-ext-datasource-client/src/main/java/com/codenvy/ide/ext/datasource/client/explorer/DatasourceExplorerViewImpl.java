@@ -37,7 +37,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,9 +52,6 @@ import elemental.events.MouseEvent;
 public class DatasourceExplorerViewImpl extends
                                        BaseView<DatasourceExplorerView.ActionDelegate> implements
                                                                                       DatasourceExplorerView {
-
-    @UiField
-    protected Panel                 mainContainer;
 
     /** The explorer tree. */
     @UiField(provided = true)
@@ -98,11 +94,10 @@ public class DatasourceExplorerViewImpl extends
         this.datasourceUiResources = clientResource;
         this.splitPanel = new SplitLayoutPanel(4);
 
-        uiBinder.createAndBindUi(this);
+        container.add(uiBinder.createAndBindUi(this));
 
         this.refreshButton.setTitle(constants.exploreButtonTooltip());
 
-        container.add(mainContainer);
     }
 
     @Override
