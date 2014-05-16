@@ -89,9 +89,9 @@
         }
         .resultZone-layout-scroll {
             position: relative; /* used in conjunction with position:absolute fot the export button in RequestResultHeader */
-            min-height: fill-available;
-            min-height: -webkit-fill-available;
-            min-height: -moz-fill-available;
+            flex-grow: 1;
+            -webkit-flex-grow: 1;
+            -moz-flex-grow: 1;
         }
         .resultZone-layout-output {
             display: flex;
