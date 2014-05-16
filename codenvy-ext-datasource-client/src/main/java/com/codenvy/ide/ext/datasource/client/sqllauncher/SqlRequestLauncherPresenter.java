@@ -157,7 +157,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         if (prefRequestLimit != null) {
             try {
-                int prefValue = Integer.valueOf(prefRequestLimit);
+                int prefValue = Integer.parseInt(prefRequestLimit);
                 if (prefValue > 0) {
                     this.resultLimit = prefValue;
                 } else {
