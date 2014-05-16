@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.mvp.View;
 import com.codenvy.ide.api.parts.base.BaseActionDelegate;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 /**
@@ -58,6 +59,11 @@ public interface DatasourceExplorerView extends
      */
     AcceptsOneWidget getPropertiesDisplayContainer();
 
+
+    void setTableTypesList(Collection<String> tableTypes);
+
+    void setTableTypes(ExploreTableType tableType);
+
     /**
      * The action delegate for this view.
      */
@@ -87,5 +93,7 @@ public interface DatasourceExplorerView extends
         void onClickExploreButton(String datasourceId);
 
         void onSelectedDatasourceChanged(String datasourceId);
+
+        void onSelectedTableTypesChanged(int selectedIndex);
     }
 }

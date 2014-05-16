@@ -77,6 +77,10 @@
                 </g:center>
             </g:SplitLayoutPanel>
         </g:center>
+        <g:south size="0">
+            <g:ListBox ui:field="tableTypesListBox" visible="false"
+                        addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerDatasourceList} {style.datasourcelist-layout}"/>
+        </g:south>
     </g:DockLayoutPanel>
 
 </ui:UiBinder>

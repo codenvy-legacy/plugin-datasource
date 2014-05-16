@@ -25,6 +25,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.input.SignalEvent;
@@ -60,9 +61,13 @@ public class DatasourceExplorerViewImpl extends
     @UiField(provided = true)
     protected Tree<EntityTreeNode>  tree;
 
-    /** the dropdown to select the datasource to explroe. */
+    /** The dropdown to select the datasource to explore. */
     @UiField
     protected ListBox               datasourceListBox;
+
+    /** The dropdown to select the table types to show. */
+    @UiField
+    protected ListBox               tableTypesListBox;
 
     /** The panel where we show the selected element properties. */
     @UiField
@@ -141,6 +146,19 @@ public class DatasourceExplorerViewImpl extends
         }
     }
 
+    @Override
+    public void setTableTypesList(final Collection<String> tableTypes) {
+        this.tableTypesListBox.clear();
+        for (final String tableType : tableTypes) {
+            this.tableTypesListBox.addItem(tableType);
+        }
+    }
+
+    @Override
+    public void setTableTypes(final ExploreTableType tableType) {
+        this.tableTypesListBox.setSelectedIndex(tableType.getIndex());
+    }
+
     public String getSelectedId() {
         int index = this.datasourceListBox.getSelectedIndex();
         if (index != -1) {
@@ -186,6 +204,16 @@ public class DatasourceExplorerViewImpl extends
     @UiHandler("datasourceListBox")
     public void onDatasourceListChanged(final ChangeEvent event) {
         delegate.onSelectedDatasourceChanged(datasourceListBox.getValue(datasourceListBox.getSelectedIndex()));
+    }
+
+    /**
+     * Handler to react to value change in the table types listbox.
+     * 
+     * @param event the event
+     */
+    @UiHandler("tableTypesListBox")
+    public void onTableTypesListChanged(final ChangeEvent event) {
+        delegate.onSelectedTableTypesChanged(this.tableTypesListBox.getSelectedIndex());
     }
 
     @Override

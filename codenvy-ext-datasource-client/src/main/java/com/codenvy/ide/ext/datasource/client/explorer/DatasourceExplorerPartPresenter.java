@@ -15,7 +15,9 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -36,6 +38,7 @@ import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseMetadataEntityDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -65,6 +68,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     /** The currently selected datasource. */
     private String                              selectedDatasource;
+
+    /** The currently selected table type. */
+    private ExploreTableType                    selectedTableType;
 
     /**
      * Instantiates the ProjectExplorer Presenter
@@ -98,6 +104,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
         // register for datasource metadata ready events
         this.eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
+
+        setupTabletypesList();
     }
 
     /** {@inheritDoc} */
@@ -170,7 +178,7 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         }
 
         DatabaseConfigurationDTO datasourceObject = this.datasourceManager.getByName(datasourceId);
-        service.fetchDatabaseInfo(datasourceObject);
+        service.fetchDatabaseInfo(datasourceObject, this.selectedTableType);
     }
 
     @Override
@@ -185,6 +193,25 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         loadDatasource(datasourceId);
 
         eventBus.fireEvent(new SelectedDatasourceChangeEvent(datasourceId));
+    }
+
+    private void setupTabletypesList() {
+        final List<String> values = new ArrayList<String>();
+        for (final ExploreTableType type : ExploreTableType.values()) {
+            values.add(constants.tableCategories()[type.getIndex()]);
+        }
+        this.view.setTableTypesList(values);
+        this.view.setTableTypes(ExploreTableType.STANDARD);
+    }
+
+    @Override
+    public void onSelectedTableTypesChanged(final int selectedIndex) {
+        final ExploreTableType newValue = ExploreTableType.fromIndex(selectedIndex);
+        if (newValue != null) {
+            this.selectedTableType = newValue;
+        } else {
+            this.view.setTableTypes(this.selectedTableType);
+        }
     }
 
     @Override
