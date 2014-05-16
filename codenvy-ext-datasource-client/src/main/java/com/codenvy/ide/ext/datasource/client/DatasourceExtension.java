@@ -50,10 +50,10 @@ import com.google.inject.Singleton;
 @Extension(title = "Datasource Extension", version = "1.0.0")
 public class DatasourceExtension {
 
-    public static boolean SHOW_ITEM                  = true;
-    public static String  DS_GROUP_MAIN_MENU         = "DatasourceMainMenu";
+    public static boolean       SHOW_ITEM                  = true;
+    public static final String  DS_GROUP_MAIN_MENU         = "DatasourceMainMenu";
 
-    private static String DS_ACTION_SHORTCUT_EXECUTE = "DatasourceActionExecute";
+    private static final String DS_ACTION_SHORTCUT_EXECUTE = "DatasourceActionExecute";
 
     @Inject
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
