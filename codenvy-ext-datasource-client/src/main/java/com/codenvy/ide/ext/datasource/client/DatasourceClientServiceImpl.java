@@ -20,6 +20,8 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.inject.DatasourceGinModule;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreRequestDTO;
+import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
@@ -60,7 +62,10 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         final String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_EXPLORE_PATH, "", null);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
+        ExploreRequestDTO request = this.dtoFactory.createDto(ExploreRequestDTO.class);
+        request.setDatasourceConfig(configuration);
+        request.setExploreTableType(ExploreTableType.SYSTEM);
+        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, request, false);
         postRequest.send(asyncRequestCallback);
     }
 
