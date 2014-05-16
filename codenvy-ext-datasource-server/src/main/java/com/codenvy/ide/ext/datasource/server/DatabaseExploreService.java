@@ -53,6 +53,7 @@ import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.codenvy.ide.ext.datasource.shared.exception.ExploreException;
 import com.google.common.collect.Lists;
 import com.google.common.math.LongMath;
 import com.google.inject.Inject;
@@ -79,12 +80,11 @@ public class DatabaseExploreService {
     /**
      * Explores a database.
      * 
-     * @param databaseConfig the configuration to set the conenction up
+     * @param databaseConfig the datasource configuration
      * @return a description of the contents of the database
-     * @throws DatabaseDefinitionException
-     * @throws SQLException
      * @throws DatabaseDefinitionException if the datasource configuration is incorrect
      * @throws SQLException if the database connection could not be created
+     * @throws ExploreException on crawling error
      * @throws SchemaCrawlerException if database exploration failed
      */
     @POST
@@ -119,6 +119,8 @@ public class DatabaseExploreService {
 
             endSetupTime = System.currentTimeMillis();
             database = SchemaCrawlerUtility.getDatabase(connection, options);
+        } catch (final SchemaCrawlerException e) {
+            throw new ExploreException("Couldn't explore database - " + e.getLocalizedMessage());
         }
         final long endCrawlingTime = System.currentTimeMillis();
 
