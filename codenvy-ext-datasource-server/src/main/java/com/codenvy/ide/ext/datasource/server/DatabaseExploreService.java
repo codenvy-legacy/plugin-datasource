@@ -93,28 +93,6 @@ public class DatabaseExploreService {
     }
 
     /**
-     * Explores a database in standard mode.
-     * 
-     * @param databaseConfig the datasource configuration
-     * @return a description of the contents of the database
-     * @throws DatabaseDefinitionException if the datasource configuration is incorrect
-     * @throws SQLException if the database connection could not be created
-     * @throws ExploreException on crawling error
-     * @throws SchemaCrawlerException if database exploration failed
-     */
-    @POST
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    @Deprecated
-    public String getDatabase(final DatabaseConfigurationDTO databaseConfig) throws SQLException,
-                                                                            DatabaseDefinitionException,
-                                                                            ExploreException {
-        final ExploreRequestDTO exploreRequest = DtoFactory.getInstance().createDto(ExploreRequestDTO.class);
-        exploreRequest.setDatasourceConfig(databaseConfig);
-        exploreRequest.setExploreTableType(ExploreTableType.STANDARD);
-        return getDatabase(exploreRequest);
-    }
-
-    /**
      * Explores a database.
      * 
      * @param exploreRequest the parameters for the explore request
