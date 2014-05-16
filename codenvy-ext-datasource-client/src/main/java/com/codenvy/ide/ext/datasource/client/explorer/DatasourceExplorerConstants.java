@@ -15,8 +15,8 @@
  */
 package com.codenvy.ide.ext.datasource.client.explorer;
 
+import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
-import com.google.gwt.i18n.client.Messages;
 
 /**
  * Constant interface for the datasource explorer.
@@ -24,17 +24,23 @@ import com.google.gwt.i18n.client.Messages;
  * @author "Mickaël Leduque"
  */
 @DefaultLocale("en")
-public interface DatasourceExplorerConstants extends Messages {
+public interface DatasourceExplorerConstants extends Constants {
 
     /** The tooltip for the refresh button. */
-    @DefaultMessage("Refresh and explore")
+    @DefaultStringValue("Refresh and explore")
     String exploreButtonTooltip();
 
     /** The string used in the part (top). */
-    @DefaultMessage("Datasource Explorer")
+    @DefaultStringValue("Datasource Explorer")
     String datasourceExplorerPartTitle();
 
     /** The string used in the side tab. */
-    @DefaultMessage("Datasource")
+    @DefaultStringValue("Datasource")
     String datasourceExplorerTabTitle();
+
+    @DefaultStringArrayValue({"Simplest - Tables and views",
+            "Standard - adds materialized views, aliases, syn.",
+            "System - add system tables/views",
+            "All existing table types"})
+    String[] tableCategories();
 }
