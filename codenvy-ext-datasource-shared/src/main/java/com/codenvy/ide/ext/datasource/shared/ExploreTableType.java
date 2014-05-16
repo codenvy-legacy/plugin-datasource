@@ -24,11 +24,41 @@ package com.codenvy.ide.ext.datasource.shared;
 public enum ExploreTableType {
 
     /** Explore simplest mode. Only tables and views. */
-    SIMPLE,
+    SIMPLE(0),
     /** Default explore mode. Adds materialized views, alias and synonyms toSIMPLE. */
-    STANDARD,
+    STANDARD(1),
     /** Explore mode with STANDARD tables plus system tables and views. */
-    SYSTEM,
+    SYSTEM(2),
     /** Explore mode for all table/entities types. */
-    ALL
+    ALL(3);
+
+    private final int index;
+
+    private ExploreTableType(final int index) {
+        this.index = index;
+    }
+
+    /**
+     * Returns the index of the enum.
+     * 
+     * @return the index
+     */
+    public int getIndex() {
+        return this.index;
+    }
+
+    /**
+     * Retrieve the enum value that has this index.
+     * 
+     * @param searchedIndex the index
+     * @return the enum value or null if there is none
+     */
+    public static ExploreTableType fromIndex(final int searchedIndex) {
+        for (final ExploreTableType type : values()) {
+            if (type.getIndex() == searchedIndex) {
+                return type;
+            }
+        }
+        return null;
+    }
 }
