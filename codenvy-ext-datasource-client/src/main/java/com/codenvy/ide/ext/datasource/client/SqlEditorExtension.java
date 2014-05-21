@@ -21,6 +21,7 @@ import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.resources.FileType;
 import com.codenvy.ide.api.resources.ResourceProvider;
+import com.codenvy.ide.api.ui.Icon;
 import com.codenvy.ide.api.ui.IconRegistry;
 import com.codenvy.ide.api.ui.action.ActionManager;
 import com.codenvy.ide.api.ui.wizard.newresource.NewResourceAgent;
@@ -70,7 +71,7 @@ public class SqlEditorExtension {
         newResourceAgent.register(sqlResourceProvider);
 
         // register the sql file icon
-        iconRegistry.registerIcon("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png");
+        iconRegistry.registerIcon(new Icon("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png"));
     }
 
 }

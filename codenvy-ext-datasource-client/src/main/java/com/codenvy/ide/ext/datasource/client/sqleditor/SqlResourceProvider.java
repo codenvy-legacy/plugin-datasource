@@ -35,7 +35,7 @@ public class SqlResourceProvider extends NewResourceProvider {
                                final IconRegistry iconRegistry) {
         super(NEW_SQL_PROVIDER_ID,
               constants.newSqlWizardTitle(),
-              iconRegistry.getIcon("default.sqlfile.icon"),
+              iconRegistry.getIcon("default.sqlfile.icon").getImage(),
               SqlEditorExtension.SQL_FILE_EXTENSION);
     }
 
