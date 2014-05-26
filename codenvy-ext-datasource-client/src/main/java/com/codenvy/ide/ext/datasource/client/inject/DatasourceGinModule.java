@@ -62,7 +62,6 @@ import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
 import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl;
@@ -122,8 +121,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder()
                                              .implement(SqlRequestLauncherView.class, SqlRequestLauncherViewImpl.class)
                                              .build(SqlRequestLauncherFactory.class));
-
-        bind(SqlResourceProvider.class);
 
         bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);
 

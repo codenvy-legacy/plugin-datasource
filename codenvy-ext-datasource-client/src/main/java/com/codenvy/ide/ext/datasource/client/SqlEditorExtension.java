@@ -15,8 +15,6 @@
  */
 package com.codenvy.ide.ext.datasource.client;
 
-import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
-
 import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.resources.FileType;
@@ -24,15 +22,18 @@ import com.codenvy.ide.api.resources.ResourceProvider;
 import com.codenvy.ide.api.ui.Icon;
 import com.codenvy.ide.api.ui.IconRegistry;
 import com.codenvy.ide.api.ui.action.ActionManager;
-import com.codenvy.ide.api.ui.wizard.newresource.NewResourceAgent;
+import com.codenvy.ide.api.ui.action.DefaultActionGroup;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.ext.datasource.client.action.NewSqlFileAction;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlResourceProvider;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlLauncherEditorProvider;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_FILE_NEW;
+import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
 
 /**
  * Extension definition for the sql editor.
@@ -55,8 +56,7 @@ public class SqlEditorExtension {
                               final ResourceProvider resourceProvider,
                               final EditorRegistry editorRegistry,
                               final SqlLauncherEditorProvider sqlEditorProvider,
-                              final NewResourceAgent newResourceAgent,
-                              final SqlResourceProvider sqlResourceProvider,
+                              final NewSqlFileAction newSqlFileAction,
                               final IconRegistry iconRegistry) {
 
         Log.info(SqlEditorExtension.class, "Initialization of SQL editor extension.");
@@ -68,7 +68,12 @@ public class SqlEditorExtension {
         final FileType sqlFile = new FileType(sqlEditorResources.sqlFile(), GENERIC_SQL_MIME_TYPE, SQL_FILE_EXTENSION);
         resourceProvider.registerFileType(sqlFile);
         editorRegistry.register(sqlFile, sqlEditorProvider);
-        newResourceAgent.register(sqlResourceProvider);
+
+        // add action for creating new SQL file in "File-New" submenu
+        DefaultActionGroup newGroup = (DefaultActionGroup)actionManager.getAction(GROUP_FILE_NEW);
+        newGroup.addSeparator();
+        actionManager.registerAction("NewSqlFileAction", newSqlFileAction);
+        newGroup.add(newSqlFileAction);
 
         // register the sql file icon
         iconRegistry.registerIcon(new Icon("default.sqlfile.icon", "com/codenvy/ide/ext/datasource/client/sqleditor/sql-icon.png"));
