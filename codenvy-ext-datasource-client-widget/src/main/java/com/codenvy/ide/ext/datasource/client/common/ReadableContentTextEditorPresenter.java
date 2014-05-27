@@ -17,6 +17,7 @@ package com.codenvy.ide.ext.datasource.client.common;
 
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.api.user.UserInfo;
 import com.codenvy.ide.debug.BreakpointGutterManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.texteditor.TextEditorPresenter;
@@ -33,13 +34,15 @@ public class ReadableContentTextEditorPresenter extends TextEditorPresenter impl
                                               final BreakpointGutterManager breakpointGutterManager,
                                               final DtoFactory dtoFactory,
                                               final WorkspaceAgent workspaceAgent,
-                                              final EventBus eventBus) {
+                                              final EventBus eventBus,
+                                              final UserInfo userInfo) {
         super(resources,
               userActivityManager,
               breakpointGutterManager,
               dtoFactory,
               workspaceAgent,
-              eventBus);
+              eventBus,
+              userInfo);
     }
 
     @Override
