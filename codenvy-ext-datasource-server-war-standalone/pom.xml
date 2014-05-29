@@ -19,7 +19,7 @@
     <parent>
         <artifactId>codenvy-ext-datasource-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>3.0.0-M17-SNAPSHOT</version>
+        <version>3.0.0-M17</version>
     </parent>
     <artifactId>codenvy-ext-datasource-server-war-standalone</artifactId>
     <packaging>war</packaging>
