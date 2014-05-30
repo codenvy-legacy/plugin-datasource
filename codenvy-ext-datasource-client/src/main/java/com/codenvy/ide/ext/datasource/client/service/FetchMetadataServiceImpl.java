@@ -1,3 +1,13 @@
+/*******************************************************************************
+* Copyright (c) 2012-2014 Codenvy, S.A.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+* Codenvy, S.A. - initial API and implementation
+*******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.service;
 
 import com.codenvy.ide.api.notification.Notification;
@@ -21,7 +31,7 @@ import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Client-side service for database metadata loading.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 public class FetchMetadataServiceImpl implements FetchMetadataService {
@@ -68,20 +78,20 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         // check if there is a pending fetch on this datasource
         // no synchronization needed, we are in pure single-threaded code (browser)
         final String datasourceId = configuration.getDatasourceId();
-        if (this.databaseInfoStore.isFetchPending(datasourceId)) {
+        if (databaseInfoStore.isFetchPending(datasourceId)) {
             Log.info(FetchMetadataServiceImpl.class, "Fetch pending found for this datasource ("
                                                      + datasourceId
                                                      + ") - no need to trigger another fetch.");
             return;
         }
-        this.databaseInfoStore.setFetchPending(datasourceId);
+        databaseInfoStore.setFetchPending(datasourceId);
 
         final Notification fetchDatabaseNotification = new Notification(notificationConstants.notificationFetchStart(),
                                                                         Notification.Status.PROGRESS);
         notificationManager.showNotification(fetchDatabaseNotification);
 
         try {
-            this.datasourceClientService.fetchDatabaseInfo(configuration, tableCategory,
+            datasourceClientService.fetchDatabaseInfo(configuration, tableCategory,
                                                            new AsyncRequestCallback<String>(new StringUnmarshaller()) {
 
                 @Override
@@ -121,10 +131,10 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
             databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
             // clean up current database
-            this.eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
+            eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
 
             // the flag must be cleared on failure
-            this.databaseInfoStore.clearFetchPending(datasourceId);
+            databaseInfoStore.clearFetchPending(datasourceId);
         }
     }
 
