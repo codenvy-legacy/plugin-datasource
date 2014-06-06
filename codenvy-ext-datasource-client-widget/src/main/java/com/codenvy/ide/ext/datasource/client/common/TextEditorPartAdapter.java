@@ -35,6 +35,7 @@ import com.codenvy.ide.util.ListenerManager;
 import com.codenvy.ide.util.ListenerManager.Dispatcher;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -240,6 +241,11 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     @Override
     public void doSave() {
         this.editor.doSave();
+    }
+
+    @Override
+    public void doSave(@NotNull AsyncCallback<EditorInput> callback) {
+        this.editor.doSave(callback);
     }
 
     @Override
