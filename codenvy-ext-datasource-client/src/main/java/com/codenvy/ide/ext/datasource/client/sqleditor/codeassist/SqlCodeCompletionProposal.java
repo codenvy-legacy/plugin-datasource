@@ -22,6 +22,7 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import org.vectomatic.dom.svg.ui.SVGImage;
 
 public class SqlCodeCompletionProposal implements CompletionProposal {
 
@@ -58,6 +59,12 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
         Image image = new Image();
         image.setResource(invocationContext.getResources().sqlCompletionIcon());
         return image;
+    }
+    
+    @Override
+    public SVGImage getSVGImage() {
+        // TODO create SVG image to be displayed in SQL autocomplition.
+        return null;
     }
 
     @Override
