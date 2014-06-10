@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
+import com.codenvy.ide.api.ui.Icon;
 import com.codenvy.ide.text.BadLocationException;
 import com.codenvy.ide.text.Document;
 import com.codenvy.ide.text.Region;
@@ -20,9 +21,7 @@ import com.codenvy.ide.texteditor.api.codeassistant.Completion;
 import com.codenvy.ide.texteditor.api.codeassistant.CompletionProposal;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-import org.vectomatic.dom.svg.ui.SVGImage;
 
 public class SqlCodeCompletionProposal implements CompletionProposal {
 
@@ -55,16 +54,8 @@ public class SqlCodeCompletionProposal implements CompletionProposal {
     }
 
     @Override
-    public Image getImage() {
-        Image image = new Image();
-        image.setResource(invocationContext.getResources().sqlCompletionIcon());
-        return image;
-    }
-    
-    @Override
-    public SVGImage getSVGImage() {
-        // TODO create SVG image to be displayed in SQL autocomplition.
-        return null;
+    public Icon getIcon() {
+        return new Icon("sql.completion.icon", invocationContext.getResources().sqlCompletionIcon());
     }
 
     @Override
