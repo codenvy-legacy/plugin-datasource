@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
+import org.vectomatic.dom.svg.ui.SVGResource;
+
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -23,8 +25,8 @@ public interface SqlEditorResources extends ClientBundle {
     @Source("sql-icon.png")
     ImageResource sqlFile();
 
-    @Source("sql-completion.png")
-    ImageResource sqlCompletionIcon();
+    @Source("sql-completion.svg")
+    SVGResource sqlCompletionIcon();
 
     @Source({"sql.css", "com/codenvy/ide/api/ui/style.css"})
     CssResource sqlCSS();
