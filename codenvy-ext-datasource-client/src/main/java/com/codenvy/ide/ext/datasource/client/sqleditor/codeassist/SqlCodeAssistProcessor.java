@@ -36,16 +36,23 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     private final EditorDatasourceOracle    editorDatasourceOracle;
 
     private final static RegExp             TABLE_REGEXP_PATTERN               =
-                                                                                 RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update)\\s+(\\w*.*\\w*)$");
+																				 RegExp.compile(".*((from((\\s+(\\w+\\.)*\\w+\\s*,)*))|insert into|alter table|update|join)\\s+(\\w*.*\\w*)$"); 
     private final static int                TABLE_REGEXP_GROUP                 = 6;
     private final static RegExp             COLUMN_REGEXP_PATTERN              =
                                                                                  RegExp.compile(".*((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))|insert into|alter table|update)"
                                                                                                     + "\\s+(\\w*\\.?(\\w+))\\s+((.+\\s+)*)"
-                                                                                                    + "((where\\s+(.*\\s+)*|\\()(\\w*\\.*\\w*\\.*\\w+,?\\s+)*|set\\s+((.+\\s*)+,\\s*)*)(\\w*\\.*\\w*\\.*\\w*)$"
+                                                                                                    + "((where\\s+(.*\\s+)*|\\()(\\w*\\.*\\w*\\.*\\w+,?\\s+)*|set\\s+((.+\\s*)+,\\s*)*)(\\w*\\.*\\w*\\.*\\w*)"
+                                                                                                    +"|((from((\\s+((\\w+\\.)*\\w+)\\s*,)*))\\s+(\\w*\\.?(\\w+))\\s+((\\w+\\s+)*)(join\\s+)(\\w*\\.?(\\w+))"
+                                                                                                    +"(\\s+on\\s+(.*\\s+)*)(\\w*\\.*\\w*\\.*\\w*))$"
                                                                                                 , "gm");
     private final static int                COLUMN_REGEXP_GROUP                = 17;
+    private final static int                JOIN_COLUMN_REGEXP_GROUP                = 33;
     private final static int                TABLE_IN_COLUMN_REGEXP_GROUP       = 7;
+    private final static int                JOIN_TABLE_IN_COLUMN_REGEXP_GROUP       = 29;
     private final static int                PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 5;
+    private final static int                JOIN_PREV_TABLES_IN_COLUMN_REGEXP_GROUP = 24;
+    private final static int                STATEMENT_TYPE_REGEXP_GROUP 	   = 2;
+    private final static int                JOIN_STATEMENT_TYPE_REGEXP_GROUP 		= 19;
 
     public SqlCodeAssistProcessor(ReadableContentTextEditor textEditor,
                                   SqlEditorResources resources,
@@ -154,7 +161,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
         MatchResult matcher = TABLE_REGEXP_PATTERN.exec(linePrefixLowerCase);
         if (matcher != null) {
-            String tablePrefix = matcher.getGroup(TABLE_REGEXP_GROUP);
+            String tablePrefix = matcher.getGroup(TABLE_REGEXP_GROUP);            
             String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - tablePrefix.length());
             String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
             Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
@@ -179,23 +186,22 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
         Array<SqlCodeCompletionProposal> array = Collections.createArray();
         String linePrefix = query.getLastQueryPrefix();
         String linePrefixLowerCase = linePrefix.toLowerCase();
-
         MatchResult matcher = COLUMN_REGEXP_PATTERN.exec(linePrefixLowerCase);
         List<String> selectedTables = new ArrayList<String>();
         boolean isSelectStatement = false;
 
         String columnPrefix = "";
         while (matcher != null) {
-            String statementTypeGroup = matcher.getGroup(2);
+            String statementTypeGroup = matcher.getGroup((linePrefixLowerCase.contains("join")) ? JOIN_STATEMENT_TYPE_REGEXP_GROUP : STATEMENT_TYPE_REGEXP_GROUP);
             isSelectStatement = (statementTypeGroup != null)
                                 && !statementTypeGroup.trim().isEmpty()
                                 && statementTypeGroup.startsWith("from");
-            String selectedTable = matcher.getGroup(TABLE_IN_COLUMN_REGEXP_GROUP);
-            columnPrefix = matcher.getGroup(COLUMN_REGEXP_GROUP);
+            String selectedTable = matcher.getGroup((linePrefixLowerCase.contains("join")) ? JOIN_TABLE_IN_COLUMN_REGEXP_GROUP : TABLE_IN_COLUMN_REGEXP_GROUP);
+            columnPrefix = matcher.getGroup((linePrefixLowerCase.contains("join")) ? JOIN_COLUMN_REGEXP_GROUP : COLUMN_REGEXP_GROUP);
             if (selectedTable != null && !selectedTable.trim().isEmpty() && !selectedTables.contains(selectedTable)) {
                 selectedTables.add(selectedTable);
             }
-            String prevSelectedTable = matcher.getGroup(PREV_TABLES_IN_COLUMN_REGEXP_GROUP);
+            String prevSelectedTable = matcher.getGroup((linePrefixLowerCase.contains("join")) ? JOIN_PREV_TABLES_IN_COLUMN_REGEXP_GROUP : PREV_TABLES_IN_COLUMN_REGEXP_GROUP);
             if (prevSelectedTable != null && !prevSelectedTable.trim().isEmpty() && !selectedTables.contains(prevSelectedTable)) {
                 selectedTables.add(prevSelectedTable);
             }
@@ -215,7 +221,6 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                     String tableLowerCase = table.toLowerCase();
                     if (tableLowerCase.startsWith(tablePrefixLowerCase)
                         || (schemaLowerCase + "." + tableLowerCase).startsWith(tablePrefixLowerCase)) {
-
                         Collection<String> columns = databaseInfoOracle.getColumnsFor(datasourceId, schema, table);
                         for (String column : columns) {
                             String columnPrefixLowerCase = columnPrefix.toLowerCase();
