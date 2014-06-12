@@ -205,4 +205,201 @@ public class TestSqlCodeAssistProcessor {
                              5);
     }
 
+    /* - - - - - - - - -
+     * INNER JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectINNERJOINArgumentTable() {
+        testTableCompletion("select * from atable INNER JOIN ",
+                             "For the results of a INNER JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectINNERJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable INNER JOIN table ON ",
+                             "For the results of first argument of ON a INNER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectINNERJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable INNER JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a INNER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * LEFT JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectLEFTJOINArgumentTable() {
+        testTableCompletion("select * from atable LEFT JOIN ",
+                             "For the results of a LEFT JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectLEFTJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable LEFT JOIN table ON ",
+                             "For the results of first argument of ON a LEFT JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectLEFTJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable LEFT JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a LEFT JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * LEFT OUTER JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectLEFTOUTERJOINArgumentTable() {
+        testTableCompletion("select * from atable LEFT OUTER JOIN ",
+                             "For the results of a LEFT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectLEFTOUTERJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable LEFT OUTER JOIN table ON ",
+                             "For the results of first argument of ON a LEFT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectLEFTOUTERJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable LEFT OUTER JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a LEFT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * RIGHT JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectRIGHTJOINArgumentTable() {
+        testTableCompletion("select * from atable RIGHT JOIN ",
+                             "For the results of a RIGHT JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectRIGHTJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable RIGHT JOIN table ON ",
+                             "For the results of first argument of ON a RIGHT JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectRIGHTJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable RIGHT JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a RIGHT JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+
+    
+    /* - - - - - - - - -
+     * RIGHT OUTER JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectRIGHTOUTERJOINArgumentTable() {
+        testTableCompletion("select * from atable RIGHT OUTER JOIN ",
+                             "For the results of a RIGHT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectRIGHTOUTERJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable RIGHT OUTER JOIN table ON ",
+                             "For the results of first argument of ON a RIGHT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectRIGHTOUTERJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable RIGHT JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a RIGHT OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * FULL JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectFULLJOINArgumentTable() {
+        testTableCompletion("select * from atable FULL JOIN ",
+                             "For the results of a FULL JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectFULLJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable FULL JOIN table ON ",
+                             "For the results of first argument of ON a FULL JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectFULLJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable FULL JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a FULL JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * FULL OUTER JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectFULLOUTERJOINArgumentTable() {
+        testTableCompletion("select * from atable FULL OUTER JOIN ",
+                             "For the results of a FULL OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    @Test
+    public void completeSelectFULLOUTERJOINFirstArgumentON() {
+        testColumnCompletion("select * from atable FULL OUTER JOIN table ON ",
+                             "For the results of first argument of ON a FULL OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    @Test
+    public void completeSelectFULLOUTERJOIN2ndArgumentON() {
+        testColumnCompletion("select * from atable FULL OUTER JOIN table ON atable.column11 = ",
+                             "For the results of second argument of ON  a FULL OUTER JOIN autocompletion using a SELECT statement, we expect ",
+                             5);
+    }
+    
+    /* - - - - - - - - -
+     * CROSS JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectCROSSJOINArgumentTable() {
+        testTableCompletion("select * from atable CROSS JOIN ",
+                             "For the results of a CROSS JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
+    
+    /* - - - - - - - - -
+     * NATURAL JOIN TESTS
+     * - - - - - - - - - 
+     */
+    @Test
+    public void completeSelectNATURALJOINArgumentTable() {
+        testTableCompletion("select * from atable NATURAL JOIN ",
+                             "For the results of a NATURAL JOIN autocompletion using a SELECT statement, we expect ",
+                             4);
+    }
 }
