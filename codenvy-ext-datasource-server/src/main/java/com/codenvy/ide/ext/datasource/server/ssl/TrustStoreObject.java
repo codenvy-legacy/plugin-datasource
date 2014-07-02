@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server.ssl;
 
-import java.io.FileOutputStream;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Iterator;
@@ -22,23 +21,30 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.google.inject.Inject;
+
 /**
  * The trustStore is pretty similar to the keystore except that - it doesn't take key
  */
 public class TrustStoreObject extends KeyStoreObject {
 
-    public TrustStoreObject() throws Exception {
-        super();
+
+    @Inject
+    public TrustStoreObject(UserProfileDao profileDao) throws Exception {
+        super(profileDao);
     }
 
+
+    @Override
     protected String getKeyStorePassword() {
         String sPass = System.getProperty("javax.net.ssl.trustStorePassword");
         return sPass;
     }
 
-    protected String getKeyStoreLocation() {
-        String store = System.getProperty("javax.net.ssl.trustStore");
-        return store;
+    @Override
+    protected String getKeyStorePreferenceName() {
+        return "trustStore";
     }
 
     @Override

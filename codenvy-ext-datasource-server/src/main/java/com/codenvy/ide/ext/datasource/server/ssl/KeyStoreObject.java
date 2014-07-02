@@ -10,10 +10,11 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server.ssl;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -28,8 +29,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,12 +43,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codenvy.api.core.NotFoundException;
+import com.codenvy.api.core.ServerException;
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.commons.env.EnvironmentContext;
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
+import com.google.inject.Inject;
 
 /**
  * Jaxrs object for client Java SSL keystore. Access to key objects, List key objects and add new key objects.
@@ -56,12 +64,53 @@ public class KeyStoreObject {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyStoreObject.class);
 
-    protected String            keyStoreLocation;
     protected String            keyStorePassword;
     protected KeyStore          keystore;
 
-    public KeyStoreObject() throws Exception {
+    protected UserProfileDao    profileDao;
+
+    @Inject
+    public KeyStoreObject(UserProfileDao profileDao) throws Exception {
+        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
+            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+        }
+        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
+            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+        }
+        this.profileDao = profileDao;
         keystore = extractKeyStoreFromFile();
+    }
+
+
+    protected KeyStore extractKeyStoreFromFile() throws Exception {
+        Profile profile = profileDao.getById(getUserId());
+        String sslKeyStore = profile.getPreferences().get(getKeyStorePreferenceName());
+
+        keyStorePassword = getKeyStorePassword();
+        KeyStore ks = KeyStore.getInstance("JKS");
+
+        if (sslKeyStore == null) {
+            LOG.info("User KeyStore is null, creating a new one");
+            ks.load(null, keyStorePassword.toCharArray());
+            return ks;
+        }
+        try (InputStream fis = new ByteArrayInputStream(Base64.decodeBase64(sslKeyStore))) {
+            ks.load(fis, keyStorePassword.toCharArray());
+        } catch (Exception e) {
+            LOG.info("Couldn't load keystore file ");
+            ks.load(null, keyStorePassword.toCharArray());
+        }
+
+        return ks;
+    }
+
+
+    protected String getKeyStorePreferenceName() {
+        return "sslKeyStore";
+    }
+
+    private String getUserId() {
+        return EnvironmentContext.getCurrent().getUser().getName();
     }
 
     protected String getKeyStorePassword() {
@@ -69,29 +118,6 @@ public class KeyStoreObject {
         return sPass;
     }
 
-    protected String getKeyStoreLocation() {
-        String store = System.getProperty("javax.net.ssl.keyStore");
-        return store;
-    }
-
-    protected KeyStore extractKeyStoreFromFile() throws Exception {
-        keyStoreLocation = getKeyStoreLocation();
-        keyStorePassword = getKeyStorePassword();
-        KeyStore ks = KeyStore.getInstance("JKS");
-        try (FileInputStream fis = new FileInputStream(keyStoreLocation)) {
-            ks.load(fis, keyStorePassword.toCharArray());
-        } catch (FileNotFoundException e) {
-            LOG.info("Couldn't find keystore file " + keyStoreLocation);
-            ks.load(null, keyStorePassword.toCharArray());
-        }
-
-        return ks;
-    }
-
-    @Path("{alias}")
-    public KeyObject getKeyObject(@PathParam("alias") String alias) throws Exception {
-        return new KeyObject(alias, keystore, keyStoreLocation, keyStorePassword);
-    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -100,7 +126,7 @@ public class KeyStoreObject {
 
         Enumeration<String> e = keystore.aliases();
         while (e.hasMoreElements()) {
-            String alias = (String)e.nextElement();
+            String alias = e.nextElement();
             SslKeyStoreEntry sslKeyStoreEntry = DtoFactory.getInstance().createDto(SslKeyStoreEntry.class)
                                                           .withAlias(alias)
                                                           .withType(
@@ -145,7 +171,33 @@ public class KeyStoreObject {
         save();
     }
 
-    protected void save() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, FileNotFoundException {
-        keystore.store(new FileOutputStream(keyStoreLocation), keyStorePassword.toCharArray());
+
+    @GET
+    @Path("{alias}/remove")
+    public String deleteKeyWithGetMethod(@PathParam("alias") String alias, @QueryParam("callback") String calback) throws Exception {
+        return deleteKey(alias, calback);
+    }
+
+    @DELETE
+    @Path("{alias}")
+    public String deleteKey(@PathParam("alias") String alias, @QueryParam("callback") String calback) throws Exception {
+        keystore.deleteEntry(alias);
+        save();
+        return calback + "();";
+    }
+
+    protected void save() throws KeyStoreException,
+                         IOException,
+                         NoSuchAlgorithmException,
+                         CertificateException,
+                         FileNotFoundException,
+                         NotFoundException,
+                         ServerException {
+        Profile profile = profileDao.getById(getUserId());
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        keystore.store(ostream, keyStorePassword.toCharArray());
+
+        profile.getPreferences().put(getKeyStorePreferenceName(), new String(Base64.encodeBase64(ostream.toByteArray())));
+        profileDao.update(profile);
     }
 }
