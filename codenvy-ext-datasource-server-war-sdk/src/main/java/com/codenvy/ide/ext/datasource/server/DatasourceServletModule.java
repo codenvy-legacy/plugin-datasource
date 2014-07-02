@@ -10,8 +10,10 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server;
 
-import org.everrest.guice.servlet.GuiceEverrestServlet;
+import javax.inject.Singleton;
 
+import org.everrest.guice.servlet.GuiceEverrestServlet;
+import com.codenvy.ide.env.SingleEnvironmentFilter;
 import com.codenvy.inject.DynaModule;
 import com.google.inject.servlet.ServletModule;
 
@@ -24,6 +26,8 @@ import com.google.inject.servlet.ServletModule;
 public class DatasourceServletModule extends ServletModule {
     @Override
     protected void configureServlets() {
+        bind(SingleEnvironmentFilter.class).in(Singleton.class);
+        filter("/*").through(SingleEnvironmentFilter.class);
         serve("/*").with(GuiceEverrestServlet.class);
     }
 }
