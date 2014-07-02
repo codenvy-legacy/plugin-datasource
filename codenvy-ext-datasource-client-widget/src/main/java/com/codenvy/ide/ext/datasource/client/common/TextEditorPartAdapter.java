@@ -10,11 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorInitException;
 import com.codenvy.ide.api.editor.EditorInput;
@@ -37,9 +32,16 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
+
+import org.vectomatic.dom.svg.ui.SVGResource;
+
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements PartStack, TextEditorPartPresenter, FileEventHandler {
 
@@ -331,5 +333,11 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     @Override
     public Document getDocument() {
         return editor.getDocument();
+    }
+
+    @Nullable
+    @Override
+    public SVGResource getTitleSVGImage() {
+        return null;
     }
 }
