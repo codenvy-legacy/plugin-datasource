@@ -29,11 +29,11 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements InitializableWizardPage {
 
-    private final int          defaultPort;
-    private final DatabaseType databaseType;
-    private final DtoFactory   dtoFactory;
+    private final int             defaultPort;
+    private final DatabaseType    databaseType;
+    private final DtoFactory      dtoFactory;
     protected final ImageResource image;
-    protected final String caption;
+    protected final String        caption;
 
     public DefaultNewDatasourceConnectorPage(@NotNull final DefaultNewDatasourceConnectorView view,
                                              @Nullable final String caption,
@@ -113,7 +113,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
         getView().setUsername(initData.getUsername());
         getView().setPassword(initData.getPassword());
-        delegate.updateControls();
+        // delegate.updateControls();
     }
 
     @Override
@@ -125,6 +125,6 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(false);
         getView().setUsername("");
         getView().setPassword("");
-        delegate.updateControls();
+        // delegate.updateControls();
     }
 }

@@ -10,24 +10,22 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.api.ui.wizard.DefaultWizardFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class NewDatasourceWizardProvider implements Provider<DefaultWizard> {
-    private DefaultWizardFactory        wizardFactory;
+public class NewDatasourceWizardProvider implements Provider<NewDatasourceWizard> {
+    private NewDatasourceWizardFactory  wizardFactory;
     private NewDatasourceWizardMessages messages;
 
     @Inject
-    public NewDatasourceWizardProvider(DefaultWizardFactory wizardFactory, NewDatasourceWizardMessages messages) {
+    public NewDatasourceWizardProvider(final NewDatasourceWizardFactory wizardFactory, final NewDatasourceWizardMessages messages) {
         this.wizardFactory = wizardFactory;
         this.messages = messages;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DefaultWizard get() {
+    public NewDatasourceWizard get() {
         return wizardFactory.create(messages.newDatasource());
     }
 }

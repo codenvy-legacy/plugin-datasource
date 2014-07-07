@@ -21,10 +21,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -34,9 +34,6 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
                                                                     implements DefaultNewDatasourceConnectorView {
     interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, DefaultNewDatasourceConnectorViewImpl> {
     }
-
-    @UiField
-    SimplePanel            imagePanel;
 
     @UiField
     Label                  configureTitleCaption;
@@ -63,6 +60,15 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     Label                  testConnectionErrorMessage;
 
     @UiField
+    RadioButton            radioUserPref;
+
+    @UiField
+    RadioButton            radioProject;
+
+    @UiField
+    ListBox                projectsList;
+
+    @UiField
     CheckBox               useSSL;
 
     @UiField
@@ -78,6 +84,11 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     public DefaultNewDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
+
+        radioUserPref.setValue(true);
+        radioProject.setEnabled(false);
+        projectsList.setEnabled(false);
+        projectsList.setWidth("100px");
     }
 
     public void setDelegate(DefaultNewDatasourceConnectorView.ActionDelegate delegate) {
@@ -86,12 +97,12 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     @Override
     public void setImage(@Nullable ImageResource image) {
-        imagePanel.setWidget(image == null ? null : new Image(image));
+
     }
 
     @Override
     public void setDatasourceName(@Nullable String dsName) {
-        configureTitleCaption.setText("Configure a " + dsName + " datasource:");
+        configureTitleCaption.setText("Settings");
     }
 
     @Override
@@ -193,4 +204,24 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         testConnectionErrorMessage.setText(errorMessage);
 
     }
+
+    // @UiHandler("radioUserPref")
+    // void handleRadioUserPrefClick(ClickEvent e) {
+    // delegate.onClickRadioUserPref(); TODO
+    // }
+
+    // @UiHandler("radioProject")
+    // void handleRadioProjectClick(ClickEvent e) {
+    // delegate.onClickRadioProject(); TODO
+    // }
+
+    // @Override
+    // public void setRadioUserPrefValue(final boolean value) {
+    // radioUserPref.setValue(value);
+    // }
+
+    // @Override
+    // public void setRadioProjectValue(final boolean value) {
+    // radioProject.setValue(value);
+    // }
 }

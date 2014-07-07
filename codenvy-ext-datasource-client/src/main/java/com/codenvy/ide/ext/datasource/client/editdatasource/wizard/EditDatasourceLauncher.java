@@ -10,27 +10,46 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
-import com.codenvy.ide.api.ui.wizard.WizardDialog;
-import com.codenvy.ide.api.ui.wizard.WizardDialogFactory;
+import static com.codenvy.ide.api.notification.Notification.Type.ERROR;
+
+import javax.validation.constraints.NotNull;
+
+import com.codenvy.ide.api.notification.Notification;
+import com.codenvy.ide.api.notification.NotificationManager;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
+import com.codenvy.ide.ext.datasource.client.newdatasource.presenter.NewDatasourceWizardPresenter;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class EditDatasourceLauncher {
 
-    private final EditDatasourceWizard editDatasourceWizard;
-    private final WizardDialogFactory  wizardDialogFactory;
+    private final Provider<NewDatasourceWizardPresenter> newDatasourcePageProvider;
+    private final NewDatasourceWizardMessages messages;
+    protected NotificationManager             notificationManager;
 
     @Inject
-    public EditDatasourceLauncher(final @EditDatasourceWizardQualifier EditDatasourceWizard editDatasourceWizard,
-                                  final WizardDialogFactory wizardDialogFactory) {
-        this.editDatasourceWizard = editDatasourceWizard;
-        this.wizardDialogFactory = wizardDialogFactory;
+    public EditDatasourceLauncher(Provider<NewDatasourceWizardPresenter> newDatasourcePageProvider,
+                                  @NotNull final NotificationManager notificationManager,
+                                  @NotNull final NewDatasourceWizardMessages messages) {
+        this.newDatasourcePageProvider = newDatasourcePageProvider;
+        this.messages = messages;
+        this.notificationManager = notificationManager;
     }
 
     public void launch(final DatabaseConfigurationDTO datasource) {
-        editDatasourceWizard.initData(datasource);
-        final WizardDialog dialog = this.wizardDialogFactory.create(editDatasourceWizard);
+        NewDatasourceWizardPresenter newDatasourceWizardPresenter = newDatasourcePageProvider.get();
+        newDatasourceWizardPresenter.initData(datasource);
+        try {
+            newDatasourceWizardPresenter.show();
+        } catch (final Exception exception) {
+            String errorMessage = this.messages.defaultNewDatasourceWizardErrorMessage();
+            if (exception.getMessage() != null) {
+                errorMessage = exception.getMessage();
+            }
 
-        dialog.show();
+            final Notification notification = new Notification(errorMessage, ERROR);
+            notificationManager.showNotification(notification);
+        }
     }
 }

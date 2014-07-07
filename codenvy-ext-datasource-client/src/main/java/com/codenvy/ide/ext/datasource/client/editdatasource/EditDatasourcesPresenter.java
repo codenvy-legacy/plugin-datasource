@@ -28,7 +28,7 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceK
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
 import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
@@ -76,7 +76,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     private HandlerRegistration[]                               handlerRegistration = new HandlerRegistration[2];
 
     /** The action object to create new datasources. */
-    private final NewDatasourceAction                           newDatasourceAction;
+    private final NewDatasourceWizardAction                           newDatasourceAction;
 
     /** Factory for confirmation and message windows. */
     private final DialogFactory                                 dialogFactory;
@@ -89,7 +89,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                                     final @NotNull NotificationManager notificationManager,
                                     final @NotNull EventBus eventBus,
                                     final @NotNull EditDatasourceLauncher editDatasourceLauncher,
-                                    final @NotNull NewDatasourceAction newDatasourceAction,
+                                    final @NotNull NewDatasourceWizardAction newDatasourceAction,
                                     final @NotNull DialogFactory dialogFactory) {
         this.view = view;
         this.datasourceManager = datasourceManager;
