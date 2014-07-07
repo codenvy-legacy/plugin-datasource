@@ -242,17 +242,17 @@ public class DatasourceExplorerViewImpl extends
                 final JsoArray<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
                 if (selectedNodes.isEmpty()) {
                     // this was a unselection
-                    Log.info(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
+                    Log.debug(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
                     delegate.onDatabaseMetadataEntitySelected(null);
                 } else if (selectedNodes.size() == 1) {
                     // normal selection with exactly one selected element
-                    Log.info(DatasourceExplorerViewImpl.class, "Normal tree item selection.");
+                    Log.debug(DatasourceExplorerViewImpl.class, "Normal tree item selection.");
                     tree.getSelectionModel().clearSelections();
                     tree.getSelectionModel().selectSingleNode(node.getData());
                     delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
                 } else {
                     // attempt to do multiple selection with ctrl or shift
-                    Log.info(DatasourceExplorerViewImpl.class,
+                    Log.debug(DatasourceExplorerViewImpl.class,
                              "Multiple selection triggered in datasource explorer tree - keep the last one.");
                     tree.getSelectionModel().clearSelections();
                     tree.getSelectionModel().selectSingleNode(node.getData());

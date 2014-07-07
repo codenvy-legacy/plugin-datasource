@@ -52,7 +52,7 @@ public class SqlEditorProvider implements EditorProvider {
 
     @Override
     public ReadableContentTextEditor getEditor() {
-        Log.info(SqlEditorProvider.class, "New instance of SQL editor requested.");
+        Log.debug(SqlEditorProvider.class, "New instance of SQL editor requested.");
         ReadableContentTextEditor textEditor = editorProvider.get();
         textEditor.initialize(new SqlEditorConfiguration(textEditor, resource, databaseInfoOracle, editorDatasourceOracle),
                               documentProvider, notificationManager);

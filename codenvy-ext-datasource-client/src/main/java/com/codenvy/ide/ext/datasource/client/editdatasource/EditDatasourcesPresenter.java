@@ -176,7 +176,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
                 @Override
                 public void onSuccess(final Profile result) {
-                    Log.info(EditDatasourcesPresenter.class, "Datasource definitions saved.");
+                    Log.debug(EditDatasourcesPresenter.class, "Datasource definitions saved.");
                     persistNotification.setMessage("Datasource definitions saved");
                     persistNotification.setStatus(Notification.Status.FINISHED);
 
@@ -256,7 +256,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
     @Override
     public void onSelectionChange(final SelectionChangeEvent event) {
-        Log.info(EditDatasourcesPresenter.class, "Datasource selection changed, updating buttons state");
+        Log.debug(EditDatasourcesPresenter.class, "Datasource selection changed, updating buttons state");
         updateButtonsState();
     }
 

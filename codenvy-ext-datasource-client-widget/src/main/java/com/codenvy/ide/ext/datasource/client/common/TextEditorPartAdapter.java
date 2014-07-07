@@ -76,7 +76,7 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
             public void propertyChanged(final PartPresenter source,
                                         final int propId) {
                 if (TextEditorPartAdapter.this.editor.equals(source)) {
-                    Log.info(TextEditorPartAdapter.class,
+                    Log.debug(TextEditorPartAdapter.class,
                              "PropertyChanged event relayed - propId=" + propId);
                     firePropertyChange(propId);
                 } else {
@@ -90,7 +90,7 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
             @Override
             public void onClose(final EditorPartPresenter editor) {
                 if (TextEditorPartAdapter.this.editor.equals(editor)) {
-                    Log.info(TextEditorPartAdapter.class, "Editor close event relayed");
+                    Log.debug(TextEditorPartAdapter.class, "Editor close event relayed");
                     handleClose();
                 } else {
                     Log.warn(TextEditorPartAdapter.class,
@@ -162,7 +162,7 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     @Override
     public String getTitle() {
         final String result = this.editor.getTitle();
-        Log.info(TextEditorPartAdapter.class, "Adapter part asked for its title - " + result);
+        Log.debug(TextEditorPartAdapter.class, "Adapter part asked for its title - " + result);
         return result;
     }
 
@@ -188,15 +188,15 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
 
     @Override
     public void onOpen() {
-        Log.info(TextEditorPartAdapter.class, "Opening editor adapter instance.");
+        Log.debug(TextEditorPartAdapter.class, "Opening editor adapter instance.");
         this.editor.onOpen();
     }
 
     @Override
     public boolean onClose() {
-        Log.info(TextEditorPartAdapter.class, "Trying to close editor adapter instance.");
+        Log.debug(TextEditorPartAdapter.class, "Trying to close editor adapter instance.");
         final boolean result = this.editor.onClose();
-        Log.info(TextEditorPartAdapter.class, "-- Closing success: " + result);
+        Log.debug(TextEditorPartAdapter.class, "-- Closing success: " + result);
         return result;
     }
 
@@ -208,17 +208,17 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
 
     @Override
     public void removePropertyListener(final PropertyListener listener) {
-        Log.info(TextEditorPartAdapter.class, "Removing property listener : " + listener);
+        Log.debug(TextEditorPartAdapter.class, "Removing property listener : " + listener);
         this.manager.remove(listener);
     }
 
     private void firePropertyChange(final int propId) {
-        Log.info(TextEditorPartAdapter.class, "Dispatching property change event to " + manager.getCount() + " listeners.");
+        Log.debug(TextEditorPartAdapter.class, "Dispatching property change event to " + manager.getCount() + " listeners.");
         manager.dispatch(new Dispatcher<PropertyListener>() {
 
             @Override
             public void dispatch(final PropertyListener listener) {
-                Log.info(TextEditorPartAdapter.class, "-- listener " + listener);
+                Log.debug(TextEditorPartAdapter.class, "-- listener " + listener);
                 listener.propertyChanged(TextEditorPartAdapter.this, propId);
             }
         });

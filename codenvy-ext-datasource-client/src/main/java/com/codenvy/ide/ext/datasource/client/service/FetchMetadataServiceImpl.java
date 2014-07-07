@@ -79,7 +79,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         // no synchronization needed, we are in pure single-threaded code (browser)
         final String datasourceId = configuration.getDatasourceId();
         if (databaseInfoStore.isFetchPending(datasourceId)) {
-            Log.info(FetchMetadataServiceImpl.class, "Fetch pending found for this datasource ("
+            Log.debug(FetchMetadataServiceImpl.class, "Fetch pending found for this datasource ("
                                                      + datasourceId
                                                      + ") - no need to trigger another fetch.");
             return;
@@ -96,7 +96,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
                 @Override
                 protected void onSuccess(final String result) {
-                    Log.info(DatasourceClientServiceImpl.class, "Database metadata fetch success");
+                    Log.debug(DatasourceClientServiceImpl.class, "Database metadata fetch success");
                     DatabaseDTO database = dtoFactory.createDtoFromJson(result,
                                                                         DatabaseDTO.class);
                     fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());

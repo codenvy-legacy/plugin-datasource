@@ -138,7 +138,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
             sb.append('/')
               .append(param);
         }
-        Log.info(DatasourceClientServiceImpl.class, "Create REST URL : " + sb.toString());
+        Log.debug(DatasourceClientServiceImpl.class, "Create REST URL : " + sb.toString());
         return sb.toString();
     }
 }

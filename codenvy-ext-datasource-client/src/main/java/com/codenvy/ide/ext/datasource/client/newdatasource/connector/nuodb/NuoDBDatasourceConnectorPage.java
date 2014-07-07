@@ -126,7 +126,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
 
     @Override
     public void onAddBroker() {
-        Log.info(NuoDBDatasourceConnectorPage.class, "Adding a broker.");
+        Log.debug(NuoDBDatasourceConnectorPage.class, "Adding a broker.");
         int brokerCount = this.brokersProvider.getList().size();
         final NuoDBBroker newBroker = createNewBroker(brokerCount);
         // insert the new row ; the display should be updated automatically
@@ -136,7 +136,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
 
     @Override
     public void onDeleteBrokers() {
-        Log.info(NuoDBDatasourceConnectorPage.class, "Deleting selected brokers.");
+        Log.debug(NuoDBDatasourceConnectorPage.class, "Deleting selected brokers.");
         final Set<NuoDBBroker> selection = getView().getBrokerSelection();
         // remove selected items from the list provider
         // the list wrapper should update the view by itself

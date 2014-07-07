@@ -22,11 +22,11 @@ public class SslExtension {
 
     @Inject
     public SslExtension(SslKeyStoreClientService sslKeyStoreClientService) {
-        Log.info(SslExtension.class, "Init SSL callback");
+        Log.debug(SslExtension.class, "Init SSL callback");
         sslKeyStoreClientService.init(new AsyncRequestCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                Log.info(SslExtension.class, "Succeeded SSL init");
+                Log.debug(SslExtension.class, "Succeeded SSL init");
             }
 
             @Override

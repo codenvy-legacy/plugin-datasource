@@ -30,7 +30,7 @@ public class ExecuteSqlAction extends Action {
     public void actionPerformed(final ActionEvent e) {
         final EditorPartPresenter editor = editorAgent.getActiveEditor();
         if (editor instanceof SqlRequestLauncherPresenter) {
-            Log.info(ExecuteSqlAction.class, "Execute SQL action triggered.");
+            Log.debug(ExecuteSqlAction.class, "Execute SQL action triggered.");
             SqlRequestLauncherPresenter sqlEditor = (SqlRequestLauncherPresenter)editor;
             sqlEditor.executeRequested();
         } else {

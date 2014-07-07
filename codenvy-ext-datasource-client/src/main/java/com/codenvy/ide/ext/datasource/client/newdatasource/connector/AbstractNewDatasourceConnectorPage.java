@@ -118,24 +118,24 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     @Override
     public void commit(final CommitCallback callback) {
         DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
-        Log.info(AbstractNewDatasourceConnectorPage.class, "Adding datasource with id " + configuredDatabase.getDatasourceId());
+        Log.debug(AbstractNewDatasourceConnectorPage.class, "Adding datasource with id " + configuredDatabase.getDatasourceId());
         this.datasourceManager.add(configuredDatabase);
 
-        Log.info(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
+        Log.debug(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
         final Notification requestNotification = new Notification("Persisting datasources...",
                                                                   Notification.Status.PROGRESS);
         this.datasourceManager.persist(new AsyncCallback<Profile>() {
 
             @Override
             public void onSuccess(Profile result) {
-                Log.info(AbstractNewDatasourceConnectorPage.class, "Datasources persisted.");
+                Log.debug(AbstractNewDatasourceConnectorPage.class, "Datasources persisted.");
                 requestNotification.setMessage("Datasources saved");
                 requestNotification.setStatus(Notification.Status.FINISHED);
             }
 
             @Override
             public void onFailure(Throwable caught) {
-                Log.info(AbstractNewDatasourceConnectorPage.class, "Failed to persist datasources.");
+                Log.error(AbstractNewDatasourceConnectorPage.class, "Failed to persist datasources.");
                 requestNotification.setStatus(Notification.Status.FINISHED);
                 notificationManager.showNotification(new Notification("Failed to persist datasources", Type.ERROR));
 
@@ -183,7 +183,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
 
                         );
         } catch (final RequestException e) {
-            Log.info(AbstractNewDatasourceConnectorPage.class, e.getMessage());
+            Log.debug(AbstractNewDatasourceConnectorPage.class, e.getMessage());
             getView().onTestConnectionFailure(messages.connectionTestFailureSuccessMessage());
             connectingNotification.setMessage(messages.connectionTestFailureSuccessNotification());
             connectingNotification.setType(Type.ERROR);

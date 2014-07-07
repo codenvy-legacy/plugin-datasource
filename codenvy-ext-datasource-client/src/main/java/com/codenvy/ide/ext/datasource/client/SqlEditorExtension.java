@@ -54,7 +54,7 @@ public class SqlEditorExtension {
                               final NewSqlFileAction newSqlFileAction,
                               final IconRegistry iconRegistry) {
 
-        Log.info(SqlEditorExtension.class, "Initialization of SQL editor extension.");
+        Log.debug(SqlEditorExtension.class, "Initialization of SQL editor extension.");
         // inject sql parser
         ScriptInjector.fromString(sqlEditorResources.sqlParserJs().getText()).setWindow(TOP_WINDOW).inject();
         // inject CSS

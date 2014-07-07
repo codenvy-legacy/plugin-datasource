@@ -125,7 +125,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
-        Log.info(SqlRequestLauncherPresenter.class, "New instance of SQL request launcher presenter resquested.");
+        Log.debug(SqlRequestLauncherPresenter.class, "New instance of SQL request launcher presenter resquested.");
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
@@ -199,10 +199,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
         }
         final String newDataSourceId = tempDataSourceId;
 
-        Log.info(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
+        Log.debug(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
         String editorFileId = getEditorInput().getFile().getId();
-        Log.info(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
+        Log.debug(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
         editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
         if (newDataSourceId == null) {
             return;
@@ -215,7 +215,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     @Override
     public void resultLimitChanged(final String newResultLimitString) {
-        Log.info(SqlRequestLauncherPresenter.class, "Attempt to change result limit to " + newResultLimitString);
+        Log.debug(SqlRequestLauncherPresenter.class, "Attempt to change result limit to " + newResultLimitString);
         int resultLimitValue;
         try {
             resultLimitValue = Integer.parseInt(newResultLimitString);
@@ -277,7 +277,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     @Override
     public void executeRequested() {
-        Log.info(SqlRequestLauncherPresenter.class, "Execution requested.");
+        Log.debug(SqlRequestLauncherPresenter.class, "Execution requested.");
         if (this.selectedDatasourceId == null) {
             final MessageWindow dialog = this.dialogFactory.createMessageWindow(this.constants.executeNoDatasourceTitle(),
                                                                                 this.constants.executeNoDatasourceMessage(),
@@ -307,7 +307,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                         protected void onSuccess(final String result) {
                             final Long endRequestTime = System.currentTimeMillis();
                             final Long requestDuration = endRequestTime - startRequestTime;
-                            Log.info(SqlRequestLauncherPresenter.class, "SQL request result received (" + requestDuration + "ms)");
+                            Log.debug(SqlRequestLauncherPresenter.class, "SQL request result received (" + requestDuration + "ms)");
                             requestNotification.setMessage("SQL request execution completed");
                             requestNotification.setStatus(Notification.Status.FINISHED);
 
@@ -316,18 +316,18 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                                                                                  RequestResultGroupDTO.class);
                             final Long endJsonTime = System.currentTimeMillis();
                             final Long jsonDuration = endJsonTime - startJsonTime;
-                            Log.info(SqlRequestLauncherPresenter.class, "Result converted from JSON(" + jsonDuration + "ms)");
+                            Log.debug(SqlRequestLauncherPresenter.class, "Result converted from JSON(" + jsonDuration + "ms)");
 
                             final Long startDisplayTime = System.currentTimeMillis();
                             updateResultDisplay(resultDto);
                             final Long endDisplayTime = System.currentTimeMillis();
                             final Long displayDuration = endDisplayTime - startDisplayTime;
-                            Log.info(SqlRequestLauncherPresenter.class, "Build display for SQL request result(" + displayDuration + "ms)");
+                            Log.debug(SqlRequestLauncherPresenter.class, "Build display for SQL request result(" + displayDuration + "ms)");
                         }
 
                         @Override
                         protected void onFailure(final Throwable exception) {
-                            Log.info(SqlRequestLauncherPresenter.class, "SQL request failure " + exception.getMessage());
+                            Log.error(SqlRequestLauncherPresenter.class, "SQL request failure " + exception.getMessage());
                             GWT.log("Full exception :", exception);
                             requestNotification.setStatus(Notification.Status.FINISHED);
                             notificationManager.showNotification(new Notification("SQL request failed",
@@ -358,7 +358,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     protected void updateResultDisplay(final String message) {
-        Log.info(SqlRequestLauncherPresenter.class, "Printing request error message.");
+        Log.debug(SqlRequestLauncherPresenter.class, "Printing request error message.");
         Label messageLabel = new Label(message);
         this.view.appendResult(messageLabel);
     }
@@ -369,22 +369,22 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @param resultDto the result data
      */
     protected void updateResultDisplay(final RequestResultGroupDTO resultDto) {
-        Log.info(SqlRequestLauncherPresenter.class,
+        Log.debug(SqlRequestLauncherPresenter.class,
                  "Printing request results. (" + resultDto.getResults().size() + " individual results).");
         this.view.clearResultZone();
 
         for (final RequestResultDTO result : resultDto.getResults()) {
             switch (result.getResultType()) {
                 case UpdateResultDTO.TYPE:
-                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'update'.");
+                    Log.debug(SqlRequestLauncherPresenter.class, "Found one result of type 'update'.");
                     appendUpdateResult(result);
                     break;
                 case SelectResultDTO.TYPE:
-                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
+                    Log.debug(SqlRequestLauncherPresenter.class, "Found one result of type 'select'.");
                     appendSelectResult(result);
                     break;
                 case ExecutionErrorResultDTO.TYPE:
-                    Log.info(SqlRequestLauncherPresenter.class, "Found one result of type 'error'.");
+                    Log.debug(SqlRequestLauncherPresenter.class, "Found one result of type 'error'.");
                     appendErrorReport(result);
                     break;
                 default:
@@ -394,7 +394,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
             }
         }
 
-        Log.info(SqlRequestLauncherPresenter.class, "All individual results are processed.");
+        Log.debug(SqlRequestLauncherPresenter.class, "All individual results are processed.");
     }
 
     /**
@@ -493,7 +493,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
                 @Override
                 protected void onSuccess(final String result) {
-                    Log.info(SqlRequestLauncherPresenter.class, "CSV export : success.");
+                    Log.debug(SqlRequestLauncherPresenter.class, "CSV export : success.");
                     requestNotification.setStatus(Notification.Status.FINISHED);
                     notificationManager.showNotification(new Notification("CSV export : success", Type.INFO));
 

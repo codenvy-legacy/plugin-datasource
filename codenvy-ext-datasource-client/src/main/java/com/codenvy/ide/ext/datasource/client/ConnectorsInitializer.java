@@ -195,7 +195,7 @@ public class ConnectorsInitializer {
 
         connectorCounter++;
 
-        Log.info(ConnectorsInitializer.class, "Connectors registered : " + connectorCounter);
+        Log.debug(ConnectorsInitializer.class, "Connectors registered : " + connectorCounter);
     }
 
     public void initConnectors() {

@@ -118,25 +118,25 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         boolean showProperties = true;
 
         if (newSelection == null) {
-            Log.info(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
+            Log.debug(DataEntityPropertiesPresenter.class, "No selection, hiding properties display.");
             showProperties = false;
             setPropertyList(null);
         }
 
         if (newSelection instanceof DatabaseDTO) {
-            Log.info(DataEntityPropertiesPresenter.class, "Show properties for database entity.");
+            Log.debug(DataEntityPropertiesPresenter.class, "Show properties for database entity.");
             setPropertyList(getPropertiesForDatabase((DatabaseDTO)newSelection));
         } else if (newSelection instanceof SchemaDTO) {
-            Log.info(DataEntityPropertiesPresenter.class, "Show properties for schema entity.");
+            Log.debug(DataEntityPropertiesPresenter.class, "Show properties for schema entity.");
             setPropertyList(getPropertiesForSchema((SchemaDTO)newSelection));
         } else if (newSelection instanceof TableDTO) {
-            Log.info(DataEntityPropertiesPresenter.class, "Show properties for table entity.");
+            Log.debug(DataEntityPropertiesPresenter.class, "Show properties for table entity.");
             setPropertyList(getPropertiesForTable((TableDTO)newSelection));
         } else if (newSelection instanceof ColumnDTO) {
-            Log.info(DataEntityPropertiesPresenter.class, "Show properties for column entity.");
+            Log.debug(DataEntityPropertiesPresenter.class, "Show properties for column entity.");
             setPropertyList(getPropertiesForColumn((ColumnDTO)newSelection));
         } else {
-            Log.info(DataEntityPropertiesPresenter.class, "Unknown selection, hiding properties display.");
+            Log.debug(DataEntityPropertiesPresenter.class, "Unknown selection, hiding properties display.");
             showProperties = false;
             setPropertyList(null);
         }
@@ -256,7 +256,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     @Override
     public void onDatabaseInfoReceived(final DatabaseInfoReceivedEvent event) {
         if (this.selectedDatabaseId != null && this.selectedDatabaseId.equals(event.getDatabaseId())) {
-            Log.info(DataEntityPropertiesPresenter.class, "Metadata info received for currently selected datasource "
+            Log.debug(DataEntityPropertiesPresenter.class, "Metadata info received for currently selected datasource "
                                                           + this.selectedDatabaseId + " - updating display.");
             final DatabaseDTO dbInfo = this.databaseInfoStore.getDatabaseInfo(this.selectedDatabaseId);
             updateDisplay(dbInfo);
