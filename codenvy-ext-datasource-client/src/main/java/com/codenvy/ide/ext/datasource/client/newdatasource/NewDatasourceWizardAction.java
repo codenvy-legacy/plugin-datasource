@@ -18,45 +18,36 @@ import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.api.ui.action.Action;
 import com.codenvy.ide.api.ui.action.ActionEvent;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.api.ui.wizard.WizardDialog;
-import com.codenvy.ide.api.ui.wizard.WizardDialogFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.newdatasource.presenter.NewDatasourceWizardPresenter;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-/**
- * {@link Action} to trigger the new datasource creation wizard.
- */
-public class NewDatasourceAction extends Action {
+@Singleton
+public class NewDatasourceWizardAction extends Action {
 
     /** The {@link NotificationManager} used to show start, completion or error messages to the user. */
-    protected NotificationManager             notificationManager;
+    protected NotificationManager              notificationManager;
 
-    /** The factory to create the new datasource dialog. */
-    private final WizardDialogFactory         wizardDialogFactory;
-
-    /** The new datasource wizard template. */
-    private final DefaultWizard               wizard;
+    private final NewDatasourceWizardPresenter wizard;
 
     /** The messages interface. */
-    private final NewDatasourceWizardMessages messages;
+    private final NewDatasourceWizardMessages  messages;
 
     @Inject
-    public NewDatasourceAction(@NotNull final NotificationManager notificationManager,
-                               @NotNull final WizardDialogFactory wizardDialogFactory,
-                               @NotNull final @NewDatasourceWizardQualifier DefaultWizard wizard,
-                               @NotNull final DatasourceUiResources resources,
-                               @NotNull final NewDatasourceWizardMessages messages) {
+    public NewDatasourceWizardAction(@NotNull final DatasourceUiResources resources,
+                                     @NotNull NewDatasourceWizardPresenter wizard,
+                                     @NotNull final NotificationManager notificationManager,
+                                     @NotNull final NewDatasourceWizardMessages messages) {
         super(messages.newDatasourceMenuText(), messages.newDatasourceMenuDescription(), null,
               resources.newDatasourceMenuIcon());
-        this.notificationManager = notificationManager;
-        this.wizardDialogFactory = wizardDialogFactory;
         this.wizard = wizard;
         this.messages = messages;
+        this.notificationManager = notificationManager;
     }
 
     @Override
-    public void actionPerformed(final ActionEvent event) {
+    public void actionPerformed(ActionEvent e) {
         actionPerformed();
     }
 
@@ -65,10 +56,9 @@ public class NewDatasourceAction extends Action {
      */
     public void actionPerformed() {
         try {
-            WizardDialog wizardDialog = wizardDialogFactory.create(wizard);
-            wizardDialog.show();
+            wizard.show();
         } catch (final Exception exception) {
-            String errorMessage = this.messages.defaultNewDatasourceWizardErrorMessage();
+            String errorMessage = messages.defaultNewDatasourceWizardErrorMessage();
             if (exception.getMessage() != null) {
                 errorMessage = exception.getMessage();
             }

@@ -21,10 +21,8 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -34,9 +32,6 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
                                                                     implements DefaultNewDatasourceConnectorView {
     interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, DefaultNewDatasourceConnectorViewImpl> {
     }
-
-    @UiField
-    SimplePanel            imagePanel;
 
     @UiField
     Label                  configureTitleCaption;
@@ -78,6 +73,7 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     public DefaultNewDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         hostField.setText("localhost");
+        configureTitleCaption.setText("Settings");
     }
 
     public void setDelegate(DefaultNewDatasourceConnectorView.ActionDelegate delegate) {
@@ -86,12 +82,12 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     @Override
     public void setImage(@Nullable ImageResource image) {
-        imagePanel.setWidget(image == null ? null : new Image(image));
+
     }
 
     @Override
     public void setDatasourceName(@Nullable String dsName) {
-        configureTitleCaption.setText("Configure a " + dsName + " datasource:");
+        
     }
 
     @Override
