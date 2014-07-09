@@ -10,10 +10,11 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server.ssl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -31,35 +32,23 @@ import org.slf4j.LoggerFactory;
 
 
 public class CodenvySSLSocketFactory extends SSLSocketFactory {
-    private static final Logger             LOG                               = LoggerFactory.getLogger(CodenvySSLSocketFactory.class);
+    private static final Logger                                        LOG                  =
+                                                                                              LoggerFactory.getLogger(CodenvySSLSocketFactory.class);
 
-    public static ThreadLocal<Boolean>      init                              = new ThreadLocal<Boolean>();
-    public static ThreadLocal<String>       clientCertificateKeyStoreUrl      = new ThreadLocal<String>();
-    public static ThreadLocal<String>       trustCertificateKeyStoreUrl       = new ThreadLocal<String>();
-    public static ThreadLocal<String>       clientCertificateKeyStorePassword = new ThreadLocal<String>();
-    public static ThreadLocal<String>       trustCertificateKeyStorePassword  = new ThreadLocal<String>();
-    public static ThreadLocal<String>       trustCertificateKeyStoreType      = new ThreadLocal<String>();
-    public static ThreadLocal<String>       clientCertificateKeyStoreType     = new ThreadLocal<String>();
-    public static ThreadLocal<Boolean>      verifyServerCertificate           = new ThreadLocal<Boolean>();
+    public static ThreadLocal<CodenvySSLSocketFactoryKeyStoreSettings> keystore             =
+                                                                                              new ThreadLocal<CodenvySSLSocketFactoryKeyStoreSettings>();
 
-
-    protected ThreadLocal<SSLSocketFactory> wrappedSocketFactory              = new ThreadLocal<SSLSocketFactory>();
+    protected ThreadLocal<SSLSocketFactory>                            wrappedSocketFactory = new ThreadLocal<SSLSocketFactory>();
 
     protected void reloadIfNeeded() {
-        if (init.get() != null && init.get()) {
-            init.set(false);
-            wrappedSocketFactory.set(getSSLSocketFactoryDefaultOrConfigured());
+        if (keystore.get() != null) {
+            CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig = keystore.get();
+            keystore.set(null);
+            wrappedSocketFactory.set(getSSLSocketFactoryDefaultOrConfigured(keystoreConfig));
         }
     }
 
-    protected static SSLSocketFactory getSSLSocketFactoryDefaultOrConfigured() {
-        if (isNullOrEmpty(clientCertificateKeyStoreUrl.get())
-            && isNullOrEmpty(trustCertificateKeyStoreUrl.get())) {
-            if (verifyServerCertificate.get()) {
-                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
-            }
-        }
-
+    protected static SSLSocketFactory getSSLSocketFactoryDefaultOrConfigured(CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig) {
         TrustManagerFactory tmf = null;
         KeyManagerFactory kmf = null;
 
@@ -71,41 +60,31 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
             return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
         }
 
-        if (!isNullOrEmpty(clientCertificateKeyStoreUrl.get())) {
-            try {
-                if (!isNullOrEmpty(clientCertificateKeyStoreType.get())) {
-                    KeyStore clientKeyStore = KeyStore
-                                                      .getInstance(clientCertificateKeyStoreType.get());
-                    URL ksURL = new URL(clientCertificateKeyStoreUrl.get());
-                    char[] password = (clientCertificateKeyStorePassword.get() == null) ? new char[0]
-                        : clientCertificateKeyStorePassword.get().toCharArray();
-                    clientKeyStore.load(ksURL.openStream(), password);
-                    kmf.init(clientKeyStore, password);
-                }
+        if (keystoreConfig.getKeyStoreContent() != null && keystoreConfig.getKeyStoreContent().length > 0) {
+
+            char[] password = (keystoreConfig.getKeyStorePassword() == null) ? new char[0]
+                : keystoreConfig.getKeyStorePassword().toCharArray();
+            try (InputStream fis = new ByteArrayInputStream(keystoreConfig.getKeyStoreContent())) {
+                KeyStore ks = KeyStore.getInstance("JKS");
+                ks.load(fis, password);
+                kmf.init(ks, password);
             } catch (Exception e) {
                 LOG.error("An error occured while setting up custom SSL Socket factory. Falling back the the default one", e);
-                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory
-                                                                                     .getDefault();
+                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
             }
         }
 
-        if (!isNullOrEmpty(trustCertificateKeyStoreUrl.get())) {
 
-            try {
-                if (!isNullOrEmpty(trustCertificateKeyStoreType.get())) {
-                    KeyStore trustKeyStore = KeyStore
-                                                     .getInstance(trustCertificateKeyStoreType.get());
-                    URL ksURL = new URL(trustCertificateKeyStoreUrl.get());
-
-                    char[] password = (trustCertificateKeyStorePassword.get() == null) ? new char[0]
-                        : trustCertificateKeyStorePassword.get().toCharArray();
-                    trustKeyStore.load(ksURL.openStream(), password);
-                    tmf.init(trustKeyStore);
-                }
+        if (keystoreConfig.getTrustStoreContent() != null && keystoreConfig.getTrustStoreContent().length > 0) {
+            char[] password = (keystoreConfig.getTrustStorePassword() == null) ? new char[0]
+                : keystoreConfig.getTrustStorePassword().toCharArray();
+            try (InputStream fis = new ByteArrayInputStream(keystoreConfig.getTrustStoreContent())) {
+                KeyStore ks = KeyStore.getInstance("JKS");
+                ks.load(fis, password);
+                tmf.init(ks);
             } catch (Exception e) {
                 LOG.error("An error occured while setting up custom SSL Socket factory. Falling back the the default one", e);
-                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory
-                                                                                     .getDefault();
+                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
             }
         }
 
@@ -113,9 +92,9 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
 
         try {
             sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(isNullOrEmpty(clientCertificateKeyStoreUrl.get()) ? null : kmf.getKeyManagers(),
-                            verifyServerCertificate.get() ? tmf.getTrustManagers()
-                                : new X509TrustManager[]{new X509TrustManager() {
+            sslContext.init(isNullOrEmpty(keystoreConfig.getKeyStoreContent()) ? null : kmf.getKeyManagers(),
+                            isNullOrEmpty(keystoreConfig.tsContent) ?
+                                new X509TrustManager[]{new X509TrustManager() {
                                     @Override
                                     public void checkClientTrusted(X509Certificate[] chain,
                                                                    String authType) {
@@ -132,7 +111,8 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
                                     public X509Certificate[] getAcceptedIssuers() {
                                         return null;
                                     }
-                                }}, null);
+                                }
+                                } : tmf.getTrustManagers(), null);
 
             return sslContext.getSocketFactory();
         } catch (Exception e) {
@@ -190,8 +170,8 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
         return wrappedSocketFactory.get().createSocket(address, port, localAddress, localPort);
     }
 
-    public static boolean isNullOrEmpty(String s) {
-        return s == null || "".equals(s);
+    public static boolean isNullOrEmpty(byte[] byteArray) {
+        return byteArray == null || byteArray.length <= 0;
     }
 
 }
