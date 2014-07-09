@@ -43,4 +43,21 @@ public class SslKeyStoreService {
     public TrustStoreObject getTrustStore() throws Exception {
         return trustStoreObject;
     }
+
+
+    public static String getDefaultTrustorePassword() {
+        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
+            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+        }
+        return System.getProperty("javax.net.ssl.trustStorePassword");
+    }
+
+    public static String getDefaultKeystorePassword() {
+        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
+            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+        }
+        return System.getProperty("javax.net.ssl.keyStorePassword");
+    }
+
+
 }

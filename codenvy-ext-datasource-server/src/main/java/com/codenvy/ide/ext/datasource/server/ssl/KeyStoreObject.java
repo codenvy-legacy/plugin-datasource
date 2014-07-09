@@ -56,6 +56,10 @@ import com.google.inject.name.Named;
  */
 public class KeyStoreObject {
 
+    public static final String SSL_KEY_STORE_PREF_ID = "sslKeyStore";
+
+    public static final String TRUST_STORE_PREF_ID = "trustStore";
+
     private static final Logger LOG = LoggerFactory.getLogger(KeyStoreObject.class);
 
     protected String            keyStorePassword;
@@ -67,12 +71,6 @@ public class KeyStoreObject {
     @Inject
     public KeyStoreObject(@Named("api.endpoint") String apiUrl) throws Exception {
         profileApiUrl = apiUrl + "/profile";
-        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
-        }
-        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
-            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
-        }
         keystore = extractKeyStoreFromFile();
     }
 
@@ -102,7 +100,7 @@ public class KeyStoreObject {
 
 
     protected String getKeyStorePreferenceName() {
-        return "sslKeyStore";
+        return SSL_KEY_STORE_PREF_ID;
     }
 
     private String getUserId() {
@@ -110,8 +108,7 @@ public class KeyStoreObject {
     }
 
     protected String getKeyStorePassword() {
-        String sPass = System.getProperty("javax.net.ssl.keyStorePassword");
-        return sPass;
+        return SslKeyStoreService.getDefaultKeystorePassword();
     }
 
 

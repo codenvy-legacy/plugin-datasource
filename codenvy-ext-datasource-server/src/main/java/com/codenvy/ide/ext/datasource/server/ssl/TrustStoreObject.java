@@ -38,13 +38,12 @@ public class TrustStoreObject extends KeyStoreObject {
 
     @Override
     protected String getKeyStorePassword() {
-        String sPass = System.getProperty("javax.net.ssl.trustStorePassword");
-        return sPass;
+        return SslKeyStoreService.getDefaultTrustorePassword();
     }
 
     @Override
     protected String getKeyStorePreferenceName() {
-        return "trustStore";
+        return TRUST_STORE_PREF_ID;
     }
 
     @Override
