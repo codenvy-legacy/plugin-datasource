@@ -17,7 +17,7 @@ import com.google.inject.servlet.ServletModule;
 
 /**
  * {@link ServletModule} definition for the server-side part of the datasource plugin.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 @DynaModule

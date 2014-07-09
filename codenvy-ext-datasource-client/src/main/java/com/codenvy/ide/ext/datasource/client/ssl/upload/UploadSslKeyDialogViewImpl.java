@@ -69,7 +69,7 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
         Widget widget = ourUiBinder.createAndBindUi(this);
 
         this.setText(locale.dialogUploadSslKeyTitle());
-        this.setWidget(widget);
+        setWidget(widget);
 
         bind();
     }
@@ -91,7 +91,7 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
 
     @Override
     public void setHost(@NotNull String host) {
-        this.keyAlias.setText(host);
+        keyAlias.setText(host);
     }
 
     @NotNull
@@ -166,7 +166,7 @@ public class UploadSslKeyDialogViewImpl extends DialogBox implements UploadSslKe
 
     @Override
     public void close() {
-        this.hide();
+        hide();
 
         uploadForm.remove(certFile);
         certFile = null;

@@ -16,7 +16,7 @@ import com.google.inject.AbstractModule;
 
 /**
  * Bindings for the datasource-related services.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 @DynaModule

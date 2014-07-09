@@ -28,7 +28,7 @@ import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionExcepti
 
 /**
  * Service that builds connections for configured datasources.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 public class JdbcConnectionFactory {
@@ -53,7 +53,7 @@ public class JdbcConnectionFactory {
 
     /**
      * builds a JDBC {@link Connection} for a datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return a connection
      * @throws SQLException if the creation of the connection failed
@@ -82,7 +82,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -115,7 +115,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a PostgreSQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -130,7 +130,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a MySQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -145,7 +145,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for an Oracle datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -160,7 +160,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a JTDS/MsSQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -175,7 +175,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a NuoDB datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect

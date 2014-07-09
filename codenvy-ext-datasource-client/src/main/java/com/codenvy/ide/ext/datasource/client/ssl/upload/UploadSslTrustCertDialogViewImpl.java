@@ -68,7 +68,7 @@ public class UploadSslTrustCertDialogViewImpl extends DialogBox implements Uploa
         Widget widget = ourUiBinder.createAndBindUi(this);
 
         this.setText(locale.dialogUploadSslTrustCertTitle());
-        this.setWidget(widget);
+        setWidget(widget);
 
         bind();
     }
@@ -90,7 +90,7 @@ public class UploadSslTrustCertDialogViewImpl extends DialogBox implements Uploa
 
     @Override
     public void setHost(@NotNull String host) {
-        this.keyAlias.setText(host);
+        keyAlias.setText(host);
     }
 
     @NotNull
@@ -147,7 +147,7 @@ public class UploadSslTrustCertDialogViewImpl extends DialogBox implements Uploa
 
     @Override
     public void close() {
-        this.hide();
+        hide();
 
         uploadForm.remove(certFile);
         certFile = null;
