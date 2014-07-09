@@ -32,8 +32,10 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
 import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
-import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.server.ssl.TrustStoreObject;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
 import com.codenvy.ide.ext.datasource.shared.ExploreRequestDTO;
@@ -50,6 +52,9 @@ public class TestDatasourceServiceDatabaseDTO {
 
     @Mock
     protected ExploreRequestDTO              exploreRequest;
+
+    @Mock
+    protected UserProfileDao                 userProfileDao;
 
     @Ignore
     @Test
@@ -71,7 +76,7 @@ public class TestDatasourceServiceDatabaseDTO {
     }
 
     protected String getDatabaseJsonDTOFromDatasourceService(ExploreRequestDTO exploreRequest) throws Exception {
-        DatabaseExploreService dsService = new DatabaseExploreService(new JdbcConnectionFactory());
+        DatabaseExploreService dsService = new DatabaseExploreService(new JdbcConnectionFactory(userProfileDao));
         return dsService.getDatabase(exploreRequest);
     }
 
@@ -144,6 +149,10 @@ public class TestDatasourceServiceDatabaseDTO {
     @Mock
     protected FileItem serverCAFileItem;
 
+    @Mock
+    KeyStoreObject     keystoreObject;
+    @Mock
+    TrustStoreObject   truststoreObject;
 
     @Test
     @Ignore
@@ -152,8 +161,7 @@ public class TestDatasourceServiceDatabaseDTO {
         System.setProperty("javax.net.ssl.trustStore", tmpFolder.toString() + "/truststore");
         System.setProperty("javax.net.ssl.keyStore", tmpFolder.toString() + "/keystore");
 
-        SslKeyStoreService keystoreService = new SslKeyStoreService();
-        keystoreService.init();
+        SslKeyStoreService keystoreService = new SslKeyStoreService(keystoreObject, truststoreObject);
 
         when(databaseConfig.getDatabaseType()).thenReturn(DatabaseType.MYSQL);
         when(databaseConfig.getDatabaseName()).thenReturn("");
@@ -163,6 +171,8 @@ public class TestDatasourceServiceDatabaseDTO {
         when(databaseConfig.getPassword()).thenReturn("serlii");
         when(databaseConfig.getUseSSL()).thenReturn(true);
         when(databaseConfig.getVerifyServerCertificate()).thenReturn(true);
+        when(exploreRequest.getDatasourceConfig()).thenReturn(databaseConfig);
+        when(exploreRequest.getExploreTableType()).thenReturn(ExploreTableType.SIMPLE);
 
         final File certFile = new File("/home/sunix/ssl/demo-codenvy-datasource/client-cert.pem");
         when(clientCertFileItem.getInputStream()).thenAnswer(new Answer<InputStream>() {
@@ -204,7 +214,7 @@ public class TestDatasourceServiceDatabaseDTO {
 
         // test without keystore, should fail
         try {
-            getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+            getDatabaseJsonDTOFromDatasourceService(exploreRequest);
             fail("should have an exception, key and certificate are not added yet");
         } catch (Exception e) { // all right
         }
@@ -212,11 +222,11 @@ public class TestDatasourceServiceDatabaseDTO {
 
         // test with keystore but without keys
         keystoreService.getClientKeyStore().addNewKey("test", keyFileItems.iterator());
-        keystoreService.getClientKeyStore().getKeyObject("test").deleteKey("");
+        keystoreService.getClientKeyStore().deleteKey("test","");
         keystoreService.getTrustStore().addNewServerCACert("yes", serverCAFileItems.iterator());
-        keystoreService.getTrustStore().getKeyObject("yes").deleteKey("");
+        keystoreService.getTrustStore().deleteKey("yes","");
         try {
-            getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+            getDatabaseJsonDTOFromDatasourceService(exploreRequest);
             fail("should not work as keys and cert removed");
         } catch (Exception e) {
         }
@@ -226,7 +236,7 @@ public class TestDatasourceServiceDatabaseDTO {
         keystoreService.getClientKeyStore().addNewKey("test", keyFileItems.iterator());
         keystoreService.getTrustStore().addNewServerCACert("yes", serverCAFileItems.iterator());
 
-        String json = getDatabaseJsonDTOFromDatasourceService(databaseConfig);
+        String json = getDatabaseJsonDTOFromDatasourceService(exploreRequest);
         System.out.println(json);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.contains("\"databaseProductName\":\"MySQL\""));
