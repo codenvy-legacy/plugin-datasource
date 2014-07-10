@@ -113,7 +113,6 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
         getView().setUsername(initData.getUsername());
         getView().setPassword(initData.getPassword());
-        // delegate.updateControls();
     }
 
     @Override
@@ -125,6 +124,5 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(false);
         getView().setUsername("");
         getView().setPassword("");
-        // delegate.updateControls();
     }
 }
