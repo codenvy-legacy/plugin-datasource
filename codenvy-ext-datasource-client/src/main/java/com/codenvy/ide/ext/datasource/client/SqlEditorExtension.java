@@ -26,6 +26,7 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_FILE_NEW;
 import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
@@ -52,7 +53,8 @@ public class SqlEditorExtension {
                               final EditorRegistry editorRegistry,
                               final SqlLauncherEditorProvider sqlEditorProvider,
                               final NewSqlFileAction newSqlFileAction,
-                              final IconRegistry iconRegistry) {
+                              final IconRegistry iconRegistry,
+                              @Named("SQLFileType") final FileType sqlFile) {
 
         Log.debug(SqlEditorExtension.class, "Initialization of SQL editor extension.");
         // inject sql parser
@@ -60,7 +62,6 @@ public class SqlEditorExtension {
         // inject CSS
         sqlEditorResources.sqlCSS().ensureInjected();
 
-        final FileType sqlFile = new FileType(sqlEditorResources.sqlFile(), GENERIC_SQL_MIME_TYPE, SQL_FILE_EXTENSION);
         resourceProvider.registerFileType(sqlFile);
         editorRegistry.register(sqlFile, sqlEditorProvider);
 

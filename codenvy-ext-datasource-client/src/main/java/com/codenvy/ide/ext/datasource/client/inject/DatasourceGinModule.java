@@ -12,12 +12,14 @@ package com.codenvy.ide.ext.datasource.client.inject;
 
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
+import com.codenvy.ide.api.resources.FileType;
 import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
@@ -57,6 +59,7 @@ import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
 import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl;
@@ -76,7 +79,9 @@ import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialog
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 @ExtensionGinModule
@@ -160,4 +165,12 @@ public class DatasourceGinModule extends AbstractGinModule {
                                              .build(DialogFactory.class));
 
     }
+
+    @Provides
+    @Singleton
+    @Named("SQLFileType")
+    protected FileType provideSQLFile(SqlEditorResources sqlEditorResources) {
+        return  new FileType(sqlEditorResources.sqlFile(), SqlEditorExtension.GENERIC_SQL_MIME_TYPE, SqlEditorExtension.SQL_FILE_EXTENSION);
+    }
+
 }

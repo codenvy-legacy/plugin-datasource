@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
-import javax.validation.constraints.NotNull;
-
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorProvider;
 import com.codenvy.ide.api.notification.NotificationManager;
@@ -20,6 +18,8 @@ import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import javax.validation.constraints.NotNull;
 
 public class SqlEditorProvider implements EditorProvider {
 
@@ -48,6 +48,16 @@ public class SqlEditorProvider implements EditorProvider {
         this.databaseInfoOracle = databaseInfoOracle;
         this.editorDatasourceOracle = editorDatasourceOracle;
         this.resource = resource;
+    }
+
+    @Override
+    public String getId() {
+        return "sqlEditor";
+    }
+
+    @Override
+    public String getDescription() {
+        return "SQL Editor";
     }
 
     @Override

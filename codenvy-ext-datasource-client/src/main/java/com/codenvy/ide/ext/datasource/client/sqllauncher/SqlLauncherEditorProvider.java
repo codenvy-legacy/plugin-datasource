@@ -25,6 +25,16 @@ public class SqlLauncherEditorProvider implements EditorProvider {
     }
 
     @Override
+    public String getId() {
+        return "sqlLauncher";
+    }
+
+    @Override
+    public String getDescription() {
+        return "SQL Launcher";
+    }
+
+    @Override
     public EditorPartPresenter getEditor() {
         Log.debug(SqlLauncherEditorProvider.class, "New instance of SQL launcher editor requested.");
         return sqlRequestLauncherFactory.createSqlRequestLauncherPresenter();
