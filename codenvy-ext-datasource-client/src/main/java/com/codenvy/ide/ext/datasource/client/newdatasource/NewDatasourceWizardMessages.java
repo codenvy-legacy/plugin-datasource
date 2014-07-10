@@ -23,6 +23,10 @@ public interface NewDatasourceWizardMessages extends Messages {
     @DefaultMessage("Datasource Name:")
     String datasourceName();
 
+    @DefaultMessage("Name:")
+    String datasourceOnlyName();
+
+
     @DefaultMessage("New Datasource")
     String wizardTitle();
 
@@ -62,7 +66,7 @@ public interface NewDatasourceWizardMessages extends Messages {
     @DefaultMessage("Oracle")
     String oracle();
 
-    @DefaultMessage("Ms SQL Server")
+    @DefaultMessage("MS SQL Server")
     String mssqlserver();
 
     @DefaultMessage("NuoDB")
@@ -71,15 +75,15 @@ public interface NewDatasourceWizardMessages extends Messages {
     @DefaultMessage("Google Cloud SQL")
     String googlecloudsql();
 
-    @DefaultMessage("Amazon RDS PostgreSQL")
+    @DefaultMessage("PostgreSQL on AWS")
     String awspg();
 
-    @DefaultMessage("Amazon RDS MySQL")
+    @DefaultMessage("MySQL on AWS")
     String awsmysql();
 
-    @DefaultMessage("Amazon RDS Oracle")
+    @DefaultMessage("Oracle on AWS")
     String awsoracle();
 
-    @DefaultMessage("Amazon RDS Ms SQL Server")
+    @DefaultMessage("MS SQL Server on AWS")
     String awssqlserver();
 }

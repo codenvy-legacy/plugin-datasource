@@ -18,7 +18,6 @@ import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -135,6 +134,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         // manage selection
         final MultiSelectionModel<NuoDBBroker> selectionModel = new MultiSelectionModel<>(keyProvider);
         this.brokerList.setSelectionModel(selectionModel);
+        
     }
 
     @Override

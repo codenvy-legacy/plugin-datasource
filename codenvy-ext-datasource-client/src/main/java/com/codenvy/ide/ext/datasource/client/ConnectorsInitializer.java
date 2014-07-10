@@ -10,8 +10,9 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client;
 
-import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.CLOUD;
 import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.NOTCLOUD;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.GOOGLE;
+import static com.codenvy.ide.ext.datasource.client.DatabaseCategoryType.AMAZON;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +135,7 @@ public class ConnectorsInitializer {
                                                                             resources.getGoogleCloudSQLLogo(),
                                                                             "com.mysql.jdbc.Driver",
                                                                             googleCloudSQLWizardPages,
-                                                                            CLOUD);
+                                                                            GOOGLE);
         this.connectors.add(connectorGoogle);
 
         connectorCounter++;
@@ -148,7 +149,7 @@ public class ConnectorsInitializer {
                                                                               resources.getAwsPostgresLogo(),
                                                                               "org.postgresql.Driver",
                                                                               awsPostgresWizardPages,
-                                                                              CLOUD);
+                                                                              AMAZON);
         this.connectors.add(connectorAwsPostg);
 
         connectorCounter++;
@@ -162,7 +163,7 @@ public class ConnectorsInitializer {
                                                                               resources.getAwsMysqlLogo(),
                                                                               "com.mysql.jdbc.Driver",
                                                                               awsMysqlWizardPages,
-                                                                              CLOUD);
+                                                                              AMAZON);
         this.connectors.add(connectorAwsMySql);
 
         connectorCounter++;
@@ -176,7 +177,7 @@ public class ConnectorsInitializer {
                                                                                resources.getAwsOracleLogo(),
                                                                                "oracle.jdbc.OracleDriver",
                                                                                awsOracleWizardPages,
-                                                                               CLOUD);
+                                                                               AMAZON);
         this.connectors.add(connectorAwsOracle);
 
         connectorCounter++;
@@ -190,7 +191,7 @@ public class ConnectorsInitializer {
                                                                            resources.getAwsSqlServerLogo(),
                                                                            "net.sourceforge.jtds.jdbc.Driver",
                                                                            awsSqlServerWizardPages,
-                                                                           CLOUD);
+                                                                           AMAZON);
         this.connectors.add(connectorAwsMs);
 
         connectorCounter++;

@@ -14,7 +14,6 @@ package com.codenvy.ide.ext.datasource.client.inject;
 import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
@@ -45,8 +44,8 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourc
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageView;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPageViewImpl;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardFactory;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardProvider;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
@@ -100,26 +99,25 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(DatasourceClientService.class).to(DatasourceClientServiceImpl.class)
                                            .in(Singleton.class);
 
+        install(new GinFactoryModuleBuilder().build(NewDatasourceWizardFactory.class));
         install(new GinFactoryModuleBuilder().build(EditDatasourceWizardFactory.class));
 
-        bind(DefaultWizard.class).annotatedWith(NewDatasourceWizardQualifier.class)
-                                 .toProvider(NewDatasourceWizardProvider.class)
-                                 .in(Singleton.class);
+        bind(NewDatasourceWizard.class).annotatedWith(NewDatasourceWizardQualifier.class)
+                                       .toProvider(NewDatasourceWizardProvider.class)
+                                       .in(Singleton.class);
 
         bind(EditDatasourceWizard.class).annotatedWith(EditDatasourceWizardQualifier.class)
                                         .toProvider(EditDatasourceWizardProvider.class)
                                         .in(Singleton.class);
 
         bind(NewDatasourceConnectorAgent.class).to(NewDatasourceConnectorAgentImpl.class).in(Singleton.class);
-        bind(NewDatasourceWizardPageView.class).to(NewDatasourceWizardPageViewImpl.class);
         bind(DefaultNewDatasourceConnectorView.class).to(DefaultNewDatasourceConnectorViewImpl.class);
 
         bind(DataEntityPropertiesView.class).to(DataEntityPropertiesViewImpl.class);
 
         bind(SqlRequestLauncherView.class).to(SqlRequestLauncherViewImpl.class);
 
-        install(new GinFactoryModuleBuilder()
-                                             .implement(SqlRequestLauncherView.class, SqlRequestLauncherViewImpl.class)
+        install(new GinFactoryModuleBuilder().implement(SqlRequestLauncherView.class, SqlRequestLauncherViewImpl.class)
                                              .build(SqlRequestLauncherFactory.class));
 
         bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);

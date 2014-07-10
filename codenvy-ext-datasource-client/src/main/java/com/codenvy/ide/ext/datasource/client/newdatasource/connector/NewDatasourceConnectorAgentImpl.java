@@ -14,9 +14,9 @@ import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
@@ -24,13 +24,13 @@ import com.google.inject.Provider;
 
 public class NewDatasourceConnectorAgentImpl implements NewDatasourceConnectorAgent {
 
-    private final DefaultWizard                     newDatasourceWizard;
-    private final DefaultWizard                     editDatasourceWizard;
+    private final NewDatasourceWizard               newDatasourceWizard;
+    private final EditDatasourceWizard              editDatasourceWizard;
 
     private final SortedSet<NewDatasourceConnector> registeredConnectors;
 
     @Inject
-    public NewDatasourceConnectorAgentImpl(final @NewDatasourceWizardQualifier DefaultWizard newDatasourceWizard,
+    public NewDatasourceConnectorAgentImpl(final @NewDatasourceWizardQualifier NewDatasourceWizard newDatasourceWizard,
                                            final @EditDatasourceWizardQualifier EditDatasourceWizard editDatasourceWizard) {
         this.newDatasourceWizard = newDatasourceWizard;
         this.editDatasourceWizard = editDatasourceWizard;
