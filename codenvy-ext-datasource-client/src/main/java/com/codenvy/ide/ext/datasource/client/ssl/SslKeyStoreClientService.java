@@ -28,4 +28,7 @@ public interface SslKeyStoreClientService {
 
     String getUploadServerCertAction(String alias);
 
+    void init(AsyncRequestCallback<Void> asyncRequestCallback);
+
+
 }

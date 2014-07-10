@@ -13,15 +13,15 @@ package com.codenvy.ide.ext.datasource.client.ssl.upload;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.ext.datasource.client.ssl.SslMessages;
-import com.codenvy.ide.ui.window.Window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class UploadSslTrustCertDialogViewImpl extends Window implements UploadSslTrustCertDialogView {
+public class UploadSslTrustCertDialogViewImpl extends DialogBox implements UploadSslTrustCertDialogView {
     interface UploadSshKeyViewImplUiBinder extends UiBinder<Widget, UploadSslTrustCertDialogViewImpl> {
     }
 
@@ -44,8 +44,10 @@ public class UploadSslTrustCertDialogViewImpl extends Window implements UploadSs
     @UiField
     protected TextBox                           keyAlias;
 
+    @UiField
     protected Button                            btnCancel;
 
+    @UiField
     protected Button                            btnUpload;
 
     @UiField(provided = true)
@@ -65,24 +67,8 @@ public class UploadSslTrustCertDialogViewImpl extends Window implements UploadSs
 
         Widget widget = ourUiBinder.createAndBindUi(this);
 
-        setTitle(locale.dialogUploadSslTrustCertTitle());
+        this.setText(locale.dialogUploadSslTrustCertTitle());
         setWidget(widget);
-        btnCancel = createButton(locale.cancelButton(), "SslKeyDialogCancel", new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                delegate.onCancelClicked();
-            }
-        });
-
-        btnUpload = createButton(locale.uploadButton(), "SslLeyDialogUpload", new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                delegate.onUploadClicked();
-            }
-        });
-        getFooter().add(btnCancel);
-        getFooter().add(btnUpload);
 
         bind();
     }
@@ -155,6 +141,7 @@ public class UploadSslTrustCertDialogViewImpl extends Window implements UploadSs
         });
         uploadFormVPanel.add(certFile);
 
+        this.center();
         this.show();
     }
 
@@ -171,7 +158,13 @@ public class UploadSslTrustCertDialogViewImpl extends Window implements UploadSs
         this.delegate = delegate;
     }
 
-    @Override
-    protected void onClose() {
+    @UiHandler("btnCancel")
+    public void onCancelClicked(ClickEvent event) {
+        delegate.onCancelClicked();
+    }
+
+    @UiHandler("btnUpload")
+    public void onUploadClicked(ClickEvent event) {
+        delegate.onUploadClicked();
     }
 }
