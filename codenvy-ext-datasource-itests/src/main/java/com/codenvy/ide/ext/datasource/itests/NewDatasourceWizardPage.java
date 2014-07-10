@@ -26,9 +26,18 @@ public class NewDatasourceWizardPage {
 
     protected WebDriver driver;
 
-    @FindBy(id = "gwt-debug-wizardDialog-headerLabel")
+    @FindBy(id = "gwt-debug-newdatasource-headerLabel")
     WebElement          title;
 
+    @FindBy(id = "category-hosted_database")
+    WebElement          hosted_database;
+
+    @FindBy(id = "category-google")
+    WebElement          google;
+    
+    @FindBy(id = "category-amazon")
+    WebElement          amazon;
+    
     public NewDatasourceWizardPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -37,11 +46,33 @@ public class NewDatasourceWizardPage {
         return title.getText();
     }
 
+    public WebElement getHostedDatabaseCategoryElement() {
+        return hosted_database;
+    }
+
+    public WebElement getGoogleCategoryElement() {
+        return google;
+    }    
+    
+    public WebElement getAmazonCategoryElement() {
+        return amazon;
+    }
+    
     public boolean isDatasourceTypeAvailable(String dbType) {
-        new WebDriverWait(driver, 10).until(AbstractIntegrationTest.gwtToogleButtonToBeEnable(
-                By.id("gwt-debug-datasource-wizard-ds-type-" + dbType)
-                                                                                             ));
+        new WebDriverWait(driver, 10).until(AbstractIntegrationTest.gwtTreeNodeElementToBeEnable(
+                                                                   By.id("connector-" + dbType)));
         return true;
     }
 
+    public boolean isDatasourceTypeNotAvailable(String dbType) {
+        new WebDriverWait(driver, 10).until(AbstractIntegrationTest.gwtTreeNodeElementToBeDisable(
+                                                                   By.id("connector-" + dbType)));
+        return true;
+    }
+
+    public boolean isDatasourceCategoryAvailable(String dbCategory) {
+        new WebDriverWait(driver, 10).until(AbstractIntegrationTest.gwtTreeNodeElementToBeEnable(
+                                                                   By.id("category-" + dbCategory)));
+        return true;
+    }
 }

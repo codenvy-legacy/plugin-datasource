@@ -14,6 +14,27 @@ package com.codenvy.ide.ext.datasource.client;
  * Created by Wafa on 28/03/14.
  */
 public enum DatabaseCategoryType {
-    CLOUD,
-    NOTCLOUD
+    NOTCLOUD ("HOSTED DATABASE","hosted_database"),
+    GOOGLE ("GOOGLE","google"),
+    AMAZON ("AMAZON","amazon");
+    
+    private final String id;
+    private final String label;
+
+    /**
+     * @param text
+     */
+    private DatabaseCategoryType(final String id, final String label) {
+        this.id = id;
+        this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
+    
+    public String getLabel() {
+        return label;
+    }
 }

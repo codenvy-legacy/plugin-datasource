@@ -37,7 +37,20 @@
 - The user <span c:assertEquals="clickOnNewDatasourceAction()">clicks</span> on the menu action
 
 ## Then
-- The <span c:assertEquals="displayNewDatasourceWizard()">New Datasource</span> Wizard is displayed
+- The <span c:assertEquals="displayNewDatasourceWizard()">Datasource Configuration</span> Wizard is displayed
+- The HOSTED DATABASE category <span c:assertEquals="hostedDatabaseCategoryIsAvailable()">is present</span>
+- The GOOGLE category <span c:assertEquals="googleCategoryIsAvailable()">is present</span>
+- The AMAZON category <span c:assertEquals="amazonCategoryIsAvailable()">is present</span>
+- The HOSTED DATABASE category is <span c:assertEquals="hostedDatabaseCategoryTextIsCorrect()">correctly named</span>
+- The GOOGLE category is <span c:assertEquals="googleCategoryTextIsCorrect()">correctly named</span>
+- The AMAZON category is <span c:assertEquals="amazonCategoryTextIsCorrect()">correctly named</span>
+
+## When
+- The user <span c:assertEquals="clickOnHostedDatabaseCategory()">unfolds</span> the HOSTED DATABASE category 
+- The user <span c:assertEquals="clickOnGoogleCategory()">unfolds</span> the GOOGLE category
+- The user <span c:assertEquals="clickOnAmazonCategory()">unfolds</span> the AMAZON category
+
+## Then
 - The PostgreSQL datasource type <span c:assertEquals="postgresDsTypeIsAvailable()">is enabled</span>
 - The MySQL datasource type <span c:assertEquals="mySqlDsTypeIsAvailable()">is enabled</span>
 - The MsSQLServer datasource type <span c:assertEquals="msSQLServerDsTypeIsAvailable()">is enabled</span>

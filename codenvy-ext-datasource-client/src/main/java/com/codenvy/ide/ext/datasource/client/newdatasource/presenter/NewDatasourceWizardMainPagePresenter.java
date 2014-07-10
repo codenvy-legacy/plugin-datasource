@@ -8,8 +8,9 @@
  * Contributors:
  *   Codenvy, S.A. - initial API and implementation
  *******************************************************************************/
-package com.codenvy.ide.ext.datasource.client.newdatasource;
+package com.codenvy.ide.ext.datasource.client.newdatasource.presenter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,33 +18,39 @@ import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEventHandler;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
-import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+import com.codenvy.ide.ext.datasource.client.newdatasource.view.NewDatasourceWizardMainPageView;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-public class NewDatasourceWizardPagePresenter extends AbstractWizardPage implements NewDatasourceWizardPageView.ActionDelegate,
-                                                                        InitializableWizardPage {
-    protected NewDatasourceWizardPageView        view;
+public class NewDatasourceWizardMainPagePresenter extends AbstractWizardPage implements NewDatasourceWizardMainPageView.ActionDelegate,
+                                                                            InitializableWizardPage {
+
+    protected NewDatasourceWizardMainPageView    view;
     protected NewDatasourceConnectorAgent        connectorAgent;
     protected Collection<NewDatasourceConnector> dbConnectors;
     protected AvailableJdbcDriversService        jdbcDriversService;
     protected EventBus                           eventBus;
+    protected ArrayList<String>                  enabledConnectorsId;
 
     @Inject
-    public NewDatasourceWizardPagePresenter(NewDatasourceWizardPageView view,
-                                            NewDatasourceConnectorAgent connectorAgent,
-                                            AvailableJdbcDriversService jdbcDriversService,
-                                            EventBus eventBus,
-                                            NewDatasourceWizardMessages messages) {
+    public NewDatasourceWizardMainPagePresenter(NewDatasourceWizardMainPageView view,
+                                                NewDatasourceConnectorAgent connectorAgent,
+                                                AvailableJdbcDriversService jdbcDriversService,
+                                                EventBus eventBus,
+                                                NewDatasourceWizardMessages messages) {
         super(messages.wizardTitle(), null);
         this.view = view;
         this.connectorAgent = connectorAgent;
         this.jdbcDriversService = jdbcDriversService;
         this.eventBus = eventBus;
         this.view.setDelegate(this);
+        enabledConnectorsId = new ArrayList<String>();
     }
 
     @Override
@@ -53,9 +60,7 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
 
     @Override
     public boolean isCompleted() {
-        return (this.view.getDatasourceName() != null)
-               && (!"".equals(this.view.getDatasourceName()))
-               && (wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR) != null);
+        return (wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR) != null);
     }
 
     @Override
@@ -63,16 +68,16 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
     }
 
     protected void updateAvailableDatabase(List<String> drivers) {
-        view.disableAllDbTypeButton();
+        enabledConnectorsId.clear();
         if (drivers == null) {
             return;
         }
-
         for (final NewDatasourceConnector connector : dbConnectors) {
             if (drivers.contains(connector.getJdbcClassName())) {
-                view.enableDbTypeButton(connector.getId());
+                enabledConnectorsId.add(connector.getId());
             }
         }
+        view.reset();
     }
 
     @Override
@@ -82,7 +87,7 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
 
     @Override
     public void go(AcceptsOneWidget container) {
-        container.setWidget(view);
+        container.setWidget(view.asWidget());
 
         dbConnectors = connectorAgent.getConnectors();
         view.setConnectors(dbConnectors);
@@ -109,44 +114,35 @@ public class NewDatasourceWizardPagePresenter extends AbstractWizardPage impleme
                 }
             }
         }
-        if (connector != null) {
-            wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
-
-            view.selectConnector(id);
-            delegate.updateControls();
-        } else {
-            wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, null);
-            view.selectConnector(null);
-            delegate.updateControls();
-        }
-    }
-
-    @Override
-    public void onDatasourceNameModified(final String datasourceName) {
+        wizardContext.putData(NewDatasourceWizard.DATASOURCE_CONNECTOR, connector);
         delegate.updateControls();
     }
 
     @Override
-    public void storeOptions() {
-        wizardContext.putData(NewDatasourceWizard.DATASOURCE_NAME, view.getDatasourceName());
+    public boolean connectorEnabled(String id) {
+        boolean enabled = false;
+        for (String connectorId : enabledConnectorsId) {
+            if (id.equals(connectorId)) {
+                enabled = true;
+                break;
+            }
+        }
+        return enabled;
     }
 
     @Override
-    public void initPage(final Object data) {
-        if (!(data instanceof DatabaseConfigurationDTO)) {
-            clearPage();
-            return;
-        }
+    public void onCategorieSelected() {
+        removeOptions();
+        delegate.updateControls();
+    }
 
-        final DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
-        this.view.setDatasourceName(initData.getDatasourceId());
+    @Override
+    public void initPage(Object initData) {
 
-        onConnectorSelected(initData.getConfigurationConnectorId());
     }
 
     @Override
     public void clearPage() {
-        this.view.setDatasourceName("");
-        onConnectorSelected(null);
+
     }
 }

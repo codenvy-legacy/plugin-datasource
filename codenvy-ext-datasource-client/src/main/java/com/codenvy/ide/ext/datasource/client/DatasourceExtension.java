@@ -20,22 +20,16 @@ import com.codenvy.ide.api.ui.action.Constraints;
 import com.codenvy.ide.api.ui.action.DefaultActionGroup;
 import com.codenvy.ide.api.ui.keybinding.KeyBindingAgent;
 import com.codenvy.ide.api.ui.keybinding.KeyBuilder;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.api.ui.workspace.PartStackType;
 import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.action.EditDatasourcesAction;
-import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
-import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceAction;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardPagePresenter;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.ExecuteSqlAction;
 import com.codenvy.ide.util.input.CharCodeWithModifiers;
 import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 /**
@@ -54,10 +48,7 @@ public class DatasourceExtension {
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
                                DatasourceExplorerPartPresenter dsExplorer,
                                ActionManager actionManager,
-                               NewDatasourceAction newDSConnectionAction,
-                               Provider<NewDatasourceWizardPagePresenter> newDatasourcePageProvider,
-                               @NewDatasourceWizardQualifier DefaultWizard newDatasourceWizard,
-                               @EditDatasourceWizardQualifier EditDatasourceWizard editDatasourceWizard,
+                               NewDatasourceWizardAction newDSConnectionAction, 
                                ConnectorsInitializer connectorsInitializer,
                                NewDatasourceConnectorAgent connectorAgent,
                                DatasourceUiResources resources,
@@ -78,9 +69,6 @@ public class DatasourceExtension {
         // add submenu "New datasource" to Datasource menu
         actionManager.registerAction("NewDSConnection", newDSConnectionAction);
         defaultDatasourceMainGroup.add(newDSConnectionAction);
-
-        newDatasourceWizard.addPage(newDatasourcePageProvider);
-        editDatasourceWizard.addPage(newDatasourcePageProvider);
 
         // do after adding new datasource page provider to keep page order
         connectorsInitializer.initConnectors();

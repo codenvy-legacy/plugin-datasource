@@ -25,7 +25,7 @@ public class NewDatasourceConnector implements Comparable<NewDatasourceConnector
     private final String                                                         jdbcClassName;
     private final Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> wizardPages;
 
-    private final DatabaseCategoryType categoryType;
+    private final DatabaseCategoryType                                           categoryType;
 
     public NewDatasourceConnector(final String connectorId,
                                   final int priority,
