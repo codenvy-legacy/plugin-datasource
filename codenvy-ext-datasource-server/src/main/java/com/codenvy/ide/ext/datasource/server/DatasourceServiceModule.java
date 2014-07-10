@@ -10,13 +10,15 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server;
 
+import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
 import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
+import com.codenvy.ide.ext.datasource.server.ssl.TrustStoreObject;
 import com.codenvy.inject.DynaModule;
 import com.google.inject.AbstractModule;
 
 /**
  * Bindings for the datasource-related services.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 @DynaModule
@@ -26,6 +28,8 @@ public class DatasourceServiceModule extends AbstractModule {
     protected void configure() {
         bind(JdbcConnectionFactory.class);
         bind(SqlRequestService.class);
+        bind(KeyStoreObject.class);
+        bind(TrustStoreObject.class);
         bind(SslKeyStoreService.class);
         bind(AvailableDriversService.class);
         bind(DatabaseExploreService.class);

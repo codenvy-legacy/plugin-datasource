@@ -10,8 +10,11 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server.ssl;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+
+import com.codenvy.api.user.server.dao.UserDao;
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.google.inject.Inject;
 
 /**
  * JaxRS service that gives access to Java SSL KeyStore.
@@ -19,31 +22,42 @@ import javax.ws.rs.Path;
 @Path("ssl-keystore")
 public class SslKeyStoreService {
 
-    @GET
-    public String init(){
-        // temporary disabling to allow https if truststore and keystore are not setted
-//        if (System.getProperty("javax.net.ssl.trustStore") == null) {
-//            System.setProperty("javax.net.ssl.trustStore", System.getProperty("catalina.base") + "/truststore");
-//        }
-//        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
-//            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
-//        }
-//        if (System.getProperty("javax.net.ssl.keyStore") == null) {
-//            System.setProperty("javax.net.ssl.keyStore", System.getProperty("catalina.base") + "/keystore");
-//        }
-//        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
-//            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
-//        }
-        return "ok";
+    protected UserProfileDao   profileDao;
+    protected UserDao          userDao;
+    protected KeyStoreObject   keyStoreObject;
+    protected TrustStoreObject trustStoreObject;
+
+    // userProfileDao, injected with ...
+    @Inject
+    public SslKeyStoreService(KeyStoreObject keyStoreObject, TrustStoreObject trustStoreObject) {
+        this.keyStoreObject = keyStoreObject;
+        this.trustStoreObject = trustStoreObject;
     }
 
     @Path("keystore")
     public KeyStoreObject getClientKeyStore() throws Exception {
-        return new KeyStoreObject();
+        return keyStoreObject;
     }
 
     @Path("truststore")
-    public Object getTrustStore() throws Exception {
-        return new TrustStoreObject();
+    public TrustStoreObject getTrustStore() throws Exception {
+        return trustStoreObject;
     }
+
+
+    public static String getDefaultTrustorePassword() {
+        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
+            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+        }
+        return System.getProperty("javax.net.ssl.trustStorePassword");
+    }
+
+    public static String getDefaultKeystorePassword() {
+        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
+            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+        }
+        return System.getProperty("javax.net.ssl.keyStorePassword");
+    }
+
+
 }

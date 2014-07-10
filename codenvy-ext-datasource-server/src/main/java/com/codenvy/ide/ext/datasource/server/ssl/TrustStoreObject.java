@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server.ssl;
 
-import java.io.FileOutputStream;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Iterator;
@@ -22,28 +21,39 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.google.inject.Inject;
+
 /**
  * The trustStore is pretty similar to the keystore except that - it doesn't take key
  */
 public class TrustStoreObject extends KeyStoreObject {
 
-    public TrustStoreObject() throws Exception {
-        super();
+
+    @Inject
+    public TrustStoreObject(UserProfileDao profileDao) throws Exception {
+        super(profileDao);
     }
 
+
+    @Override
     protected String getKeyStorePassword() {
-        String sPass = System.getProperty("javax.net.ssl.trustStorePassword");
-        return sPass;
-    }
-
-    protected String getKeyStoreLocation() {
-        String store = System.getProperty("javax.net.ssl.trustStore");
-        return store;
+        return SslKeyStoreService.getDefaultTrustorePassword();
     }
 
     @Override
-    public Response addNewKeyCertificate(@QueryParam("alias") String alias,
-                                         Iterator<FileItem> uploadedFilesIterator) throws Exception {
+    protected String getKeyStorePreferenceName() {
+        return TRUST_STORE_PREF_ID;
+    }
+
+    @Override
+    public Response addNewKeyCertificateAndRespond(@QueryParam("alias") String alias,
+                                                   Iterator<FileItem> uploadedFilesIterator) throws Exception {
+        addNewServerCACert(alias, uploadedFilesIterator);
+        return Response.ok("", MediaType.TEXT_HTML).build();
+    }
+
+    public void addNewServerCACert(String alias, Iterator<FileItem> uploadedFilesIterator) throws Exception {
         Certificate[] certs = null;
         while (uploadedFilesIterator.hasNext()) {
             FileItem fileItem = uploadedFilesIterator.next();
@@ -60,8 +70,6 @@ public class TrustStoreObject extends KeyStoreObject {
         }
 
         keystore.setCertificateEntry(alias, certs[0]);
-        keystore.store(new FileOutputStream(keyStoreLocation), keyStorePassword.toCharArray());
-
-        return Response.ok("", MediaType.TEXT_HTML).build();
+        save();
     }
 }

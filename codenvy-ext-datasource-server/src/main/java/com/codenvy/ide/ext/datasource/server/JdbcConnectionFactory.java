@@ -19,16 +19,25 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codenvy.api.user.server.dao.UserProfileDao;
+import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.commons.env.EnvironmentContext;
+import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactory;
+import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactoryKeyStoreSettings;
+import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
+import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.NuoDBBrokerDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.google.inject.Inject;
 
 /**
  * Service that builds connections for configured datasources.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 public class JdbcConnectionFactory {
@@ -51,9 +60,16 @@ public class JdbcConnectionFactory {
     /** URL pattern for NuoDB databases. */
     private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
 
+    protected UserProfileDao    profileDao;
+
+    @Inject
+    public JdbcConnectionFactory(UserProfileDao profileDao) {
+        this.profileDao = profileDao;
+    }
+
     /**
      * builds a JDBC {@link Connection} for a datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return a connection
      * @throws SQLException if the creation of the connection failed
@@ -68,13 +84,34 @@ public class JdbcConnectionFactory {
         Properties info = new Properties();
         info.setProperty("user", configuration.getUsername());
         info.setProperty("password", configuration.getPassword());
-        if (configuration.getUseSSL()) {
-            info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
-        }
-        if (configuration.getVerifyServerCertificate()) {
-            info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
-        }
+        try {
+            Profile profile = profileDao.getById(EnvironmentContext.getCurrent().getUser().getName());
 
+            CodenvySSLSocketFactoryKeyStoreSettings sslSettings = new CodenvySSLSocketFactoryKeyStoreSettings();
+            if (configuration.getUseSSL()) {
+                info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
+                String sslKeyStore = profile.getPreferences().get(KeyStoreObject.SSL_KEY_STORE_PREF_ID);
+                sslSettings.setKeyStorePassword(SslKeyStoreService.getDefaultKeystorePassword());
+                if (sslKeyStore != null) {
+                    sslSettings.setKeyStoreContent(Base64.decodeBase64(sslKeyStore));
+                }
+            }
+
+            if (configuration.getVerifyServerCertificate()) {
+                info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
+                String trustStore = profile.getPreferences().get(KeyStoreObject.TRUST_STORE_PREF_ID);
+                sslSettings.setTrustStorePassword(SslKeyStoreService.getDefaultTrustorePassword());
+                if (trustStore != null) {
+                    sslSettings.setTrustStoreContent(Base64.decodeBase64(trustStore));
+                }
+            }
+
+            CodenvySSLSocketFactory.keystore.set(sslSettings);
+
+
+        } catch (Exception e) {
+            LOG.error("An error occured while getting keystore from Codenvy Preferences, JDBC connection will be performed without SSL", e);
+        }
         final Connection connection = DriverManager.getConnection(getJdbcUrl(configuration), info);
 
         return connection;
@@ -82,7 +119,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -115,7 +152,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a PostgreSQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -130,7 +167,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a MySQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -145,7 +182,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for an Oracle datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -160,7 +197,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a JTDS/MsSQL datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
@@ -175,7 +212,7 @@ public class JdbcConnectionFactory {
 
     /**
      * Builds a JDBC URL for a NuoDB datasource.
-     * 
+     *
      * @param configuration the datasource configuration
      * @return the URL
      * @throws DatabaseDefinitionException in case the datasource configuration is incorrect
