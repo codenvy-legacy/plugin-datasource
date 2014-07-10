@@ -12,7 +12,7 @@ package com.codenvy.ide.ext.datasource.client.inject;
 
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
-import com.codenvy.ide.api.resources.FileType;
+import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;

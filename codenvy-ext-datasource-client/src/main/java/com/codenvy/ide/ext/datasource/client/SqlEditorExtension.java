@@ -12,8 +12,8 @@ package com.codenvy.ide.ext.datasource.client;
 
 import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
-import com.codenvy.ide.api.resources.FileType;
-import com.codenvy.ide.api.resources.ResourceProvider;
+import com.codenvy.ide.api.filetypes.FileType;
+import com.codenvy.ide.api.filetypes.FileTypeRegistry;
 import com.codenvy.ide.api.ui.Icon;
 import com.codenvy.ide.api.ui.IconRegistry;
 import com.codenvy.ide.api.ui.action.ActionManager;
@@ -49,7 +49,7 @@ public class SqlEditorExtension {
     public SqlEditorExtension(final WorkspaceAgent workspaceAgent,
                               final ActionManager actionManager,
                               final SqlEditorResources sqlEditorResources,
-                              final ResourceProvider resourceProvider,
+                              final FileTypeRegistry fileTypeRegistry,
                               final EditorRegistry editorRegistry,
                               final SqlLauncherEditorProvider sqlEditorProvider,
                               final NewSqlFileAction newSqlFileAction,
@@ -62,7 +62,7 @@ public class SqlEditorExtension {
         // inject CSS
         sqlEditorResources.sqlCSS().ensureInjected();
 
-        resourceProvider.registerFileType(sqlFile);
+        fileTypeRegistry.registerFileType(sqlFile);
         editorRegistry.register(sqlFile, sqlEditorProvider);
 
         // add action for creating new SQL file in "File-New" submenu
