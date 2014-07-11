@@ -29,7 +29,9 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -59,6 +61,15 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     @UiField
     PasswordTextBox                     passwordField;
+    
+    @UiField
+    RadioButton                         radioUserPref;
+
+    @UiField
+    RadioButton                         radioProject;
+
+    @UiField
+    ListBox                             projectsList; 
 
     @UiField
     Button                              testConnectionButton;
@@ -134,6 +145,11 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         // manage selection
         final MultiSelectionModel<NuoDBBroker> selectionModel = new MultiSelectionModel<>(keyProvider);
         this.brokerList.setSelectionModel(selectionModel);
+        
+        radioUserPref.setValue(true);
+        radioProject.setEnabled(false);
+        projectsList.setEnabled(false);
+        projectsList.setWidth("100px");
         
     }
 
