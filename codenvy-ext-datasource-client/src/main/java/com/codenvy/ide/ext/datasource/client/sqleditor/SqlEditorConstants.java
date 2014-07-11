@@ -16,4 +16,7 @@ public interface SqlEditorConstants extends Constants {
 
     @DefaultStringValue("SQL file")
     String newSqlWizardTitle();
+
+    @DefaultStringValue("SQL File")
+    String sqlFiletypeContentDescription();
 }

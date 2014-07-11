@@ -15,6 +15,8 @@ import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.ui.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.api.ui.wizard.DefaultWizard;
+import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
@@ -59,6 +61,7 @@ import com.codenvy.ide.ext.datasource.client.service.FetchMetadataService;
 import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorConstants;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderFactory;
@@ -76,6 +79,7 @@ import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogView;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogViewImpl;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogView;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogViewImpl;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
@@ -169,8 +173,14 @@ public class DatasourceGinModule extends AbstractGinModule {
     @Provides
     @Singleton
     @Named("SQLFileType")
-    protected FileType provideSQLFile(SqlEditorResources sqlEditorResources) {
-        return  new FileType(sqlEditorResources.sqlFile(), SqlEditorExtension.GENERIC_SQL_MIME_TYPE, SqlEditorExtension.SQL_FILE_EXTENSION);
+    protected FileType provideSQLFile(final SqlEditorResources sqlEditorResources) {
+        final SqlEditorConstants constants = GWT.create(SqlEditorConstants.class);
+        final Array<String> mimetypes = Collections.createArray(SqlEditorExtension.GENERIC_SQL_MIME_TYPE,
+                                                                SqlEditorExtension.MSSQL_SQL_MIME_TYPE,
+                                                                SqlEditorExtension.MYSQL_SQL_MIME_TYPE,
+                                                                SqlEditorExtension.ORACLE_SQL_MIME_TYPE);
+        return new FileType(constants.sqlFiletypeContentDescription(), sqlEditorResources.sqlFile(),
+                            mimetypes, SqlEditorExtension.SQL_FILE_EXTENSION);
     }
 
 }
