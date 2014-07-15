@@ -95,7 +95,7 @@
 		.namePanel,.namePanelRight {
 			border-right: 1px solid #232323;
 			box-shadow: 1px 0px 0px 0px rgba(188, 195, 199, 0.5);
-			/*position: relative;*/
+			position: relative;
 			top: -1px;
 			overflow: hidden;
 			display: inline-block;
