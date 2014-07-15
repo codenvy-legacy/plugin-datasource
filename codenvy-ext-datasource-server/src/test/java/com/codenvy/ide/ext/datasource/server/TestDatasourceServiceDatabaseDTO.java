@@ -32,7 +32,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import com.codenvy.api.user.server.dao.UserProfileDao;
 import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
 import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
 import com.codenvy.ide.ext.datasource.server.ssl.TrustStoreObject;
@@ -54,7 +53,7 @@ public class TestDatasourceServiceDatabaseDTO {
     protected ExploreRequestDTO              exploreRequest;
 
     @Mock
-    protected UserProfileDao                 userProfileDao;
+    protected JdbcConnectionFactory          jdbcConnectionFactory;
 
     @Ignore
     @Test
@@ -76,7 +75,7 @@ public class TestDatasourceServiceDatabaseDTO {
     }
 
     protected String getDatabaseJsonDTOFromDatasourceService(ExploreRequestDTO exploreRequest) throws Exception {
-        DatabaseExploreService dsService = new DatabaseExploreService(new JdbcConnectionFactory(userProfileDao));
+        DatabaseExploreService dsService = new DatabaseExploreService(jdbcConnectionFactory);
         return dsService.getDatabase(exploreRequest);
     }
 
@@ -222,9 +221,9 @@ public class TestDatasourceServiceDatabaseDTO {
 
         // test with keystore but without keys
         keystoreService.getClientKeyStore().addNewKey("test", keyFileItems.iterator());
-        keystoreService.getClientKeyStore().deleteKey("test","");
+        keystoreService.getClientKeyStore().deleteKey("test", "");
         keystoreService.getTrustStore().addNewServerCACert("yes", serverCAFileItems.iterator());
-        keystoreService.getTrustStore().deleteKey("yes","");
+        keystoreService.getTrustStore().deleteKey("yes", "");
         try {
             getDatabaseJsonDTOFromDatasourceService(exploreRequest);
             fail("should not work as keys and cert removed");

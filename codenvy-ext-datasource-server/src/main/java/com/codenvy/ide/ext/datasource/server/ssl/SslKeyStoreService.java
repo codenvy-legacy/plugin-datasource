@@ -12,8 +12,6 @@ package com.codenvy.ide.ext.datasource.server.ssl;
 
 import javax.ws.rs.Path;
 
-import com.codenvy.api.user.server.dao.UserDao;
-import com.codenvy.api.user.server.dao.UserProfileDao;
 import com.google.inject.Inject;
 
 /**
@@ -22,8 +20,6 @@ import com.google.inject.Inject;
 @Path("ssl-keystore")
 public class SslKeyStoreService {
 
-    protected UserProfileDao   profileDao;
-    protected UserDao          userDao;
     protected KeyStoreObject   keyStoreObject;
     protected TrustStoreObject trustStoreObject;
 
