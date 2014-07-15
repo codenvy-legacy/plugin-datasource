@@ -31,6 +31,12 @@
             <artifactId>codenvy-ssl-socket-factory</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- needed for Profile DTO -->
+        <dependency>
+            <groupId>com.codenvy.platform-api</groupId>
+            <artifactId>codenvy-api-user</artifactId>
+            <version>${codenvy.platform-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
