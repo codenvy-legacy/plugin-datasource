@@ -163,7 +163,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
         if (matcher != null) {
             String tablePrefix = matcher.getGroup(TABLE_REGEXP_GROUP);
             String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - tablePrefix.length());
-            String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
+            String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getPath());
             Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
             for (String schema : schemas) {
                 Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);
@@ -213,7 +213,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
         }
 
         String lineReplacementPrefix = linePrefix.substring(0, linePrefix.length() - columnPrefix.length());
-        String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getId());
+        String datasourceId = editorDatasourceOracle.getSelectedDatasourceId(textEditor.getEditorInput().getFile().getPath());
         Collection<String> schemas = databaseInfoOracle.getSchemasFor(datasourceId);
         for (String schema : schemas) {
             Collection<String> tables = databaseInfoOracle.getTablesFor(datasourceId, schema);

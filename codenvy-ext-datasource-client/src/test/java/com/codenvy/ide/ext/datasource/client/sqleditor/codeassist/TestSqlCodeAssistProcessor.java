@@ -51,7 +51,7 @@ public class TestSqlCodeAssistProcessor {
     @Before
     public void init() {
         String editorId = "testEditorInputId";
-        when(textEditor.getEditorInput().getFile().getId()).thenReturn(editorId);
+        when(textEditor.getEditorInput().getFile().getPath()).thenReturn(editorId);
         when(editorDatasourceOracle.getSelectedDatasourceId(editorId)).thenReturn("datasourceId");
         when(databaseInfoOracle.getSchemasFor("datasourceId")).thenReturn(Lists.create("public", "meta"));
         when(databaseInfoOracle.getTablesFor("datasourceId", "public")).thenReturn(Lists.create("table", "atable"));

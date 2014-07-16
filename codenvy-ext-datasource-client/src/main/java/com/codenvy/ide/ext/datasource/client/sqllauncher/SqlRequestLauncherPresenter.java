@@ -201,7 +201,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         Log.debug(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
-        String editorFileId = getEditorInput().getFile().getId();
+        String editorFileId = getEditorInput().getFile().getPath();
         Log.debug(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
         editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
         if (newDataSourceId == null) {
@@ -478,7 +478,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public boolean onClose() {
         boolean parentResult = super.onClose();
-        final String editorFileId = getEditorInput().getFile().getId();
+        final String editorFileId = getEditorInput().getFile().getPath();
         this.editorDatasourceOracle.forgetEditor(editorFileId);
         return parentResult;
     }
