@@ -46,6 +46,9 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
             keystore.set(null);
             wrappedSocketFactory.set(getSSLSocketFactoryDefaultOrConfigured(keystoreConfig));
         }
+        if (wrappedSocketFactory.get() == null){
+            wrappedSocketFactory.set((javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault());
+        }
     }
 
     protected static SSLSocketFactory getSSLSocketFactoryDefaultOrConfigured(CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig) {
