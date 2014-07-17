@@ -16,6 +16,7 @@ import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceOpenNotificationHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoErrorEvent;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseInfoReceivedEvent;
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoStore;
@@ -51,6 +52,8 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
     /** Where the metadata is stored. */
     private final DatabaseInfoStore             databaseInfoStore;
+    
+    private final EditDatasourceOpenNotificationHandler editDatasourceOpenNotificationHandler;
 
     @Inject
     protected FetchMetadataServiceImpl(final DtoFactory dtoFactory,
@@ -58,13 +61,15 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                                        final EventBus eventBus,
                                        final DatasourceClientService datasourceClientService,
                                        final MetadataNotificationConstants notificationConstants,
-                                       final DatabaseInfoStore databaseInfoStore) {
+                                       final DatabaseInfoStore databaseInfoStore,
+                                       final EditDatasourceOpenNotificationHandler editDatasourceOpenNotificationHandler) {
         this.dtoFactory = dtoFactory;
         this.notificationManager = notificationManager;
         this.datasourceClientService = datasourceClientService;
         this.eventBus = eventBus;
         this.notificationConstants = notificationConstants;
         this.databaseInfoStore = databaseInfoStore;
+        this.editDatasourceOpenNotificationHandler = editDatasourceOpenNotificationHandler;
     }
 
     @Override
@@ -113,8 +118,9 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                 protected void onFailure(final Throwable e) {
                     Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
                     fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+                    editDatasourceOpenNotificationHandler.setConfiguration(configuration);
                     notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
-                                                                          Type.ERROR));
+                                                                          Type.ERROR, editDatasourceOpenNotificationHandler));
 
                     databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
                     // clean up current database
@@ -126,8 +132,9 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
             });
         } catch (final RequestException e) {
             Log.error(DatasourceClientServiceImpl.class, "Exception while fetching database metadata: " + e.getMessage());
+            editDatasourceOpenNotificationHandler.setConfiguration(configuration);
             notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
-                                                                  Type.ERROR));
+                                                                  Type.ERROR, editDatasourceOpenNotificationHandler));
 
             databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
             // clean up current database
