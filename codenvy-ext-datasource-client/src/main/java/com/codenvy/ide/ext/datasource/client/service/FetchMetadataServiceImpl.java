@@ -119,7 +119,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                     Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
                     fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
                     editDatasourceOpenNotificationHandler.setConfiguration(configuration);
-                    notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
+                    notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure()+" using datasource '"+configuration.getDatasourceId()+"' - "+e.getMessage(),
                                                                           Type.ERROR, editDatasourceOpenNotificationHandler));
 
                     databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
@@ -133,7 +133,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         } catch (final RequestException e) {
             Log.error(DatasourceClientServiceImpl.class, "Exception while fetching database metadata: " + e.getMessage());
             editDatasourceOpenNotificationHandler.setConfiguration(configuration);
-            notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure(),
+            notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure()+" using datasource '"+configuration.getDatasourceId()+"'",
                                                                   Type.ERROR, editDatasourceOpenNotificationHandler));
 
             databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
