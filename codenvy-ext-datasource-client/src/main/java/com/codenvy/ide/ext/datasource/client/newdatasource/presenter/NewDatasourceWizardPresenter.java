@@ -113,7 +113,7 @@ public class NewDatasourceWizardPresenter implements WizardDialog, Initializable
 
     @Override
     public void datasourceNameChanged(String name) {
-        RegExp regExp = RegExp.compile("^[A-Za-z0-9_]*$");
+        RegExp regExp = RegExp.compile("^[A-Za-z0-9_ ]*$");
         if (regExp.test(name)) {
             wizardContext.putData(NewDatasourceWizard.DATASOURCE_NAME, name);
             view.removeNameError();
