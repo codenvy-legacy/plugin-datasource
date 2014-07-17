@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardDialog;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.presenter.NewDatasourceWizardPresenter;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
@@ -39,7 +40,8 @@ public class EditDatasourceLauncher {
 
     public void launch(final DatabaseConfigurationDTO datasource) {
         NewDatasourceWizardPresenter newDatasourceWizardPresenter = newDatasourcePageProvider.get();
-        newDatasourceWizardPresenter.initData(datasource);
+        InitializableWizardDialog<DatabaseConfigurationDTO> wizardDialog = (InitializableWizardDialog<DatabaseConfigurationDTO>) newDatasourceWizardPresenter;
+        wizardDialog.initData(datasource);
         try {
             newDatasourceWizardPresenter.show();
         } catch (final Exception exception) {

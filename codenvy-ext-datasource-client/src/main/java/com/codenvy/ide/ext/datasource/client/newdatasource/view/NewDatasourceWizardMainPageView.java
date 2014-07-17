@@ -22,6 +22,8 @@ public interface NewDatasourceWizardMainPageView extends View<NewDatasourceWizar
     void reset();
 
     void setConnectors(Collection<NewDatasourceConnector> connectors);
+    
+    void selectConnector(NewDatasourceConnector data);
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {

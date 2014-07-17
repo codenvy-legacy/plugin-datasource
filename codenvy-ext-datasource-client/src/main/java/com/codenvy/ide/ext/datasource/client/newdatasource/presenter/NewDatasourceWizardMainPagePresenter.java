@@ -24,6 +24,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMe
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
 import com.codenvy.ide.ext.datasource.client.newdatasource.view.NewDatasourceWizardMainPageView;
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -138,7 +139,19 @@ public class NewDatasourceWizardMainPagePresenter extends AbstractWizardPage imp
 
     @Override
     public void initPage(Object initData) {
-
+        if (!(initData instanceof DatabaseConfigurationDTO)) {
+            clearPage();
+            return;
+        }
+        DatabaseConfigurationDTO data = (DatabaseConfigurationDTO)initData;
+        NewDatasourceConnector initConnector = null;
+        for (NewDatasourceConnector connector : dbConnectors) {
+            if (data.getConfigurationConnectorId().equals(connector.getId())) {
+                initConnector = connector;
+                break;
+            }
+        }
+        view.selectConnector(initConnector);
     }
 
     @Override

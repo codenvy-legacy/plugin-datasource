@@ -33,6 +33,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -119,7 +120,8 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
                                                                                     if (delegate.connectorEnabled(connector.getId())) {
                                                                                         delegate.onConnectorSelected(connector.getId());
                                                                                     } else {
-                                                                                        node.setSelected(false, resources.treeCss());
+                                                                                        categoriesTree.getSelectionModel()
+                                                                                                      .clearSelections();
                                                                                     }
                                                                                 }
                                                                             }
@@ -141,17 +143,21 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
     public NewDatasourceWizardMainPageViewImpl(Resources resources) {
         this.resources = resources;
         rootElement = ourUiBinder.createAndBindUi(this);
-        //reset();
+        // reset();
     }
 
     @Override
     public void reset() {
         datasourceCategoriesPanel.clear();
         categoriesTree = Tree.create(resources, new CategoriesDataAdapter(), new CategoriesNodeRenderer());
+        datasourceCategoriesPanel.add(categoriesTree);
+        com.google.gwt.dom.client.Style style = categoriesTree.asWidget().getElement().getStyle();
+        style.setWidth(100, com.google.gwt.dom.client.Style.Unit.PCT);
+        style.setHeight(100, com.google.gwt.dom.client.Style.Unit.PCT);
+        style.setPosition(com.google.gwt.dom.client.Style.Position.RELATIVE);
         categoriesTree.setTreeEventHandler(treeEventHandler);
         categoriesTree.getModel().setRoot("");
         categoriesTree.renderTree(0);
-        datasourceCategoriesPanel.add(categoriesTree);
     }
 
     @Override
@@ -181,6 +187,22 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
     @Override
     public void setDelegate(ActionDelegate delegate) {
         this.delegate = delegate;
+    }
+
+    @Override
+    public void selectConnector(NewDatasourceConnector connector) {
+        String categoryType = connector.getCategoryType().toString();
+        TreeNodeElement<String> categoryNode = categoriesTree.getNode(categoryType);
+        categoriesTree.expandNode(categoryNode);
+
+        String connectorId = connector.getId();
+        String connectorTitle = connector.getTitle();
+        if (delegate.connectorEnabled(connectorId)) {
+            categoriesTree.getSelectionModel().selectSingleNode(connectorTitle);
+            delegate.onConnectorSelected(connectorId);
+        } else {
+            Window.alert("Cannot select connector " + connectorTitle + " - no driver available");
+        }
     }
 
     interface NewDatasourceWizardMainPageViewImplUiBinder

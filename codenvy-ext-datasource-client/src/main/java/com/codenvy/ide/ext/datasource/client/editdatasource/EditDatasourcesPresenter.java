@@ -29,6 +29,7 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourc
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
+import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardDialog;
 import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
@@ -48,7 +49,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author "Mickaël Leduque"
  */
 public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDelegate, DatasourceListChangeHandler,
-                                     SelectionChangeEvent.Handler {
+                                     SelectionChangeEvent.Handler, InitializableWizardDialog<DatabaseConfigurationDTO> {
 
     /** The view component. */
     private final EditDatasourcesView                           view;
@@ -80,6 +81,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
     /** Factory for confirmation and message windows. */
     private final DialogFactory                                 dialogFactory;
+    
+    private DatabaseConfigurationDTO             configuration;
 
     @Inject
     public EditDatasourcesPresenter(final @NotNull EditDatasourcesView view,
@@ -114,6 +117,11 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.handlerRegistration[0] = this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
         this.handlerRegistration[1] = this.selectionModel.addSelectionChangeHandler(this);
         this.view.showDialog();
+        
+        if (configuration != null) {
+            this.selectionModel.setSelected(configuration, true);
+            onSelectionChange(null);
+        }
     }
 
     @Override
@@ -273,5 +281,10 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                 this.view.setEditEnabled(false);
             }
         }
+    }
+
+    @Override
+    public void initData(DatabaseConfigurationDTO configuration) {
+        this.configuration = configuration;
     }
 }

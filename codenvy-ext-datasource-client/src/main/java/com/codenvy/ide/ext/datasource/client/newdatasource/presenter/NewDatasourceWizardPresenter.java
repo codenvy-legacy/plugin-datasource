@@ -52,10 +52,10 @@ public class NewDatasourceWizardPresenter implements WizardDialog, Initializable
         this.wizard = wizard;
         this.view = view;
         this.categoriesListPage = categoriesListPage;
-        wizardContext = new WizardContext();
-        categoriesListPage.setContext(wizardContext);
-        categoriesListPage.setUpdateDelegate(this);
-        view.setDelegate(this);
+        this.wizardContext = new WizardContext();
+        this.categoriesListPage.setContext(wizardContext);
+        this.categoriesListPage.setUpdateDelegate(this);
+        this.view.setDelegate(this);
     }
 
     @Override
@@ -130,11 +130,12 @@ public class NewDatasourceWizardPresenter implements WizardDialog, Initializable
         view.showPage(categoriesListPage, "categories");
         view.showDialog();
         view.setEnabledAnimation(true);
-
+        
         if (configuration != null) {
             String datasourceID = configuration.getDatasourceId();
             view.setName(datasourceID);
             datasourceNameChanged(datasourceID);
+            scheduleInit(categoriesListPage);
         }
     }
 
