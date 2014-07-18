@@ -42,17 +42,17 @@ public class SslKeyStoreService {
 
 
     public static String getDefaultTrustorePassword() {
-        if (System.getProperty("javax.net.ssl.trustStorePassword") == null) {
-            System.setProperty("javax.net.ssl.trustStorePassword", "changeMe");
+        if (System.getProperty("com.codenvy.security.masterpwd") == null) {
+            System.setProperty("com.codenvy.security.masterpwd", "changeMe");
         }
-        return System.getProperty("javax.net.ssl.trustStorePassword");
+        return System.getProperty("com.codenvy.security.masterpwd");
     }
 
     public static String getDefaultKeystorePassword() {
-        if (System.getProperty("javax.net.ssl.keyStorePassword") == null) {
-            System.setProperty("javax.net.ssl.keyStorePassword", "changeMe");
+        if (System.getProperty("com.codenvy.security.masterpwd") == null) {
+            System.setProperty("com.codenvy.security.masterpwd", "changeMe");
         }
-        return System.getProperty("javax.net.ssl.keyStorePassword");
+        return System.getProperty("com.codenvy.security.masterpwd");
     }
 
 
