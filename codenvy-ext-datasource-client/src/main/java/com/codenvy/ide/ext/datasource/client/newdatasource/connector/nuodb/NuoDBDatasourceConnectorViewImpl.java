@@ -270,8 +270,8 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     }
 
     @Override
-    public void setEncryptedPassword(String password, boolean resetPasswordField) {
-        encryptedPassword = encryptedPassword;
+    public void setEncryptedPassword(String encryptedPassword, boolean resetPasswordField) {
+        this.encryptedPassword = encryptedPassword;
         passwordFieldIsDirty = false;
         if (resetPasswordField) {
             passwordField.setText("");
