@@ -111,10 +111,8 @@ public class DatasourceExplorerViewImpl extends
         }
 
         this.datasourceListBox.clear();
-        if (datasourceIds.size() > 1) {
-            // add an empty item
-            this.datasourceListBox.addItem("", "");
-        }
+        // add an empty item even if there is only one datasource in order to avoid preload at IDE startup
+        this.datasourceListBox.addItem("", "");
         for (String datasourceId : datasourceIds) {
             this.datasourceListBox.addItem(datasourceId);
         }
@@ -129,7 +127,8 @@ public class DatasourceExplorerViewImpl extends
             }
             delegate.onSelectedDatasourceChanged(getSelectedId());
         } else {
-            if (this.datasourceListBox.getItemCount() == 1) {
+            // if there is empty item + one datasource
+            if (this.datasourceListBox.getItemCount() == 2) {
                 this.datasourceListBox.setSelectedIndex(0);
                 delegate.onSelectedDatasourceChanged(this.datasourceListBox.getValue(0));
             }
