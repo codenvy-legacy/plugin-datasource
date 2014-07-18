@@ -25,21 +25,21 @@ public interface AbstractNewDatasourceConnectorView extends View<AbstractNewData
 
     /**
      * Returns the database name (the SQL exiting database).
-     * 
+     *
      * @return the database name
      */
     String getDatabaseName();
 
     /**
      * Returns the configured username used for the connection.
-     * 
+     *
      * @return the username
      */
     String getUsername();
 
     /**
      * Returns the configured password used for the connection.
-     * 
+     *
      * @return the password
      */
     String getPassword();

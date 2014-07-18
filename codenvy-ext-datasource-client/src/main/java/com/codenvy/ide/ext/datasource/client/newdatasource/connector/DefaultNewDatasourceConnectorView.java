@@ -25,7 +25,7 @@ public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasource
 
     /**
      * Sets the port in the displayed configuration.
-     * 
+     *
      * @param port the new value
      */
     void setPort(int port);

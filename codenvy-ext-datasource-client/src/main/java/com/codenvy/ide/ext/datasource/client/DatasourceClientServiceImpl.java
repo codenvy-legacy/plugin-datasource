@@ -48,7 +48,7 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     protected DatasourceClientServiceImpl(final @Named(DatasourceGinModule.DATASOURCE_CONTEXT_NAME) String restContext,
                                           final DtoFactory dtoFactory,
                                           final AsyncRequestFactory asyncRequestFactory) {
-        this.restServiceContext = restContext;
+        restServiceContext = restContext;
         this.dtoFactory = dtoFactory;
         this.asyncRequestFactory = asyncRequestFactory;
     }
@@ -57,11 +57,11 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
     public void fetchDatabaseInfo(final @NotNull DatabaseConfigurationDTO configuration,
                                   final ExploreTableType tableCategory,
                                   final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        final String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_EXPLORE_PATH, "", null);
-        ExploreRequestDTO request = this.dtoFactory.createDto(ExploreRequestDTO.class);
+        final String url = formatUrl(restServiceContext, ServicePaths.DATABASE_EXPLORE_PATH, "", null);
+        ExploreRequestDTO request = dtoFactory.createDto(ExploreRequestDTO.class);
         request.setDatasourceConfig(configuration);
         request.setExploreTableType(tableCategory);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, request, false);
+        final AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, request, false);
         postRequest.send(asyncRequestCallback);
     }
 
@@ -78,47 +78,47 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                   final MultipleRequestExecutionMode execMode,
                                   final AsyncRequestCallback<String> asyncRequestCallback)
                                                                                           throws RequestException {
-        final String url = formatUrl(this.restServiceContext, ServicePaths.EXECUTE_SQL_REQUEST_PATH, "", null);
+        final String url = formatUrl(restServiceContext, ServicePaths.EXECUTE_SQL_REQUEST_PATH, "", null);
         final RequestParameterDTO requestParameterDTO = dtoFactory.createDto(RequestParameterDTO.class)
                                                                   .withDatabase(configuration)
                                                                   .withResultLimit(resultLimit)
                                                                   .withSqlRequest(sqlRequest)
                                                                   .withMultipleRequestExecutionMode(execMode);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestParameterDTO, false);
+        final AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, requestParameterDTO, false);
         postRequest.send(asyncRequestCallback);
     }
 
     @Override
     public void getAvailableDrivers(AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.DATABASE_TYPES_PATH, "", null);
-        final AsyncRequest getRequest = this.asyncRequestFactory.createGetRequest(url, false);
+        String url = formatUrl(restServiceContext, ServicePaths.DATABASE_TYPES_PATH, "", null);
+        final AsyncRequest getRequest = asyncRequestFactory.createGetRequest(url, false);
         getRequest.send(asyncRequestCallback);
     }
 
     @Override
     public String getRestServiceContext() {
-        return this.restServiceContext;
+        return restServiceContext;
     }
 
     @Override
     public void exportAsCsv(final RequestResultDTO requestResult,
                             final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.RESULT_CSV_PATH, "", null);
-        AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, requestResult, false);
+        String url = formatUrl(restServiceContext, ServicePaths.RESULT_CSV_PATH, "", null);
+        AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, requestResult, false);
         postRequest.send(asyncRequestCallback);
     }
 
     @Override
     public void testDatabaseConnectivity(final @NotNull DatabaseConfigurationDTO configuration,
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
-        String url = formatUrl(this.restServiceContext, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, "", null);
-        final AsyncRequest postRequest = this.asyncRequestFactory.createPostRequest(url, configuration, false);
+        String url = formatUrl(restServiceContext, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, "", null);
+        final AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, configuration, false);
         postRequest.send(asyncRequestCallback);
     }
 
     /**
      * Builds the target REST service url.
-     * 
+     *
      * @param context the rest context
      * @param root the root of the service
      * @param service the rest service

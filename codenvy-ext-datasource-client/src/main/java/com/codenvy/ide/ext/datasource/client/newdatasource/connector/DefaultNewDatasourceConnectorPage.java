@@ -63,15 +63,17 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         container.setWidget(getView());
     }
 
+    @Override
     public DefaultNewDatasourceConnectorView getView() {
         return (DefaultNewDatasourceConnectorView)super.getView();
     }
 
     /**
      * Returns the currently configured database.
-     * 
+     *
      * @return the database
      */
+    @Override
     protected DatabaseConfigurationDTO getConfiguredDatabase() {
         String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
         DatabaseConfigurationDTO result = dtoFactory.createDto(DefaultDatasourceDefinitionDTO.class)
@@ -90,12 +92,14 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         return result;
     }
 
+    @Override
     public Integer getDefaultPort() {
-        return this.defaultPort;
+        return defaultPort;
     }
 
+    @Override
     public DatabaseType getDatabaseType() {
-        return this.databaseType;
+        return databaseType;
     }
 
     @Override

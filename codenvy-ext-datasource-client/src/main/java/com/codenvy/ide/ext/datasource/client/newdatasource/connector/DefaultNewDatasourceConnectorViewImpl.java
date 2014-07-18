@@ -89,10 +89,11 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         radioProject.setEnabled(false);
         projectsList.setEnabled(false);
         projectsList.setWidth("100px");
-        
+
         configureTitleCaption.setText("Settings");
     }
 
+    @Override
     public void setDelegate(DefaultNewDatasourceConnectorView.ActionDelegate delegate) {
         this.delegate = delegate;
     }
@@ -157,12 +158,12 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     @Override
     public void setDatabaseName(final String databaseName) {
-        this.dbName.setValue(databaseName);
+        dbName.setValue(databaseName);
     }
 
     @Override
     public void setHostName(final String hostName) {
-        this.hostField.setValue(hostName);
+        hostField.setValue(hostName);
     }
 
     @Override
@@ -177,12 +178,12 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     @Override
     public void setUsername(final String username) {
-        this.usernameField.setValue(username);
+        usernameField.setValue(username);
     }
 
     @Override
     public void setPassword(final String password) {
-        this.passwordField.setValue(password);
+        passwordField.setValue(password);
     }
 
     @UiHandler("testConnectionButton")

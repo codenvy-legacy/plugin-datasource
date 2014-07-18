@@ -83,7 +83,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
 
     /**
      * Returns the currently configured database.
-     * 
+     *
      * @return the database
      */
     protected abstract DatabaseConfigurationDTO getConfiguredDatabase();
@@ -119,12 +119,12 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
     public void commit(final CommitCallback callback) {
         DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
         Log.debug(AbstractNewDatasourceConnectorPage.class, "Adding datasource with id " + configuredDatabase.getDatasourceId());
-        this.datasourceManager.add(configuredDatabase);
+        datasourceManager.add(configuredDatabase);
 
         Log.debug(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
         final Notification requestNotification = new Notification("Persisting datasources...",
                                                                   Notification.Status.PROGRESS);
-        this.datasourceManager.persist(new AsyncCallback<Profile>() {
+        datasourceManager.persist(new AsyncCallback<Profile>() {
 
             @Override
             public void onSuccess(Profile result) {
@@ -142,7 +142,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
             }
         });
 
-        this.eventBus.fireEvent(new DatasourceListChangeEvent());
+        eventBus.fireEvent(new DatasourceListChangeEvent());
     }
 
 
@@ -152,10 +152,10 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
 
         final Notification connectingNotification = new Notification(messages.startConnectionTest(),
                                                                      Notification.Status.PROGRESS);
-        this.notificationManager.showNotification(connectingNotification);
+        notificationManager.showNotification(connectingNotification);
 
         try {
-            this.service.testDatabaseConnectivity(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+            service.testDatabaseConnectivity(configuration, new AsyncRequestCallback<String>(new StringUnmarshaller()) {
                 @Override
                 protected void onSuccess(String result) {
                     final ConnectionTestResultDTO testResult = dtoFactory.createDtoFromJson(result, ConnectionTestResultDTO.class);
@@ -181,7 +181,7 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
                 }
             }
 
-                        );
+                   );
         } catch (final RequestException e) {
             Log.debug(AbstractNewDatasourceConnectorPage.class, e.getMessage());
             getView().onTestConnectionFailure(messages.connectionTestFailureSuccessMessage());

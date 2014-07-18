@@ -43,24 +43,24 @@ import com.google.inject.name.Named;
 public class JdbcConnectionFactory {
 
     /** The logger. */
-    private static final Logger LOG                   = LoggerFactory.getLogger(JdbcConnectionFactory.class);
+    private static final Logger  LOG                   = LoggerFactory.getLogger(JdbcConnectionFactory.class);
 
     /** URL pattern for PostgreSQL databases. */
-    private static final String URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
+    private static final String  URL_TEMPLATE_POSTGRES = "jdbc:postgresql://{0}:{1}/{2}";
 
     /** URL pattern for MySQL databases. */
-    private static final String URL_TEMPLATE_MYSQL    = "jdbc:mysql://{0}:{1}/{2}";
+    private static final String  URL_TEMPLATE_MYSQL    = "jdbc:mysql://{0}:{1}/{2}";
 
     /** URL pattern for Oracle databases. */
-    private static final String URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
+    private static final String  URL_TEMPLATE_ORACLE   = "jdbc:oracle:thin:@{0}:{1}:{2}";
 
     /** URL pattern for SQLServer databases. */
-    private static final String URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
+    private static final String  URL_TEMPLATE_JTDS     = "jdbc:jtds:sqlserver://{0}:{1}/{2}";
 
     /** URL pattern for NuoDB databases. */
-    private static final String URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
+    private static final String  URL_TEMPLATE_NUODB    = "jdbc:com.nuodb://{0}/{1}";
 
-    protected String            profileApiUrl;
+    protected String             profileApiUrl;
 
 
     @Inject

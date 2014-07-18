@@ -42,7 +42,7 @@ import com.google.inject.Inject;
 public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDBDatasourceConnectorView {
 
 
-    private static final String         TEXT_BOX_STYLE = "gwt-TextBox";
+    private static final String         TEXT_BOX_STYLE       = "gwt-TextBox";
 
     @UiField(provided = true)
     DataGrid<NuoDBBroker>               brokerList;
@@ -69,7 +69,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     RadioButton                         radioProject;
 
     @UiField
-    ListBox                             projectsList; 
+    ListBox                             projectsList;
 
     @UiField
     Button                              testConnectionButton;
@@ -91,7 +91,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
                 return item.getId();
             }
         };
-        this.brokerList = new DataGrid<NuoDBBroker>(20, dataGridResources, keyProvider);
+        brokerList = new DataGrid<NuoDBBroker>(20, dataGridResources, keyProvider);
         initWidget(uiBinder.createAndBindUi(this));
 
         // first column : host
@@ -110,7 +110,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
             }
         });
 
-        this.brokerList.addColumn(hostColumn, new TextHeader("Host"));
+        brokerList.addColumn(hostColumn, new TextHeader("Host"));
 
         // second column : port
         final TextInputCell portCell = new StyledTextInputCell();
@@ -140,22 +140,22 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
             }
         });
 
-        this.brokerList.addColumn(portColumn, new TextHeader("Port"));
+        brokerList.addColumn(portColumn, new TextHeader("Port"));
 
         // manage selection
         final MultiSelectionModel<NuoDBBroker> selectionModel = new MultiSelectionModel<>(keyProvider);
-        this.brokerList.setSelectionModel(selectionModel);
-        
+        brokerList.setSelectionModel(selectionModel);
+
         radioUserPref.setValue(true);
         radioProject.setEnabled(false);
         projectsList.setEnabled(false);
         projectsList.setWidth("100px");
-        
+
     }
 
     @Override
     public void setNuoDelegate(final NuoActionDelegate delegate) {
-        this.nuoDelegate = delegate;
+        nuoDelegate = delegate;
     }
 
     @Override
@@ -170,13 +170,13 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     @Override
     public void bindBrokerList(final ListDataProvider<NuoDBBroker> dataProvider) {
-        dataProvider.addDataDisplay(this.brokerList);
+        dataProvider.addDataDisplay(brokerList);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Set<NuoDBBroker> getBrokerSelection() {
-        return ((MultiSelectionModel<NuoDBBroker>)this.brokerList.getSelectionModel()).getSelectedSet();
+        return ((MultiSelectionModel<NuoDBBroker>)brokerList.getSelectionModel()).getSelectedSet();
     }
 
     @Override
@@ -191,33 +191,32 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     @Override
     public void setDatabaseName(final String databaseName) {
-        this.dbName.setValue(databaseName);
+        dbName.setValue(databaseName);
     }
 
     @Override
     public void setUsername(final String username) {
-        this.usernameField.setValue(username);
-
+        usernameField.setValue(username);
     }
 
     @Override
     public void setPassword(final String password) {
-        this.passwordField.setValue(password);
+        passwordField.setValue(password);
     }
 
     @UiHandler("testConnectionButton")
     void handleTestConnectionClick(final ClickEvent e) {
-        this.delegate.onClickTestConnectionButton();
+        delegate.onClickTestConnectionButton();
     }
 
     @UiHandler("addBrokerButton")
     void handleAddBrokerClick(final ClickEvent e) {
-        this.nuoDelegate.onAddBroker();
+        nuoDelegate.onAddBroker();
     }
 
     @UiHandler("deleteBrokersButton")
     void handleDeleteBrokersClick(final ClickEvent e) {
-        this.nuoDelegate.onDeleteBrokers();
+        nuoDelegate.onDeleteBrokers();
     }
 
     private static class StyledTextInputCell extends TextInputCell {
