@@ -28,6 +28,7 @@ import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.ConnectionTestResultDTO.Status;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
+import com.codenvy.ide.ext.datasource.shared.TextDTO;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
@@ -117,6 +118,32 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
 
     @Override
     public void commit(final CommitCallback callback) {
+        if (getView().isPasswordFieldDirty()) {
+            try {
+                service.encryptText(getView().getPassword(), new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                    @Override
+                    protected void onSuccess(final String encryptedText) {
+                        TextDTO encryptedTextDTO = dtoFactory.createDtoFromJson(encryptedText, TextDTO.class);
+                        getView().setEncryptedPassword(encryptedTextDTO.getValue(), false);
+                        doCommit(callback);
+                    }
+
+                    @Override
+                    protected void onFailure(Throwable exception) {
+                        Log.error(DefaultNewDatasourceConnectorViewImpl.class, exception);
+                    }
+                });
+            } catch (RequestException e2) {
+                Log.error(DefaultNewDatasourceConnectorViewImpl.class, e2);
+            }
+        }
+        else {
+            doCommit(callback);
+        }
+
+    }
+
+    protected void doCommit(final CommitCallback callback) {
         DatabaseConfigurationDTO configuredDatabase = getConfiguredDatabase();
         Log.debug(AbstractNewDatasourceConnectorPage.class, "Adding datasource with id " + configuredDatabase.getDatasourceId());
         datasourceManager.add(configuredDatabase);
@@ -148,6 +175,32 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
 
     @Override
     public void onClickTestConnectionButton() {
+        if (getView().isPasswordFieldDirty()) {
+            try {
+                service.encryptText(getView().getPassword(), new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                    @Override
+                    protected void onSuccess(final String encryptedText) {
+                        TextDTO encryptedTextDTO = dtoFactory.createDtoFromJson(encryptedText, TextDTO.class);
+                        getView().setEncryptedPassword(encryptedTextDTO.getValue(), false);
+                        doOnClickTestConnectionButton();
+                    }
+
+                    @Override
+                    protected void onFailure(Throwable exception) {
+                        Log.error(DefaultNewDatasourceConnectorViewImpl.class, exception);
+                    }
+                });
+            } catch (RequestException e2) {
+                Log.error(DefaultNewDatasourceConnectorViewImpl.class, e2);
+            }
+        }
+        else {
+            doOnClickTestConnectionButton();
+        }
+
+    }
+
+    public void doOnClickTestConnectionButton() {
         DatabaseConfigurationDTO configuration = getConfiguredDatabase();
 
         final Notification connectingNotification = new Notification(messages.startConnectionTest(),

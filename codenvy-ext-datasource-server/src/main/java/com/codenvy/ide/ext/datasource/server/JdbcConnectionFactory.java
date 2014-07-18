@@ -62,9 +62,11 @@ public class JdbcConnectionFactory {
 
     protected String             profileApiUrl;
 
+    protected EncryptTextService encryptTextService;
 
     @Inject
-    public JdbcConnectionFactory(@Named("api.endpoint") String apiUrl) {
+    public JdbcConnectionFactory(@Named("api.endpoint") String apiUrl, EncryptTextService encryptTextService) {
+        this.encryptTextService = encryptTextService;
         profileApiUrl = apiUrl + "/profile";
     }
 
@@ -84,7 +86,14 @@ public class JdbcConnectionFactory {
 
         Properties info = new Properties();
         info.setProperty("user", configuration.getUsername());
-        info.setProperty("password", configuration.getPassword());
+
+        try {
+            info.setProperty("password", encryptTextService.decryptText(configuration.getPassword()));
+        } catch (Exception e1) {
+            LOG.error("Couldn't decrypt the password, trying by setting the password without decryption", e1);
+            info.setProperty("password", configuration.getPassword());
+        }
+
         try {
             Profile profile = HttpJsonHelper.request(Profile.class, profileApiUrl, "GET", null, null);
 

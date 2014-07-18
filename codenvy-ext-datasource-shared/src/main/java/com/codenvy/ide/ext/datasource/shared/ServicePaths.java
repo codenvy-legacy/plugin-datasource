@@ -24,4 +24,6 @@ public class ServicePaths {
     public static final String TEST_DATABASE_CONNECTIVITY_PATH = "testDatabaseConnectivity";
 
     public static final String DATABASE_METADATA_PATH          = "databasemetadata";
+
+    public static final String ENCRYPT_TEXT_PATH               = "encryptText";
 }

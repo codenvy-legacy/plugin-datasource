@@ -13,6 +13,8 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 import javax.annotation.Nullable;
 
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -23,7 +25,6 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -51,7 +52,7 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     TextBox                usernameField;
 
     @UiField
-    PasswordTextBox        passwordField;
+    TextBox                passwordField;
 
     @UiField
     Button                 testConnectionButton;
@@ -78,6 +79,11 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     DatasourceUiResources  datasourceUiResources;
 
     private ActionDelegate delegate;
+
+
+    protected String       encryptedPassword;
+
+    protected boolean      passwordFieldIsDirty = false;
 
 
     @Inject
@@ -131,6 +137,11 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     @Override
     public String getPassword() {
         return passwordField.getText();
+    }
+
+    @Override
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
     @Override
@@ -206,6 +217,26 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         // set message
         testConnectionErrorMessage.setText(errorMessage);
 
+    }
+
+    @Override
+    public void setEncryptedPassword(String encryptedPassword, boolean resetPasswordField) {
+        this.encryptedPassword = encryptedPassword;
+        passwordFieldIsDirty = false;
+        if (resetPasswordField) {
+            passwordField.setText("");
+        }
+    }
+
+    @UiHandler("passwordField")
+    public void handlePasswordFieldChanges(ChangeEvent event) {
+        Log.info(DefaultNewDatasourceConnectorViewImpl.class, "Password field changed " + passwordField.getText());
+        passwordFieldIsDirty = true;
+    }
+
+    @Override
+    public boolean isPasswordFieldDirty() {
+        return passwordFieldIsDirty;
     }
 
     // @UiHandler("radioUserPref")

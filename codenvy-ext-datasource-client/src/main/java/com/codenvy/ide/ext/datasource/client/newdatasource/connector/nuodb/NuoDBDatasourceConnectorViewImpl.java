@@ -16,6 +16,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMe
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -30,7 +31,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -60,8 +60,8 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     TextBox                             usernameField;
 
     @UiField
-    PasswordTextBox                     passwordField;
-    
+    TextBox                             passwordField;
+
     @UiField
     RadioButton                         radioUserPref;
 
@@ -78,6 +78,10 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     private NuoActionDelegate           nuoDelegate;
 
     private NewDatasourceWizardMessages messages;
+
+    protected String                    encryptedPassword;
+
+    protected boolean                   passwordFieldIsDirty = false;
 
 
     @Inject
@@ -190,6 +194,11 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     }
 
     @Override
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    @Override
     public void setDatabaseName(final String databaseName) {
         dbName.setValue(databaseName);
     }
@@ -258,6 +267,25 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     @Override
     public void onTestConnectionSuccess() {
         Window.alert(messages.connectionTestSuccessMessage());
+    }
+
+    @Override
+    public void setEncryptedPassword(String password, boolean resetPasswordField) {
+        encryptedPassword = encryptedPassword;
+        passwordFieldIsDirty = false;
+        if (resetPasswordField) {
+            passwordField.setText("");
+        }
+    }
+
+    @UiHandler("passwordField")
+    public void handlePasswordFieldChanges(ChangeEvent event) {
+        passwordFieldIsDirty = true;
+    }
+
+    @Override
+    public boolean isPasswordFieldDirty() {
+        return passwordFieldIsDirty;
     }
 
 }

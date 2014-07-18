@@ -20,6 +20,7 @@ import com.codenvy.ide.ext.datasource.shared.ExploreTableType;
 import com.codenvy.ide.ext.datasource.shared.MultipleRequestExecutionMode;
 import com.codenvy.ide.ext.datasource.shared.RequestParameterDTO;
 import com.codenvy.ide.ext.datasource.shared.ServicePaths;
+import com.codenvy.ide.ext.datasource.shared.TextDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.rest.AsyncRequest;
 import com.codenvy.ide.rest.AsyncRequestCallback;
@@ -113,6 +114,15 @@ public class DatasourceClientServiceImpl implements DatasourceClientService {
                                          final @NotNull AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
         String url = formatUrl(restServiceContext, ServicePaths.TEST_DATABASE_CONNECTIVITY_PATH, "", null);
         final AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, configuration, false);
+        postRequest.send(asyncRequestCallback);
+    }
+
+    @Override
+    public void encryptText(final String textToEncrypt,
+                            final AsyncRequestCallback<String> asyncRequestCallback) throws RequestException {
+        TextDTO textDTO = dtoFactory.createDto(TextDTO.class).withValue(textToEncrypt);
+        String url = formatUrl(restServiceContext, ServicePaths.ENCRYPT_TEXT_PATH, "", null);
+        AsyncRequest postRequest = asyncRequestFactory.createPostRequest(url, textDTO, false);
         postRequest.send(asyncRequestCallback);
     }
 

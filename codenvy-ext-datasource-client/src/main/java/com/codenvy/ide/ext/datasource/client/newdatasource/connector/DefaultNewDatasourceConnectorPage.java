@@ -86,7 +86,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
                                                     .withVerifyServerCertificate(getView().getVerifyServerCertificate());
 
         result.withUsername(getView().getUsername())
-              .withPassword(getView().getPassword());
+              .withPassword(getView().getEncryptedPassword());
 
         result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
         return result;
@@ -116,7 +116,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setUseSSL(initData.getUseSSL());
         getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
         getView().setUsername(initData.getUsername());
-        getView().setPassword(initData.getPassword());
+        getView().setEncryptedPassword(initData.getPassword(), true);
     }
 
     @Override

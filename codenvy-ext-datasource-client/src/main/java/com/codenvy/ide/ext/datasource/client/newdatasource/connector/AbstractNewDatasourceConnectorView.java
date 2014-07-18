@@ -38,13 +38,20 @@ public interface AbstractNewDatasourceConnectorView extends View<AbstractNewData
     String getUsername();
 
     /**
-     * Returns the configured password used for the connection.
+     * Returns the configured password used for the connection. We now pass the password encrypted to be stored.
      *
      * @return the password
      */
+    String getEncryptedPassword();
+
     String getPassword();
+
+    void setEncryptedPassword(String password, boolean resetPasswordField);
 
     void onTestConnectionSuccess();
 
     void onTestConnectionFailure(String errorMessage);
+
+    boolean isPasswordFieldDirty();
+
 }

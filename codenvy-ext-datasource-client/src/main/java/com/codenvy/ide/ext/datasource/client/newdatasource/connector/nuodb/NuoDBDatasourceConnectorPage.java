@@ -110,7 +110,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                                         .withDatabaseType(getDatabaseType())
                                                         .withDatasourceId(datasourceId)
                                                         .withUsername(getView().getUsername())
-                                                        .withPassword(getView().getPassword())
+                                                        .withPassword(getView().getEncryptedPassword())
                                                         .withBrokers(brokersConf);
 
         result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
@@ -157,7 +157,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
         getView().setDatabaseName(initData.getDatabaseName());
         getView().setUsername(initData.getUsername());
-        getView().setPassword(initData.getPassword());
+        getView().setEncryptedPassword(initData.getPassword(), true);
 
         brokersProvider.getList().clear();
         int id = 0;

@@ -35,5 +35,6 @@ public class DatasourceServiceModule extends AbstractModule {
         bind(DatabaseExploreService.class);
         bind(CsvExportService.class);
         bind(TestConnectionService.class);
+        bind(EncryptTextService.class);
     }
 }
