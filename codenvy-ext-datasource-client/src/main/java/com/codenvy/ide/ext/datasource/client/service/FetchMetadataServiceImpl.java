@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.service;
 
+import java.util.Collections;
+
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
@@ -122,7 +124,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                     notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure()+" using datasource '"+configuration.getDatasourceId()+"' - "+e.getMessage(),
                                                                           Type.ERROR, editDatasourceOpenNotificationHandler));
 
-                    databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
+                    databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), dtoFactory.createDto(DatabaseDTO.class).withSchemas(Collections.EMPTY_MAP));
                     // clean up current database
                     eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
 
