@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.codenvy.api.core.rest.HttpJsonHelper;
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.commons.env.EnvironmentContext;
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
@@ -76,7 +76,7 @@ public class KeyStoreObject {
 
 
     protected KeyStore extractKeyStoreFromFile() throws Exception {
-        Profile profile = HttpJsonHelper.request(Profile.class, profileApiUrl, "GET", null, null);
+        ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
 
         String sslKeyStore = profile.getPreferences().get(getKeyStorePreferenceName());
 
@@ -183,7 +183,7 @@ public class KeyStoreObject {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         keystore.store(ostream, keyStorePassword.toCharArray());
 
-        Profile profile = HttpJsonHelper.request(Profile.class, profileApiUrl, "GET", null, null);
+        ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
         profile.getPreferences().put(getKeyStorePreferenceName(), new String(Base64.encodeBase64(ostream.toByteArray())));
 
         HttpJsonHelper.post(null, profileApiUrl + "/prefs", profile.getPreferences(), null);

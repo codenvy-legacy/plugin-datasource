@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.codenvy.api.core.rest.HttpJsonHelper;
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactory;
 import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactoryKeyStoreSettings;
 import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
@@ -95,7 +95,7 @@ public class JdbcConnectionFactory {
         }
 
         try {
-            Profile profile = HttpJsonHelper.request(Profile.class, profileApiUrl, "GET", null, null);
+            ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
 
             CodenvySSLSocketFactoryKeyStoreSettings sslSettings = new CodenvySSLSocketFactoryKeyStoreSettings();
             if (configuration.getUseSSL()) {
