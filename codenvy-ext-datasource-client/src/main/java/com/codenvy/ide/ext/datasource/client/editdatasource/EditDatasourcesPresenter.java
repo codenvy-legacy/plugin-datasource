@@ -15,7 +15,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Status;
 import com.codenvy.ide.api.notification.Notification.Type;
@@ -180,10 +180,10 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         final Notification persistNotification = new Notification("Saving datasources definitions", Status.PROGRESS);
         this.notificationManager.showNotification(persistNotification);
         try {
-            this.datasourceManager.persist(new AsyncCallback<Profile>() {
+            this.datasourceManager.persist(new AsyncCallback<ProfileDescriptor>() {
 
                 @Override
-                public void onSuccess(final Profile result) {
+                public void onSuccess(final ProfileDescriptor result) {
                     Log.debug(EditDatasourcesPresenter.class, "Datasource definitions saved.");
                     persistNotification.setMessage("Datasource definitions saved");
                     persistNotification.setStatus(Notification.Status.FINISHED);

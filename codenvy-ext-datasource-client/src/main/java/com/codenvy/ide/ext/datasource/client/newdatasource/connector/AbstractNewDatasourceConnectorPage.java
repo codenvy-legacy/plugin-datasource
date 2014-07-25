@@ -13,7 +13,7 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.api.user.shared.dto.Profile;
+import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
@@ -151,10 +151,10 @@ public abstract class AbstractNewDatasourceConnectorPage extends AbstractWizardP
         Log.debug(AbstractNewDatasourceConnectorPage.class, "Persisting datasources...");
         final Notification requestNotification = new Notification("Persisting datasources...",
                                                                   Notification.Status.PROGRESS);
-        datasourceManager.persist(new AsyncCallback<Profile>() {
+        datasourceManager.persist(new AsyncCallback<ProfileDescriptor>() {
 
             @Override
-            public void onSuccess(Profile result) {
+            public void onSuccess(ProfileDescriptor result) {
                 Log.debug(AbstractNewDatasourceConnectorPage.class, "Datasources persisted.");
                 requestNotification.setMessage("Datasources saved");
                 requestNotification.setStatus(Notification.Status.FINISHED);
