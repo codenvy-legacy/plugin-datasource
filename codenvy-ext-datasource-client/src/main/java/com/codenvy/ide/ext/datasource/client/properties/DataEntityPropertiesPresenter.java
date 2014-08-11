@@ -70,6 +70,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
         this.databaseInfoStore = databaseInfoStore;
         eventBus.addHandler(DatabaseEntitySelectionEvent.getType(), this);
         eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
+        eventBus.addHandler(DatabaseInfoErrorEvent.getType(), this);
         eventBus.addHandler(SelectedDatasourceChangeEvent.getType(), this);
     }
 
@@ -257,7 +258,7 @@ public class DataEntityPropertiesPresenter extends AbstractPartPresenter impleme
     public void onDatabaseInfoReceived(final DatabaseInfoReceivedEvent event) {
         if (this.selectedDatabaseId != null && this.selectedDatabaseId.equals(event.getDatabaseId())) {
             Log.debug(DataEntityPropertiesPresenter.class, "Metadata info received for currently selected datasource "
-                                                          + this.selectedDatabaseId + " - updating display.");
+                                                           + this.selectedDatabaseId + " - updating display.");
             final DatabaseDTO dbInfo = this.databaseInfoStore.getDatabaseInfo(this.selectedDatabaseId);
             updateDisplay(dbInfo);
         }
