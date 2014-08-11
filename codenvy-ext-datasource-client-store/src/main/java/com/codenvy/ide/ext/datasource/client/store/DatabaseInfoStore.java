@@ -51,4 +51,10 @@ public interface DatabaseInfoStore {
      */
     void setFetchPending(String datasourceId);
 
+    /**
+     * Clears the metadata for the datasource.
+     * 
+     * @param datasourceId the id of the datasource
+     */
+    void clearDatabaseInfo(String datasourceId);
 }
