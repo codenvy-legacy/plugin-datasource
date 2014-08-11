@@ -99,6 +99,8 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
         this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
         // register for datasource metadata ready events
         this.eventBus.addHandler(DatabaseInfoReceivedEvent.getType(), this);
+        // register for datasource metadata error events
+        this.eventBus.addHandler(DatabaseInfoErrorEvent.getType(), this);
 
         setupTabletypesList();
     }
@@ -140,9 +142,9 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
     public void onDatabaseMetadataEntitySelected(@NotNull DatabaseMetadataEntityDTO dbMetadataEntity) {
         if (dbMetadataEntity != null) {
             Log.debug(DatasourceExplorerPartPresenter.class, "Database entity selected : "
-                                                            + dbMetadataEntity.getLookupKey()
-                                                            + " - "
-                                                            + dbMetadataEntity.getName());
+                                                             + dbMetadataEntity.getLookupKey()
+                                                             + " - "
+                                                             + dbMetadataEntity.getName());
         } else {
             Log.debug(DatasourceExplorerPartPresenter.class, "Database entity selected : null");
         }
