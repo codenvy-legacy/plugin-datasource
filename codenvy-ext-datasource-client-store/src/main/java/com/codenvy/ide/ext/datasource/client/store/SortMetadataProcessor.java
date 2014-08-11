@@ -39,6 +39,9 @@ public class SortMetadataProcessor implements PreStoreProcessor {
 
     @Override
     public DatabaseDTO execute(final DatabaseDTO databaseDto) throws PreStoreProcessorException {
+        if (databaseDto == null) {
+            return null;
+        }
         // create a copy
         final String json = this.dtoFactory.toJson(databaseDto);
         final DatabaseDTO modified = this.dtoFactory.createDtoFromJson(json, DatabaseDTO.class);
