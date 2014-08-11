@@ -237,6 +237,9 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         }
 
         for (DatabaseConfigurationDTO datasource : selection) { // there is only one !
+            // clear the metadata cache
+            this.databaseInfoStore.clearDatabaseInfo(datasource.getDatasourceId());
+            // show edit dialog
             this.editDatasourceLauncher.launch(datasource);
         }
     }
