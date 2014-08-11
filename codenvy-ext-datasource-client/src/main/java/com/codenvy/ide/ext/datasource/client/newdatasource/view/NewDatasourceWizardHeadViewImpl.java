@@ -72,6 +72,8 @@ public class NewDatasourceWizardHeadViewImpl extends Window implements NewDataso
             case "settings":
                 settingsPanel.clear();
                 break;
+            default:
+                break;
         }
         if (pageCache.containsKey(presenter)) {
             switch (place) {
@@ -80,6 +82,8 @@ public class NewDatasourceWizardHeadViewImpl extends Window implements NewDataso
                     break;
                 case "settings":
                     settingsPanel.add(pageCache.get(presenter));
+                    break;
+                default:
                     break;
             }
         } else {
@@ -91,6 +95,8 @@ public class NewDatasourceWizardHeadViewImpl extends Window implements NewDataso
                 case "settings":
                     presenter.go(settingsPanel);
                     pageCache.put(presenter, settingsPanel.getWidget());
+                    break;
+                default:
                     break;
             }
         }
@@ -104,6 +110,8 @@ public class NewDatasourceWizardHeadViewImpl extends Window implements NewDataso
                 break;
             case "settings":
                 settingsPanel.clear();
+                break;
+            default:
                 break;
         }
     }
