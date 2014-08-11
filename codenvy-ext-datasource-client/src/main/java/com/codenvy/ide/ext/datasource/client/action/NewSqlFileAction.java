@@ -10,13 +10,16 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.action;
 
+import com.codenvy.api.project.gwt.client.ProjectServiceClient;
+import com.codenvy.ide.api.app.AppContext;
 import com.codenvy.ide.api.editor.EditorAgent;
-import com.codenvy.ide.api.resources.ResourceProvider;
 import com.codenvy.ide.api.selection.SelectionAgent;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.newresource.DefaultNewResourceAction;
+import com.codenvy.ide.rest.DtoUnmarshallerFactory;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * IDE action to create a new SQL file.
@@ -26,11 +29,15 @@ import com.google.inject.Inject;
 public class NewSqlFileAction extends DefaultNewResourceAction {
 
     @Inject
-    public NewSqlFileAction(ResourceProvider resourceProvider,
+    public NewSqlFileAction(AppContext appContext,
                             SelectionAgent selectionAgent,
                             EditorAgent editorAgent,
-                            SqlEditorResources resources) {
-        super("SQL File", "Creates new SQL file", resources.sqlFile(), null, resourceProvider, selectionAgent, editorAgent);
+                            SqlEditorResources resources,
+                            DtoUnmarshallerFactory dtoUnmarshallerFactory,
+                            EventBus eventBus,
+                            ProjectServiceClient projectServiceClient) {
+        super("SQL File", "Creates new SQL file", resources.sqlFile(), null, appContext, selectionAgent, editorAgent, projectServiceClient,
+              dtoUnmarshallerFactory, eventBus);
     }
 
     @Override

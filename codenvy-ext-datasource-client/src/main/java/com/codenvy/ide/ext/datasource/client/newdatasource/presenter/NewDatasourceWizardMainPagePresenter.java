@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.codenvy.ide.api.ui.wizard.AbstractWizardPage;
+import com.codenvy.ide.api.wizard.AbstractWizardPage;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEvent;
 import com.codenvy.ide.ext.datasource.client.events.JdbcDriversFetchedEventHandler;

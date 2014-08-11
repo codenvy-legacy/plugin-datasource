@@ -12,8 +12,8 @@ package com.codenvy.ide.ext.datasource.client.action;
 
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.ide.api.ui.action.Action;
-import com.codenvy.ide.api.ui.action.ActionEvent;
+import com.codenvy.ide.api.action.Action;
+import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceMessages;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenter;

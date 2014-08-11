@@ -10,21 +10,21 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
-import javax.validation.constraints.NotNull;
-
+import com.codenvy.ide.api.text.Document;
+import com.codenvy.ide.api.texteditor.TextEditorConfiguration;
+import com.codenvy.ide.api.texteditor.TextEditorPartView;
+import com.codenvy.ide.api.texteditor.codeassistant.CodeAssistProcessor;
+import com.codenvy.ide.api.texteditor.parser.BasicTokenFactory;
+import com.codenvy.ide.api.texteditor.parser.CmParser;
+import com.codenvy.ide.api.texteditor.parser.Parser;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.collections.StringMap;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.codeassist.SqlCodeAssistProcessor;
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
-import com.codenvy.ide.text.Document;
-import com.codenvy.ide.texteditor.api.TextEditorConfiguration;
-import com.codenvy.ide.texteditor.api.TextEditorPartView;
-import com.codenvy.ide.texteditor.api.codeassistant.CodeAssistProcessor;
-import com.codenvy.ide.texteditor.api.parser.BasicTokenFactory;
-import com.codenvy.ide.texteditor.api.parser.CmParser;
-import com.codenvy.ide.texteditor.api.parser.Parser;
+
+import javax.validation.constraints.NotNull;
 
 public class SqlEditorConfiguration extends TextEditorConfiguration {
 

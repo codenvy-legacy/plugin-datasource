@@ -11,7 +11,7 @@
 package com.codenvy.ide.ext.datasource.client.common;
 
 import com.codenvy.ide.Resources;
-import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.api.parts.WorkspaceAgent;
 import com.codenvy.ide.debug.BreakpointGutterManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.texteditor.TextEditorPresenter;

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.explorer;
 
-import com.codenvy.ide.api.ui.workspace.PartPresenter;
+import com.codenvy.ide.api.parts.PartPresenter;
 
 public interface DatasourceExplorerPart extends PartPresenter {
 
