@@ -25,7 +25,7 @@
             bottom: 0;
         }
         
-        @eval bgColor com.codenvy.ide.api.ui.theme.Style.getTabBorderColor();
+        @eval bgColor com.codenvy.ide.api.theme.Style.getTabBorderColor();
         .categories{
             border: 1px solid bgColor;
             margin-right: 25px;
