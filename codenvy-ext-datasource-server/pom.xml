@@ -26,11 +26,6 @@
             <artifactId>codenvy-ext-datasource-shared</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.codenvy.ide</groupId>
-            <artifactId>codenvy-ssl-socket-factory</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!-- needed for Profile DTO -->
         <dependency>
             <groupId>com.codenvy.platform-api</groupId>
@@ -46,6 +41,12 @@
             <groupId>net.sourceforge.schemacrawler</groupId>
             <artifactId>schemacrawler</artifactId>
             <version>${net.sourceforge.schemacrawler.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codenvy.ide</groupId>
+            <artifactId>codenvy-ssl-socket-factory</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
