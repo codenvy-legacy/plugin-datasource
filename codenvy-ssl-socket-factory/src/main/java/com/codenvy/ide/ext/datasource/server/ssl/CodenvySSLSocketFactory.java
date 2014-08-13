@@ -40,18 +40,31 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
 
     protected ThreadLocal<SSLSocketFactory>                            wrappedSocketFactory = new ThreadLocal<SSLSocketFactory>();
 
+    public static SSLSocketFactory                                     defaultSocketFactory;
+
     protected void reloadIfNeeded() {
         if (keystore.get() != null) {
             CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig = keystore.get();
             keystore.set(null);
             wrappedSocketFactory.set(getSSLSocketFactoryDefaultOrConfigured(keystoreConfig));
         }
-        if (wrappedSocketFactory.get() == null){
-            wrappedSocketFactory.set((javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault());
+        if (wrappedSocketFactory.get() == null) {
+            wrappedSocketFactory.set(getDefaultSSLSocketFactory());
         }
     }
 
-    protected static SSLSocketFactory getSSLSocketFactoryDefaultOrConfigured(CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig) {
+    protected SSLSocketFactory getDefaultSSLSocketFactory() {
+        try {
+            if (defaultSocketFactory == null) {
+                defaultSocketFactory = SSLContext.getDefault().getSocketFactory();
+            }
+            return defaultSocketFactory;
+        } catch (NoSuchAlgorithmException e) {
+            throw new Error("Couldn't set default socket factory", e);
+        }
+    }
+
+    protected SSLSocketFactory getSSLSocketFactoryDefaultOrConfigured(CodenvySSLSocketFactoryKeyStoreSettings keystoreConfig) {
         TrustManagerFactory tmf = null;
         KeyManagerFactory kmf = null;
 
@@ -60,11 +73,10 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
             kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         } catch (NoSuchAlgorithmException nsae) {
             LOG.error("An error occured while setting up custom SSL Socket factory. Falling back the the default one", nsae);
-            return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
+            return getDefaultSSLSocketFactory();
         }
 
         if (keystoreConfig.getKeyStoreContent() != null && keystoreConfig.getKeyStoreContent().length > 0) {
-
             char[] password = (keystoreConfig.getKeyStorePassword() == null) ? new char[0]
                 : keystoreConfig.getKeyStorePassword().toCharArray();
             try (InputStream fis = new ByteArrayInputStream(keystoreConfig.getKeyStoreContent())) {
@@ -73,12 +85,13 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
                 kmf.init(ks, password);
             } catch (Exception e) {
                 LOG.error("An error occured while setting up custom SSL Socket factory. Falling back the the default one", e);
-                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
+                return getDefaultSSLSocketFactory();
             }
         }
 
 
         if (keystoreConfig.getTrustStoreContent() != null && keystoreConfig.getTrustStoreContent().length > 0) {
+            LOG.info("Initializing truststore from file");
             char[] password = (keystoreConfig.getTrustStorePassword() == null) ? new char[0]
                 : keystoreConfig.getTrustStorePassword().toCharArray();
             try (InputStream fis = new ByteArrayInputStream(keystoreConfig.getTrustStoreContent())) {
@@ -87,7 +100,7 @@ public class CodenvySSLSocketFactory extends SSLSocketFactory {
                 tmf.init(ks);
             } catch (Exception e) {
                 LOG.error("An error occured while setting up custom SSL Socket factory. Falling back the the default one", e);
-                return (javax.net.ssl.SSLSocketFactory)javax.net.ssl.SSLSocketFactory.getDefault();
+                return getDefaultSSLSocketFactory();
             }
         }
 
