@@ -92,4 +92,10 @@ public class DatabaseInfoStoreImpl implements DatabaseInfoStore {
         }
         return modifiedDto;
     }
+
+    @Override
+    public void clearDatabaseInfo(final String datasourceId) {
+        this.data.remove(datasourceId);
+        clearFetchPending(datasourceId);
+    }
 }

@@ -127,7 +127,7 @@
     box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 1px 0px rgba(0, 0, 0, 0.29);
 }
 
-.datasourceWizard-testConnection-ok {
+.datasourceWizard-testConnection-ok, .datasourceWizard-testConnection-ok:hover {
     color: notableButtonTopColor;
     background: none repeat scroll 0% 0% #51a351;
     border-color: brColor;
@@ -141,7 +141,7 @@
     box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 1px 0px rgba(0, 0, 0, 0.29);
 }
 
-.datasourceWizard-testConnection-ko {
+.datasourceWizard-testConnection-ko, .datasourceWizard-testConnection-ko:hover {
     color: notableButtonTopColor;
     background: none repeat scroll 0% 0% #bd362f;
     border-color: brColor;

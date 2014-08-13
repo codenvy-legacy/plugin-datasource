@@ -28,8 +28,9 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceK
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceLauncher;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.DatasourceListChangeHandler;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardDialog;
+import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
+import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoStore;
 import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.util.loging.Log;
@@ -77,12 +78,16 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
     private HandlerRegistration[]                               handlerRegistration = new HandlerRegistration[2];
 
     /** The action object to create new datasources. */
-    private final NewDatasourceWizardAction                           newDatasourceAction;
+    private final NewDatasourceWizardAction                     newDatasourceAction;
 
     /** Factory for confirmation and message windows. */
     private final DialogFactory                                 dialogFactory;
-    
-    private DatabaseConfigurationDTO             configuration;
+
+    /** Metadata cache. */
+    private final DatabaseInfoStore                             databaseInfoStore;
+
+    private DatabaseConfigurationDTO                            configuration;
+
 
     @Inject
     public EditDatasourcesPresenter(final @NotNull EditDatasourcesView view,
@@ -93,7 +98,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
                                     final @NotNull EventBus eventBus,
                                     final @NotNull EditDatasourceLauncher editDatasourceLauncher,
                                     final @NotNull NewDatasourceWizardAction newDatasourceAction,
-                                    final @NotNull DialogFactory dialogFactory) {
+                                    final @NotNull DialogFactory dialogFactory,
+                                    final @NotNull DatabaseInfoStore databaseInfoStore) {
         this.view = view;
         this.datasourceManager = datasourceManager;
         this.messages = messages;
@@ -109,6 +115,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
 
         this.newDatasourceAction = newDatasourceAction;
         this.dialogFactory = dialogFactory;
+        this.databaseInfoStore = databaseInfoStore;
     }
 
     /** Show dialog. */
@@ -117,7 +124,7 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         this.handlerRegistration[0] = this.eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
         this.handlerRegistration[1] = this.selectionModel.addSelectionChangeHandler(this);
         this.view.showDialog();
-        
+
         if (configuration != null) {
             this.selectionModel.setSelected(configuration, true);
             onSelectionChange(null);
@@ -176,6 +183,8 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         for (final DatabaseConfigurationDTO datasource : selection) {
             this.dataProvider.getList().remove(datasource);
             this.datasourceManager.remove(datasource);
+            // also clear metadata cache
+            this.databaseInfoStore.clearDatabaseInfo(datasource.getDatasourceId());
         }
         final Notification persistNotification = new Notification("Saving datasources definitions", Status.PROGRESS);
         this.notificationManager.showNotification(persistNotification);
@@ -228,6 +237,9 @@ public class EditDatasourcesPresenter implements EditDatasourcesView.ActionDeleg
         }
 
         for (DatabaseConfigurationDTO datasource : selection) { // there is only one !
+            // clear the metadata cache
+            this.databaseInfoStore.clearDatabaseInfo(datasource.getDatasourceId());
+            // show edit dialog
             this.editDatasourceLauncher.launch(datasource);
         }
     }
