@@ -12,6 +12,7 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 
 import java.util.Collection;
 
+import org.vectomatic.dom.svg.ui.SVGButtonBase;
 import org.vectomatic.dom.svg.ui.SVGPushButton;
 
 import com.codenvy.ide.api.parts.base.BaseView;
@@ -91,6 +92,14 @@ public class DatasourceExplorerViewImpl extends
 
         container.add(uiBinder.createAndBindUi(this));
 
+        this.refreshButton
+                .addFace(SVGButtonBase.SVGFaceName.UP, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
+                        new SVGButtonBase.SVGStyleChange(
+                                new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonUp()})}));
+        this.refreshButton
+                .addFace(SVGButtonBase.SVGFaceName.DOWN, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
+                        new SVGButtonBase.SVGStyleChange(
+                                new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonDown()})}));
         this.refreshButton.setTitle(constants.exploreButtonTooltip());
 
     }
@@ -177,7 +186,7 @@ public class DatasourceExplorerViewImpl extends
 
     /**
      * Handler to react to clicks on the refresh button.
-     * 
+     *
      * @param event the event
      */
     @UiHandler("refreshButton")
@@ -187,7 +196,7 @@ public class DatasourceExplorerViewImpl extends
 
     /**
      * Handler to react to value change in the datasource listbox.
-     * 
+     *
      * @param event the event
      */
     @UiHandler("datasourceListBox")
@@ -197,7 +206,7 @@ public class DatasourceExplorerViewImpl extends
 
     /**
      * Handler to react to value change in the table types listbox.
-     * 
+     *
      * @param event the event
      */
     @UiHandler("tableTypesListBox")

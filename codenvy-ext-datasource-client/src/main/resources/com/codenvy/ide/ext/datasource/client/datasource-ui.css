@@ -34,7 +34,7 @@
     padding: 0px;
 }
 
-.explorer-refreshButton-image {
+.explorer-refreshButton > svg {
     width: 19px;
     height: 19px;
     fill: #dbdbdb;
