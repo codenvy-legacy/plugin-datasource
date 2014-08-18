@@ -111,11 +111,6 @@
             <version>${commons-io.version}</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${jdbc.mysql-driver.version}</version>
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.jtds</groupId>
             <artifactId>jtds</artifactId>
             <version>${jdbc.jtds-driver.version}</version>
