@@ -52,14 +52,7 @@
             <g:HTMLPanel addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerTopPanel} {style.explorer-header-layout}">
                 <g:ListBox ui:field="datasourceListBox" addStyleNames="{datasourceUiResources.datasourceUiCSS.explorerDatasourceList} {style.datasourcelist-layout}" />
                 <g:SimplePanel addStyleNames="gwt-Button {datasourceUiResources.datasourceUiCSS.explorerRefreshButton} {style.button-layout}">
-                    <svgui:SVGPushButton ui:field="refreshButton" resource="{datasourceUiResources.getRefreshIcon}">
-                       <svgui:upFace>
-                           <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonUp}"/>
-                       </svgui:upFace>
-                       <svgui:downFace>
-                           <svgui:styleChange classNames="{datasourceUiResources.datasourceUiCSS.explorerRefreshButtonImage} {datasourceUiResources.datasourceUiCSS.explorerRefreshButtonDown}"/>
-                       </svgui:downFace>
-                    </svgui:SVGPushButton>
+                    <svgui:SVGPushButton ui:field="refreshButton" resource="{datasourceUiResources.getRefreshIcon}"/>
                 </g:SimplePanel>
             </g:HTMLPanel>
         </g:north>
