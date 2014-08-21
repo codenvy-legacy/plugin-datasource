@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.common;
 
-import com.codenvy.api.project.shared.dto.ItemReference;
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorInitException;
 import com.codenvy.ide.api.editor.EditorInput;
@@ -23,6 +22,7 @@ import com.codenvy.ide.api.parts.PartPresenter;
 import com.codenvy.ide.api.parts.PartStack;
 import com.codenvy.ide.api.parts.PropertyListener;
 import com.codenvy.ide.api.parts.WorkspaceAgent;
+import com.codenvy.ide.api.projecttree.generic.FileNode;
 import com.codenvy.ide.api.selection.Selection;
 import com.codenvy.ide.api.text.Document;
 import com.codenvy.ide.api.texteditor.outline.OutlinePresenter;
@@ -323,8 +323,8 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
             return;
         }
 
-        ItemReference eventFile = event.getFile();
-        ItemReference file = this.editor.getEditorInput().getFile();
+        FileNode eventFile = event.getFile();
+        FileNode file = this.editor.getEditorInput().getFile();
         if (file.equals(eventFile)) {
             workspaceAgent.removePart(this);
         }
