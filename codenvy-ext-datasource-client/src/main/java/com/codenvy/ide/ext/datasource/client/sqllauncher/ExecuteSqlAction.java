@@ -10,10 +10,10 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.codenvy.ide.api.action.Action;
+import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.api.editor.EditorAgent;
 import com.codenvy.ide.api.editor.EditorPartPresenter;
-import com.codenvy.ide.api.ui.action.Action;
-import com.codenvy.ide.api.ui.action.ActionEvent;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
 

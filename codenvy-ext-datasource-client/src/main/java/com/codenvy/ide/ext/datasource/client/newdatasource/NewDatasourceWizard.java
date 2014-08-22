@@ -11,8 +11,8 @@
 package com.codenvy.ide.ext.datasource.client.newdatasource;
 
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.api.ui.wizard.WizardContext;
+import com.codenvy.ide.api.wizard.DefaultWizard;
+import com.codenvy.ide.api.wizard.WizardContext;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnector;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

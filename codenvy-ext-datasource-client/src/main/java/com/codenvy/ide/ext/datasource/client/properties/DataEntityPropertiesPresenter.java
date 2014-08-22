@@ -13,7 +13,7 @@ package com.codenvy.ide.ext.datasource.client.properties;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.codenvy.ide.api.ui.workspace.AbstractPartPresenter;
+import com.codenvy.ide.api.parts.AbstractPartPresenter;
 import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeEvent;
 import com.codenvy.ide.ext.datasource.client.events.SelectedDatasourceChangeHandler;
 import com.codenvy.ide.ext.datasource.client.selection.DatabaseEntitySelectionEvent;

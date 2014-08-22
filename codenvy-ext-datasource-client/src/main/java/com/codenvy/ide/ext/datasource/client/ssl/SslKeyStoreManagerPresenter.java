@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.ui.preferences.AbstractPreferencesPagePresenter;
+import com.codenvy.ide.api.preferences.AbstractPreferencesPagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.commons.exception.ExceptionThrownEvent;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogPresenter;

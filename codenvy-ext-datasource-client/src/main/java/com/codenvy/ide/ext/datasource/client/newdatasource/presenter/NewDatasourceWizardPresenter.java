@@ -12,10 +12,10 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.presenter;
 
 import javax.validation.constraints.NotNull;
 
-import com.codenvy.ide.api.ui.wizard.Wizard;
-import com.codenvy.ide.api.ui.wizard.WizardContext;
-import com.codenvy.ide.api.ui.wizard.WizardDialog;
-import com.codenvy.ide.api.ui.wizard.WizardPage;
+import com.codenvy.ide.api.wizard.Wizard;
+import com.codenvy.ide.api.wizard.WizardContext;
+import com.codenvy.ide.api.wizard.WizardDialog;
+import com.codenvy.ide.api.wizard.WizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardDialog;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
@@ -38,12 +38,12 @@ public class NewDatasourceWizardPresenter implements WizardDialog, Initializable
     private NewDatasourceWizardMainPagePresenter categoriesListPage;
     private AbstractNewDatasourceConnectorPage   connectorPage;
 
-    private WizardContext                        wizardContext;
+    private WizardContext wizardContext;
 
     /** The new datasource wizard template. */
-    private final NewDatasourceWizard            wizard;
+    private final NewDatasourceWizard wizard;
 
-    private DatabaseConfigurationDTO             configuration;
+    private DatabaseConfigurationDTO configuration;
 
     @Inject
     public NewDatasourceWizardPresenter(@NotNull final @NewDatasourceWizardQualifier NewDatasourceWizard wizard,
@@ -84,7 +84,7 @@ public class NewDatasourceWizardPresenter implements WizardDialog, Initializable
 
         NewDatasourceConnector connector = wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR);
         if (connector != null) {
-            for (Provider< ? extends AbstractNewDatasourceConnectorPage> provider : connector.getWizardPages().asIterable()) {
+            for (Provider<? extends AbstractNewDatasourceConnectorPage> provider : connector.getWizardPages().asIterable()) {
                 connectorPage = provider.get();
                 connectorPage.setContext(wizardContext);
                 if (configuration != null) {

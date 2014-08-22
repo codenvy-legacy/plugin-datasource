@@ -11,8 +11,8 @@
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.ui.wizard.DefaultWizard;
-import com.codenvy.ide.api.ui.wizard.WizardPage;
+import com.codenvy.ide.api.wizard.DefaultWizard;
+import com.codenvy.ide.api.wizard.WizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.Scheduler;

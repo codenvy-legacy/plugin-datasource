@@ -10,13 +10,13 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
+import com.codenvy.ide.api.texteditor.TextEditorPartView;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
-import com.codenvy.ide.texteditor.api.TextEditorPartView;
 
 public class InvocationContext {
-    private final SqlCodeQuery       query;
+    private final SqlCodeQuery query;
 
-    private final int                offset;
+    private final int offset;
 
     private final SqlEditorResources resources;
 

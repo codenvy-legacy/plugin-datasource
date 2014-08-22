@@ -16,16 +16,16 @@ import com.codenvy.ide.api.editor.EditorInput;
 import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.editor.SelectionProvider;
 import com.codenvy.ide.api.editor.TextEditorPartPresenter;
-import com.codenvy.ide.api.resources.FileEvent;
-import com.codenvy.ide.api.resources.FileEventHandler;
-import com.codenvy.ide.api.resources.model.File;
+import com.codenvy.ide.api.event.FileEvent;
+import com.codenvy.ide.api.event.FileEventHandler;
+import com.codenvy.ide.api.parts.PartPresenter;
+import com.codenvy.ide.api.parts.PartStack;
+import com.codenvy.ide.api.parts.PropertyListener;
+import com.codenvy.ide.api.parts.WorkspaceAgent;
+import com.codenvy.ide.api.projecttree.generic.FileNode;
 import com.codenvy.ide.api.selection.Selection;
-import com.codenvy.ide.api.ui.workspace.PartPresenter;
-import com.codenvy.ide.api.ui.workspace.PartStack;
-import com.codenvy.ide.api.ui.workspace.PropertyListener;
-import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
-import com.codenvy.ide.text.Document;
-import com.codenvy.ide.texteditor.api.outline.OutlinePresenter;
+import com.codenvy.ide.api.text.Document;
+import com.codenvy.ide.api.texteditor.outline.OutlinePresenter;
 import com.codenvy.ide.util.ListenerManager;
 import com.codenvy.ide.util.ListenerManager.Dispatcher;
 import com.codenvy.ide.util.loging.Log;
@@ -45,19 +45,19 @@ import java.util.List;
 
 public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements PartStack, TextEditorPartPresenter, FileEventHandler {
 
-    private final SimpleLayoutPanel                 panel;
+    private final SimpleLayoutPanel panel;
 
-    private final T                                 editor;
+    private final T editor;
 
     private final ListenerManager<PropertyListener> manager;
 
-    private final List<EditorPartCloseHandler>      closeHandlers;
+    private final List<EditorPartCloseHandler> closeHandlers;
 
-    private final PropertyListener                  relayPropertyListener;
+    private final PropertyListener relayPropertyListener;
 
-    private final EditorPartCloseHandler            relayCloseHandler;
+    private final EditorPartCloseHandler relayCloseHandler;
 
-    private final WorkspaceAgent                    workspaceAgent;
+    private final WorkspaceAgent workspaceAgent;
 
     public TextEditorPartAdapter(final @NotNull T editor,
                                  final @NotNull WorkspaceAgent workspaceAgent,
@@ -77,7 +77,7 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
                                         final int propId) {
                 if (TextEditorPartAdapter.this.editor.equals(source)) {
                     Log.debug(TextEditorPartAdapter.class,
-                             "PropertyChanged event relayed - propId=" + propId);
+                              "PropertyChanged event relayed - propId=" + propId);
                     firePropertyChange(propId);
                 } else {
                     Log.warn(TextEditorPartAdapter.class,
@@ -316,15 +316,15 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
         return this.editor.getOutline();
     }
 
-    // methods from FileEventHander
+    // methods from FileEventHandler
     @Override
     public void onFileOperation(final FileEvent event) {
         if (event.getOperationType() != FileEvent.FileOperation.CLOSE) {
             return;
         }
 
-        File eventFile = event.getFile();
-        File file = this.editor.getEditorInput().getFile();
+        FileNode eventFile = event.getFile();
+        FileNode file = this.editor.getEditorInput().getFile();
         if (file.equals(eventFile)) {
             workspaceAgent.removePart(this);
         }

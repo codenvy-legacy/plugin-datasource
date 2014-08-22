@@ -10,15 +10,15 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client;
 
+import com.codenvy.ide.api.action.ActionManager;
+import com.codenvy.ide.api.action.DefaultActionGroup;
 import com.codenvy.ide.api.editor.EditorRegistry;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.filetypes.FileTypeRegistry;
-import com.codenvy.ide.api.ui.Icon;
-import com.codenvy.ide.api.ui.IconRegistry;
-import com.codenvy.ide.api.ui.action.ActionManager;
-import com.codenvy.ide.api.ui.action.DefaultActionGroup;
-import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.api.icon.Icon;
+import com.codenvy.ide.api.icon.IconRegistry;
+import com.codenvy.ide.api.parts.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.action.NewSqlFileAction;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlLauncherEditorProvider;
@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
-import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_FILE_NEW;
+import static com.codenvy.ide.api.action.IdeActions.GROUP_FILE_NEW;
 import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
 
 /**

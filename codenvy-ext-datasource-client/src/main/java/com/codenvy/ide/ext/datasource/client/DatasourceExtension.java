@@ -10,18 +10,15 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client;
 
-import static com.codenvy.ide.api.ui.action.Anchor.BEFORE;
-import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_MAIN_MENU;
-import static com.codenvy.ide.api.ui.action.IdeActions.GROUP_WINDOW;
 
+import com.codenvy.ide.api.action.ActionManager;
+import com.codenvy.ide.api.action.Constraints;
+import com.codenvy.ide.api.action.DefaultActionGroup;
 import com.codenvy.ide.api.extension.Extension;
-import com.codenvy.ide.api.ui.action.ActionManager;
-import com.codenvy.ide.api.ui.action.Constraints;
-import com.codenvy.ide.api.ui.action.DefaultActionGroup;
-import com.codenvy.ide.api.ui.keybinding.KeyBindingAgent;
-import com.codenvy.ide.api.ui.keybinding.KeyBuilder;
-import com.codenvy.ide.api.ui.workspace.PartStackType;
-import com.codenvy.ide.api.ui.workspace.WorkspaceAgent;
+import com.codenvy.ide.api.keybinding.KeyBindingAgent;
+import com.codenvy.ide.api.keybinding.KeyBuilder;
+import com.codenvy.ide.api.parts.PartStackType;
+import com.codenvy.ide.api.parts.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.action.EditDatasourcesAction;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
@@ -31,6 +28,10 @@ import com.codenvy.ide.util.input.CharCodeWithModifiers;
 import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import static com.codenvy.ide.api.action.Anchor.BEFORE;
+import static com.codenvy.ide.api.action.IdeActions.GROUP_MAIN_MENU;
+import static com.codenvy.ide.api.action.IdeActions.GROUP_WINDOW;
 
 /**
  * Extension definition for the datasource plugin.
