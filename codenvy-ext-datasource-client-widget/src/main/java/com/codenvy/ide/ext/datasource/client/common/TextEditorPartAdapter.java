@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.common;
 
+import com.codenvy.ide.api.action.Constraints;
 import com.codenvy.ide.api.editor.DocumentProvider;
 import com.codenvy.ide.api.editor.EditorInitException;
 import com.codenvy.ide.api.editor.EditorInput;
@@ -117,6 +118,13 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     public void setFocus(boolean focused) {
         Log.warn(TextEditorPartAdapter.class, "SinglePartPresenter.setFocus - not allowed.");
         // do nothing
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addPart (final PartPresenter part, Constraints constraint){
+        //TODO need to add sorting
+        addPart(part);
     }
 
     @Override
