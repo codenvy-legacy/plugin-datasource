@@ -17,7 +17,7 @@ import com.codenvy.ide.ext.datasource.client.inject.DatasourceGinModule;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestFactory;
-import com.codenvy.ide.ui.loader.Loader;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.google.gwt.http.client.URL;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -27,12 +27,12 @@ import com.google.inject.name.Named;
 public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
 
     private final String              baseUrl;
-    private final Loader              loader;
+    private final AsyncRequestLoader  loader;
     private final AsyncRequestFactory asyncRequestFactory;
 
     @Inject
     protected SslKeyStoreClientServiceImpl(@Named(DatasourceGinModule.DATASOURCE_CONTEXT_NAME) String baseUrl,
-                                           Loader loader,
+                                           AsyncRequestLoader loader,
                                            AsyncRequestFactory asyncRequestFactory) {
         this.baseUrl = baseUrl;
         this.loader = loader;
@@ -42,30 +42,26 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
     /** {@inheritDoc} */
     @Override
     public void getAllClientKeys(@NotNull AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
-        loader.setMessage("Retrieving SSL Client keys....");
-        loader.show();
+        loader.show("Retrieving SSL Client keys....");
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore").send(callback);
     }
 
     @Override
     public void getAllServerCerts(AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
-        loader.setMessage("Retrieving SSL Server certs....");
-        loader.show();
+        loader.show("Retrieving SSL Server certs....");
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore").send(callback);
     }
 
     @Override
     public void deleteClientKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
-        loader.setMessage("Deleting SSL client key entries for " + entry.getAlias());
-        loader.show();
+        loader.show("Deleting SSL client key entries for " + entry.getAlias());
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore/"
                                              + URL.encode(entry.getAlias()) + "/remove").send(callback);
     }
 
     @Override
     public void deleteServerCert(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
-        loader.setMessage("Deleting SSL server cert entries for " + entry.getAlias());
-        loader.show();
+        loader.show("Deleting SSL server cert entries for " + entry.getAlias());
         asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore/"
                                              + URL.encode(entry.getAlias()) + "/remove").send(callback);
     }

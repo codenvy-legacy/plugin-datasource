@@ -22,8 +22,8 @@ import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogPresen
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslTrustCertDialogPresenter;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
 import com.codenvy.ide.rest.AsyncRequestCallback;
+import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.codenvy.ide.rest.DtoUnmarshallerFactory;
-import com.codenvy.ide.ui.loader.Loader;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -34,15 +34,15 @@ import com.google.web.bindery.event.shared.EventBus;
 
 @Singleton
 public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresenter implements SslKeyStoreManagerView.ActionDelegate {
-    private final DtoUnmarshallerFactory      dtoUnmarshallerFactory;
-    private SslKeyStoreManagerView            view;
-    private SslKeyStoreClientService          service;
-    private SslMessages                       constant;
-    private EventBus                          eventBus;
-    private Loader                            loader;
-    private UploadSslKeyDialogPresenter       uploadSshKeyPresenter;
-    private UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter;
-    private NotificationManager               notificationManager;
+    private final DtoUnmarshallerFactory            dtoUnmarshallerFactory;
+    private       SslKeyStoreManagerView            view;
+    private       SslKeyStoreClientService          service;
+    private       SslMessages                       constant;
+    private       EventBus                          eventBus;
+    private       AsyncRequestLoader                loader;
+    private       UploadSslKeyDialogPresenter       uploadSshKeyPresenter;
+    private       UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter;
+    private       NotificationManager               notificationManager;
 
     @Inject
     public SslKeyStoreManagerPresenter(SslKeyStoreManagerView view,
@@ -50,7 +50,7 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
                                        SslResources resources,
                                        SslMessages constant,
                                        EventBus eventBus,
-                                       Loader loader,
+                                       AsyncRequestLoader loader,
                                        UploadSslKeyDialogPresenter uploadSshKeyPresenter,
                                        UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter,
                                        NotificationManager notificationManager,
@@ -94,21 +94,21 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     protected void refreshClientKeys() {
         service.getAllClientKeys(
-               new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
-                   @Override
-                   public void onSuccess(Array<SslKeyStoreEntry> result) {
-                       loader.hide();
-                       view.setClientKeys(result);
-                   }
+                new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
+                    @Override
+                    public void onSuccess(Array<SslKeyStoreEntry> result) {
+                        loader.hide();
+                        view.setClientKeys(result);
+                    }
 
-                   @Override
-                   public void onFailure(Throwable exception) {
-                       loader.hide();
-                       Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
-                       notificationManager.showNotification(notification);
-                       eventBus.fireEvent(new ExceptionThrownEvent(exception));
-                   }
-               });
+                    @Override
+                    public void onFailure(Throwable exception) {
+                        loader.hide();
+                        Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
+                        notificationManager.showNotification(notification);
+                        eventBus.fireEvent(new ExceptionThrownEvent(exception));
+                    }
+                });
     }
 
     /** {@inheritDoc} */
@@ -151,21 +151,21 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     protected void refreshServerCerts() {
         service.getAllServerCerts(
-               new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
-                   @Override
-                   public void onSuccess(Array<SslKeyStoreEntry> result) {
-                       loader.hide();
-                       view.setServerCerts(result);
-                   }
+                new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
+                    @Override
+                    public void onSuccess(Array<SslKeyStoreEntry> result) {
+                        loader.hide();
+                        view.setServerCerts(result);
+                    }
 
-                   @Override
-                   public void onFailure(Throwable exception) {
-                       loader.hide();
-                       Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
-                       notificationManager.showNotification(notification);
-                       eventBus.fireEvent(new ExceptionThrownEvent(exception));
-                   }
-               });
+                    @Override
+                    public void onFailure(Throwable exception) {
+                        loader.hide();
+                        Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
+                        notificationManager.showNotification(notification);
+                        eventBus.fireEvent(new ExceptionThrownEvent(exception));
+                    }
+                });
     }
 
     @Override
