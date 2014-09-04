@@ -55,7 +55,7 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
                                        UploadSslTrustCertDialogPresenter uploadSshServerCertPresenter,
                                        NotificationManager notificationManager,
                                        DtoUnmarshallerFactory dtoUnmarshallerFactory) {
-        super(constant.sslManagerTitle(), resources.sshKeyManager());
+        super(constant.sslManagerTitle(), constant.sslManagerCategory(), resources.sshKeyManager());
 
         this.view = view;
         this.uploadSshServerCertPresenter = uploadSshServerCertPresenter;
