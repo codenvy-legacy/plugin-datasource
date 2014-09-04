@@ -39,6 +39,9 @@ public interface SslMessages extends Messages {
     @DefaultMessage("SSL Keystore")
     String sslManagerTitle();
 
+    @DefaultMessage("Keys And Certificates")
+    String sslManagerCategory();
+
     @DefaultMessage("Do you want to delete ssh keys for <b>{0}</b>")
     String deleteSslKeyQuestion(String alias);
 
