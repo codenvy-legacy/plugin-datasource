@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
 
+import org.vectomatic.dom.svg.ui.SVGImage;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 import javax.annotation.Nullable;
@@ -177,6 +178,12 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     @Override
     public ImageResource getTitleImage() {
         return this.editor.getTitleImage();
+    }
+
+    @Nullable
+    @Override
+    public SVGImage decorateIcon(SVGImage svgImage) {
+        return svgImage;
     }
 
     @Override
