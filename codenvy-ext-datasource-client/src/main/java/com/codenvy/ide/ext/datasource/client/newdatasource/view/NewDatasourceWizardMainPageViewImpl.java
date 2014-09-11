@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import elemental.dom.Element;
+import elemental.events.KeyboardEvent;
 import elemental.events.MouseEvent;
 import elemental.html.SpanElement;
 
@@ -137,6 +138,10 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
                                                                     public void onRootDragDrop(MouseEvent event) {
 
                                                                     }
+                                                                    
+                                                                    @Override
+								    public void onKeyboard(KeyboardEvent event) {
+								    }
                                                                 };
 
     @Inject

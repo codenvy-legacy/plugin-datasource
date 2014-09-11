@@ -39,6 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import elemental.events.KeyboardEvent;
 import elemental.events.MouseEvent;
 
 /**
@@ -275,6 +276,10 @@ public class DatasourceExplorerViewImpl extends
 
             @Override
             public void onRootDragDrop(MouseEvent event) {
+            }
+            
+            @Override
+            public void onKeyboard(KeyboardEvent event) {
             }
         });
     }
