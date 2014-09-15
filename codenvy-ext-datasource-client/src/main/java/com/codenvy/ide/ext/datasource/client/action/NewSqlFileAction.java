@@ -14,6 +14,7 @@ import com.codenvy.api.project.gwt.client.ProjectServiceClient;
 import com.codenvy.ide.api.app.AppContext;
 import com.codenvy.ide.api.editor.EditorAgent;
 import com.codenvy.ide.api.selection.SelectionAgent;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.newresource.DefaultNewResourceAction;
@@ -31,11 +32,10 @@ public class NewSqlFileAction extends DefaultNewResourceAction {
     public NewSqlFileAction(AppContext appContext,
                             SelectionAgent selectionAgent,
                             EditorAgent editorAgent,
-                            SqlEditorResources resources,
+                            DatasourceUiResources resources,
                             EventBus eventBus,
                             ProjectServiceClient projectServiceClient) {
-        super("SQL File", "Creates new SQL file", resources.sqlFile(), null, appContext, selectionAgent, editorAgent, projectServiceClient,
-              eventBus);
+        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient, eventBus);
     }
 
     @Override

@@ -32,6 +32,9 @@ public interface DatasourceUiResources extends ClientBundle {
     @Source("mysql.png")
     ImageResource getMySqlLogo();
 
+    @Source("sql.svg")
+    SVGResource sqlIcon();
+
     @Source("sqlserver.png")
     ImageResource getSqlServerLogo();
 

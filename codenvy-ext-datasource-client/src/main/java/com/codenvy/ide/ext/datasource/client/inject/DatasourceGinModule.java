@@ -16,11 +16,7 @@ import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
-import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
-import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
-import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
+import com.codenvy.ide.ext.datasource.client.*;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
@@ -171,13 +167,13 @@ public class DatasourceGinModule extends AbstractGinModule {
     @Provides
     @Singleton
     @Named("SQLFileType")
-    protected FileType provideSQLFile(final SqlEditorResources sqlEditorResources) {
+    protected FileType provideSQLFile(final DatasourceUiResources resources) {
         final SqlEditorConstants constants = GWT.create(SqlEditorConstants.class);
         final Array<String> mimetypes = Collections.createArray(SqlEditorExtension.GENERIC_SQL_MIME_TYPE,
                                                                 SqlEditorExtension.MSSQL_SQL_MIME_TYPE,
                                                                 SqlEditorExtension.MYSQL_SQL_MIME_TYPE,
                                                                 SqlEditorExtension.ORACLE_SQL_MIME_TYPE);
-        return new FileType(constants.sqlFiletypeContentDescription(), sqlEditorResources.sqlFile(),
+        return new FileType(constants.sqlFiletypeContentDescription(), resources.sqlIcon(),
                             mimetypes, SqlEditorExtension.SQL_FILE_EXTENSION);
     }
 
