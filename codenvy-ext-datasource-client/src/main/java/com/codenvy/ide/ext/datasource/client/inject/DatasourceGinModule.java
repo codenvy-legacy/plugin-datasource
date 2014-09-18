@@ -16,7 +16,12 @@ import com.codenvy.ide.api.filetypes.FileType;
 import com.codenvy.ide.api.preferences.PreferencesPagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.ext.datasource.client.*;
+import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
+import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversServiceRestImpl;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
+import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
+import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
+import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
@@ -57,7 +62,6 @@ import com.codenvy.ide.ext.datasource.client.service.FetchMetadataServiceImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracleImpl;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorConstants;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeader;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderFactory;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.RequestResultHeaderImpl;
@@ -132,7 +136,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(com.codenvy.ide.Resources.class).to(Resources.class).in(Singleton.class);
 
         // Add and bind ssl keystore manager preference page and views
-        GinMultibinder<PreferencesPagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencesPagePresenter.class);
+        final GinMultibinder<PreferencesPagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencesPagePresenter.class);
         prefBinder.addBinding().to(SslKeyStoreManagerPresenter.class);
         bind(SslKeyStoreClientService.class).to(SslKeyStoreClientServiceImpl.class).in(Singleton.class);
         bind(SslKeyStoreManagerView.class).to(SslKeyStoreManagerViewImpl.class).in(Singleton.class);
