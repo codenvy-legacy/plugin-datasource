@@ -14,6 +14,7 @@ import static com.codenvy.ide.api.notification.Notification.Type.ERROR;
 
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.api.notification.Notification;
@@ -31,19 +32,23 @@ public class NewDatasourceWizardAction extends Action {
 
     private final NewDatasourceWizardPresenter wizard;
 
+    private final AnalyticsEventLogger eventLogger;
+
     /** The messages interface. */
-    private final NewDatasourceWizardMessages  messages;
+    private final NewDatasourceWizardMessages messages;
 
     @Inject
     public NewDatasourceWizardAction(@NotNull final DatasourceUiResources resources,
                                      @NotNull NewDatasourceWizardPresenter wizard,
                                      @NotNull final NotificationManager notificationManager,
-                                     @NotNull final NewDatasourceWizardMessages messages) {
+                                     @NotNull final NewDatasourceWizardMessages messages,
+                                     AnalyticsEventLogger eventLogger) {
         super(messages.newDatasourceMenuText(), messages.newDatasourceMenuDescription(), null,
               resources.newDatasourceMenuIcon());
         this.wizard = wizard;
         this.messages = messages;
         this.notificationManager = notificationManager;
+        this.eventLogger = eventLogger;
     }
 
     @Override
@@ -56,6 +61,7 @@ public class NewDatasourceWizardAction extends Action {
      */
     public void actionPerformed() {
         try {
+            eventLogger.log(this);
             wizard.show();
         } catch (final Exception exception) {
             String errorMessage = messages.defaultNewDatasourceWizardErrorMessage();

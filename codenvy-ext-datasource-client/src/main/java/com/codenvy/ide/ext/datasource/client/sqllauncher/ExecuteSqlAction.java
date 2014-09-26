@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.api.editor.EditorAgent;
@@ -21,13 +22,18 @@ public class ExecuteSqlAction extends Action {
 
     private EditorAgent editorAgent;
 
+    private final AnalyticsEventLogger eventLogger;
+
     @Inject
-    public ExecuteSqlAction(final EditorAgent editorAgent) {
+    public ExecuteSqlAction(final EditorAgent editorAgent, AnalyticsEventLogger eventLogger) {
         this.editorAgent = editorAgent;
+        this.eventLogger = eventLogger;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
+        eventLogger.log(this);
+
         final EditorPartPresenter editor = editorAgent.getActiveEditor();
         if (editor instanceof SqlRequestLauncherPresenter) {
             Log.debug(ExecuteSqlAction.class, "Execute SQL action triggered.");

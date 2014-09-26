@@ -12,6 +12,7 @@ package com.codenvy.ide.ext.datasource.client.action;
 
 import javax.validation.constraints.NotNull;
 
+import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
@@ -30,17 +31,22 @@ public class EditDatasourcesAction extends Action {
     /** The factory to instanciate the dialg presenter. */
     private final EditDatasourcesPresenterFactory dialogFactory;
 
+    private final AnalyticsEventLogger eventLogger;
+
     @Inject
     public EditDatasourcesAction(@NotNull final EditDatasourcesPresenterFactory dialogFactory,
                                  @NotNull final EditDatasourceMessages messages,
-                                 @NotNull DatasourceUiResources resources) {
+                                 @NotNull DatasourceUiResources resources,
+                                 AnalyticsEventLogger eventLogger) {
         super(messages.editDatasourcesMenuText(), messages.editDatasourcesMenuDescription(), null,
               resources.manageDatasourceMenuIcon());
         this.dialogFactory = dialogFactory;
+        this.eventLogger = eventLogger;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
+        eventLogger.log(this);
         final EditDatasourcesPresenter dialogPresenter = this.dialogFactory.createEditDatasourcesPresenter();
         dialogPresenter.showDialog();
     }

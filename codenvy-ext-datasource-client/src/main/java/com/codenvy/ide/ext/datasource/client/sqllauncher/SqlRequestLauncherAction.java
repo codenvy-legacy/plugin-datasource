@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
+import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
 import com.codenvy.ide.api.parts.PartStackType;
@@ -26,20 +27,25 @@ public class SqlRequestLauncherAction extends Action {
     /** The workspace agent. */
     private final WorkspaceAgent workspaceAgent;
 
+    private final AnalyticsEventLogger eventLogger;
+
     /** The factory to create new SQL editors. */
     private final SqlRequestLauncherFactory requestLauncherFactory;
 
     @Inject
     public SqlRequestLauncherAction(final SqlRequestLauncherConstants constants,
                                     final WorkspaceAgent workspaceAgent,
-                                    final SqlRequestLauncherFactory requestLauncherFactory) {
+                                    final SqlRequestLauncherFactory requestLauncherFactory,
+                                    AnalyticsEventLogger eventLogger) {
         super(constants.menuEntryOpenSqlEditor());
         this.workspaceAgent = workspaceAgent;
         this.requestLauncherFactory = requestLauncherFactory;
+        this.eventLogger = eventLogger;
     }
 
     @Override
     public void actionPerformed(final ActionEvent e) {
+        eventLogger.log(this);
         SqlRequestLauncherPresenter requestLauncher = this.requestLauncherFactory.createSqlRequestLauncherPresenter();
         this.workspaceAgent.openPart(requestLauncher, PartStackType.EDITING);
     }

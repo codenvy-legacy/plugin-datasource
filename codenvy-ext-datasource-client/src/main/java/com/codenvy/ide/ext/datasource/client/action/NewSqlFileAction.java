@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.action;
 
+import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.api.project.gwt.client.ProjectServiceClient;
 import com.codenvy.ide.api.app.AppContext;
 import com.codenvy.ide.api.editor.EditorAgent;
@@ -34,8 +35,9 @@ public class NewSqlFileAction extends DefaultNewResourceAction {
                             EditorAgent editorAgent,
                             DatasourceUiResources resources,
                             EventBus eventBus,
-                            ProjectServiceClient projectServiceClient) {
-        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient, eventBus);
+                            ProjectServiceClient projectServiceClient,
+                            AnalyticsEventLogger eventLogger) {
+        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient, eventBus, eventLogger);
     }
 
     @Override
