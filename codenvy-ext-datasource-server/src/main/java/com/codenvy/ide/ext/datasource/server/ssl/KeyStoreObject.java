@@ -12,6 +12,7 @@ package com.codenvy.ide.ext.datasource.server.ssl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.KeyStore;
@@ -21,8 +22,10 @@ import java.security.cert.CertificateFactory;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -43,11 +46,14 @@ import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codenvy.api.core.ApiException;
 import com.codenvy.api.core.rest.HttpJsonHelper;
-import com.codenvy.api.user.shared.dto.ProfileDescriptor;
 import com.codenvy.commons.env.EnvironmentContext;
+import com.codenvy.commons.json.JsonHelper;
+import com.codenvy.commons.json.JsonParseException;
 import com.codenvy.dto.server.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.ssl.SslKeyStoreEntry;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -62,10 +68,10 @@ public class KeyStoreObject {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeyStoreObject.class);
 
-    protected String            keyStorePassword;
-    protected KeyStore          keystore;
+    protected String   keyStorePassword;
+    protected KeyStore keystore;
 
-    protected String            profileApiUrl;
+    protected String profileApiUrl;
 
 
     @Inject
@@ -76,9 +82,7 @@ public class KeyStoreObject {
 
 
     protected KeyStore extractKeyStoreFromFile() throws Exception {
-        ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
-
-        String sslKeyStore = profile.getPreferences().get(getKeyStorePreferenceName());
+        String sslKeyStore = getPreferences().get(getKeyStorePreferenceName());
 
         keyStorePassword = getKeyStorePassword();
         KeyStore ks = KeyStore.getInstance("JKS");
@@ -123,8 +127,8 @@ public class KeyStoreObject {
             SslKeyStoreEntry sslKeyStoreEntry = DtoFactory.getInstance().createDto(SslKeyStoreEntry.class)
                                                           .withAlias(alias)
                                                           .withType(
-                                                                    keystore.isKeyEntry(alias) ? "Key" : "Certificate"
-                                                          );
+                                                                  keystore.isKeyEntry(alias) ? "Key" : "Certificate"
+                                                                   );
             result.add(sslKeyStoreEntry);
         }
         return Response.ok().entity(result).type(MediaType.APPLICATION_JSON).build();
@@ -183,10 +187,20 @@ public class KeyStoreObject {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         keystore.store(ostream, keyStorePassword.toCharArray());
 
-        ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
-        profile.getPreferences().put(getKeyStorePreferenceName(), new String(Base64.encodeBase64(ostream.toByteArray())));
+        final Map<String, String> preferencesUpdate = new HashMap<>(4);
+        preferencesUpdate.put(getKeyStorePreferenceName(), new String(Base64.encodeBase64(ostream.toByteArray())));
+        HttpJsonHelper.post(null, profileApiUrl + "/prefs", preferencesUpdate);
 
-        HttpJsonHelper.post(null, profileApiUrl + "/prefs", profile.getPreferences(), null);
+    }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, String> getPreferences() throws IOException, ApiException {
+        final String preferencesJson = HttpJsonHelper.requestString(profileApiUrl + "/prefs", "GET", null);
+        try {
+            return JsonHelper.fromJson(preferencesJson, Map.class, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (JsonParseException e) {
+            throw new ApiException("It is not possible to get user preferences");
+        }
     }
 }

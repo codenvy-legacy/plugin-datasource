@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.server;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -17,14 +18,17 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codenvy.api.core.ApiException;
 import com.codenvy.api.core.rest.HttpJsonHelper;
-import com.codenvy.api.user.shared.dto.ProfileDescriptor;
+import com.codenvy.commons.json.JsonHelper;
+import com.codenvy.commons.json.JsonParseException;
 import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactory;
 import com.codenvy.ide.ext.datasource.server.ssl.CodenvySSLSocketFactoryKeyStoreSettings;
 import com.codenvy.ide.ext.datasource.server.ssl.KeyStoreObject;
@@ -32,6 +36,7 @@ import com.codenvy.ide.ext.datasource.server.ssl.SslKeyStoreService;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.NuoDBBrokerDTO;
 import com.codenvy.ide.ext.datasource.shared.exception.DatabaseDefinitionException;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -95,12 +100,12 @@ public class JdbcConnectionFactory {
         }
 
         try {
-            ProfileDescriptor profile = HttpJsonHelper.request(ProfileDescriptor.class, profileApiUrl, "GET", null, null);
+            Map<String, String> preferences = getPreferences();
 
             CodenvySSLSocketFactoryKeyStoreSettings sslSettings = new CodenvySSLSocketFactoryKeyStoreSettings();
             if (configuration.getUseSSL()) {
                 info.setProperty("useSSL", Boolean.toString(configuration.getUseSSL()));
-                String sslKeyStore = profile.getPreferences().get(KeyStoreObject.SSL_KEY_STORE_PREF_ID);
+                String sslKeyStore = preferences.get(KeyStoreObject.SSL_KEY_STORE_PREF_ID);
                 sslSettings.setKeyStorePassword(SslKeyStoreService.getDefaultKeystorePassword());
                 if (sslKeyStore != null) {
                     sslSettings.setKeyStoreContent(Base64.decodeBase64(sslKeyStore));
@@ -109,7 +114,7 @@ public class JdbcConnectionFactory {
 
             if (configuration.getVerifyServerCertificate()) {
                 info.setProperty("verifyServerCertificate", Boolean.toString(configuration.getVerifyServerCertificate()));
-                String trustStore = profile.getPreferences().get(KeyStoreObject.TRUST_STORE_PREF_ID);
+                String trustStore = preferences.get(KeyStoreObject.TRUST_STORE_PREF_ID);
                 sslSettings.setTrustStorePassword(SslKeyStoreService.getDefaultTrustorePassword());
                 if (trustStore != null) {
                     sslSettings.setTrustStoreContent(Base64.decodeBase64(trustStore));
@@ -247,5 +252,16 @@ public class JdbcConnectionFactory {
                                           hostPart.toString(),
                                           configuration.getDatabaseName());
         return url;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, String> getPreferences() throws IOException, ApiException {
+        final String preferencesJson = HttpJsonHelper.requestString(profileApiUrl + "/prefs", "GET", null);
+        try {
+            return JsonHelper.fromJson(preferencesJson, Map.class, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (JsonParseException e) {
+            throw new ApiException("It is not possible to get user preferences");
+        }
     }
 }
