@@ -35,7 +35,7 @@ import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
  * Extension definition for the sql editor.
  */
 @Singleton
-@Extension(title = "SQL Editor Extension", version = "1.0.0")
+@Extension(title = "SQL Editor", version = "1.0.0")
 public class SqlEditorExtension {
 
     public static final String GENERIC_SQL_MIME_TYPE = "text/x-sql";

@@ -37,7 +37,7 @@ import static com.codenvy.ide.api.action.IdeActions.GROUP_WINDOW;
  * Extension definition for the datasource plugin.
  */
 @Singleton
-@Extension(title = "Datasource Extension", version = "1.0.0")
+@Extension(title = "Datasource", version = "1.0.0")
 public class DatasourceExtension {
 
     public static boolean       SHOW_ITEM                  = true;
