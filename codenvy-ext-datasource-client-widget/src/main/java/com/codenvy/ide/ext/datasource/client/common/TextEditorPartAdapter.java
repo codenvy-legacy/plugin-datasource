@@ -40,6 +40,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import org.vectomatic.dom.svg.ui.SVGImage;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -208,11 +209,22 @@ public class TextEditorPartAdapter<T extends TextEditorPartPresenter> implements
     }
 
     @Override
-    public boolean onClose() {
+    public void onClose(@Nonnull final AsyncCallback<Void> callback) {
         Log.debug(TextEditorPartAdapter.class, "Trying to close editor adapter instance.");
-        final boolean result = this.editor.onClose();
-        Log.debug(TextEditorPartAdapter.class, "-- Closing success: " + result);
-        return result;
+
+        this.editor.onClose(new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.debug(TextEditorPartAdapter.class, "-- Closing failure");
+                callback.onFailure(throwable);
+            }
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.debug(TextEditorPartAdapter.class, "-- Closing success");
+                callback.onSuccess(null);
+            }
+        });
     }
 
     @Override
