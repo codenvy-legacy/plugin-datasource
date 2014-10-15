@@ -42,28 +42,30 @@ public class SslKeyStoreClientServiceImpl implements SslKeyStoreClientService {
     /** {@inheritDoc} */
     @Override
     public void getAllClientKeys(@NotNull AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
-        loader.show("Retrieving SSL Client keys....");
-        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore").send(callback);
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore")
+                .loader(loader,"Retrieving SSL Client keys....")
+                .send(callback);
     }
 
     @Override
     public void getAllServerCerts(AsyncRequestCallback<Array<SslKeyStoreEntry>> callback) {
-        loader.show("Retrieving SSL Server certs....");
-        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore").send(callback);
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore")
+                .loader(loader, "Retrieving SSL Server certs....")
+                .send(callback);
     }
 
     @Override
     public void deleteClientKey(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
-        loader.show("Deleting SSL client key entries for " + entry.getAlias());
-        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore/"
-                                             + URL.encode(entry.getAlias()) + "/remove").send(callback);
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/keystore/" + URL.encode(entry.getAlias()) + "/remove")
+                .loader(loader, "Deleting SSL client key entries for " + entry.getAlias())
+                .send(callback);
     }
 
     @Override
     public void deleteServerCert(SslKeyStoreEntry entry, AsyncRequestCallback<Void> callback) {
-        loader.show("Deleting SSL server cert entries for " + entry.getAlias());
-        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore/"
-                                             + URL.encode(entry.getAlias()) + "/remove").send(callback);
+        asyncRequestFactory.createGetRequest(baseUrl + "/ssl-keystore/truststore/" + URL.encode(entry.getAlias()) + "/remove")
+                .loader(loader, "Deleting SSL server cert entries for " + entry.getAlias())
+                .send(callback);
     }
 
     @Override
