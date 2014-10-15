@@ -25,6 +25,7 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.codenvy.ide.rest.DtoUnmarshallerFactory;
 import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -134,13 +135,11 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
             service.deleteServerCert(key, new AsyncRequestCallback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
-                    loader.hide();
                     refreshServerCerts();
                 }
 
                 @Override
                 public void onFailure(Throwable exception) {
-                    loader.hide();
                     Notification notification = new Notification(exception.getMessage(), Type.ERROR);
                     notificationManager.showNotification(notification);
                     eventBus.fireEvent(new ExceptionThrownEvent(exception));
@@ -154,13 +153,11 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
                 new AsyncRequestCallback<Array<SslKeyStoreEntry>>(dtoUnmarshallerFactory.newArrayUnmarshaller(SslKeyStoreEntry.class)) {
                     @Override
                     public void onSuccess(Array<SslKeyStoreEntry> result) {
-                        loader.hide();
                         view.setServerCerts(result);
                     }
 
                     @Override
                     public void onFailure(Throwable exception) {
-                        loader.hide();
                         Notification notification = new Notification(exception.getMessage(), Notification.Type.ERROR);
                         notificationManager.showNotification(notification);
                         eventBus.fireEvent(new ExceptionThrownEvent(exception));
@@ -185,7 +182,6 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
 
     @Override
     public void doApply() {
-        // do nothing
     }
 
     @Override
