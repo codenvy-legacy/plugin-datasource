@@ -15,6 +15,7 @@ import static com.google.gwt.user.client.ui.HasHorizontalAlignment.ALIGN_LEFT;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.validation.constraints.NotNull;
 
 import com.codenvy.ide.api.notification.Notification;
@@ -52,6 +53,7 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
@@ -476,11 +478,22 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     }
 
     @Override
-    public boolean onClose() {
-        boolean parentResult = super.onClose();
-        final String editorFileId = getEditorInput().getFile().getPath();
-        this.editorDatasourceOracle.forgetEditor(editorFileId);
-        return parentResult;
+    public void onClose(@Nonnull final AsyncCallback<Void> callback) {
+        super.onClose(new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                final String editorFileId = getEditorInput().getFile().getPath();
+                editorDatasourceOracle.forgetEditor(editorFileId);
+                callback.onFailure(throwable);
+            }
+
+            @Override
+            public void onSuccess(Void aVoid) {
+                final String editorFileId = getEditorInput().getFile().getPath();
+                editorDatasourceOracle.forgetEditor(editorFileId);
+                callback.onSuccess(null);
+            }
+        });
     }
 
     @Override

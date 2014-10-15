@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.common;
 
+import com.codenvy.ide.CoreLocalizationConstant;
 import com.codenvy.ide.Resources;
 import com.codenvy.ide.api.parts.WorkspaceAgent;
 import com.codenvy.ide.debug.BreakpointGutterManager;
@@ -28,12 +29,14 @@ public class ReadableContentTextEditorPresenter extends TextEditorPresenter impl
                                               final BreakpointGutterManager breakpointGutterManager,
                                               final DtoFactory dtoFactory,
                                               final WorkspaceAgent workspaceAgent,
-                                              final EventBus eventBus) {
+                                              final EventBus eventBus,
+                                              CoreLocalizationConstant constant) {
         super(resources,
               userActivityManager,
               breakpointGutterManager,
               dtoFactory,
               workspaceAgent,
+              constant,
               eventBus);
     }
 
