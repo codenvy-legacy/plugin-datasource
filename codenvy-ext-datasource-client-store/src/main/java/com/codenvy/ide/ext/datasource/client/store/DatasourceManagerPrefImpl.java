@@ -18,6 +18,7 @@ import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatasourceConfigPreferences;
+import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -79,9 +80,13 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
         if (datasourcesJson == null) {
             datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
         } else {
-            datasourcesPreferences =
-                                     dtoFactory.createDtoFromJson(datasourcesJson,
-                                                                  DatasourceConfigPreferences.class);
+            try {
+                datasourcesPreferences = dtoFactory.createDtoFromJson(datasourcesJson, DatasourceConfigPreferences.class);
+            } catch (Exception e) {
+                // temporary smoothly log and keep ide working https://jira.codenvycorp.com/browse/PLGDS-214
+                Log.error(DatasourceManagerPrefImpl.class, e);
+                datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
+            }
         }
         return datasourcesPreferences;
     }
