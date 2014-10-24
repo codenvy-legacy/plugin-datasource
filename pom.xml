@@ -20,7 +20,7 @@
     </parent>
     <groupId>com.codenvy.ide</groupId>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>1.4.1</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
@@ -37,7 +37,7 @@
     <scm>
         <connection>scm:git:git@github.com:codenvy/plugin-datasource.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/plugin-datasource.git</developerConnection>
-        <tag>1.4.0</tag>
+        <tag>1.4.1</tag>
     </scm>
     <properties>
         <dto-generator-out-directory>${project.build.directory}/generated-sources/dto/</dto-generator-out-directory>
