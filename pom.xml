@@ -16,11 +16,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>1.8.18</version>
+        <version>1.8.18.3-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.ide</groupId>
     <artifactId>codenvy-ext-datasource-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codenvy Extension :: Datasource parent</name>
     <modules>
