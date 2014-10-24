@@ -17,6 +17,7 @@ import com.codenvy.ide.debug.BreakpointGutterManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.texteditor.TextEditorPresenter;
 import com.codenvy.ide.texteditor.selection.SelectionModel;
+import com.codenvy.ide.ui.dialogs.DialogFactory;
 import com.codenvy.ide.util.executor.UserActivityManager;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -30,6 +31,7 @@ public class ReadableContentTextEditorPresenter extends TextEditorPresenter impl
                                               final DtoFactory dtoFactory,
                                               final WorkspaceAgent workspaceAgent,
                                               final EventBus eventBus,
+                                              final DialogFactory dialogFactory,
                                               CoreLocalizationConstant constant) {
         super(resources,
               userActivityManager,
@@ -37,7 +39,8 @@ public class ReadableContentTextEditorPresenter extends TextEditorPresenter impl
               dtoFactory,
               workspaceAgent,
               constant,
-              eventBus);
+              eventBus,
+              dialogFactory);
     }
 
     @Override

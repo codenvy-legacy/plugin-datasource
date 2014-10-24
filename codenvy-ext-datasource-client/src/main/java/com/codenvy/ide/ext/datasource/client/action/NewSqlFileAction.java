@@ -19,6 +19,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
 import com.codenvy.ide.newresource.DefaultNewResourceAction;
 import com.codenvy.ide.rest.DtoUnmarshallerFactory;
+import com.codenvy.ide.ui.dialogs.DialogFactory;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -37,8 +38,10 @@ public class NewSqlFileAction extends DefaultNewResourceAction {
                             EventBus eventBus,
                             ProjectServiceClient projectServiceClient,
                             AnalyticsEventLogger eventLogger,
-                            DtoUnmarshallerFactory unmarshallerFactory) {
-        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient, eventBus, eventLogger, unmarshallerFactory);
+                            DtoUnmarshallerFactory unmarshallerFactory,
+                            DialogFactory dialogFactory) {
+        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient,
+              eventBus, eventLogger, unmarshallerFactory, dialogFactory);
     }
 
     @Override
