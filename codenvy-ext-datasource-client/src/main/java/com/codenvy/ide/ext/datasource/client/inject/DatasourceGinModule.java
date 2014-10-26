@@ -22,8 +22,6 @@ import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientServiceImpl;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditorPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
 import com.codenvy.ide.ext.datasource.client.common.interaction.confirm.ConfirmWindow;
 import com.codenvy.ide.ext.datasource.client.common.interaction.confirm.ConfirmWindowFooter;
@@ -124,8 +122,6 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         install(new GinFactoryModuleBuilder().implement(SqlRequestLauncherView.class, SqlRequestLauncherViewImpl.class)
                                              .build(SqlRequestLauncherFactory.class));
-
-        bind(ReadableContentTextEditor.class).to(ReadableContentTextEditorPresenter.class);
 
         bind(AvailableJdbcDriversService.class).to(AvailableJdbcDriversServiceRestImpl.class).in(Singleton.class);
 

@@ -10,40 +10,35 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor;
 
-import com.codenvy.ide.api.editor.DocumentProvider;
+import javax.validation.constraints.NotNull;
+
 import com.codenvy.ide.api.editor.EditorProvider;
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
+import com.codenvy.ide.jseditor.client.defaulteditor.DefaultEditorProvider;
+import com.codenvy.ide.jseditor.client.texteditor.ConfigurableTextEditor;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-
-import javax.validation.constraints.NotNull;
 
 public class SqlEditorProvider implements EditorProvider {
 
-    private final DocumentProvider                    documentProvider;
+    private final DefaultEditorProvider defaultEditorProvider;
 
-    private final Provider<ReadableContentTextEditor> editorProvider;
+    private final NotificationManager notificationManager;
 
-    private final NotificationManager                 notificationManager;
+    private final SqlEditorResources resource;
 
-    private final SqlEditorResources                  resource;
+    private final DatabaseInfoOracle databaseInfoOracle;
 
-    private final DatabaseInfoOracle                  databaseInfoOracle;
-
-    private final EditorDatasourceOracle              editorDatasourceOracle;
+    private final EditorDatasourceOracle editorDatasourceOracle;
 
     @Inject
-    public SqlEditorProvider(@NotNull final DocumentProvider documentProvider,
-                             @NotNull final Provider<ReadableContentTextEditor> editorProvider,
+    public SqlEditorProvider(@NotNull final DefaultEditorProvider defaultEditorProvider,
                              @NotNull final NotificationManager notificationManager,
                              @NotNull final DatabaseInfoOracle databaseInfoOracle,
                              @NotNull final EditorDatasourceOracle editorDatasourceOracle,
                              @NotNull final SqlEditorResources resource) {
-        this.documentProvider = documentProvider;
-        this.editorProvider = editorProvider;
+        this.defaultEditorProvider = defaultEditorProvider;
         this.notificationManager = notificationManager;
         this.databaseInfoOracle = databaseInfoOracle;
         this.editorDatasourceOracle = editorDatasourceOracle;
@@ -61,11 +56,11 @@ public class SqlEditorProvider implements EditorProvider {
     }
 
     @Override
-    public ReadableContentTextEditor getEditor() {
+    public ConfigurableTextEditor getEditor() {
         Log.debug(SqlEditorProvider.class, "New instance of SQL editor requested.");
-        ReadableContentTextEditor textEditor = editorProvider.get();
+        ConfigurableTextEditor textEditor = this.defaultEditorProvider.getEditor();
         textEditor.initialize(new SqlEditorConfiguration(textEditor, resource, databaseInfoOracle, editorDatasourceOracle),
-                              documentProvider, notificationManager);
+                              notificationManager);
         return textEditor;
     }
 

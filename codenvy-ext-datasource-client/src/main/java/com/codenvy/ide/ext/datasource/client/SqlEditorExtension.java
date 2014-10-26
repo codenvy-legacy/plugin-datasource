@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client;
 
+import static com.codenvy.ide.api.action.IdeActions.GROUP_FILE_NEW;
+
 import com.codenvy.ide.api.action.ActionManager;
 import com.codenvy.ide.api.action.DefaultActionGroup;
 import com.codenvy.ide.api.editor.EditorRegistry;
@@ -23,13 +25,9 @@ import com.codenvy.ide.ext.datasource.client.action.NewSqlFileAction;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.sqllauncher.SqlLauncherEditorProvider;
 import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.core.client.ScriptInjector;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-
-import static com.codenvy.ide.api.action.IdeActions.GROUP_FILE_NEW;
-import static com.google.gwt.core.client.ScriptInjector.TOP_WINDOW;
 
 /**
  * Extension definition for the sql editor.
@@ -57,10 +55,6 @@ public class SqlEditorExtension {
                               @Named("SQLFileType") final FileType sqlFile) {
 
         Log.debug(SqlEditorExtension.class, "Initialization of SQL editor extension.");
-        // inject sql parser
-        ScriptInjector.fromString(sqlEditorResources.sqlParserJs().getText()).setWindow(TOP_WINDOW).inject();
-        // inject CSS
-        sqlEditorResources.sqlCSS().ensureInjected();
 
         fileTypeRegistry.registerFileType(sqlFile);
         editorRegistry.register(sqlFile, sqlEditorProvider);

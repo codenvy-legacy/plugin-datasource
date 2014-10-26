@@ -10,8 +10,8 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
-import com.codenvy.ide.api.texteditor.TextEditorPartView;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
+import com.codenvy.ide.jseditor.client.texteditor.TextEditor;
 
 public class InvocationContext {
     private final SqlCodeQuery query;
@@ -20,9 +20,9 @@ public class InvocationContext {
 
     private final SqlEditorResources resources;
 
-    private final TextEditorPartView editor;
+    private final TextEditor editor;
 
-    public InvocationContext(SqlCodeQuery query, int offset, SqlEditorResources resources, TextEditorPartView editor) {
+    public InvocationContext(SqlCodeQuery query, int offset, SqlEditorResources resources, TextEditor editor) {
         super();
         this.query = query;
         this.offset = offset;
@@ -42,7 +42,7 @@ public class InvocationContext {
         return resources;
     }
 
-    public TextEditorPartView getEditor() {
+    public TextEditor getEditor() {
         return editor;
     }
 }

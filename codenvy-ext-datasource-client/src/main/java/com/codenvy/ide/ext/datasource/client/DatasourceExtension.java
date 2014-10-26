@@ -11,27 +11,23 @@
 package com.codenvy.ide.ext.datasource.client;
 
 
+import static com.codenvy.ide.api.action.IdeActions.GROUP_MAIN_MENU;
+import static com.codenvy.ide.api.action.IdeActions.GROUP_WINDOW;
+import static com.codenvy.ide.api.constraints.Anchor.BEFORE;
+
 import com.codenvy.ide.api.action.ActionManager;
-import com.codenvy.ide.api.constraints.Constraints;
 import com.codenvy.ide.api.action.DefaultActionGroup;
+import com.codenvy.ide.api.constraints.Constraints;
 import com.codenvy.ide.api.extension.Extension;
 import com.codenvy.ide.api.keybinding.KeyBindingAgent;
-import com.codenvy.ide.api.keybinding.KeyBuilder;
 import com.codenvy.ide.api.parts.PartStackType;
 import com.codenvy.ide.api.parts.WorkspaceAgent;
 import com.codenvy.ide.ext.datasource.client.action.EditDatasourcesAction;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerPartPresenter;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardAction;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
-import com.codenvy.ide.ext.datasource.client.sqllauncher.ExecuteSqlAction;
-import com.codenvy.ide.util.input.CharCodeWithModifiers;
-import com.codenvy.ide.util.input.KeyCodeMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import static com.codenvy.ide.api.constraints.Anchor.BEFORE;
-import static com.codenvy.ide.api.action.IdeActions.GROUP_MAIN_MENU;
-import static com.codenvy.ide.api.action.IdeActions.GROUP_WINDOW;
 
 /**
  * Extension definition for the datasource plugin.
@@ -43,8 +39,6 @@ public class DatasourceExtension {
     public static boolean       SHOW_ITEM                  = true;
     public static final String  DS_GROUP_MAIN_MENU         = "datasourceMainMenu";
 
-    private static final String DS_ACTION_SHORTCUT_EXECUTE = "datasourceActionExecute";
-
     @Inject
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
                                DatasourceExplorerPartPresenter dsExplorer,
@@ -54,7 +48,6 @@ public class DatasourceExtension {
                                NewDatasourceConnectorAgent connectorAgent,
                                DatasourceUiResources resources,
                                AvailableJdbcDriversService availableJdbcDrivers,
-                               ExecuteSqlAction executeSqlAction,
                                EditDatasourcesAction editDatasourcesAction,
                                KeyBindingAgent keyBindingAgent) {
 
@@ -83,10 +76,5 @@ public class DatasourceExtension {
 
         // inject CSS
         resources.datasourceUiCSS().ensureInjected();
-
-        // Add execute shortcut
-        actionManager.registerAction(DS_ACTION_SHORTCUT_EXECUTE, executeSqlAction);
-        final CharCodeWithModifiers key = new KeyBuilder().action().charCode(KeyCodeMap.ENTER).build();
-        keyBindingAgent.getGlobal().addKey(key, DS_ACTION_SHORTCUT_EXECUTE);
     }
 }

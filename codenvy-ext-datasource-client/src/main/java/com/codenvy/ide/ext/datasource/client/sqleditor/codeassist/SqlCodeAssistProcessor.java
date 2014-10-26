@@ -10,32 +10,32 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
-import com.codenvy.ide.api.text.BadLocationException;
-import com.codenvy.ide.api.text.Document;
-import com.codenvy.ide.api.text.Position;
-import com.codenvy.ide.api.text.Region;
-import com.codenvy.ide.api.texteditor.CodeAssistCallback;
-import com.codenvy.ide.api.texteditor.TextEditorPartView;
-import com.codenvy.ide.api.texteditor.codeassistant.CodeAssistProcessor;
-import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.collections.Collections;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
-import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
-import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
-import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
-import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.codenvy.ide.api.text.BadLocationException;
+import com.codenvy.ide.collections.Array;
+import com.codenvy.ide.collections.Collections;
+import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
+import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
+import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
+import com.codenvy.ide.jseditor.client.codeassist.CodeAssistCallback;
+import com.codenvy.ide.jseditor.client.codeassist.CodeAssistProcessor;
+import com.codenvy.ide.jseditor.client.codeassist.CompletionProposal;
+import com.codenvy.ide.jseditor.client.document.EmbeddedDocument;
+import com.codenvy.ide.jseditor.client.text.LinearRange;
+import com.codenvy.ide.jseditor.client.texteditor.ConfigurableTextEditor;
+import com.codenvy.ide.jseditor.client.texteditor.TextEditor;
+import com.codenvy.ide.util.loging.Log;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 
 public class SqlCodeAssistProcessor implements CodeAssistProcessor {
 
     private final SqlEditorResources        resources;
     private final DatabaseInfoOracle        databaseInfoOracle;
-    private final ReadableContentTextEditor textEditor;
+    private final ConfigurableTextEditor    textEditor;
     private final EditorDatasourceOracle    editorDatasourceOracle;
 
     private final static RegExp             TABLE_REGEXP_PATTERN                    =
@@ -57,7 +57,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     private final static int                STATEMENT_TYPE_REGEXP_GROUP             = 2;
     private final static int                JOIN_STATEMENT_TYPE_REGEXP_GROUP        = 19;
 
-    public SqlCodeAssistProcessor(ReadableContentTextEditor textEditor,
+    public SqlCodeAssistProcessor(ConfigurableTextEditor textEditor,
                                   SqlEditorResources resources,
                                   DatabaseInfoOracle databaseInfoOracle,
                                   EditorDatasourceOracle editorDatasourceOracle) {
@@ -70,40 +70,40 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
     /**
      * Interface API for computing the code completion
      *
-     * @param textEditorPartView the editor
+     * @param textEditor the editor
      * @param offset an offset within the document for which completions should be computed
      * @param codeAssistCallback the callback used to provide code completion
      */
     @Override
-    public void computeCompletionProposals(TextEditorPartView textEditorPartView, int offset, CodeAssistCallback codeAssistCallback) {
+    public void computeCompletionProposals(TextEditor textEditor, int offset, CodeAssistCallback codeAssistCallback) {
         // Avoid completion when text is selected
-        if (textEditorPartView.getSelection().hasSelection()) {
+        if (textEditor.getSelectedLinearRange().getLength() > 0) {
             codeAssistCallback.proposalComputed(null);
             return;
         }
 
-        SqlCodeQuery query = buildQuery(textEditorPartView);
+        SqlCodeQuery query = buildQuery(textEditor);
 
         if (query.getLastQueryPrefix() == null) {
             codeAssistCallback.proposalComputed(null);
             return;
         }
         Array<SqlCodeCompletionProposal> completionProposals = findAutoCompletions(query);
-        InvocationContext invocationContext = new InvocationContext(query, offset, resources, textEditorPartView);
-        codeAssistCallback.proposalComputed(jsToArray(completionProposals, invocationContext));
+        InvocationContext invocationContext = new InvocationContext(query, offset, resources, textEditor);
+        codeAssistCallback.proposalComputed(jsToList(completionProposals, invocationContext));
     }
 
     /**
      * Build a query for the given editor. The query object will than be used to search for possible completion proposal through the trie.
      */
-    protected SqlCodeQuery buildQuery(TextEditorPartView textEditorPartView) {
-        Position cursorPosition = textEditorPartView.getSelection().getCursorPosition();
-        Document document = textEditorPartView.getDocument();
+    protected SqlCodeQuery buildQuery(TextEditor textEditor) {
+        final int cursorPosition = textEditor.getCursorOffset();
+        final EmbeddedDocument document = textEditor.getDocument();
 
         return buildQuery(cursorPosition, document);
     }
 
-    protected SqlCodeQuery buildQuery(Position cursorPosition, Document document) {
+    protected SqlCodeQuery buildQuery(final int cursorPosition, final EmbeddedDocument document) {
         try {
             String text = getLastSQLStatementPrefix(cursorPosition, document);
             return getQuery(text);
@@ -113,25 +113,26 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
         }
     }
 
-    protected String getLastSQLStatementPrefix(Position cursorPosition, Document document) throws BadLocationException {
-        int line = document.getLineOfOffset(cursorPosition.getOffset());
-        Region region = document.getLineInformation(line);
-        int column = cursorPosition.getOffset() - region.getOffset();
+    protected String getLastSQLStatementPrefix(final int cursorPosition, final EmbeddedDocument document) throws BadLocationException {
+        final int line = document.getPositionFromIndex(cursorPosition).getLine();
+        final LinearRange range = document.getLinearRangeForLine(line);
+        final int column = cursorPosition - range.getStartOffset();
 
         String textBefore = "";
 
         boolean parsingLineWithCursor = true;
 
-        while ((line >= 0) && (!textBefore.contains(";"))) {
+        int currentLine = line;
+        while ((currentLine >= 0) && (!textBefore.contains(";"))) {
             String text;
             int lastStatementSeparatorIndex;
 
-            Region information = document.getLineInformation(line);
+            final LinearRange currentLineRange = document.getLinearRangeForLine(currentLine);
             if (parsingLineWithCursor) {
-                text = document.get(information.getOffset(), column);
+                text = document.getContentRange(currentLineRange.getStartOffset(), column);
                 parsingLineWithCursor = false;
             } else {
-                text = document.get(information.getOffset(), information.getLength()) + "\n";
+                text = document.getContentRange(currentLineRange.getStartOffset(), currentLineRange.getLength()) + "\n";
             }
 
             lastStatementSeparatorIndex = text.lastIndexOf(';');
@@ -140,7 +141,7 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
                 textBefore = text.substring(lastStatementSeparatorIndex + 1).concat(textBefore);
                 break;
             }
-            line--;
+            currentLine--;
             textBefore = text.concat(textBefore);
         }
         return textBefore.replaceAll("^\\s*", "");
@@ -266,22 +267,18 @@ public class SqlCodeAssistProcessor implements CodeAssistProcessor {
      * @param context the given invocation context
      * @return the array
      */
-    protected SqlCodeCompletionProposal[] jsToArray(Array<SqlCodeCompletionProposal> autocompletions,
+    private List<CompletionProposal> jsToList(Array<SqlCodeCompletionProposal> autocompletions,
                                                     InvocationContext context) {
         if (autocompletions == null) {
             return null;
         }
-        SqlCodeCompletionProposal[] proposals = new SqlCodeCompletionProposal[autocompletions.size()];
+        final List<CompletionProposal> proposals = new ArrayList<>();
         for (int i = 0; i < autocompletions.size(); i++) {
-            proposals[i] = autocompletions.get(i);
-            proposals[i].setInvocationContext(context);
+            SqlCodeCompletionProposal proposal = autocompletions.get(i);
+            proposal.setInvocationContext(context);
+            proposals.add(proposal);
         }
         return proposals;
-    }
-
-    @Override
-    public char[] getCompletionProposalAutoActivationCharacters() {
-        return new char[0];
     }
 
     @Override

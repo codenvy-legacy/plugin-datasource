@@ -10,8 +10,9 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.sqllauncher;
 
-import com.codenvy.ide.api.editor.EditorPartPresenter;
 import com.codenvy.ide.api.editor.EditorProvider;
+import com.codenvy.ide.jseditor.client.editoradapter.DefaultEditorAdapter;
+import com.codenvy.ide.jseditor.client.texteditor.TextEditor;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
 
@@ -35,8 +36,12 @@ public class SqlLauncherEditorProvider implements EditorProvider {
     }
 
     @Override
-    public EditorPartPresenter getEditor() {
+    public TextEditor getEditor() {
         Log.debug(SqlLauncherEditorProvider.class, "New instance of SQL launcher editor requested.");
-        return sqlRequestLauncherFactory.createSqlRequestLauncherPresenter();
+        final SqlRequestLauncherPresenter launcher = sqlRequestLauncherFactory.createSqlRequestLauncherPresenter();
+        final DefaultEditorAdapter adapter = new DefaultEditorAdapter();
+        adapter.setPresenter(launcher);
+        adapter.setTextEditor(launcher.getTextEditor());
+        return adapter;
     }
 }

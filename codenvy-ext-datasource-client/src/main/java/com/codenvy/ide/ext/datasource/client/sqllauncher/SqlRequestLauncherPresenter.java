@@ -26,8 +26,6 @@ import com.codenvy.ide.api.preferences.PreferencesManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.common.AlignableColumnHeader;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
-import com.codenvy.ide.ext.datasource.client.common.TextEditorPartAdapter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.DialogFactory;
 import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageWindow;
 import com.codenvy.ide.ext.datasource.client.common.pager.Pager;
@@ -47,6 +45,12 @@ import com.codenvy.ide.ext.datasource.shared.request.RequestResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.RequestResultGroupDTO;
 import com.codenvy.ide.ext.datasource.shared.request.SelectResultDTO;
 import com.codenvy.ide.ext.datasource.shared.request.UpdateResultDTO;
+import com.codenvy.ide.jseditor.client.document.EmbeddedDocument;
+import com.codenvy.ide.jseditor.client.editoradapter.NestablePresenter;
+import com.codenvy.ide.jseditor.client.keymap.KeyBindingAction;
+import com.codenvy.ide.jseditor.client.keymap.Keybinding;
+import com.codenvy.ide.jseditor.client.text.TextRange;
+import com.codenvy.ide.jseditor.client.texteditor.ConfigurableTextEditor;
 import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
@@ -60,51 +64,56 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
+import elemental.events.KeyboardEvent.KeyCode;
 
-public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableContentTextEditor> implements
-                                                                                                 SqlRequestLauncherView.ActionDelegate,
-                                                                                                 DatasourceListChangeHandler,
-                                                                                                 RequestResultDelegate {
 
-    private static final int                          DEFAULT_RESULT_PAGE_SIZE             = 100;
+public class SqlRequestLauncherPresenter implements NestablePresenter,
+                                        SqlRequestLauncherView.ActionDelegate,
+                                        DatasourceListChangeHandler,
+                                        RequestResultDelegate {
+
+    private static final int DEFAULT_RESULT_PAGE_SIZE = 100;
 
     /** Preference property name for default result limit. */
-    private static final String                       PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
+    private static final String PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT = "SqlEditor_default_request_limit";
 
     /** Default value for request limit (when no pref is set). */
-    private static final int                          DEFAULT_REQUEST_LIMIT                = 20;
+    private static final int DEFAULT_REQUEST_LIMIT = 20;
 
-    private static final MultipleRequestExecutionMode DEFAULT_EXECUTION_MODE               =
-                                                                                             MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR;
+    /** The default execution mode. */
+    private static final MultipleRequestExecutionMode DEFAULT_EXECUTION_MODE = MultipleRequestExecutionMode.STOP_AT_FIRST_ERROR;
+
     /** The matching view. */
-    private final SqlRequestLauncherView              view;
+    private final SqlRequestLauncherView      view;
     /** The i18n-able constants. */
-    private final SqlRequestLauncherConstants         constants;
+    private final SqlRequestLauncherConstants constants;
 
     /** The DTO factory. */
-    private final DtoFactory                          dtoFactory;
+    private final DtoFactory                  dtoFactory;
 
-    private String                                    selectedDatasourceId                 = null;
-    private int                                       resultLimit                          = DEFAULT_REQUEST_LIMIT;
-    private MultipleRequestExecutionMode              executionMode                        = DEFAULT_EXECUTION_MODE;
+    private final ConfigurableTextEditor      textEditor;
 
-    private final DatasourceClientService             datasourceClientService;
-    private final NotificationManager                 notificationManager;
-    private final DatasourceManager                   datasourceManager;
-    private final DatabaseInfoStore                   databaseInfoStore;
+    private final DatasourceClientService        datasourceClientService;
+    private final NotificationManager            notificationManager;
+    private final DatasourceManager              datasourceManager;
+    private final DatabaseInfoStore              databaseInfoStore;
 
-    private final EditorDatasourceOracle              editorDatasourceOracle;
-    private final CellTableResourcesQueryResults      cellTableResources;
+    private final EditorDatasourceOracle         editorDatasourceOracle;
+    private final CellTableResourcesQueryResults cellTableResources;
 
-    private final ResultItemBoxFactory                resultItemBoxFactory;
+    private final ResultItemBoxFactory           resultItemBoxFactory;
 
-    private final RequestResultHeaderFactory          requestResultHeaderFactory;
+    private final RequestResultHeaderFactory     requestResultHeaderFactory;
 
     /** The factory used to build message windows. */
-    private final DialogFactory                       dialogFactory;
+    private final DialogFactory                  dialogFactory;
 
     /** The service used to obtain datasource metadata. */
     private final FetchMetadataService                fetchMetadataService;
+
+    private String                       selectedDatasourceId = null;
+    private int                          resultLimit          = DEFAULT_REQUEST_LIMIT;
+    private MultipleRequestExecutionMode executionMode        = DEFAULT_EXECUTION_MODE;
 
     @Inject
     public SqlRequestLauncherPresenter(final @NotNull SqlRequestLauncherView view,
@@ -124,10 +133,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                                        final @NotNull ResultItemBoxFactory resultItemBoxFactory,
                                        final @NotNull RequestResultHeaderFactory requestResultHeaderFactory,
                                        final @NotNull DialogFactory dialogFactory) {
-        super(sqlEditorProvider.getEditor(), workspaceAgent, eventBus);
+        this.textEditor = sqlEditorProvider.getEditor();
+
         this.databaseInfoStore = databaseInfoStore;
         this.editorDatasourceOracle = editorDatasourceOracle;
-        Log.debug(SqlRequestLauncherPresenter.class, "New instance of SQL request launcher presenter resquested.");
         this.view = view;
         this.view.setDelegate(this);
         this.constants = constants;
@@ -147,6 +156,14 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         // register for datasource creation events
         eventBus.addHandler(DatasourceListChangeEvent.getType(), this);
+
+        // Ctrl+enter execution
+        this.textEditor.addKeybinding(new Keybinding(true, false, false, false, KeyCode.ENTER, new KeyBindingAction() {
+            @Override
+            public void action() {
+                executeRequested();
+            }
+        }));
     }
 
     private void setupResultLimit(final PreferencesManager preferencesManager) {
@@ -163,10 +180,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
                 }
             } catch (final NumberFormatException e) {
                 StringBuilder sb = new StringBuilder("Preference stored in ")
-                                                                             .append(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT)
-                                                                             .append(" is not an integer (")
-                                                                             .append(resultLimit)
-                                                                             .append(").");
+                                             .append(PREFERENCE_KEY_DEFAULT_REQUEST_LIMIT)
+                                             .append(" is not an integer (")
+                                             .append(resultLimit)
+                                             .append(").");
                 Log.warn(SqlRequestLauncherPresenter.class, sb.toString());
             }
         }
@@ -188,7 +205,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(view);
-        getEditor().go(this.view.getEditorZone());
+        this.textEditor.go(this.view.getEditorZone());
 
         setupDatasourceComponent();
     }
@@ -203,7 +220,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
         Log.debug(SqlRequestLauncherPresenter.class, "Datasource changed to " + newDataSourceId);
         this.selectedDatasourceId = newDataSourceId;
-        String editorFileId = getEditorInput().getFile().getPath();
+        String editorFileId = this.textEditor.getEditorInput().getFile().getPath();
         Log.debug(SqlRequestLauncherPresenter.class, "Associating editor file id " + editorFileId + " to datasource " + newDataSourceId);
         editorDatasourceOracle.setSelectedDatasourceId(editorFileId, newDataSourceId);
         if (newDataSourceId == null) {
@@ -265,7 +282,9 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @return the selected content
      */
     private String getSelectedText() {
-        return getEditor().getSelectedContent();
+        EmbeddedDocument document = this.textEditor.getDocument();
+        final TextRange selectedRange = document.getSelectedTextRange();
+        return document.getContentRange(selectedRange);
     }
 
     /**
@@ -274,7 +293,7 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
      * @return the content of the editor
      */
     private String getEditorContent() {
-        return getEditor().getEditorContent();
+        return this.textEditor.getDocument().getContents();
     }
 
     @Override
@@ -479,17 +498,17 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
 
     @Override
     public void onClose(@Nonnull final AsyncCallback<Void> callback) {
-        super.onClose(new AsyncCallback<Void>() {
+        this.textEditor.onClose(new AsyncCallback<Void>() {
             @Override
             public void onFailure(Throwable throwable) {
-                final String editorFileId = getEditorInput().getFile().getPath();
+                final String editorFileId = textEditor.getEditorInput().getFile().getPath();
                 editorDatasourceOracle.forgetEditor(editorFileId);
                 callback.onFailure(throwable);
             }
 
             @Override
             public void onSuccess(Void aVoid) {
-                final String editorFileId = getEditorInput().getFile().getPath();
+                final String editorFileId = textEditor.getEditorInput().getFile().getPath();
                 editorDatasourceOracle.forgetEditor(editorFileId);
                 callback.onSuccess(null);
             }
@@ -529,5 +548,10 @@ public class SqlRequestLauncherPresenter extends TextEditorPartAdapter<ReadableC
     @Override
     public void clearResults() {
         this.view.clearResultZone();
+    }
+
+    @Override
+    public ConfigurableTextEditor getTextEditor() {
+        return textEditor;
     }
 }

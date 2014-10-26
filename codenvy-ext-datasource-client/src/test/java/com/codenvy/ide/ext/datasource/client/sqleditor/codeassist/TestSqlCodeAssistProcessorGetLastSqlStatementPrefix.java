@@ -11,26 +11,30 @@
 package com.codenvy.ide.ext.datasource.client.sqleditor.codeassist;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.codenvy.ide.api.text.BadLocationException;
-import com.codenvy.ide.api.text.Position;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
-import com.codenvy.ide.text.DocumentImpl;
+import com.codenvy.ide.jseditor.client.document.EmbeddedDocument;
+import com.codenvy.ide.jseditor.client.text.LinearRange;
+import com.codenvy.ide.jseditor.client.text.TextPosition;
+import com.codenvy.ide.jseditor.client.texteditor.ConfigurableTextEditor;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
 
     @Mock
-    protected ReadableContentTextEditor textEditor;
+    protected ConfigurableTextEditor textEditor;
 
     @Mock
     protected SqlEditorResources        resources;
@@ -40,6 +44,9 @@ public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
     protected EditorDatasourceOracle    editorDatasourceOracle;
 
     protected SqlCodeAssistProcessor    codeAssistProcessor;
+
+    @Mock
+    private EmbeddedDocument document;
 
     @Before
     public void init() {
@@ -51,8 +58,12 @@ public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
         String expectedlastQuery = "select * \nfrom table\nwhere colum";
         String content = "Select * from Database;\n" + expectedlastQuery;
 
-        DocumentImpl document = new DocumentImpl(content);
-        Position position = new Position(content.length());
+        int position = content.length();
+
+        Mockito.when(document.getPositionFromIndex(Matchers.eq(position))).thenReturn(new TextPosition(0, position));
+        Mockito.when(document.getLinearRangeForLine(anyInt())).thenReturn(LinearRange.createWithStart(0).andLength(content.length()));
+        Mockito.when(document.getContentRange(Matchers.eq(0), Matchers.eq(content.length()))).thenReturn(content);
+
         assertEquals("last sql query is", expectedlastQuery, codeAssistProcessor.getLastSQLStatementPrefix(position, document));
     }
     
@@ -61,8 +72,12 @@ public class TestSqlCodeAssistProcessorGetLastSqlStatementPrefix {
         String expectedlastQuery = "select * \nfrom table\nwhere ";
         String content = "Select * from Database\n;" + expectedlastQuery;
 
-        DocumentImpl document = new DocumentImpl(content);
-        Position position = new Position(content.length());
+        int position = content.length();
+
+        Mockito.when(document.getPositionFromIndex(Matchers.eq(position))).thenReturn(new TextPosition(0, position));
+        Mockito.when(document.getLinearRangeForLine(anyInt())).thenReturn(LinearRange.createWithStart(0).andLength(content.length()));
+        Mockito.when(document.getContentRange(Matchers.eq(0), Matchers.eq(content.length()))).thenReturn(content);
+
         assertEquals("last sql query is", expectedlastQuery, codeAssistProcessor.getLastSQLStatementPrefix(position, document));
     }
 }

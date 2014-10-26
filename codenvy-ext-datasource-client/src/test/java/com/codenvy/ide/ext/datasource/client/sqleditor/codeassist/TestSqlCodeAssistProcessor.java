@@ -22,10 +22,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.codenvy.ide.collections.Array;
-import com.codenvy.ide.ext.datasource.client.common.ReadableContentTextEditor;
 import com.codenvy.ide.ext.datasource.client.sqleditor.EditorDatasourceOracle;
 import com.codenvy.ide.ext.datasource.client.sqleditor.SqlEditorResources;
 import com.codenvy.ide.ext.datasource.client.store.DatabaseInfoOracle;
+import com.codenvy.ide.jseditor.client.texteditor.ConfigurableTextEditor;
 import com.google.gwt.dev.util.collect.Lists;
 
 /**
@@ -35,7 +35,7 @@ import com.google.gwt.dev.util.collect.Lists;
 public class TestSqlCodeAssistProcessor {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    protected ReadableContentTextEditor textEditor;
+    protected ConfigurableTextEditor textEditor;
 
     @Mock
     protected SqlEditorResources        resources;
@@ -101,7 +101,7 @@ public class TestSqlCodeAssistProcessor {
     @Test
     public void completeTableForFirstLetterSelectFrom() {
         Array<SqlCodeCompletionProposal> result = testTableCompletion("Select * from t", "for number of results for table autocompletion starting with t, we expect ", 1);
-        assertEquals("result completion should be","Select * from public.table", result.get(0).replacementString);
+        assertEquals("result completion should be", "Select * from public.table", result.get(0).getReplacementString());
     }
 
     @Test
