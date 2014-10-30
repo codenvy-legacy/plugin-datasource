@@ -10,38 +10,21 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.action;
 
-import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
-import com.codenvy.api.project.gwt.client.ProjectServiceClient;
-import com.codenvy.ide.api.app.AppContext;
-import com.codenvy.ide.api.editor.EditorAgent;
-import com.codenvy.ide.api.selection.SelectionAgent;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.SqlEditorExtension;
-import com.codenvy.ide.newresource.DefaultNewResourceAction;
-import com.codenvy.ide.rest.DtoUnmarshallerFactory;
-import com.codenvy.ide.ui.dialogs.DialogFactory;
+import com.codenvy.ide.newresource.AbstractNewResourceAction;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * IDE action to create a new SQL file.
  *
  * @author Artem Zatsarynnyy
  */
-public class NewSqlFileAction extends DefaultNewResourceAction {
+public class NewSqlFileAction extends AbstractNewResourceAction {
 
     @Inject
-    public NewSqlFileAction(AppContext appContext,
-                            SelectionAgent selectionAgent,
-                            EditorAgent editorAgent,
-                            DatasourceUiResources resources,
-                            EventBus eventBus,
-                            ProjectServiceClient projectServiceClient,
-                            AnalyticsEventLogger eventLogger,
-                            DtoUnmarshallerFactory unmarshallerFactory,
-                            DialogFactory dialogFactory) {
-        super("SQL File", "Creates new SQL file", null, resources.sqlIcon(), appContext, selectionAgent, editorAgent, projectServiceClient,
-              eventBus, eventLogger, unmarshallerFactory, dialogFactory);
+    public NewSqlFileAction(DatasourceUiResources resources) {
+        super("SQL File", "Creates new SQL file", null, resources.sqlIcon());
     }
 
     @Override
