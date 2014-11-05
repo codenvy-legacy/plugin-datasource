@@ -81,16 +81,8 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
             datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
         } else {
             try {
-                // temporary workaround https://jira.codenvycorp.com/browse/PLGDS-214
-                if (datasourcesJson.startsWith("\"") && datasourcesJson.endsWith("\"")) {
-                    Log.debug(DatasourceManagerPrefImpl.class, "Previous: " + datasourcesJson);
-                    datasourcesJson = datasourcesJson.substring(1, datasourcesJson.length() - 1);
-                    datasourcesJson = datasourcesJson.replace("\\\"", "\"");
-                    Log.debug(DatasourceManagerPrefImpl.class, "After   : " + datasourcesJson);
-                }
                 datasourcesPreferences = dtoFactory.createDtoFromJson(datasourcesJson, DatasourceConfigPreferences.class);
             } catch (Exception e) {
-                // temporary smoothly log and keep ide working https://jira.codenvycorp.com/browse/PLGDS-214
                 Log.error(DatasourceManagerPrefImpl.class, e);
                 datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
             }
