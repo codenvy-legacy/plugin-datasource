@@ -13,7 +13,7 @@ package com.codenvy.ide.ext.datasource.client.inject;
 
 import com.codenvy.ide.api.extension.ExtensionGinModule;
 import com.codenvy.ide.api.filetypes.FileType;
-import com.codenvy.ide.api.preferences.PreferencesPagePresenter;
+import com.codenvy.ide.api.preferences.PreferencePagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.collections.Collections;
 import com.codenvy.ide.ext.datasource.client.AvailableJdbcDriversService;
@@ -136,7 +136,7 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(com.codenvy.ide.Resources.class).to(Resources.class).in(Singleton.class);
 
         // Add and bind ssl keystore manager preference page and views
-        final GinMultibinder<PreferencesPagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencesPagePresenter.class);
+        final GinMultibinder<PreferencePagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class);
         prefBinder.addBinding().to(SslKeyStoreManagerPresenter.class);
         bind(SslKeyStoreClientService.class).to(SslKeyStoreClientServiceImpl.class).in(Singleton.class);
         bind(SslKeyStoreManagerView.class).to(SslKeyStoreManagerViewImpl.class).in(Singleton.class);
