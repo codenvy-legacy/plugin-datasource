@@ -179,10 +179,6 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencePagePresenter
         });
     }
 
-//    @Override
-//    public void doApply() {
-//    }
-
     @Override
     public boolean isDirty() {
         return false;
