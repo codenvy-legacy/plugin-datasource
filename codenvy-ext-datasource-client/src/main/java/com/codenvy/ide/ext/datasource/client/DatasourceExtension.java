@@ -41,9 +41,9 @@ import static com.codenvy.ide.api.action.IdeActions.GROUP_WINDOW;
 public class DatasourceExtension {
 
     public static boolean       SHOW_ITEM                  = true;
-    public static final String  DS_GROUP_MAIN_MENU         = "DatasourceMainMenu";
+    public static final String  DS_GROUP_MAIN_MENU         = "datasourceMainMenu";
 
-    private static final String DS_ACTION_SHORTCUT_EXECUTE = "DatasourceActionExecute";
+    private static final String DS_ACTION_SHORTCUT_EXECUTE = "datasourceActionExecute";
 
     @Inject
     public DatasourceExtension(WorkspaceAgent workspaceAgent,
@@ -68,14 +68,14 @@ public class DatasourceExtension {
         mainMenu.add(defaultDatasourceMainGroup, beforeWindow);
 
         // add submenu "New datasource" to Datasource menu
-        actionManager.registerAction("NewDSConnection", newDSConnectionAction);
+        actionManager.registerAction("newDSConnection", newDSConnectionAction);
         defaultDatasourceMainGroup.add(newDSConnectionAction);
 
         // do after adding new datasource page provider to keep page order
         connectorsInitializer.initConnectors();
 
         // add submenu "Edit datasource" to Datasource menu
-        actionManager.registerAction("EditDSConnections", editDatasourcesAction);
+        actionManager.registerAction("editDSConnections", editDatasourcesAction);
         defaultDatasourceMainGroup.add(editDatasourcesAction);
 
         // fetching available drivers list from the server
