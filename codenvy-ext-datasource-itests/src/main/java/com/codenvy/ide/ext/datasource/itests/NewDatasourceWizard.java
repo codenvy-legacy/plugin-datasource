@@ -35,11 +35,11 @@ public class NewDatasourceWizard extends AbstractIntegrationTest {
 
 
     public String displayDatasourceMenu() {
-        return mainPage.getMainMenuItem("DatasourceMainMenu").getText();
+        return mainPage.getMainMenuItem("datasourceMainMenu").getText();
     }
 
     public String displayDatasourceNewDatasourceAction() {
-        mainPage.getMainMenuItem("DatasourceMainMenu").click();
+        mainPage.getMainMenuItem("datasourceMainMenu").click();
         return mainPage.getMainMenuAction("Datasource/New Datasource Connection").getText();
     }
 
