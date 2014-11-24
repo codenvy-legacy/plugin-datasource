@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.Notification.Type;
 import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.preferences.AbstractPreferencesPagePresenter;
+import com.codenvy.ide.api.preferences.AbstractPreferencePagePresenter;
 import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.commons.exception.ExceptionThrownEvent;
 import com.codenvy.ide.ext.datasource.client.ssl.upload.UploadSslKeyDialogPresenter;
@@ -25,7 +25,6 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.AsyncRequestLoader;
 import com.codenvy.ide.rest.DtoUnmarshallerFactory;
 import com.codenvy.ide.util.loging.Log;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -34,7 +33,7 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
 @Singleton
-public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresenter implements SslKeyStoreManagerView.ActionDelegate {
+public class SslKeyStoreManagerPresenter extends AbstractPreferencePagePresenter implements SslKeyStoreManagerView.ActionDelegate {
     private final DtoUnmarshallerFactory            dtoUnmarshallerFactory;
     private       SslKeyStoreManagerView            view;
     private       SslKeyStoreClientService          service;
@@ -181,10 +180,6 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
     }
 
     @Override
-    public void doApply() {
-    }
-
-    @Override
     public boolean isDirty() {
         return false;
     }
@@ -195,5 +190,16 @@ public class SslKeyStoreManagerPresenter extends AbstractPreferencesPagePresente
         refreshServerCerts();
         container.setWidget(view);
     }
+
+    @Override
+    public void storeChanges() {
+
+    }
+
+    @Override
+    public void revertChanges() {
+
+    }
+
 
 }
