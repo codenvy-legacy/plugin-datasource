@@ -24,7 +24,7 @@ public class NewSqlFileAction extends AbstractNewResourceAction {
 
     @Inject
     public NewSqlFileAction(DatasourceUiResources resources) {
-        super("SQL File", "Creates new SQL file", null, resources.sqlIcon());
+        super("SQL File", "Creates new SQL file", resources.sqlIcon());
     }
 
     @Override
