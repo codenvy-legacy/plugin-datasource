@@ -68,7 +68,7 @@ public class SqlEditorExtension {
         // add action for creating new SQL file in "File-New" submenu
         DefaultActionGroup newGroup = (DefaultActionGroup)actionManager.getAction(GROUP_FILE_NEW);
         newGroup.addSeparator();
-        actionManager.registerAction("NewSqlFileAction", newSqlFileAction);
+        actionManager.registerAction("newSqlFileAction", newSqlFileAction);
         newGroup.add(newSqlFileAction);
 
         // register the sql file icon
