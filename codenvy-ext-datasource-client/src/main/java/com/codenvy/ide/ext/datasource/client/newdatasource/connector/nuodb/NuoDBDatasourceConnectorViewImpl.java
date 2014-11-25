@@ -83,6 +83,8 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     protected boolean                   passwordFieldIsDirty = false;
 
+    protected Long                      runnerProcessId;
+
 
     @Inject
     public NuoDBDatasourceConnectorViewImpl(final NuoDBDatasourceViewImplUiBinder uiBinder,
@@ -286,6 +288,16 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     @Override
     public boolean isPasswordFieldDirty() {
         return passwordFieldIsDirty;
+    }
+
+    @Override
+    public Long getRunnerProcessId() {
+        return runnerProcessId;
+    }
+
+    @Override
+    public void setRunnerProcessId(Long runnerProcessId) {
+        this.runnerProcessId = runnerProcessId;
     }
 
 }

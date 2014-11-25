@@ -87,4 +87,10 @@ public interface DatabaseConfigurationDTO {
     DatabaseConfigurationDTO withVerifyServerCertificate(boolean verifyServerCertificate);
 
     void setVerifyServerCertificate(boolean verifyServerCertificate);
+
+    void setRunnerProcessId(Long processId);
+
+    Long getRunnerProcessId();
+
+    DatabaseConfigurationDTO withRunnerProcessId(Long runnerProcessId);
 }

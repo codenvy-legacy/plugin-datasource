@@ -54,4 +54,7 @@ public interface AbstractNewDatasourceConnectorView extends View<AbstractNewData
 
     boolean isPasswordFieldDirty();
 
+    Long getRunnerProcessId();
+
+    void setRunnerProcessId(Long runnerProcessId);
 }

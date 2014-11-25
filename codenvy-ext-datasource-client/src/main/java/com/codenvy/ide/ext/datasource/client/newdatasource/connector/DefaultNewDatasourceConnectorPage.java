@@ -83,7 +83,8 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
                                                     .withHostName(getView().getHostname())
                                                     .withPort(getView().getPort())
                                                     .withUseSSL(getView().getUseSSL())
-                                                    .withVerifyServerCertificate(getView().getVerifyServerCertificate());
+                                                    .withVerifyServerCertificate(getView().getVerifyServerCertificate())
+                                                    .withRunnerProcessId(getView().getRunnerProcessId());;
 
         result.withUsername(getView().getUsername())
               .withPassword(getView().getEncryptedPassword());
@@ -117,6 +118,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
         getView().setUsername(initData.getUsername());
         getView().setEncryptedPassword(initData.getPassword(), true);
+        getView().setRunnerProcessId(initData.getRunnerProcessId());
     }
 
     @Override

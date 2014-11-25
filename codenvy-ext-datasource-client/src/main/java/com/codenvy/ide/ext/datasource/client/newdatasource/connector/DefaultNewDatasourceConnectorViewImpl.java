@@ -85,6 +85,8 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
 
     protected boolean      passwordFieldIsDirty = false;
 
+    private Long runnerProcessId;
+
 
     @Inject
     public DefaultNewDatasourceConnectorViewImpl(NewDatasourceViewImplUiBinder uiBinder) {
@@ -237,6 +239,16 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     @Override
     public boolean isPasswordFieldDirty() {
         return passwordFieldIsDirty;
+    }
+
+    @Override
+    public Long getRunnerProcessId() {
+        return runnerProcessId;
+    }
+
+    @Override
+    public void setRunnerProcessId(Long runnerProcessId) {
+        this.runnerProcessId = runnerProcessId;
     }
 
     // @UiHandler("radioUserPref")

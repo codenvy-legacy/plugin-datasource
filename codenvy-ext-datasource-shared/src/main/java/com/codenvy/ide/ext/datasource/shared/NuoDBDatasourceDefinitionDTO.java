@@ -25,13 +25,21 @@ public interface NuoDBDatasourceDefinitionDTO extends DatabaseConfigurationDTO {
 
 
     /* Change type of parent with* methods */
+    @Override
     NuoDBDatasourceDefinitionDTO withDatabaseType(DatabaseType type);
 
+    @Override
     NuoDBDatasourceDefinitionDTO withDatabaseName(String databaseName);
 
+    @Override
     NuoDBDatasourceDefinitionDTO withDatasourceId(String type);
 
+    @Override
     NuoDBDatasourceDefinitionDTO withUsername(String username);
 
+    @Override
     NuoDBDatasourceDefinitionDTO withPassword(String password);
+
+    @Override
+    NuoDBDatasourceDefinitionDTO withRunnerProcessId(Long runnerProcessId);
 }
