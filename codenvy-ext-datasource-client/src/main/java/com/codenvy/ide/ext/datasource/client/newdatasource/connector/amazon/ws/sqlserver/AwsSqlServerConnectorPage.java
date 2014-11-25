@@ -29,7 +29,6 @@ import com.google.web.bindery.event.shared.EventBus;
 public class AwsSqlServerConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String AWSSQLSERVER_DB_ID        = "awsSqlserver";
-    private static final int   DEFAULT_PORT_SQLSERVER = 1433;
 
     @Inject
     public AwsSqlServerConnectorPage(final DefaultNewDatasourceConnectorView view,
@@ -41,6 +40,6 @@ public class AwsSqlServerConnectorPage extends DefaultNewDatasourceConnectorPage
                                               final DatasourceUiResources resources,
                                               final NewDatasourceWizardMessages messages) {
         super(view, messages.awssqlserver(), resources.getSqlServerLogo(), AWSSQLSERVER_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DEFAULT_PORT_SQLSERVER, DatabaseType.JTDS);
+              notificationManager, dtoFactory, messages, DatabaseType.JTDS.getDefaultPort(), DatabaseType.JTDS);
     }
 }

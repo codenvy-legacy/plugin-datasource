@@ -27,7 +27,6 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class AwsOracleConnectorPage extends DefaultNewDatasourceConnectorPage {
     public static final String AWSORACLE_DB_ID        = "awsOracle";
-    private static final int   DEFAULT_PORT_ORACLE = 1521;
 
     @Inject
     public AwsOracleConnectorPage(final DefaultNewDatasourceConnectorView view,
@@ -39,6 +38,6 @@ public class AwsOracleConnectorPage extends DefaultNewDatasourceConnectorPage {
                                          final DatasourceUiResources resources,
                                          final NewDatasourceWizardMessages messages) {
         super(view, messages.awsoracle(), resources.getAwsOracleLogo(), AWSORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DEFAULT_PORT_ORACLE, DatabaseType.ORACLE);
+              dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
     }
 }

@@ -41,9 +41,6 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                                                                     NuoDBDatasourceConnectorView.NuoActionDelegate,
                                                                                     InitializableWizardPage {
 
-    public static final String                  NUODB_DB_ID               = "nuodb";
-    private static final int                    DEFAULT_PORT_NUODB_BROKER = 48004;
-
     private final ListDataProvider<NuoDBBroker> brokersProvider           = new ListDataProvider<>();
     private final DtoFactory                    dtoFactory;
 
@@ -57,7 +54,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
 
-        super(view, messages.nuodb(), resources.getNuoDBLogo(), NUODB_DB_ID, datasourceManager, eventBus, service,
+        super(view, messages.nuodb(), resources.getNuoDBLogo(), DatabaseType.NUODB.getConnectorId(), datasourceManager, eventBus, service,
               notificationManager, dtoFactory, messages);
         view.setNuoDelegate(this);
 
@@ -72,7 +69,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
     private NuoDBBroker createNewBroker(final int id) {
         final NuoDBBroker newBroker = NuoDBBroker.create(id);
         newBroker.setHost("localhost");
-        newBroker.setPort(DEFAULT_PORT_NUODB_BROKER);
+        newBroker.setPort(DatabaseType.NUODB.getDefaultPort());
         return newBroker;
     }
 
@@ -120,7 +117,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
 
     @Override
     public Integer getDefaultPort() {
-        return DEFAULT_PORT_NUODB_BROKER;
+        return DatabaseType.NUODB.getDefaultPort();
     }
 
     @Override

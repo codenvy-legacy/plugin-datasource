@@ -28,8 +28,6 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class MssqlserverDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
 
-    public static final String SQLSERVER_DB_ID        = "sqlserver";
-    private static final int   DEFAULT_PORT_SQLSERVER = 1433;
 
     @Inject
     public MssqlserverDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
@@ -40,7 +38,7 @@ public class MssqlserverDatasourceConnectorPage extends DefaultNewDatasourceConn
                                               final DatasourceClientService service,
                                               final DatasourceUiResources resources,
                                               final NewDatasourceWizardMessages messages) {
-        super(view, messages.mssqlserver(), resources.getSqlServerLogo(), SQLSERVER_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DEFAULT_PORT_SQLSERVER, DatabaseType.JTDS);
+        super(view, messages.mssqlserver(), resources.getSqlServerLogo(), DatabaseType.JTDS.getConnectorId(), datasourceManager, eventBus, service,
+              notificationManager, dtoFactory, messages, DatabaseType.JTDS.getDefaultPort(), DatabaseType.JTDS);
     }
 }

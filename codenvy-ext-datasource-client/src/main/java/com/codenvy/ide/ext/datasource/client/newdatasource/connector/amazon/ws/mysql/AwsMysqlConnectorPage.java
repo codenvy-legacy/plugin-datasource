@@ -29,7 +29,6 @@ import com.google.web.bindery.event.shared.EventBus;
 public class AwsMysqlConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String AWSMYSQL_DB_ID        = "awsMysql";
-    private static final int   DEFAULT_PORT_MYSQL = 3306;
 
 
     @Inject
@@ -42,6 +41,6 @@ public class AwsMysqlConnectorPage extends DefaultNewDatasourceConnectorPage {
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
         super(view, messages.awsmysql(), resources.getAwsMysqlLogo(), AWSMYSQL_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
+              notificationManager, dtoFactory, messages, DatabaseType.MYSQL.getDefaultPort(), DatabaseType.MYSQL);
     }
 }

@@ -27,10 +27,6 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class MysqlDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
 
-    public static final String MYSQL_DB_ID        = "mysql";
-    private static final int   DEFAULT_PORT_MYSQL = 3306;
-
-
     @Inject
     public MysqlDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                         final NotificationManager notificationManager,
@@ -40,7 +36,7 @@ public class MysqlDatasourceConnectorPage extends DefaultNewDatasourceConnectorP
                                         final DatasourceClientService service,
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, messages.mysql(), resources.getMySqlLogo(), MYSQL_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.MYSQL);
+        super(view, messages.mysql(), resources.getMySqlLogo(), DatabaseType.MYSQL.getConnectorId(), datasourceManager, eventBus, service,
+              notificationManager, dtoFactory, messages, DatabaseType.MYSQL.getDefaultPort(), DatabaseType.MYSQL);
     }
 }

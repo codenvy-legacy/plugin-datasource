@@ -26,8 +26,6 @@ import com.google.web.bindery.event.shared.EventBus;
  * Created by Wafa on 20/01/14.
  */
 public class OracleDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
-    public static final String ORACLE_DB_ID        = "oracle";
-    private static final int   DEFAULT_PORT_ORACLE = 1521;
 
     @Inject
     public OracleDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
@@ -38,7 +36,7 @@ public class OracleDatasourceConnectorPage extends DefaultNewDatasourceConnector
                                          final DatasourceClientService service,
                                          final DatasourceUiResources resources,
                                          final NewDatasourceWizardMessages messages) {
-        super(view, messages.oracle(), resources.getOracleLogo(), ORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DEFAULT_PORT_ORACLE, DatabaseType.ORACLE);
+        super(view, messages.oracle(), resources.getOracleLogo(), DatabaseType.ORACLE.getConnectorId(), datasourceManager, eventBus, service, notificationManager,
+              dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
     }
 }

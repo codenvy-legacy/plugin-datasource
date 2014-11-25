@@ -24,10 +24,6 @@ import com.google.web.bindery.event.shared.EventBus;
 
 public class PostgresDatasourceConnectorPage extends DefaultNewDatasourceConnectorPage {
 
-    public static final String PG_DB_ID           = "postgres";
-    private static final int   DEFAULT_PORT_PGSQL = 5432;
-
-
     @Inject
     public PostgresDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                            final NotificationManager notificationManager,
@@ -37,8 +33,8 @@ public class PostgresDatasourceConnectorPage extends DefaultNewDatasourceConnect
                                            final DatasourceClientService service,
                                            final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
-        super(view, messages.postgresql(), resources.getPostgreSqlLogo(), PG_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DEFAULT_PORT_PGSQL, DatabaseType.POSTGRES);
+        super(view, messages.postgresql(), resources.getPostgreSqlLogo(), DatabaseType.POSTGRES.getConnectorId(), datasourceManager, eventBus, service, notificationManager,
+              dtoFactory, messages, DatabaseType.POSTGRES.getDefaultPort(), DatabaseType.POSTGRES);
     }
 
 }

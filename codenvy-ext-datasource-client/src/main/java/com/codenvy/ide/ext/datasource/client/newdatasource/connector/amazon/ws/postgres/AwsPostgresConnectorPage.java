@@ -25,7 +25,6 @@ import com.google.web.bindery.event.shared.EventBus;
 public class AwsPostgresConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String AWSPOSTGRES_DB_ID           = "awsPostgres";
-    private static final int   DEFAULT_PORT_PGSQL = 5432;
 
 
     @Inject
@@ -37,8 +36,8 @@ public class AwsPostgresConnectorPage extends DefaultNewDatasourceConnectorPage 
                                            final DatasourceClientService service,
                                            final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
-        super(view, messages.awspg(), resources.getAwsPostgresLogo(), AWSPOSTGRES_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DEFAULT_PORT_PGSQL, DatabaseType.POSTGRES);
+        super(view, messages.awspg(), resources.getAwsPostgresLogo(), AWSPOSTGRES_DB_ID, datasourceManager, eventBus, service,
+              notificationManager, dtoFactory, messages, DatabaseType.POSTGRES.getDefaultPort(), DatabaseType.POSTGRES);
     }
 
 }

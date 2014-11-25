@@ -33,6 +33,7 @@ import com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql.Mysql
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb.NuoDBDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle.OracleDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.postgres.PostgresDatasourceConnectorPage;
+import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.util.loging.Log;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -65,7 +66,7 @@ public class ConnectorsInitializer {
         // add a new postgres connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> pgWizardPages = Collections.createArray();
         pgWizardPages.add(pgConnectorPageProvider);
-        NewDatasourceConnector connectorPostgres = new NewDatasourceConnector(PostgresDatasourceConnectorPage.PG_DB_ID,
+        NewDatasourceConnector connectorPostgres = new NewDatasourceConnector(DatabaseType.POSTGRES.getConnectorId(),
                                                                               connectorCounter, dsMessages.postgresql(),
                                                                               resources.getPostgreSqlLogo(),
                                                                               "org.postgresql.Driver",
@@ -77,7 +78,7 @@ public class ConnectorsInitializer {
         // Add a new mysql connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> mysqlWizardPages = Collections.createArray();
         mysqlWizardPages.add(mysqlConnectorPageProvider);
-        NewDatasourceConnector connectorMysql = new NewDatasourceConnector(MysqlDatasourceConnectorPage.MYSQL_DB_ID,
+        NewDatasourceConnector connectorMysql = new NewDatasourceConnector(DatabaseType.MYSQL.getConnectorId(),
                                                                            connectorCounter,
                                                                            dsMessages.mysql(),
                                                                            resources.getMySqlLogo(),
@@ -90,7 +91,7 @@ public class ConnectorsInitializer {
         // add a new oracle connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> oracleWizardPages = Collections.createArray();
         oracleWizardPages.add(oracleConnectorPageProvider);
-        NewDatasourceConnector connectorOracle = new NewDatasourceConnector(OracleDatasourceConnectorPage.ORACLE_DB_ID,
+        NewDatasourceConnector connectorOracle = new NewDatasourceConnector(DatabaseType.ORACLE.getConnectorId(),
                                                                             connectorCounter,
                                                                             dsMessages.oracle(),
                                                                             resources.getOracleLogo(),
@@ -102,7 +103,7 @@ public class ConnectorsInitializer {
         // add a new SQLserver connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> sqlServerWizardPages = Collections.createArray();
         sqlServerWizardPages.add(mssqlserverConnectorPageProvider);
-        NewDatasourceConnector connectorMs = new NewDatasourceConnector(MssqlserverDatasourceConnectorPage.SQLSERVER_DB_ID,
+        NewDatasourceConnector connectorMs = new NewDatasourceConnector(DatabaseType.JTDS.getConnectorId(),
                                                                         connectorCounter,
                                                                         dsMessages.mssqlserver(),
                                                                         resources.getSqlServerLogo(),
@@ -116,7 +117,7 @@ public class ConnectorsInitializer {
         // add a new NuoDB connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> nuoDBWizardPages = Collections.createArray();
         nuoDBWizardPages.add(nuodbConnectorPageProvider);
-        NewDatasourceConnector connectorNuoDB = new NewDatasourceConnector(NuoDBDatasourceConnectorPage.NUODB_DB_ID,
+        NewDatasourceConnector connectorNuoDB = new NewDatasourceConnector(DatabaseType.NUODB.getConnectorId(),
                                                                            connectorCounter,
                                                                            dsMessages.nuodb(),
                                                                            resources.getNuoDBLogo(),
@@ -129,7 +130,7 @@ public class ConnectorsInitializer {
         // add a new GoogleCloudSQL connector
         Array<Provider< ? extends AbstractNewDatasourceConnectorPage>> googleCloudSQLWizardPages = Collections.createArray();
         googleCloudSQLWizardPages.add(googleCloudSqlConnectorPageProvider);
-        NewDatasourceConnector connectorGoogle = new NewDatasourceConnector(GoogleCloudSqlConnectorPage.GOOGLECLOUDSQL_DB_ID,
+        NewDatasourceConnector connectorGoogle = new NewDatasourceConnector(DatabaseType.GOOGLECLOUDSQL.getConnectorId(),
                                                                             connectorCounter,
                                                                             dsMessages.googlecloudsql(),
                                                                             resources.getGoogleCloudSQLLogo(),

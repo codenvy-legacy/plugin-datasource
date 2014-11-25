@@ -27,9 +27,6 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class GoogleCloudSqlConnectorPage  extends DefaultNewDatasourceConnectorPage {
 
-    public static final String GOOGLECLOUDSQL_DB_ID        = "googleCloudSql";
-    private static final int   DEFAULT_PORT_MYSQL = 3306;
-
     @Inject
     public GoogleCloudSqlConnectorPage (final DefaultNewDatasourceConnectorView view,
                                         final NotificationManager notificationManager,
@@ -39,7 +36,7 @@ public class GoogleCloudSqlConnectorPage  extends DefaultNewDatasourceConnectorP
                                         final DatasourceClientService service,
                                         final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, messages.googlecloudsql(), resources.getGoogleCloudSQLLogo(), GOOGLECLOUDSQL_DB_ID, datasourceManager, eventBus, service,
-                notificationManager, dtoFactory, messages, DEFAULT_PORT_MYSQL, DatabaseType.GOOGLECLOUDSQL);
+        super(view, messages.googlecloudsql(), resources.getGoogleCloudSQLLogo(), DatabaseType.GOOGLECLOUDSQL.getConnectorId(), datasourceManager, eventBus, service,
+                notificationManager, dtoFactory, messages, DatabaseType.GOOGLECLOUDSQL.getDefaultPort(), DatabaseType.GOOGLECLOUDSQL);
     }
 }
