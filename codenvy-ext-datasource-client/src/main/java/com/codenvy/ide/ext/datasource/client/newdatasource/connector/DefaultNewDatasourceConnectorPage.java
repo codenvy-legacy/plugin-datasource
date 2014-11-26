@@ -84,7 +84,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
                                                     .withPort(getView().getPort())
                                                     .withUseSSL(getView().getUseSSL())
                                                     .withVerifyServerCertificate(getView().getVerifyServerCertificate())
-                                                    .withRunnerProcessId(getView().getRunnerProcessId());;
+                                                    .withRunnerProcessId(getView().getRunnerProcessId());
 
         result.withUsername(getView().getUsername())
               .withPassword(getView().getEncryptedPassword());
