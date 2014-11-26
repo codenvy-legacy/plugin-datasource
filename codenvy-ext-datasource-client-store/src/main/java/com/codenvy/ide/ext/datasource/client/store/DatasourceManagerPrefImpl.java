@@ -10,7 +10,12 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.store;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.codenvy.api.user.shared.dto.ProfileDescriptor;
@@ -26,33 +31,47 @@ import com.google.inject.Singleton;
 @Singleton
 public class DatasourceManagerPrefImpl implements DatasourceManager {
 
-    private static final String PREFERENCE_KEY = "datasources";
+    private static final String                     PREFERENCE_KEY = "datasources";
 
-    private PreferencesManager  preferencesManager;
+    private PreferencesManager                      preferencesManager;
 
-    private DtoFactory          dtoFactory;
+    private DtoFactory                              dtoFactory;
+
+    protected Map<String, DatabaseConfigurationDTO> inMemoryDatabaseConfigurations;
 
     @Inject
     public DatasourceManagerPrefImpl(final PreferencesManager prefManager,
                                      final DtoFactory dtoFactory) {
-        this.preferencesManager = prefManager;
+        preferencesManager = prefManager;
         this.dtoFactory = dtoFactory;
+        inMemoryDatabaseConfigurations = new HashMap<String, DatabaseConfigurationDTO>();
     }
 
     @Override
     public Iterator<DatabaseConfigurationDTO> getDatasources() {
-        return getDatasourceConfigPreferences().getDatasources().values().iterator();
+        List<DatabaseConfigurationDTO> newList =
+                                                 new ArrayList<DatabaseConfigurationDTO>(getDatasourceConfigPreferences().getDatasources()
+                                                                                                                         .values());
+        newList.addAll(inMemoryDatabaseConfigurations.values());
+        return newList.iterator();
     }
 
     @Override
     public void add(final DatabaseConfigurationDTO configuration) {
         DatasourceConfigPreferences datasourcesPreferences = getDatasourceConfigPreferences();
+        if (configuration.getRunnerProcessId() != null) {
+            inMemoryDatabaseConfigurations.put(configuration.getDatasourceId(), configuration);
+            // Workaround: avoid bug Fail to persist datasource
+            saveDatasourceConfigPreferences(getDatasourceConfigPreferences());
+            return;
+        }
         datasourcesPreferences.getDatasources().put(configuration.getDatasourceId(), configuration);
         saveDatasourceConfigPreferences(datasourcesPreferences);
     }
 
     @Override
     public void remove(final DatabaseConfigurationDTO configuration) {
+        inMemoryDatabaseConfigurations.remove(configuration.getDatasourceId());
         DatasourceConfigPreferences datasourcesPreferences = getDatasourceConfigPreferences();
         datasourcesPreferences.getDatasources().remove(configuration.getDatasourceId());
         saveDatasourceConfigPreferences(datasourcesPreferences);
@@ -60,22 +79,28 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
 
     @Override
     public DatabaseConfigurationDTO getByName(final String name) {
+        if (inMemoryDatabaseConfigurations.containsKey(name)) {
+            return inMemoryDatabaseConfigurations.get(name);
+        }
         DatasourceConfigPreferences datasourcesPreferences = getDatasourceConfigPreferences();
         return datasourcesPreferences.getDatasources().get(name);
     }
 
     @Override
     public void persist(final AsyncCallback<ProfileDescriptor> callback) {
-        this.preferencesManager.flushPreferences(callback);
+        preferencesManager.flushPreferences(callback);
     }
 
+    @Override
     public Set<String> getNames() {
         DatasourceConfigPreferences datasourcesPreferences = getDatasourceConfigPreferences();
-        return datasourcesPreferences.getDatasources().keySet();
+        HashSet<String> datasourceNames = new HashSet<String>(getDatasourceConfigPreferences().getDatasources().keySet());
+        datasourceNames.addAll(inMemoryDatabaseConfigurations.keySet());
+        return datasourceNames;
     }
 
     private DatasourceConfigPreferences getDatasourceConfigPreferences() {
-        String datasourcesJson = this.preferencesManager.getValue(PREFERENCE_KEY);
+        String datasourcesJson = preferencesManager.getValue(PREFERENCE_KEY);
         DatasourceConfigPreferences datasourcesPreferences;
         if (datasourcesJson == null) {
             datasourcesPreferences = dtoFactory.createDto(DatasourceConfigPreferences.class);
@@ -94,6 +119,7 @@ public class DatasourceManagerPrefImpl implements DatasourceManager {
         preferencesManager.setPreference(PREFERENCE_KEY, dtoFactory.toJson(datasourcesPreferences));
     }
 
+    @Override
     public String toString() {
         return "DatasourceManagerPrefImpl[" + preferencesManager.getValue(PREFERENCE_KEY) + "]";
     }
