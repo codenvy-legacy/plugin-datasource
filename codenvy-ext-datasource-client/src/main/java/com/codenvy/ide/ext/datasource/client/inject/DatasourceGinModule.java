@@ -35,6 +35,7 @@ import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageW
 import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageWindowPresenter;
 import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageWindowView;
 import com.codenvy.ide.ext.datasource.client.common.interaction.message.MessageWindowViewImpl;
+import com.codenvy.ide.ext.datasource.client.discovery.DatasourceDiscovery;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenterFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
@@ -166,6 +167,7 @@ public class DatasourceGinModule extends AbstractGinModule {
                                              .implement(MessageWindow.class, MessageWindowPresenter.class)
                                              .build(DialogFactory.class));
 
+        bind(DatasourceDiscovery.class).asEagerSingleton();
     }
 
     @Provides
