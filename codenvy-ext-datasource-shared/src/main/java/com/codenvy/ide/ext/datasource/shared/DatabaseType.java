@@ -12,26 +12,28 @@ package com.codenvy.ide.ext.datasource.shared;
 
 public enum DatabaseType {
 
-    POSTGRES("postgres", 5432, "postgres"),
+    POSTGRES("postgres", 5432, "postgres", ""),
 
-    MYSQL("mysql", 3306, "root"),
+    MYSQL("mysql", 3306, "root", ""),
 
-    ORACLE("oracle", 1521, "SYSTEM"),
+    ORACLE("oracle", 1521, "SYSTEM", ""),
 
-    JTDS("sqlserver", 1433, "sa"),
+    JTDS("sqlserver", 1433, "sa", "Password123"),
 
-    NUODB("nuodb", 48004, "dba"),
+    NUODB("nuodb", 48004, "dba", "goalie"),
 
-    GOOGLECLOUDSQL("googleCloudSql", 3306, "root");
+    GOOGLECLOUDSQL("googleCloudSql", 3306, "root", "");
 
     private String connectorId;
     private int    defaultPort;
     private String defaultUsername;
+    private String defaultPassword;
 
-    private DatabaseType(String connectorId, int defaultPort, String defaultUsername) {
+    private DatabaseType(String connectorId, int defaultPort, String defaultUsername, String defaultPassword) {
         this.connectorId = connectorId;
         this.defaultPort = defaultPort;
         this.defaultUsername = defaultUsername;
+        this.defaultPassword = defaultPassword;
     }
 
     public String getConnectorId() {
@@ -47,5 +49,8 @@ public enum DatabaseType {
         return defaultUsername;
     }
 
+    public String getDefaultPassword() {
+        return defaultPassword;
+    }
 
 }
