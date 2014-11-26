@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
+import com.codenvy.ide.api.app.AppContext;
+import com.codenvy.ide.api.app.CurrentProject;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourceMessages;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesPresenter;
@@ -23,7 +25,7 @@ import com.google.inject.Inject;
 
 /**
  * IDE action to edit and delete datasources.
- * 
+ *
  * @author "Mickaël Leduque"
  */
 public class EditDatasourcesAction extends Action {
@@ -33,15 +35,29 @@ public class EditDatasourcesAction extends Action {
 
     private final AnalyticsEventLogger eventLogger;
 
+    private final AppContext appContext;
+
     @Inject
     public EditDatasourcesAction(@NotNull final EditDatasourcesPresenterFactory dialogFactory,
                                  @NotNull final EditDatasourceMessages messages,
                                  @NotNull DatasourceUiResources resources,
-                                 AnalyticsEventLogger eventLogger) {
+                                 AnalyticsEventLogger eventLogger,
+                                 AppContext appContext) {
         super(messages.editDatasourcesMenuText(), messages.editDatasourcesMenuDescription(), null,
               resources.manageDatasourceMenuIcon());
         this.dialogFactory = dialogFactory;
         this.eventLogger = eventLogger;
+        this.appContext = appContext;
+    }
+
+    @Override
+    public void update(ActionEvent e) {
+        CurrentProject currentProject = appContext.getCurrentProject();
+        if (currentProject != null && currentProject.isReadOnly()) {
+            e.getPresentation().setEnabledAndVisible(false);
+        } else {
+            e.getPresentation().setEnabledAndVisible(currentProject != null);
+        }
     }
 
     @Override

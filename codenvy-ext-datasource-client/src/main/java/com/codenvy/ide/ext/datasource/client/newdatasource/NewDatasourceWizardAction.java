@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import com.codenvy.api.analytics.logger.AnalyticsEventLogger;
 import com.codenvy.ide.api.action.Action;
 import com.codenvy.ide.api.action.ActionEvent;
+import com.codenvy.ide.api.app.AppContext;
+import com.codenvy.ide.api.app.CurrentProject;
 import com.codenvy.ide.api.notification.Notification;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
@@ -28,7 +30,7 @@ import com.google.inject.Singleton;
 public class NewDatasourceWizardAction extends Action {
 
     /** The {@link NotificationManager} used to show start, completion or error messages to the user. */
-    protected NotificationManager              notificationManager;
+    protected NotificationManager notificationManager;
 
     private final NewDatasourceWizardPresenter wizard;
 
@@ -37,18 +39,32 @@ public class NewDatasourceWizardAction extends Action {
     /** The messages interface. */
     private final NewDatasourceWizardMessages messages;
 
+    private final AppContext appContext;
+
     @Inject
     public NewDatasourceWizardAction(@NotNull final DatasourceUiResources resources,
                                      @NotNull NewDatasourceWizardPresenter wizard,
                                      @NotNull final NotificationManager notificationManager,
                                      @NotNull final NewDatasourceWizardMessages messages,
-                                     AnalyticsEventLogger eventLogger) {
+                                     AnalyticsEventLogger eventLogger,
+                                     AppContext appContext) {
         super(messages.newDatasourceMenuText(), messages.newDatasourceMenuDescription(), null,
               resources.newDatasourceMenuIcon());
         this.wizard = wizard;
         this.messages = messages;
         this.notificationManager = notificationManager;
         this.eventLogger = eventLogger;
+        this.appContext = appContext;
+    }
+
+    @Override
+    public void update(ActionEvent e) {
+        CurrentProject currentProject = appContext.getCurrentProject();
+        if (currentProject != null && currentProject.isReadOnly()) {
+            e.getPresentation().setEnabledAndVisible(false);
+        } else {
+            e.getPresentation().setEnabledAndVisible(currentProject != null);
+        }
     }
 
     @Override
