@@ -16,7 +16,7 @@
     <parent>
         <artifactId>codenvy-ext-datasource-parent</artifactId>
         <groupId>com.codenvy.ide</groupId>
-        <version>1.5.1</version>
+        <version>1.5.2-SNAPSHOT</version>
     </parent>
     <artifactId>codenvy-ext-datasource-server</artifactId>
     <name>Codenvy Extension :: Datasource Server</name>
