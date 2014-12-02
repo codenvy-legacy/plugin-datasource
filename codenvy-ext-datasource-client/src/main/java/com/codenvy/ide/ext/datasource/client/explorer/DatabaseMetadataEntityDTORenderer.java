@@ -13,11 +13,13 @@ package com.codenvy.ide.ext.datasource.client.explorer;
 import org.vectomatic.dom.svg.OMSVGSVGElement;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
+import com.codenvy.ide.api.parts.PartStackUIResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.shared.ColumnDTO;
 import com.codenvy.ide.ext.datasource.shared.SchemaDTO;
 import com.codenvy.ide.ext.datasource.shared.TableDTO;
 import com.codenvy.ide.ui.tree.NodeRenderer;
+import com.codenvy.ide.ui.tree.Tree;
 import com.codenvy.ide.ui.tree.TreeNodeElement;
 import com.codenvy.ide.util.dom.Elements;
 import com.google.gwt.resources.client.CssResource;
@@ -233,7 +235,7 @@ public class DatabaseMetadataEntityDTORenderer implements NodeRenderer<EntityTre
     /**
      * The resource interface for the datasource explorer tree.
      */
-    public interface Resources extends com.codenvy.ide.Resources {
+    public interface Resources extends Tree.Resources, PartStackUIResources {
 
         /** Returns the CSS resource for the datasource explorer tree. */
         @Source({"DatabaseMetadataEntityDTORenderer.css", "com/codenvy/ide/common/constants.css",
