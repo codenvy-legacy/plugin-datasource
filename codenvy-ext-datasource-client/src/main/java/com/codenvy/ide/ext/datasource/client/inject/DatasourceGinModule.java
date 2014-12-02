@@ -43,7 +43,6 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourc
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardFactory;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardProvider;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
-import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
@@ -128,9 +127,6 @@ public class DatasourceGinModule extends AbstractGinModule {
         bind(FetchMetadataService.class).to(FetchMetadataServiceImpl.class).in(Singleton.class);
 
         bind(EditorDatasourceOracle.class).to(EditorDatasourceOracleImpl.class).in(Singleton.class);
-
-        bind(Resources.class).in(Singleton.class);
-        bind(com.codenvy.ide.Resources.class).to(Resources.class).in(Singleton.class);
 
         // Add and bind ssl keystore manager preference page and views
         final GinMultibinder<PreferencePagePresenter> prefBinder = GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class);
