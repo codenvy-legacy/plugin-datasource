@@ -29,6 +29,7 @@ import com.codenvy.ide.rest.AsyncRequestCallback;
 import com.codenvy.ide.rest.StringUnmarshaller;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -102,14 +103,37 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                                                       new AsyncRequestCallback<String>(new StringUnmarshaller()) {
                                                           @Override
                                                           protected void onSuccess(final String result) {
-                                                              onSuccessFetchingDatabaseInfo(configuration, datasourceId,
-                                                                                            fetchDatabaseNotification, result);
+                                                              onSuccessFetchingDatabaseInfo(configuration, datasourceId, fetchDatabaseNotification, result);
                                                           }
 
                                                           @Override
                                                           protected void onFailure(final Throwable e) {
-                                                              onFailureFetchingDatabaseInfo(configuration, datasourceId,
-                                                                                            fetchDatabaseNotification, e);
+                                                              // retry in 10 secs
+                                                              Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
+                                                              fetchDatabaseNotification.setType(Type.WARNING);
+                                                              fetchDatabaseNotification.setMessage(notificationConstants.notificationRetry());
+                                                              fetchDatabaseNotification.setStatus(Notification.Status.PROGRESS);
+                                                              new Timer() {
+                                                                  @Override
+                                                                  public void run() {
+                                                                      try {
+                                                                          datasourceClientService.fetchDatabaseInfo(configuration, tableCategory,
+                                                                                                                    new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                                                                                                                        @Override
+                                                                                                                        protected void onSuccess(final String result) {
+                                                                                                                            onSuccessFetchingDatabaseInfo(configuration, datasourceId, fetchDatabaseNotification, result);
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        protected void onFailure(final Throwable e) {
+                                                                                                                            onFailureFetchingDatabaseInfo(configuration, datasourceId, fetchDatabaseNotification, e);
+                                                                                                                        }
+                                                                                                                    });
+                                                                      } catch (RequestException e1) {
+                                                                          onFailureFetchingDatabaseInfo(configuration, datasourceId, fetchDatabaseNotification, e);
+                                                                      }
+                                                                  }
+                                                              }.schedule(20000);
                                                           }
                                                       });
         } catch (final RequestException e) {
@@ -124,6 +148,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         Log.debug(DatasourceClientServiceImpl.class, "Database metadata fetch success");
         DatabaseDTO database = dtoFactory.createDtoFromJson(result, DatabaseDTO.class);
         fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
+        fetchDatabaseNotification.setType(Type.INFO);
         fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
         databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), database);
         eventBus.fireEvent(new DatabaseInfoReceivedEvent(configuration.getDatasourceId()));
@@ -135,6 +160,7 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
                                                  final Notification fetchDatabaseNotification,
                                                  final Throwable e) {
         Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
+        fetchDatabaseNotification.setType(Type.ERROR);
         fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
         editDatasourceOpenNotificationHandler.setConfiguration(configuration);
         notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure() + " using datasource '"
