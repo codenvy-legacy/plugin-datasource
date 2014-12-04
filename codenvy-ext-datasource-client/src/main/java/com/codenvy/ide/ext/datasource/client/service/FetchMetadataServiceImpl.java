@@ -40,21 +40,21 @@ import com.google.web.bindery.event.shared.EventBus;
 public class FetchMetadataServiceImpl implements FetchMetadataService {
 
     /** DTO factory used to deserialize DTOs from JSON. */
-    private final DtoFactory                    dtoFactory;
+    private final DtoFactory                            dtoFactory;
 
     /** Notification manager used to display metadata progress, success and failure. */
-    private final NotificationManager           notificationManager;
-    private final DatasourceClientService       datasourceClientService;
+    private final NotificationManager                   notificationManager;
+    private final DatasourceClientService               datasourceClientService;
 
     /** The event bus on which metadata loading (success, failure) events are posted. */
-    private final EventBus                      eventBus;
+    private final EventBus                              eventBus;
 
     /** The i18n constants. */
-    private final MetadataNotificationConstants notificationConstants;
+    private final MetadataNotificationConstants         notificationConstants;
 
     /** Where the metadata is stored. */
-    private final DatabaseInfoStore             databaseInfoStore;
-    
+    private final DatabaseInfoStore                     databaseInfoStore;
+
     private final EditDatasourceOpenNotificationHandler editDatasourceOpenNotificationHandler;
 
     @Inject
@@ -87,8 +87,8 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
         final String datasourceId = configuration.getDatasourceId();
         if (databaseInfoStore.isFetchPending(datasourceId)) {
             Log.debug(FetchMetadataServiceImpl.class, "Fetch pending found for this datasource ("
-                                                     + datasourceId
-                                                     + ") - no need to trigger another fetch.");
+                                                      + datasourceId
+                                                      + ") - no need to trigger another fetch.");
             return;
         }
         databaseInfoStore.setFetchPending(datasourceId);
@@ -99,52 +99,51 @@ public class FetchMetadataServiceImpl implements FetchMetadataService {
 
         try {
             datasourceClientService.fetchDatabaseInfo(configuration, tableCategory,
-                                                           new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                                                      new AsyncRequestCallback<String>(new StringUnmarshaller()) {
+                                                          @Override
+                                                          protected void onSuccess(final String result) {
+                                                              onSuccessFetchingDatabaseInfo(configuration, datasourceId,
+                                                                                            fetchDatabaseNotification, result);
+                                                          }
 
-                @Override
-                protected void onSuccess(final String result) {
-                    Log.debug(DatasourceClientServiceImpl.class, "Database metadata fetch success");
-                    DatabaseDTO database = dtoFactory.createDtoFromJson(result,
-                                                                        DatabaseDTO.class);
-                    fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
-                    fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-
-                    databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), database);
-                    eventBus.fireEvent(new DatabaseInfoReceivedEvent(configuration.getDatasourceId()));
-
-                    // clear the fetch pending flag
-                    databaseInfoStore.clearFetchPending(datasourceId);
-                }
-
-                @Override
-                protected void onFailure(final Throwable e) {
-                    Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
-                    fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
-                    editDatasourceOpenNotificationHandler.setConfiguration(configuration);
-                    notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure()+" using datasource '"+configuration.getDatasourceId()+"' - "+e.getMessage(),
-                                                                          Type.ERROR, editDatasourceOpenNotificationHandler));
-
-                    databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), dtoFactory.createDto(DatabaseDTO.class).withSchemas(Collections.EMPTY_MAP));
-                    // clean up current database
-                    eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
-
-                    // clear the fetch pending flag
-                    databaseInfoStore.clearFetchPending(datasourceId);
-                }
-            });
+                                                          @Override
+                                                          protected void onFailure(final Throwable e) {
+                                                              onFailureFetchingDatabaseInfo(configuration, datasourceId,
+                                                                                            fetchDatabaseNotification, e);
+                                                          }
+                                                      });
         } catch (final RequestException e) {
-            Log.error(DatasourceClientServiceImpl.class, "Exception while fetching database metadata: " + e.getMessage());
-            editDatasourceOpenNotificationHandler.setConfiguration(configuration);
-            notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure()+" using datasource '"+configuration.getDatasourceId()+"'",
-                                                                  Type.ERROR, editDatasourceOpenNotificationHandler));
-
-            databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), null);
-            // clean up current database
-            eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
-
-            // the flag must be cleared on failure
-            databaseInfoStore.clearFetchPending(datasourceId);
+            onFailureFetchingDatabaseInfo(configuration, datasourceId, fetchDatabaseNotification, e);
         }
+    }
+
+    protected void onSuccessFetchingDatabaseInfo(final DatabaseConfigurationDTO configuration,
+                                                 final String datasourceId,
+                                                 final Notification fetchDatabaseNotification,
+                                                 final String result) {
+        Log.debug(DatasourceClientServiceImpl.class, "Database metadata fetch success");
+        DatabaseDTO database = dtoFactory.createDtoFromJson(result, DatabaseDTO.class);
+        fetchDatabaseNotification.setMessage(notificationConstants.notificationFetchSuccess());
+        fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+        databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(), database);
+        eventBus.fireEvent(new DatabaseInfoReceivedEvent(configuration.getDatasourceId()));
+        databaseInfoStore.clearFetchPending(datasourceId);
+    }
+
+    protected void onFailureFetchingDatabaseInfo(final DatabaseConfigurationDTO configuration,
+                                                 final String datasourceId,
+                                                 final Notification fetchDatabaseNotification,
+                                                 final Throwable e) {
+        Log.error(DatasourceClientServiceImpl.class, "Database metadata fetch failed: " + e.getMessage());
+        fetchDatabaseNotification.setStatus(Notification.Status.FINISHED);
+        editDatasourceOpenNotificationHandler.setConfiguration(configuration);
+        notificationManager.showNotification(new Notification(notificationConstants.notificationFetchFailure() + " using datasource '"
+                                                              + configuration.getDatasourceId() + "' - " + e.getMessage(),
+                                                              Type.ERROR, editDatasourceOpenNotificationHandler));
+        databaseInfoStore.setDatabaseInfo(configuration.getDatasourceId(),
+                                          dtoFactory.createDto(DatabaseDTO.class).withSchemas(Collections.EMPTY_MAP));
+        eventBus.fireEvent(new DatabaseInfoErrorEvent(configuration.getDatasourceId()));
+        databaseInfoStore.clearFetchPending(datasourceId);
     }
 
     @Override
