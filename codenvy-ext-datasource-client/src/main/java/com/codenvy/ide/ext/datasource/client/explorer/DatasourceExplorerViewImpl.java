@@ -93,7 +93,10 @@ public class DatasourceExplorerViewImpl extends
 
         container.add(uiBinder.createAndBindUi(this));
 
-        this.refreshButton
+        container.ensureDebugId("datasourcePanel");
+        datasourceListBox.ensureDebugId("datasourceListBox");
+
+        refreshButton
                 .addFace(SVGButtonBase.SVGFaceName.UP, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
                         new SVGButtonBase.SVGStyleChange(
                                 new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonUp()})}));

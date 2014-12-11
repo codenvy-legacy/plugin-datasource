@@ -119,6 +119,7 @@ public class SqlRequestLauncherViewImpl extends SimpleView<SqlRequestLauncherVie
         resultLimitLabel.setText(constants.resultLimitLabel());
         executionModeLabel.setText(constants.executionModeLabel());
         executeButton.setText(constants.executeButtonLabel());
+        executeButton.ensureDebugId("dsExecuteButton");
 
         fillExecutionModeList(constants);
     }
