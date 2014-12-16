@@ -24,7 +24,8 @@
 			background-color: #313131;
 			font-weight: normal;
             margin-left: 8px;
-            margin-top: 3px;	
+            margin-top: 3px;
+            white-space: nowrap;
         }
         
         .marginLeft {
