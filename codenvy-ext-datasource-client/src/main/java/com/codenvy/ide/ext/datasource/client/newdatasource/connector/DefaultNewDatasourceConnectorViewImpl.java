@@ -16,6 +16,7 @@ import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -149,6 +150,13 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
     @Override
     public void setPort(int port) {
         portField.setText(Integer.toString(port));
+    }
+
+    @UiHandler("portField")
+    public void onPortFieldChanged(KeyPressEvent event) {
+        if (!Character.isDigit(event.getCharCode())) {
+            portField.cancelKey();
+        }
     }
 
     @Override

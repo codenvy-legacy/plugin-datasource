@@ -15,7 +15,10 @@ import java.util.Set;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
@@ -119,7 +122,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         brokerList.addColumn(hostColumn, new TextHeader("Host"));
 
         // second column : port
-        final TextInputCell portCell = new StyledTextInputCell();
+        final TextInputCell portCell = new StyledNumberInputCell();
         Column<NuoDBBroker, String> portColumn = new Column<NuoDBBroker, String>(portCell) {
             @Override
             public String getValue(final NuoDBBroker broker) {
@@ -250,6 +253,60 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
             } else {
                 sb.appendHtmlConstant("<input type=\"text\" tabindex=\"-1\"></input>");
             }
+        }
+    }
+
+    private static class StyledNumberInputCell extends StyledTextInputCell {
+        private static final int ZERO = 48;
+        private static final int NINE = 57;
+
+        private static final int ZERO_NUM_LOCK = 96;
+        private static final int NINE_NUM_LOCK = 105;
+
+        private static final int BACK = 8;
+        private static final int DEL = 46;
+
+        private static final int INSERT = 45;
+        private static final int ENTER = 13;
+        private static final int WINDOWS = 27;
+
+        private static final int LEFT_ARROW = 37;
+        private static final int DOWN_ARROW = 40;
+
+        @Override
+        public void onBrowserEvent(Context context, Element parent, String value, NativeEvent event, ValueUpdater<String> valueUpdater) {
+            if (event.getType().equals("keyup") || event.getType().equals("keydown")) {
+
+                if(isSpecialKey(event) || isShiftInsertOrCtrlInsert(event)) {
+                    return;
+                }
+
+                if (isNotDigitAndArrowKey(event) || isDigitKeyWithPressedShift(event)) {
+                    event.preventDefault();
+                }
+            }
+            super.onBrowserEvent(context, parent, value, event, valueUpdater);
+        }
+
+        private boolean isSpecialKey(NativeEvent e) {
+            return e.getCtrlKey() || e.getMetaKey() || e.getKeyCode() == BACK || e.getKeyCode() == DEL;
+        }
+
+        private boolean isShiftInsertOrCtrlInsert(NativeEvent e) {
+            return (e.getShiftKey() && e.getKeyCode() == INSERT) || (e.getCtrlKey() && e.getKeyCode() == INSERT);
+        }
+
+        private boolean isDigitKeyWithPressedShift(NativeEvent e) {
+            return ((e.getKeyCode() >= ZERO && e.getKeyCode() <= NINE) || (e.getKeyCode() < ZERO_NUM_LOCK && e.getKeyCode() > NINE_NUM_LOCK))
+                    && e.getShiftKey();
+        }
+
+        private boolean isNotDigitAndArrowKey(NativeEvent event) {
+            return (event.getKeyCode() < ZERO || event.getKeyCode() > NINE) &&
+                    (event.getKeyCode() < ZERO_NUM_LOCK || event.getKeyCode() > NINE_NUM_LOCK) &&
+                    (event.getKeyCode() > DOWN_ARROW || event.getKeyCode() < LEFT_ARROW) &&
+                    event.getKeyCode() != WINDOWS || event.getKeyCode() == INSERT ||
+                    event.getKeyCode() == ENTER;
         }
     }
 
