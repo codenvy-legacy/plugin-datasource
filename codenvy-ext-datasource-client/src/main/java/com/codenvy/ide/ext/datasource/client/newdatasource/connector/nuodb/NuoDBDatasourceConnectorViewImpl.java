@@ -15,12 +15,9 @@ import java.util.Set;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
-import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -46,6 +43,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
 
     private static final String         TEXT_BOX_STYLE       = "gwt-TextBox";
+    private static String               numberBoxStyle;
 
     @UiField(provided = true)
     DataGrid<NuoDBBroker>               brokerList;
@@ -93,8 +91,9 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     public NuoDBDatasourceConnectorViewImpl(final NuoDBDatasourceViewImplUiBinder uiBinder,
                                             final DataGridResourcesInvisible dataGridResources,
                                             final NewDatasourceWizardMessages messages) {
+        numberBoxStyle = dataGridResources.dataGridStyle().portNuoDb();
         this.messages = messages;
-        ProvidesKey<NuoDBBroker> keyProvider = new ProvidesKey<NuoDBBroker>() {
+        final ProvidesKey<NuoDBBroker> keyProvider = new ProvidesKey<NuoDBBroker>() {
             @Override
             public Object getKey(final NuoDBBroker item) {
                 return item.getId();
@@ -150,6 +149,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         });
 
         brokerList.addColumn(portColumn, new TextHeader("Port"));
+        brokerList.addDomHandler(new Handler(), KeyPressEvent.getType());
 
         // manage selection
         final MultiSelectionModel<NuoDBBroker> selectionModel = new MultiSelectionModel<>(keyProvider);
@@ -160,6 +160,18 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         projectsList.setEnabled(false);
         projectsList.setWidth("100px");
 
+    }
+
+    private class Handler implements KeyPressHandler {
+
+        @Override
+        public void onKeyPress(KeyPressEvent event) {
+            InputElement target = event.getNativeEvent().getEventTarget().cast();
+
+            if (!Character.isDigit(event.getCharCode()) && target.getType().equals("number")) {
+                event.preventDefault();
+            }
+        }
     }
 
     @Override
@@ -257,56 +269,28 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     }
 
     private static class StyledNumberInputCell extends StyledTextInputCell {
-        private static final int ZERO = 48;
-        private static final int NINE = 57;
 
-        private static final int ZERO_NUM_LOCK = 96;
-        private static final int NINE_NUM_LOCK = 105;
+        private static Template template = GWT.create(NumberTemplate.class);
 
-        private static final int BACK = 8;
-        private static final int DEL = 46;
-
-        private static final int INSERT = 45;
-        private static final int ENTER = 13;
-        private static final int WINDOWS = 27;
-
-        private static final int LEFT_ARROW = 37;
-        private static final int DOWN_ARROW = 40;
+        private static final String INNER_HTML_CODE =
+                "<input type=\"number\" min=\"0\" tabindex=\"-1\"></input>";
 
         @Override
-        public void onBrowserEvent(Context context, Element parent, String value, NativeEvent event, ValueUpdater<String> valueUpdater) {
-            if (event.getType().equals("keyup") || event.getType().equals("keydown")) {
-
-                if(isSpecialKey(event) || isShiftInsertOrCtrlInsert(event)) {
-                    return;
-                }
-
-                if (isNotDigitAndArrowKey(event) || isDigitKeyWithPressedShift(event)) {
-                    event.preventDefault();
-                }
+        public void render(Context context, String value, SafeHtmlBuilder sb) {
+            // Get the view data.
+            Object key = context.getKey();
+            ViewData viewData = getViewData(key);
+            if (viewData != null && viewData.getCurrentValue().equals(value)) {
+                clearViewData(key);
+                viewData = null;
             }
-            super.onBrowserEvent(context, parent, value, event, valueUpdater);
-        }
 
-        private boolean isSpecialKey(NativeEvent e) {
-            return e.getCtrlKey() || e.getMetaKey() || e.getKeyCode() == BACK || e.getKeyCode() == DEL;
-        }
-
-        private boolean isShiftInsertOrCtrlInsert(NativeEvent e) {
-            return (e.getShiftKey() && e.getKeyCode() == INSERT) || (e.getCtrlKey() && e.getKeyCode() == INSERT);
-        }
-
-        private boolean isDigitKeyWithPressedShift(NativeEvent e) {
-            return ((e.getKeyCode() >= ZERO && e.getKeyCode() <= NINE) || (e.getKeyCode() < ZERO_NUM_LOCK && e.getKeyCode() > NINE_NUM_LOCK))
-                    && e.getShiftKey();
-        }
-
-        private boolean isNotDigitAndArrowKey(NativeEvent event) {
-            return (event.getKeyCode() < ZERO || event.getKeyCode() > NINE) &&
-                    (event.getKeyCode() < ZERO_NUM_LOCK || event.getKeyCode() > NINE_NUM_LOCK) &&
-                    (event.getKeyCode() > DOWN_ARROW || event.getKeyCode() < LEFT_ARROW) &&
-                    event.getKeyCode() != WINDOWS || event.getKeyCode() == INSERT ||
-                    event.getKeyCode() == ENTER;
+            String s = (viewData != null) ? viewData.getCurrentValue() : value;
+            if (s != null) {
+                sb.append(template.input(s, numberBoxStyle));
+            } else {
+                sb.appendHtmlConstant(INNER_HTML_CODE);
+            }
         }
     }
 
@@ -315,6 +299,12 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     interface Template extends SafeHtmlTemplates {
         @Template("<input type=\"text\" value=\"{0}\" tabindex=\"-1\" class='{1}'></input>")
+        SafeHtml input(final String value, final String className);
+    }
+
+    interface NumberTemplate extends Template {
+        @Override
+        @Template("<input type=\"number\" min=\"0\" value=\"{0}\" tabindex=\"-1\" class='{1}'></input>")
         SafeHtml input(final String value, final String className);
     }
 

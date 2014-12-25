@@ -136,3 +136,15 @@
   border: selectionBorderWidth solid #d7dde8;
 }
 
+.portNuoDb {
+    background-color: boxBackgroundColor;
+    color: boxTextColor;
+    border: 1px solid boxBorderColor;
+    border-radius: 1px;
+    box-shadow: boxInnerShadow, boxOuterShadow;
+    font-family: mainFontFamily;
+    font-size: boxFontSize;
+    text-shadow: boxTextShadow;
+    width: 133px;
+}
+
