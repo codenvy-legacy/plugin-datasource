@@ -15,6 +15,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 public interface DataGridResourcesInvisible extends DataGrid.Resources {
 
     interface DataGridStyle extends DataGrid.Style {
+        String portNuoDb();
     }
 
     @Source({"DataGrid-invisible.css", "com/codenvy/ide/api/ui/style.css"})
