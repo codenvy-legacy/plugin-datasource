@@ -124,12 +124,6 @@ public class DatabaseMetadataEntityDTODataAdapter implements NodeDataAdapter<Ent
         return null;
     }
 
-    @Override
-    public EntityTreeNode getNodeByPath(final EntityTreeNode root,
-                                        final Array<String> relativeNodePath) {
-        return null;
-    }
-
     /**
      * Data node fot the database entity tree.
      * 

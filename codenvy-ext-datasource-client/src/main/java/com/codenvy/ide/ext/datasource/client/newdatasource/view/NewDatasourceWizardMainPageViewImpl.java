@@ -310,11 +310,6 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
         public Array<String> getNodePath(String data) {
             return PathUtils.getNodePath(this, data);
         }
-
-        @Override
-        public String getNodeByPath(String root, Array<String> relativeNodePath) {
-            return null;
-        }
     }
 
     private class CategoriesNodeRenderer implements NodeRenderer<String> {
