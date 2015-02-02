@@ -69,12 +69,6 @@ public class DatasourceExplorerPartPresenter extends BasePresenter implements
 
     /**
      * Instantiates the ProjectExplorer Presenter
-     * 
-     * @param view
-     * @param eventBus
-     * @param resources
-     * @param resourceProvider
-     * @param contextMenuPresenter
      */
     @Inject
     public DatasourceExplorerPartPresenter(@NotNull final DatasourceExplorerView view,
