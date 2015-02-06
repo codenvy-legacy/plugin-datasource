@@ -20,8 +20,8 @@
     </parent>
     <artifactId>codenvy-ssl-socket-factory</artifactId>
     <name>Codenvy SSL Socket factory</name>
-    
-        
+
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
