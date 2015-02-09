@@ -73,11 +73,7 @@ public class DatasourceDiscovery {
                         addDatasource(applicationProcessDescriptor);
                         break;
                     case FAILED:
-                        removeDatasource(applicationProcessDescriptor, appContext);
-                        break;
                     case STOPPED:
-                        removeDatasource(applicationProcessDescriptor, appContext);
-                        break;
                     case CANCELLED:
                         removeDatasource(applicationProcessDescriptor, appContext);
                         break;
