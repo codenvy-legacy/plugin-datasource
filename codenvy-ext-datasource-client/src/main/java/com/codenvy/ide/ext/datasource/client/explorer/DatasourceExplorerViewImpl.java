@@ -16,7 +16,7 @@ import org.vectomatic.dom.svg.ui.SVGButtonBase;
 import org.vectomatic.dom.svg.ui.SVGPushButton;
 
 import com.codenvy.ide.api.parts.base.BaseView;
-import com.codenvy.ide.collections.js.JsoArray;
+import com.codenvy.ide.collections.Array;
 import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTODataAdapter.EntityTreeNode;
 import com.codenvy.ide.ext.datasource.client.explorer.DatabaseMetadataEntityDTORenderer.Resources;
@@ -251,7 +251,7 @@ public class DatasourceExplorerViewImpl extends
             @Override
             public void onNodeSelected(final TreeNodeElement<EntityTreeNode> node, final SignalEvent event) {
                 // we must force single selection and check unselection
-                final JsoArray<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
+                final Array<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
                 if (selectedNodes.isEmpty()) {
                     // this was a unselection
                     Log.debug(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
