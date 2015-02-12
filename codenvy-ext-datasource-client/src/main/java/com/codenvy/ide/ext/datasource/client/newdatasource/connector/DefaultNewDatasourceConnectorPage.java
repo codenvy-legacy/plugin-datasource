@@ -10,57 +10,44 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
-
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.DefaultDatasourceDefinitionDTO;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.web.bindery.event.shared.EventBus;
 
-public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage implements InitializableWizardPage {
+import javax.validation.constraints.NotNull;
+
+public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConnectorPage
+        implements InitializableWizardPage, DefaultNewDatasourceConnectorView.ActionDelegate {
 
     private final int             defaultPort;
     private final DatabaseType    databaseType;
     private final DtoFactory      dtoFactory;
-    protected final ImageResource image;
-    protected final String        caption;
 
     public DefaultNewDatasourceConnectorPage(@NotNull final DefaultNewDatasourceConnectorView view,
-                                             @Nullable final String caption,
-                                             @Nullable final ImageResource image,
-                                             @NotNull final String datasourceId,
-                                             @NotNull final DatasourceManager datasourceManager,
-                                             @NotNull final EventBus eventBus,
                                              @NotNull final DatasourceClientService service,
                                              @NotNull final NotificationManager notificationManager,
                                              @NotNull final DtoFactory dtoFactory,
                                              @NotNull final NewDatasourceWizardMessages messages,
                                              final int defaultPort,
                                              final DatabaseType databaseType) {
-        super(view, null, null, datasourceId, datasourceManager, eventBus, service, notificationManager, dtoFactory, messages);
-        this.caption = caption;
-        this.image = image;
+        super(view, service, notificationManager, dtoFactory, messages);
         this.defaultPort = defaultPort;
         this.databaseType = databaseType;
         this.dtoFactory = dtoFactory;
         getView().setPort(getDefaultPort());
-        getView().setImage(image);
-        getView().setDatasourceName(caption);
     }
 
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
+        updateView();
     }
 
     @Override
@@ -75,7 +62,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
      */
     @Override
     protected DatabaseConfigurationDTO getConfiguredDatabase() {
-        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
+        String datasourceId = context.get(NewDatasourceWizard.DATASOURCE_NAME_KEY);
         DatabaseConfigurationDTO result = dtoFactory.createDto(DefaultDatasourceDefinitionDTO.class)
                                                     .withDatabaseName(getView().getDatabaseName())
                                                     .withDatabaseType(getDatabaseType())
@@ -89,7 +76,7 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         result.withUsername(getView().getUsername())
               .withPassword(getView().getEncryptedPassword());
 
-        result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
+        result.withConfigurationConnectorId(dataObject.getConfigurationConnectorId());
         return result;
     }
 
@@ -105,20 +92,19 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
 
     @Override
     public void initPage(final Object data) {
-        // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
+        // should set exactly the same fields as those read in getConfiguredDatabase except those configured in first page
         if (!(data instanceof DatabaseConfigurationDTO)) {
             clearPage();
             return;
         }
         DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
-        getView().setDatabaseName(initData.getDatabaseName());
-        getView().setHostName(initData.getHostName());
-        getView().setPort(initData.getPort());
-        getView().setUseSSL(initData.getUseSSL());
-        getView().setVerifyServerCertificate(initData.getVerifyServerCertificate());
-        getView().setUsername(initData.getUsername());
-        getView().setEncryptedPassword(initData.getPassword(), true);
-        getView().setRunnerProcessId(initData.getRunnerProcessId());
+        dataObject.setDatabaseName(initData.getDatabaseName());
+        dataObject.setHostName(initData.getHostName());
+        dataObject.setPort(initData.getPort());
+        dataObject.setUseSSL(initData.getUseSSL());
+        dataObject.setVerifyServerCertificate(initData.getVerifyServerCertificate());
+        dataObject.setUsername(initData.getUsername());
+        dataObject.setRunnerProcessId(initData.getRunnerProcessId());
     }
 
     @Override
@@ -130,5 +116,40 @@ public class DefaultNewDatasourceConnectorPage extends AbstractNewDatasourceConn
         getView().setVerifyServerCertificate(false);
         getView().setUsername("");
         getView().setPassword("");
+    }
+
+    public void updateView() {
+        getView().setDatabaseName(dataObject.getDatabaseName());
+        getView().setHostName(dataObject.getHostName());
+        getView().setPort(dataObject.getPort());
+        getView().setUseSSL(dataObject.getUseSSL());
+        getView().setVerifyServerCertificate(dataObject.getVerifyServerCertificate());
+        getView().setUsername(dataObject.getUsername());
+        getView().setEncryptedPassword(dataObject.getPassword(), true);
+        getView().setRunnerProcessId(dataObject.getRunnerProcessId());
+    }
+
+    @Override
+    public void hostNameChanged(String name) {
+        dataObject.setHostName(name);
+        updateDelegate.updateControls();
+    }
+
+    @Override
+    public void portChanged(int port) {
+        dataObject.setPort(port);
+        updateDelegate.updateControls();
+    }
+
+    @Override
+    public void useSSLChanged(boolean useSSL) {
+        dataObject.setUseSSL(useSSL);
+        updateDelegate.updateControls();
+    }
+
+    @Override
+    public void verifyServerCertificateChanged(boolean verifyServerCertificate) {
+        dataObject.setVerifyServerCertificate(verifyServerCertificate);
+        updateDelegate.updateControls();
     }
 }

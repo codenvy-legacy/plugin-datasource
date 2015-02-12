@@ -10,9 +10,11 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
+import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
+
 import javax.validation.constraints.NotNull;
 
 public interface EditDatasourceWizardFactory {
     @NotNull
-    EditDatasourceWizard create(String title);
+    EditDatasourceWizard create(DatabaseConfigurationDTO dataObject);
 }
