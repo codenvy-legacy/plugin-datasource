@@ -17,10 +17,10 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(NuoDBDatasourceConnectorViewImpl.class)
-public interface NuoDBDatasourceConnectorView extends AbstractNewDatasourceConnectorView {
+public interface NuoDBDatasourceConnectorView extends AbstractNewDatasourceConnectorView<NuoDBDatasourceConnectorView.NuoActionDelegate> {
 
     /** Additional delegate methods. */
-    public interface NuoActionDelegate {
+    public interface NuoActionDelegate extends AbstractNewDatasourceConnectorView.ActionDelegate {
 
         void onAddBroker();
 

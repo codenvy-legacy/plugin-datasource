@@ -13,30 +13,24 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.google.clo
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Created by Wafa on 26/03/14.
  */
-public class GoogleCloudSqlConnectorPage  extends DefaultNewDatasourceConnectorPage {
+public class GoogleCloudSqlConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     @Inject
-    public GoogleCloudSqlConnectorPage (final DefaultNewDatasourceConnectorView view,
-                                        final NotificationManager notificationManager,
-                                        final DtoFactory dtoFactory,
-                                        final DatasourceManager datasourceManager,
-                                        final EventBus eventBus,
-                                        final DatasourceClientService service,
-                                        final DatasourceUiResources resources,
-                                        final NewDatasourceWizardMessages messages) {
-        super(view, messages.googlecloudsql(), resources.getGoogleCloudSQLLogo(), DatabaseType.GOOGLECLOUDSQL.getConnectorId(), datasourceManager, eventBus, service,
-                notificationManager, dtoFactory, messages, DatabaseType.GOOGLECLOUDSQL.getDefaultPort(), DatabaseType.GOOGLECLOUDSQL);
+    public GoogleCloudSqlConnectorPage(final DefaultNewDatasourceConnectorView view,
+                                       final NotificationManager notificationManager,
+                                       final DtoFactory dtoFactory,
+                                       final DatasourceClientService service,
+                                       final NewDatasourceWizardMessages messages) {
+        super(view, service, notificationManager, dtoFactory, messages, DatabaseType.GOOGLECLOUDSQL.getDefaultPort(),
+              DatabaseType.GOOGLECLOUDSQL);
     }
 }

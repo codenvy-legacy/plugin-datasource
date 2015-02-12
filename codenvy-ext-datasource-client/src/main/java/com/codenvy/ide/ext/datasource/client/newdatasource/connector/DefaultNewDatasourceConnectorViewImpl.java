@@ -17,6 +17,8 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -32,8 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 
-public class DefaultNewDatasourceConnectorViewImpl extends Composite
-                                                                    implements DefaultNewDatasourceConnectorView {
+public class DefaultNewDatasourceConnectorViewImpl extends Composite implements DefaultNewDatasourceConnectorView {
     interface NewDatasourceViewImplUiBinder extends UiBinder<Widget, DefaultNewDatasourceConnectorViewImpl> {
     }
 
@@ -122,9 +123,19 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         return dbName.getText();
     }
 
+    @UiHandler("dbName")
+    public void onDatabaseNameFieldChanged(KeyUpEvent event) {
+        delegate.databaseNameChanged(dbName.getText());
+    }
+
     @Override
     public String getHostname() {
         return hostField.getText();
+    }
+
+    @UiHandler("hostField")
+    public void onHostNameFieldChanged(KeyUpEvent event) {
+        delegate.hostNameChanged(hostField.getText());
     }
 
     @Override
@@ -137,9 +148,19 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         return usernameField.getText();
     }
 
+    @UiHandler("usernameField")
+    public void onUserNameFieldChanged(KeyUpEvent event) {
+        delegate.userNameChanged(usernameField.getText());
+    }
+
     @Override
     public String getPassword() {
         return passwordField.getText();
+    }
+
+    @UiHandler("passwordField")
+    public void onPasswordNameFieldChanged(KeyUpEvent event) {
+        delegate.passwordChanged(passwordField.getText());
     }
 
     @Override
@@ -157,6 +178,7 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         if (!Character.isDigit(event.getCharCode())) {
             portField.cancelKey();
         }
+        delegate.portChanged(Integer.parseInt(portField.getText()));
     }
 
     @Override
@@ -192,9 +214,19 @@ public class DefaultNewDatasourceConnectorViewImpl extends Composite
         this.useSSL.setValue(useSSL);
     }
 
+    @UiHandler({"useSSL"})
+    void onUseSSLChanged(ValueChangeEvent<Boolean> event) {
+        delegate.useSSLChanged(event.getValue());
+    }
+
     @Override
     public void setVerifyServerCertificate(final boolean verifyServerCertificate) {
         this.verifyServerCertificate.setValue(verifyServerCertificate);
+    }
+
+    @UiHandler({"verifyServerCertificate"})
+    void onVerifyServerCertificateChanged(ValueChangeEvent<Boolean> event) {
+        delegate.verifyServerCertificateChanged(event.getValue());
     }
 
     @Override

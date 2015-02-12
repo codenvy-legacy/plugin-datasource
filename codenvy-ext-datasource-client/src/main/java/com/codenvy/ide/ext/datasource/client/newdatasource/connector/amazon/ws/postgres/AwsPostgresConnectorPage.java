@@ -13,31 +13,22 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 public class AwsPostgresConnectorPage extends DefaultNewDatasourceConnectorPage {
 
     public static final String AWSPOSTGRES_DB_ID           = "awsPostgres";
 
-
     @Inject
     public AwsPostgresConnectorPage(final DefaultNewDatasourceConnectorView view,
                                            final NotificationManager notificationManager,
                                            final DtoFactory dtoFactory,
-                                           final DatasourceManager datasourceManager,
-                                           final EventBus eventBus,
                                            final DatasourceClientService service,
-                                           final DatasourceUiResources resources,
                                            final NewDatasourceWizardMessages messages) {
-        super(view, messages.awspg(), resources.getAwsPostgresLogo(), AWSPOSTGRES_DB_ID, datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DatabaseType.POSTGRES.getDefaultPort(), DatabaseType.POSTGRES);
+        super(view, service, notificationManager, dtoFactory, messages, DatabaseType.POSTGRES.getDefaultPort(), DatabaseType.POSTGRES);
     }
-
 }

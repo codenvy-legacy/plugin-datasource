@@ -17,7 +17,19 @@ import com.google.inject.ImplementedBy;
  * The view of datasource wizard connectors.
  */
 @ImplementedBy(DefaultNewDatasourceConnectorViewImpl.class)
-public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasourceConnectorView {
+public interface DefaultNewDatasourceConnectorView extends AbstractNewDatasourceConnectorView<DefaultNewDatasourceConnectorView.ActionDelegate> {
+
+    /** Required for delegating functions in view. */
+    public interface ActionDelegate extends AbstractNewDatasourceConnectorView.ActionDelegate {
+
+        void hostNameChanged(String name);
+
+        void portChanged(int port);
+
+        void useSSLChanged(boolean useSSL);
+
+        void verifyServerCertificateChanged(boolean verifyServerCertificate);
+    }
 
     String getHostname();
 

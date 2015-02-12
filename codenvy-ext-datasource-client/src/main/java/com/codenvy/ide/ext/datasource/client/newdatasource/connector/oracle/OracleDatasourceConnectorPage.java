@@ -13,14 +13,11 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.oracle;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Created by Wafa on 20/01/14.
@@ -31,12 +28,8 @@ public class OracleDatasourceConnectorPage extends DefaultNewDatasourceConnector
     public OracleDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                          final NotificationManager notificationManager,
                                          final DtoFactory dtoFactory,
-                                         final DatasourceManager datasourceManager,
-                                         final EventBus eventBus,
                                          final DatasourceClientService service,
-                                         final DatasourceUiResources resources,
                                          final NewDatasourceWizardMessages messages) {
-        super(view, messages.oracle(), resources.getOracleLogo(), DatabaseType.ORACLE.getConnectorId(), datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
+        super(view, service, notificationManager, dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
     }
 }
