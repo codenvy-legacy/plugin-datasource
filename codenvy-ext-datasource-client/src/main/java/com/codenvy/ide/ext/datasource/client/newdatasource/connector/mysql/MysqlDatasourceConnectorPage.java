@@ -13,14 +13,11 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.mysql;
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Created by Wafa on 20/01/14.
@@ -31,12 +28,8 @@ public class MysqlDatasourceConnectorPage extends DefaultNewDatasourceConnectorP
     public MysqlDatasourceConnectorPage(final DefaultNewDatasourceConnectorView view,
                                         final NotificationManager notificationManager,
                                         final DtoFactory dtoFactory,
-                                        final DatasourceManager datasourceManager,
-                                        final EventBus eventBus,
                                         final DatasourceClientService service,
-                                        final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
-        super(view, messages.mysql(), resources.getMySqlLogo(), DatabaseType.MYSQL.getConnectorId(), datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages, DatabaseType.MYSQL.getDefaultPort(), DatabaseType.MYSQL);
+        super(view, service, notificationManager, dtoFactory, messages, DatabaseType.MYSQL.getDefaultPort(), DatabaseType.MYSQL);
     }
 }

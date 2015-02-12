@@ -52,97 +52,97 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
     }
 
     @UiField
-    Style                                      style;
+    Style       style;
     @UiField
-    SimplePanel                                datasourceCategoriesPanel;
+    SimplePanel datasourceCategoriesPanel;
 
     private Collection<NewDatasourceConnector> connectors;
 
-    protected ActionDelegate                   delegate;
+    protected ActionDelegate delegate;
 
-    private DockLayoutPanel                    rootElement;
+    private DockLayoutPanel rootElement;
 
-    private Resources                          resources;
+    private Resources resources;
 
-    Collection<NewDatasourceConnector>         notCloudCollection;
-    Collection<NewDatasourceConnector>         googleCollection;
-    Collection<NewDatasourceConnector>         amazonCollection;
+    Collection<NewDatasourceConnector> notCloudCollection;
+    Collection<NewDatasourceConnector> googleCollection;
+    Collection<NewDatasourceConnector> amazonCollection;
 
-    private Tree<String>                       categoriesTree;
+    private Tree<String> categoriesTree;
 
-    private final Tree.Listener<String>        treeEventHandler = new Tree.Listener<String>() {
-                                                                    @Override
-                                                                    public void onNodeAction(TreeNodeElement<String> node) {
+    private final Tree.Listener<String> treeEventHandler = new Tree.Listener<String>() {
+        @Override
+        public void onNodeAction(TreeNodeElement<String> node) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeClosed(TreeNodeElement<String> node) {
+        @Override
+        public void onNodeClosed(TreeNodeElement<String> node) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeContextMenu(int mouseX,
-                                                                                                  int mouseY,
-                                                                                                  TreeNodeElement<String> node) {
+        @Override
+        public void onNodeContextMenu(int mouseX,
+                                      int mouseY,
+                                      TreeNodeElement<String> node) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeDragStart(TreeNodeElement<String> node,
-                                                                                                MouseEvent event) {
+        @Override
+        public void onNodeDragStart(TreeNodeElement<String> node,
+                                    MouseEvent event) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeDragDrop(TreeNodeElement<String> node,
-                                                                                               MouseEvent event) {
+        @Override
+        public void onNodeDragDrop(TreeNodeElement<String> node,
+                                   MouseEvent event) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeExpanded(TreeNodeElement<String> node) {
+        @Override
+        public void onNodeExpanded(TreeNodeElement<String> node) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onNodeSelected(TreeNodeElement<String> node,
-                                                                                               SignalEvent event) {
-                                                                        String key = node.getData();
-                                                                        if (key.equals(NOTCLOUD.toString())
-                                                                            || key.equals(GOOGLE.toString())
-                                                                            || key.equals(AMAZON.toString())) {
-                                                                            delegate.onCategorieSelected();
-                                                                        } else {
-                                                                            NewDatasourceConnector connector = null;
-                                                                            for (NewDatasourceConnector ndconnector : connectors) {
-                                                                                connector = ndconnector;
-                                                                                if (connector.getTitle().equals(key)) {
-                                                                                    if (delegate.connectorEnabled(connector.getId())) {
-                                                                                        delegate.onConnectorSelected(connector.getId());
-                                                                                    } else {
-                                                                                        categoriesTree.getSelectionModel()
-                                                                                                      .clearSelections();
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
+        @Override
+        public void onNodeSelected(TreeNodeElement<String> node,
+                                   SignalEvent event) {
+            String key = node.getData();
+            if (key.equals(NOTCLOUD.toString())
+                || key.equals(GOOGLE.toString())
+                || key.equals(AMAZON.toString())) {
+                delegate.onCategorySelected();
+            } else {
+                NewDatasourceConnector connector = null;
+                for (NewDatasourceConnector ndconnector : connectors) {
+                    connector = ndconnector;
+                    if (connector.getTitle().equals(key)) {
+                        if (delegate.connectorEnabled(connector.getId())) {
+                            delegate.onConnectorSelected(connector.getId());
+                        } else {
+                            categoriesTree.getSelectionModel()
+                                          .clearSelections();
+                        }
+                    }
+                }
+            }
+        }
 
-                                                                    @Override
-                                                                    public void onRootContextMenu(int mouseX, int mouseY) {
+        @Override
+        public void onRootContextMenu(int mouseX, int mouseY) {
 
-                                                                    }
+        }
 
-                                                                    @Override
-                                                                    public void onRootDragDrop(MouseEvent event) {
+        @Override
+        public void onRootDragDrop(MouseEvent event) {
 
-                                                                    }
-                                                                    
-                                                                    @Override
-								    public void onKeyboard(KeyboardEvent event) {
-								    }
-                                                                };
+        }
+
+        @Override
+        public void onKeyboard(KeyboardEvent event) {
+        }
+    };
 
     @Inject
     public NewDatasourceWizardMainPageViewImpl(Resources resources) {
@@ -210,8 +210,7 @@ public class NewDatasourceWizardMainPageViewImpl implements NewDatasourceWizardM
         }
     }
 
-    interface NewDatasourceWizardMainPageViewImplUiBinder
-                                                         extends UiBinder<DockLayoutPanel, NewDatasourceWizardMainPageViewImpl> {
+    interface NewDatasourceWizardMainPageViewImplUiBinder extends UiBinder<DockLayoutPanel, NewDatasourceWizardMainPageViewImpl> {
     }
 
     private class CategoriesDataAdapter implements NodeDataAdapter<String> {

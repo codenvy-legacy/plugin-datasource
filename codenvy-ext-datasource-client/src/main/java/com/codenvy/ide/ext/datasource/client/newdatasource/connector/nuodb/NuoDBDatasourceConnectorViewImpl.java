@@ -75,7 +75,6 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     @UiField
     Button                              testConnectionButton;
 
-    private ActionDelegate              delegate;
     private NuoActionDelegate           nuoDelegate;
 
     private NewDatasourceWizardMessages messages;
@@ -180,13 +179,18 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
     }
 
     @Override
-    public void setDelegate(final ActionDelegate delegate) {
-        this.delegate = delegate;
+    public void setDelegate(final NuoActionDelegate delegate) {
+        this.nuoDelegate = delegate;
     }
 
     @Override
     public String getDatabaseName() {
         return dbName.getText();
+    }
+
+    @UiHandler("dbName")
+    public void onDatabaseNameFieldChanged(KeyUpEvent event) {
+        nuoDelegate.databaseNameChanged(dbName.getText());
     }
 
     @Override
@@ -205,9 +209,19 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
         return usernameField.getText();
     }
 
+    @UiHandler("usernameField")
+    public void onUserNameFieldChanged(KeyUpEvent event) {
+        nuoDelegate.userNameChanged(usernameField.getText());
+    }
+
     @Override
     public String getPassword() {
         return passwordField.getText();
+    }
+
+    @UiHandler("passwordField")
+    public void onPasswordNameFieldChanged(KeyUpEvent event) {
+        nuoDelegate.passwordChanged(passwordField.getText());
     }
 
     @Override
@@ -232,7 +246,7 @@ public class NuoDBDatasourceConnectorViewImpl extends Composite implements NuoDB
 
     @UiHandler("testConnectionButton")
     void handleTestConnectionClick(final ClickEvent e) {
-        delegate.onClickTestConnectionButton();
+        nuoDelegate.onClickTestConnectionButton();
     }
 
     @UiHandler("addBrokerButton")
