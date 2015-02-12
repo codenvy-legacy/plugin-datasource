@@ -10,13 +10,14 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.editdatasource.wizard;
 
-import com.codenvy.ide.api.notification.NotificationManager;
-import com.codenvy.ide.api.wizard.DefaultWizard;
+import com.codenvy.ide.api.wizard.AbstractWizard;
 import com.codenvy.ide.api.wizard.WizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Command;
+
+import javax.annotation.Nonnull;
 
 /**
  * Version of the wizard that can be configured with values.
@@ -24,15 +25,15 @@ import com.google.gwt.user.client.Command;
  * @author "Mickaël Leduque"
  * @param <T> the data type
  */
-public class InitializableWizard<T> extends DefaultWizard {
+public class InitializableWizard<T> extends AbstractWizard<T> {
 
     /**
      * The initial data
      */
     private T configuration;
 
-    public InitializableWizard(final NotificationManager notificationManager, final String title) {
-        super(notificationManager, title);
+    public InitializableWizard(final T dataObject) {
+        super(dataObject);
         Log.debug(InitializableWizard.class, "New InitializableWizard instance created.");
     }
 
@@ -46,8 +47,8 @@ public class InitializableWizard<T> extends DefaultWizard {
     }
 
     @Override
-    public WizardPage flipToFirst() {
-        final WizardPage page = super.flipToFirst();
+    public WizardPage<T> navigateToFirst() {
+        final WizardPage<T> page = super.navigateToFirst();
         if (page == null) {
             Log.error(InitializableWizard.class, "flipToFirst returned a null page !");
             throw new NullPointerException();
@@ -63,8 +64,8 @@ public class InitializableWizard<T> extends DefaultWizard {
     }
 
     @Override
-    public WizardPage flipToNext() {
-        WizardPage page = super.flipToNext();
+    public WizardPage<T> navigateToNext() {
+        WizardPage<T> page = super.navigateToNext();
         if (page instanceof InitializableWizardPage) {
             Log.debug(InitializableWizard.class, "Schedule wizard page init : " + page.getClass());
             scheduleInit(page);
@@ -75,8 +76,8 @@ public class InitializableWizard<T> extends DefaultWizard {
     }
 
     @Override
-    public WizardPage flipToPrevious() {
-        WizardPage page = super.flipToPrevious();
+    public WizardPage<T> navigateToPrevious() {
+        WizardPage<T> page = super.navigateToPrevious();
         if (page instanceof InitializableWizardPage) {
             Log.debug(InitializableWizard.class, "Schedule wizard page init : " + page.getClass());
             scheduleInit(page);
@@ -102,5 +103,9 @@ public class InitializableWizard<T> extends DefaultWizard {
             }
         };
         Scheduler.get().scheduleDeferred(command);
+    }
+
+    @Override
+    public void complete(@Nonnull CompleteCallback callback) {
     }
 }

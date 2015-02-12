@@ -39,16 +39,10 @@ import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesView;
 import com.codenvy.ide.ext.datasource.client.editdatasource.EditDatasourcesViewImpl;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceCell;
 import com.codenvy.ide.ext.datasource.client.editdatasource.celllist.DatasourceKeyProvider;
-import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardFactory;
-import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardProvider;
-import com.codenvy.ide.ext.datasource.client.editdatasource.wizard.EditDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerView;
 import com.codenvy.ide.ext.datasource.client.explorer.DatasourceExplorerViewImpl;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardFactory;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardProvider;
-import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardQualifier;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorViewImpl;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.NewDatasourceConnectorAgent;
@@ -103,14 +97,6 @@ public class DatasourceGinModule extends AbstractGinModule {
 
         install(new GinFactoryModuleBuilder().build(NewDatasourceWizardFactory.class));
         install(new GinFactoryModuleBuilder().build(EditDatasourceWizardFactory.class));
-
-        bind(NewDatasourceWizard.class).annotatedWith(NewDatasourceWizardQualifier.class)
-                                       .toProvider(NewDatasourceWizardProvider.class)
-                                       .in(Singleton.class);
-
-        bind(EditDatasourceWizard.class).annotatedWith(EditDatasourceWizardQualifier.class)
-                                        .toProvider(EditDatasourceWizardProvider.class)
-                                        .in(Singleton.class);
 
         bind(NewDatasourceConnectorAgent.class).to(NewDatasourceConnectorAgentImpl.class).in(Singleton.class);
         bind(DefaultNewDatasourceConnectorView.class).to(DefaultNewDatasourceConnectorViewImpl.class);

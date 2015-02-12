@@ -30,7 +30,7 @@ public interface NewDatasourceWizardMainPageView extends View<NewDatasourceWizar
 
         void onConnectorSelected(String id);
 
-        void onCategorieSelected();
+        void onCategorySelected();
 
         boolean connectorEnabled(String id);
     }

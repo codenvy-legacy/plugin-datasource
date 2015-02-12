@@ -10,19 +10,13 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.newdatasource.connector.nuodb;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.InitializableWizardPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizard;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.AbstractNewDatasourceConnectorPage;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseConfigurationDTO;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.codenvy.ide.ext.datasource.shared.NuoDBBrokerDTO;
@@ -31,7 +25,11 @@ import com.codenvy.ide.util.loging.Log;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -48,14 +46,10 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
     public NuoDBDatasourceConnectorPage(final NuoDBDatasourceConnectorView view,
                                         final NotificationManager notificationManager,
                                         final DtoFactory dtoFactory,
-                                        final DatasourceManager datasourceManager,
-                                        final EventBus eventBus,
                                         final DatasourceClientService service,
-                                        final DatasourceUiResources resources,
                                         final NewDatasourceWizardMessages messages) {
 
-        super(view, messages.nuodb(), resources.getNuoDBLogo(), DatabaseType.NUODB.getConnectorId(), datasourceManager, eventBus, service,
-              notificationManager, dtoFactory, messages);
+        super(view, service, notificationManager, dtoFactory, messages);
         view.setNuoDelegate(this);
 
         this.dtoFactory = dtoFactory;
@@ -76,6 +70,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
     @Override
     public void go(final AcceptsOneWidget container) {
         container.setWidget(getView());
+        updateView();
     }
 
     @Override
@@ -90,7 +85,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
      */
     @Override
     protected DatabaseConfigurationDTO getConfiguredDatabase() {
-        String datasourceId = wizardContext.getData(NewDatasourceWizard.DATASOURCE_NAME);
+        String datasourceId = context.get(NewDatasourceWizard.DATASOURCE_NAME_KEY);
 
         final List<NuoDBBrokerDTO> brokersConf = new ArrayList<>();
         for (final NuoDBBroker broker : brokersProvider.getList()) {
@@ -111,7 +106,7 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
                                                         .withBrokers(brokersConf)
                                                         .withRunnerProcessId(getView().getRunnerProcessId());
 
-        result.withConfigurationConnectorId(wizardContext.getData(NewDatasourceWizard.DATASOURCE_CONNECTOR).getId());
+        result.withConfigurationConnectorId(dataObject.getConfigurationConnectorId());
 
         return result;
     }
@@ -133,8 +128,11 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         final NuoDBBroker newBroker = createNewBroker(brokerCount);
         // insert the new row ; the display should be updated automatically
         brokersProvider.getList().add(newBroker);
-    }
 
+        dataObject.getBrokers().add(dtoFactory.createDto(NuoDBBrokerDTO.class)
+                                              .withHostName(newBroker.getHost())
+                                              .withPort(newBroker.getPort()));
+    }
 
     @Override
     public void onDeleteBrokers() {
@@ -143,32 +141,21 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         // remove selected items from the list provider
         // the list wrapper should update the view by itself
         brokersProvider.getList().removeAll(selection);
+        dataObject.getBrokers().remove(selection);
     }
 
     @Override
     public void initPage(final Object data) {
-        // should set exactly the same fields as those read in getConfiguredDatabase except thos configured in first page
+        // should set exactly the same fields as those read in getConfiguredDatabase except those configured in first page
         if (!(data instanceof DatabaseConfigurationDTO)) {
             clearPage();
             return;
         }
         DatabaseConfigurationDTO initData = (DatabaseConfigurationDTO)data;
-        getView().setDatabaseName(initData.getDatabaseName());
-        getView().setUsername(initData.getUsername());
-        getView().setEncryptedPassword(initData.getPassword(), true);
-        getView().setRunnerProcessId(initData.getRunnerProcessId());
-
-        brokersProvider.getList().clear();
-        int id = 0;
-        for (final NuoDBBrokerDTO brokerDto : initData.getBrokers()) {
-            final NuoDBBroker broker = NuoDBBroker.create(id);
-            broker.setHost(brokerDto.getHostName());
-            broker.setPort(brokerDto.getPort());
-            brokersProvider.getList().add(broker);
-            id++;
-        }
-        brokersProvider.flush();
-        delegate.updateControls();
+        dataObject.setDatabaseName(initData.getDatabaseName());
+        dataObject.setUsername(initData.getUsername());
+        dataObject.setRunnerProcessId(initData.getRunnerProcessId());
+        dataObject.setBrokers(initData.getBrokers());
     }
 
     @Override
@@ -178,6 +165,25 @@ public class NuoDBDatasourceConnectorPage extends AbstractNewDatasourceConnector
         getView().setPassword("");
         brokersProvider.getList().clear();
         brokersProvider.flush();
-        delegate.updateControls();
+        updateDelegate.updateControls();
+    }
+
+    public void updateView() {
+        getView().setDatabaseName(dataObject.getDatabaseName());
+        getView().setUsername(dataObject.getUsername());
+        getView().setEncryptedPassword(dataObject.getPassword(), true);
+        getView().setRunnerProcessId(dataObject.getRunnerProcessId());
+
+        brokersProvider.getList().clear();
+        int id = 0;
+        for (final NuoDBBrokerDTO brokerDto : dataObject.getBrokers()) {
+            final NuoDBBroker broker = NuoDBBroker.create(id);
+            broker.setHost(brokerDto.getHostName());
+            broker.setPort(brokerDto.getPort());
+            brokersProvider.getList().add(broker);
+            id++;
+        }
+        brokersProvider.flush();
+        updateDelegate.updateControls();
     }
 }

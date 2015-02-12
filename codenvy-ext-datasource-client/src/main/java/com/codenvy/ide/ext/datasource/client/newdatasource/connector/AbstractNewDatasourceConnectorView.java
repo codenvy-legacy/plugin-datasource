@@ -15,12 +15,18 @@ import com.codenvy.ide.api.mvp.View;
 /**
  * The view of datasource wizard connectors.
  */
-public interface AbstractNewDatasourceConnectorView extends View<AbstractNewDatasourceConnectorView.ActionDelegate> {
+public interface AbstractNewDatasourceConnectorView<T extends AbstractNewDatasourceConnectorView.ActionDelegate> extends View<T> {
 
     /** Required for delegating functions in view. */
     public interface ActionDelegate {
         /** Action launched when asked to test the configured connection. */
         void onClickTestConnectionButton();
+
+        void databaseNameChanged(String name);
+
+        void userNameChanged(String name);
+
+        void passwordChanged(String password);
     }
 
     /**

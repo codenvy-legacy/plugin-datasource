@@ -13,31 +13,24 @@ package com.codenvy.ide.ext.datasource.client.newdatasource.connector.amazon.ws.
 import com.codenvy.ide.api.notification.NotificationManager;
 import com.codenvy.ide.dto.DtoFactory;
 import com.codenvy.ide.ext.datasource.client.DatasourceClientService;
-import com.codenvy.ide.ext.datasource.client.DatasourceUiResources;
 import com.codenvy.ide.ext.datasource.client.newdatasource.NewDatasourceWizardMessages;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorPage;
 import com.codenvy.ide.ext.datasource.client.newdatasource.connector.DefaultNewDatasourceConnectorView;
-import com.codenvy.ide.ext.datasource.client.store.DatasourceManager;
 import com.codenvy.ide.ext.datasource.shared.DatabaseType;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Created by Wafa on 20/01/14.
  */
 public class AwsOracleConnectorPage extends DefaultNewDatasourceConnectorPage {
-    public static final String AWSORACLE_DB_ID        = "awsOracle";
+    public static final String AWSORACLE_DB_ID = "awsOracle";
 
     @Inject
     public AwsOracleConnectorPage(final DefaultNewDatasourceConnectorView view,
-                                         final NotificationManager notificationManager,
-                                         final DtoFactory dtoFactory,
-                                         final DatasourceManager datasourceManager,
-                                         final EventBus eventBus,
-                                         final DatasourceClientService service,
-                                         final DatasourceUiResources resources,
-                                         final NewDatasourceWizardMessages messages) {
-        super(view, messages.awsoracle(), resources.getAwsOracleLogo(), AWSORACLE_DB_ID, datasourceManager, eventBus, service, notificationManager,
-              dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
+                                  final NotificationManager notificationManager,
+                                  final DtoFactory dtoFactory,
+                                  final DatasourceClientService service,
+                                  final NewDatasourceWizardMessages messages) {
+        super(view, service, notificationManager, dtoFactory, messages, DatabaseType.ORACLE.getDefaultPort(), DatabaseType.ORACLE);
     }
 }
