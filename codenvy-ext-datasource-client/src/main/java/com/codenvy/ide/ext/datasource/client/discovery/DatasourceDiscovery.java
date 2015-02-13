@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.codenvy.ide.ext.datasource.client.discovery;
 
-import com.codenvy.api.runner.dto.ApplicationProcessDescriptor;
 import com.codenvy.api.runner.dto.PortMapping;
 import com.codenvy.ide.api.app.AppContext;
 import com.codenvy.ide.api.app.CurrentProject;
@@ -67,15 +66,15 @@ public class DatasourceDiscovery {
     protected void configureProcessRunEventHandler() {
         eventBus.addHandler(RunnerApplicationStatusEvent.TYPE, new RunnerApplicationStatusEventHandler() {
             @Override
-            public void onRunnerStatusChanged(@Nonnull ApplicationProcessDescriptor applicationProcessDescriptor, @Nonnull Runner runner) {
-                switch (applicationProcessDescriptor.getStatus()) {
+            public void onRunnerStatusChanged(@Nonnull Runner runner) {
+                switch (runner.getApplicationStatus()) {
                     case RUNNING:
-                        addDatasource(applicationProcessDescriptor);
+                        addDatasource(runner);
                         break;
                     case FAILED:
                     case STOPPED:
                     case CANCELLED:
-                        removeDatasource(applicationProcessDescriptor, appContext);
+                        removeDatasource(runner);
                         break;
 
                     default:
@@ -84,15 +83,15 @@ public class DatasourceDiscovery {
         });
     }
 
-    private void addDatasource(@Nonnull ApplicationProcessDescriptor applicationProcessDescriptor) {
-        PortMapping portMapping = applicationProcessDescriptor.getPortMapping();
+    private void addDatasource(@Nonnull Runner runner) {
+        PortMapping portMapping = runner.getPortMapping();
         CurrentProject currentProject = appContext.getCurrentProject();
         if (portMapping == null || currentProject == null) {
             return;
         }
         DatabaseConfigurationDTO dsConfig = dtoFactory.createDto(DatabaseConfigurationDTO.class);
         String projectName = appContext.getCurrentProject().getProjectDescription().getName();
-        long processId = applicationProcessDescriptor.getProcessId();
+        long processId = runner.getProcessId();
         String host = portMapping.getHost();
         for (DatabaseType databaseType : DatabaseType.values()) {
             if (DatabaseType.GOOGLECLOUDSQL.equals(databaseType)) {
@@ -142,12 +141,9 @@ public class DatasourceDiscovery {
 
     }
 
-    protected void removeDatasource(ApplicationProcessDescriptor applicationProcessDescriptor,
-                                    AppContext appContext) {
-        Long processId = applicationProcessDescriptor.getProcessId();
-        if (processId == null) {
-            return;
-        }
+    protected void removeDatasource(Runner runner) {
+        Long processId = runner.getProcessId();
+
         for (DatabaseConfigurationDTO databaseConfigurationDTO : dsManager) {
             if (processId.equals(databaseConfigurationDTO.getRunnerProcessId())) {
                 dsManager.remove(databaseConfigurationDTO);
