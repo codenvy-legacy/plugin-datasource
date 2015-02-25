@@ -46,9 +46,11 @@ import elemental.events.MouseEvent;
  * The datasource explorer view component.
  */
 @Singleton
-public class DatasourceExplorerViewImpl extends
-                                       BaseView<DatasourceExplorerView.ActionDelegate> implements
-                                                                                      DatasourceExplorerView {
+public class DatasourceExplorerViewImpl extends BaseView<DatasourceExplorerView.ActionDelegate> implements DatasourceExplorerView {
+
+    /** The binder interface for the datasource explorer view component. */
+    interface DatasourceExplorerViewUiBinder extends UiBinder<Widget, DatasourceExplorerViewImpl> {
+    }
 
     /** The explorer tree. */
     @UiField(provided = true)
@@ -91,21 +93,80 @@ public class DatasourceExplorerViewImpl extends
         this.datasourceUiResources = clientResource;
         this.splitPanel = new SplitLayoutPanel(4);
 
-        container.add(uiBinder.createAndBindUi(this));
+        setContentWidget(uiBinder.createAndBindUi(this));
 
-        container.ensureDebugId("datasourcePanel");
         datasourceListBox.ensureDebugId("datasourceListBox");
 
-        refreshButton
-                .addFace(SVGButtonBase.SVGFaceName.UP, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
-                        new SVGButtonBase.SVGStyleChange(
-                                new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonUp()})}));
-        this.refreshButton
-                .addFace(SVGButtonBase.SVGFaceName.DOWN, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
-                        new SVGButtonBase.SVGStyleChange(
-                                new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonDown()})}));
-        this.refreshButton.setTitle(constants.exploreButtonTooltip());
+        refreshButton.addFace(SVGButtonBase.SVGFaceName.UP, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
+                        new SVGButtonBase.SVGStyleChange(new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonUp()})}));
+        refreshButton.addFace(SVGButtonBase.SVGFaceName.DOWN, new SVGButtonBase.SVGFace(new SVGButtonBase.SVGStyleChange[]{
+                        new SVGButtonBase.SVGStyleChange(new String[]{datasourceUiResources.datasourceUiCSS().explorerRefreshButtonDown()})}));
+        refreshButton.setTitle(constants.exploreButtonTooltip());
 
+        tree.setTreeEventHandler(new Tree.Listener<EntityTreeNode>() {
+            @Override
+            public void onNodeAction(TreeNodeElement<EntityTreeNode> node) {
+                delegate.onDatabaseMetadataEntityAction(node.getData().getData());
+            }
+
+            @Override
+            public void onNodeClosed(TreeNodeElement<EntityTreeNode> node) {
+            }
+
+            @Override
+            public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<EntityTreeNode> node) {
+                delegate.onContextMenu(mouseX, mouseY);
+            }
+
+            @Override
+            public void onNodeDragStart(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
+            }
+
+            @Override
+            public void onNodeDragDrop(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
+            }
+
+            @Override
+            public void onNodeExpanded(TreeNodeElement<EntityTreeNode> node) {
+            }
+
+            @Override
+            public void onNodeSelected(final TreeNodeElement<EntityTreeNode> node, final SignalEvent event) {
+                // we must force single selection and check unselection
+                final Array<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
+                if (selectedNodes.isEmpty()) {
+                    // this was a unselection
+                    Log.debug(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
+                    delegate.onDatabaseMetadataEntitySelected(null);
+                } else if (selectedNodes.size() == 1) {
+                    // normal selection with exactly one selected element
+                    Log.debug(DatasourceExplorerViewImpl.class, "Normal tree item selection.");
+                    tree.getSelectionModel().clearSelections();
+                    tree.getSelectionModel().selectSingleNode(node.getData());
+                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
+                } else {
+                    // attempt to do multiple selection with ctrl or shift
+                    Log.debug(DatasourceExplorerViewImpl.class,
+                              "Multiple selection triggered in datasource explorer tree - keep the last one.");
+                    tree.getSelectionModel().clearSelections();
+                    tree.getSelectionModel().selectSingleNode(node.getData());
+                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
+                }
+            }
+
+            @Override
+            public void onRootContextMenu(int mouseX, int mouseY) {
+                delegate.onContextMenu(mouseX, mouseY);
+            }
+
+            @Override
+            public void onRootDragDrop(MouseEvent event) {
+            }
+
+            @Override
+            public void onKeyboard(KeyboardEvent event) {
+            }
+        });
     }
 
     @Override
@@ -218,76 +279,4 @@ public class DatasourceExplorerViewImpl extends
         delegate.onSelectedTableTypesChanged(this.tableTypesListBox.getSelectedIndex());
     }
 
-    @Override
-    public void setDelegate(final ActionDelegate delegate) {
-        this.delegate = delegate;
-        tree.setTreeEventHandler(new Tree.Listener<EntityTreeNode>() {
-            @Override
-            public void onNodeAction(TreeNodeElement<EntityTreeNode> node) {
-                delegate.onDatabaseMetadataEntityAction(node.getData().getData());
-            }
-
-            @Override
-            public void onNodeClosed(TreeNodeElement<EntityTreeNode> node) {
-            }
-
-            @Override
-            public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<EntityTreeNode> node) {
-                delegate.onContextMenu(mouseX, mouseY);
-            }
-
-            @Override
-            public void onNodeDragStart(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
-            }
-
-            @Override
-            public void onNodeDragDrop(TreeNodeElement<EntityTreeNode> node, MouseEvent event) {
-            }
-
-            @Override
-            public void onNodeExpanded(TreeNodeElement<EntityTreeNode> node) {
-            }
-
-            @Override
-            public void onNodeSelected(final TreeNodeElement<EntityTreeNode> node, final SignalEvent event) {
-                // we must force single selection and check unselection
-                final Array<EntityTreeNode> selectedNodes = tree.getSelectionModel().getSelectedNodes();
-                if (selectedNodes.isEmpty()) {
-                    // this was a unselection
-                    Log.debug(DatasourceExplorerViewImpl.class, "Unselect tree item (CTRL+click) - send null as selected item.");
-                    delegate.onDatabaseMetadataEntitySelected(null);
-                } else if (selectedNodes.size() == 1) {
-                    // normal selection with exactly one selected element
-                    Log.debug(DatasourceExplorerViewImpl.class, "Normal tree item selection.");
-                    tree.getSelectionModel().clearSelections();
-                    tree.getSelectionModel().selectSingleNode(node.getData());
-                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
-                } else {
-                    // attempt to do multiple selection with ctrl or shift
-                    Log.debug(DatasourceExplorerViewImpl.class,
-                             "Multiple selection triggered in datasource explorer tree - keep the last one.");
-                    tree.getSelectionModel().clearSelections();
-                    tree.getSelectionModel().selectSingleNode(node.getData());
-                    delegate.onDatabaseMetadataEntitySelected(node.getData().getData());
-                }
-            }
-
-            @Override
-            public void onRootContextMenu(int mouseX, int mouseY) {
-                delegate.onContextMenu(mouseX, mouseY);
-            }
-
-            @Override
-            public void onRootDragDrop(MouseEvent event) {
-            }
-            
-            @Override
-            public void onKeyboard(KeyboardEvent event) {
-            }
-        });
-    }
-
-    /** The binder interface for the datasource explorer view component. */
-    interface DatasourceExplorerViewUiBinder extends UiBinder<Widget, DatasourceExplorerViewImpl> {
-    }
 }
